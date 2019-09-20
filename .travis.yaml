@@ -25,6 +25,9 @@ before_install:
   - sudo mkdir -p /cvmfs/sft.cern.ch
   - sudo mount -t cvmfs sft.cern.ch /cvmfs/sft.cern.ch
   - ls /cvmfs/sft.cern.ch
+  - sudo mkdir -p /cvmfs/fcc.cern.ch
+  - sudo mount -t cvmfs fcc.cern.ch /cvmfs/fcc.cern.ch
+  - ls /cvmfs/fcc.cern.ch
 
 # command to install dependencies
 install:
