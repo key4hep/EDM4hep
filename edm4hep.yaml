@@ -1,0 +1,65 @@
+---
+options:
+  getSyntax: True
+  exposePODMembers: False
+
+components:
+
+    edm4hep::FloatThree :
+      x : float
+      y : float
+      z : float
+      ExtraCode :
+        declaration: "
+        FloatThree() : x(0),y(0),z(0) {}\n
+        FloatThree(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
+        FloatThree(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        float operator[](unsigned i) const { return *( &x + i ) ; }\n
+        "
+
+    # Vector3D with doubles
+    edm4hep::DoubleThree :
+      x : double
+      y : double
+      z : double
+      ExtraCode :
+        declaration: "
+        DoubleThree() : x(0),y(0),z(0) {}\n
+        DoubleThree(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        DoubleThree(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        double operator[](unsigned i) const { return *( &x + i ) ; }\n
+        "
+
+    # Vector2D with ints
+    edm4hep::IntTwo :
+      a : int
+      b : int
+      ExtraCode :
+        declaration: "
+        IntTwo() : a(0),b(0) {}\n
+        IntTwo( const int* v) : a(v[0]), b(v[1]) {}\n
+        int operator[](unsigned i) const { return *( &a + i ) ; }\n
+        "
+
+
+datatypes :
+
+  edm4hep::MCParticle:
+    Description: "The Monte Carlo particle."
+    Author : "F.Gaede, DESY"
+    Members:
+      - int PDG                         //PDG code of the particle
+      - int generatorStatus             //status of the particle as defined by the generator
+      - int simulatorStatus             //status of the particle from the simulation program
+      - float charge                    //particle charge
+      - float time                      //creation time of the particle in [ns] wrt. the event, e.g. for preassigned decays or decays in flight from the simulator.
+      - double mass                     //mass of the particle in [GeV]
+      - edm4hep::DoubleThree vertex              //production vertex of the particle in [mm].
+      - edm4hep::DoubleThree endpoint            //endpoint of the particle in [mm]
+      - edm4hep::FloatThree momentum             //particle 3-momentum at the production vertex in [GeV]
+      - edm4hep::FloatThree momentumAtEndpoint   //particle 3-momentum at the endpoint in [GeV]
+      - edm4hep::FloatThree spin                 //spin (helicity) vector of the particle. 
+      - edm4hep::IntTwo colorFlow                //color flow as defined by the generator
+    OneToManyRelations:
+      - edm4hep::MCParticle parents // The parents of this particle.
+      - edm4hep::MCParticle daughters // The daughters this particle.
