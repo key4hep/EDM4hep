@@ -1,6 +1,11 @@
 # Prerequisites
 build*
 *.d
+install
+
+# podio generated code files
+edm4hep/edm4hep
+edm4hep/src
 
 # Compiled Object files
 *.slo
