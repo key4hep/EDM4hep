@@ -1,2 +1,2 @@
 # EDM4HEP
-Generic event data model for HEP collider experiments
+Generic event data model for HEP collider experiments.
