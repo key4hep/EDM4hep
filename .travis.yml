@@ -1,0 +1,26 @@
+sudo: required
+dist: trusty
+
+
+services:
+  - docker
+
+language: cpp
+
+env:
+  matrix:
+    - COMPILER=gcc
+
+before_install:
+  - wget https://gitlab.cern.ch/lhcb-core/LbDocker/raw/master/scripts/lb-docker-run 
+  - chmod a+x lb-docker-run
+
+
+# command to run tests
+script: 
+  - sudo ./lb-docker-run --centos7 --no-lblogin --force-cvmfs ./.edm4hep-ci.d/compile_and_test.sh 
+
+# Don't send e-mail notifications
+notifications:
+  email: false
+
