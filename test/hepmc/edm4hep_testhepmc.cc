@@ -106,7 +106,7 @@ int main() {
     auto& particles       = store.create<edm4hep::MCParticleCollection>("testparticles");
     writer.registerForWrite("testparticles");
     for (auto particle_i = evt->particles_begin(); particle_i != evt->particles_end(); ++particle_i) {
-      std::cout << "Converting particle with Pdg_ID" (*particle_i)->pdg_id() << std::endl;
+      std::cout << "Converting particle with Pdg_ID " <<  (*particle_i)->pdg_id() << " ..." << std::endl;
       auto part = edm4hep::MCParticle();
       part.setPDG((*particle_i)->pdg_id());
       part.setGeneratorStatus((*particle_i)->status());
