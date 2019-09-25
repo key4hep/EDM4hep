@@ -5,39 +5,40 @@ options:
 
 components:
 
-    edm4hep::FloatThree :
+    # Vector3D with floats
+    edm4hep::Vector3f :
       x : float
       y : float
       z : float
       ExtraCode :
         declaration: "
-        FloatThree() : x(0),y(0),z(0) {}\n
-        FloatThree(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
-        FloatThree(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        Vector3f() : x(0),y(0),z(0) {}\n
+        Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
+        Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         float operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
     # Vector3D with doubles
-    edm4hep::DoubleThree :
+    edm4hep::Vector3d :
       x : double
       y : double
       z : double
       ExtraCode :
         declaration: "
-        DoubleThree() : x(0),y(0),z(0) {}\n
-        DoubleThree(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        DoubleThree(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        Vector3d() : x(0),y(0),z(0) {}\n
+        Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         double operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
     # Vector2D with ints
-    edm4hep::IntTwo :
+    edm4hep::Vector2i :
       a : int
       b : int
       ExtraCode :
         declaration: "
-        IntTwo() : a(0),b(0) {}\n
-        IntTwo( const int* v) : a(v[0]), b(v[1]) {}\n
+        Vector2i() : a(0),b(0) {}\n
+        Vector2i( const int* v) : a(v[0]), b(v[1]) {}\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
@@ -45,21 +46,69 @@ components:
 datatypes :
 
   edm4hep::MCParticle:
-    Description: "The Monte Carlo particle."
+    Description: "The Monte Carlo particle - based on the lcio::MCParticle."
     Author : "F.Gaede, DESY"
     Members:
       - int PDG                         //PDG code of the particle
       - int generatorStatus             //status of the particle as defined by the generator
-      - int simulatorStatus             //status of the particle from the simulation program
+      - int simulatorStatus             //status of the particle from the simulation program - use BIT constants below
       - float charge                    //particle charge
       - float time                      //creation time of the particle in [ns] wrt. the event, e.g. for preassigned decays or decays in flight from the simulator.
       - double mass                     //mass of the particle in [GeV]
-      - edm4hep::DoubleThree vertex              //production vertex of the particle in [mm].
-      - edm4hep::DoubleThree endpoint            //endpoint of the particle in [mm]
-      - edm4hep::FloatThree momentum             //particle 3-momentum at the production vertex in [GeV]
-      - edm4hep::FloatThree momentumAtEndpoint   //particle 3-momentum at the endpoint in [GeV]
-      - edm4hep::FloatThree spin                 //spin (helicity) vector of the particle. 
-      - edm4hep::IntTwo colorFlow                //color flow as defined by the generator
+      - edm4hep::Vector3d vertex              //production vertex of the particle in [mm].
+      - edm4hep::Vector3d endpoint            //endpoint of the particle in [mm]
+      - edm4hep::Vector3f momentum             //particle 3-momentum at the production vertex in [GeV]
+      - edm4hep::Vector3f momentumAtEndpoint   //particle 3-momentum at the endpoint in [GeV]
+      - edm4hep::Vector3f spin                 //spin (helicity) vector of the particle.
+      - edm4hep::Vector2i colorFlow                //color flow as defined by the generator
     OneToManyRelations:
       - edm4hep::MCParticle parents // The parents of this particle.
       - edm4hep::MCParticle daughters // The daughters this particle.
+    ExtraCode :
+      includes: "#include <math.h>\n
+      "
+      const_declaration: "
+      // define the bit positions for the simulation flag\n
+      static const int BITEndpoint = 31;\n
+      static const int BITCreatedInSimulation = 30;\n
+      static const int BITBackscatter = 29 ;\n
+      static const int BITVertexIsNotEndpointOfParent = 28 ;  \n
+      static const int BITDecayedInTracker = 27 ; \n
+      static const int BITDecayedInCalorimeter = 26 ;   \n
+      static const int BITLeftDetector = 25 ;     \n
+      static const int BITStopped = 24 ;    \n
+      static const int BITOverlay = 23 ;    \n
+      /// return energy computed from momentum and mass \n
+      double getEnergy() { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+\n
+                                        getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;}    \n
+
+      /// True if the particle has been created by the simulation program (rather than the generator).     \n
+      bool isCreatedInSimulation() const { return ( getSimulatorStatus() & ( 0x1 << BITCreatedInSimulation ))  ; }    \n
+      /// True if the particle is the result of a backscatter from a calorimeter shower. \n
+      bool isBackscatter() const { return ( getSimulatorStatus() & ( 0x1 << BITBackscatter )) ; }   \n
+      /// True if the particle's vertex is not the endpoint of the  parent particle.     \n
+      bool vertexIsNotEndpointOfParent() const { return ( getSimulatorStatus() & ( 0x1 << BITVertexIsNotEndpointOfParent )) ; } \n
+      /// True if the particle has interacted in a tracking region.                \n
+      bool isDecayedInTracker() const { return ( getSimulatorStatus() & ( 0x1 << BITDecayedInTracker )) ; }     \n
+      /// True if the particle has interacted in a calorimeter region.             \n
+      bool isDecayedInCalorimeter() const { return ( getSimulatorStatus() & ( 0x1 << BITDecayedInCalorimeter )) ; }   \n
+      /// True if the particle has left the world volume undecayed.                \n
+      bool hasLeftDetector() const { return ( getSimulatorStatus() & ( 0x1 << BITLeftDetector )) ; }\n
+      /// True if the particle has been stopped by the simulation program.         \n
+      bool isStopped() const { return ( getSimulatorStatus() & ( 0x1 << BITStopped )) ; }     \n
+      /// True if the particle has been overlayed by the simulation (or digitization)  program.\n
+      bool isOverlay() const { return ( getSimulatorStatus() & ( 0x1 << BITOverlay )) ; }     \n
+      "
+
+      declaration: "
+      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
+      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
+      void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
+      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
+      void setDecayedInTracker(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
+      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  		     \n
+      void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
+      void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
+      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
+      "
+      implementation : ""
