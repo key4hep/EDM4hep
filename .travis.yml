@@ -11,13 +11,12 @@ env:
     - COMPILER=gcc
 
 before_install:
-  - wget https://gitlab.cern.ch/lhcb-core/LbDocker/raw/master/scripts/lb-docker-run 
-  - chmod a+x lb-docker-run
+  - docker pull gitlab-registry.cern.ch/lhcb-core/lbdocker/centos7-build:latest
 
 
 # command to run tests
 script: 
-  - sudo ./lb-docker-run --centos7 --no-lblogin --force-cvmfs ./.edm4hep-ci.d/compile_and_test.sh 
+  - docker run -it -v ${PWD}:/workspace -w /workspace  --privileged -e LHCB_ENV_MODE=none -u 0:0 -e USER=root -e GROUP=root -e CMTCONFIG=x86_64-centos7-gcc8-opt  gitlab-registry.cern.ch/lhcb-core/lbdocker/centos7-build:latest bash -c "./.edm4hep-ci.d/compile_and_test.sh"
 
 # Don't send e-mail notifications
 notifications:
