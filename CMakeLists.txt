@@ -103,6 +103,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
               DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
 add_subdirectory(edm4hep)
+add_subdirectory(test)
 
 
 #--- create uninstall target ---------------------------------------------------

@@ -2,6 +2,11 @@
 build*
 *.d
 install
+*.root
+*.png
+*.pdf
+*.log
+*.dat
 
 # podio generated code files
 edm4hep/edm4hep
