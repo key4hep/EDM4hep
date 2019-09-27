@@ -9,10 +9,6 @@ find_package(podio REQUIRED HINTS $ENV{PODIO})
 execute_process(COMMAND python ${podio_CMAKE_DIR}/../python/podio_class_generator.py edm4hep.yaml edm4hep edm4hep
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-find_library(PODIOLIB podio PATHS ${podio_DIR}/../lib)
-if (NOT PODIOLIB)
-    message(FATAL_ERROR "libpodio.so(dylib) cannot be found dynamically. Make sure you have set up your environment to use PODIO")
-endif()
 link_directories(${podio_LIBRARY_DIR})
 
 #--- Declare ROOT dependency ---------------------------------------------------
@@ -29,7 +25,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${PROJECT_BINARY_DIR}
   ${ROOT_INCLUDE_DIR}
-  ${podio_INCLUDE_DIRS}
+  ${podio_INCLUDE_DIR}
   )
 
 #--- Define basic build settings -----------------------------------------------
