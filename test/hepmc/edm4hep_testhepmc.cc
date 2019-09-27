@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 #include "HepMC/GenEvent.h"
 #include "HepPDT/ParticleID.hh"
 #include "edm4hep/MCParticleCollection.h"
@@ -13,6 +14,22 @@
 #include "podio/ROOTWriter.h"
 
 using namespace HepMC;
+
+ edm4hep::MCParticle convert(GenParticle* hepmcParticle) {
+    auto edm_particle = edm4hep::MCParticle();
+    edm_particle.setPDG(hepmcParticle->pdg_id());
+    edm_particle.setGeneratorStatus(hepmcParticle->status());
+    // look up charge from pdg_id
+    HepPDT::ParticleID particleID(hepmcParticle->pdg_id());
+    edm_particle.setCharge(particleID.charge());
+    //  convert momentum
+    auto p = hepmcParticle->momentum();
+    //edm_particle.setMomentum( {p.px(), p.py(), p.pz()} );
+
+    return edm_particle;
+
+
+ };
 
 int main() {
   // Part 1: Using the HepMC example code to "generate" an event
@@ -98,32 +115,66 @@ int main() {
       // deleting the event deletes all contained vertices, and all particles
       // contained in those vertices
 
+   
+
 
 
   //Part2: Convert the particles and write to file
     auto store = podio::EventStore();
     auto writer = podio::ROOTWriter("edm4hep_testhepmc.root", &store);
-    auto& particles       = store.create<edm4hep::MCParticleCollection>("testparticles");
-    writer.registerForWrite("testparticles");
+    auto& edm_particle_collection = store.create<edm4hep::MCParticleCollection>("TestParticles2");
+    writer.registerForWrite("TestParticles2");
+    std::unordered_map<unsigned int, edm4hep::MCParticle> hepmcToEdmMap;
+    unsigned int particle_counter;
     for (auto particle_i = evt->particles_begin(); particle_i != evt->particles_end(); ++particle_i) {
-      std::cout << "Converting particle with Pdg_ID " <<  (*particle_i)->pdg_id() << " ..." << std::endl;
-      auto part = edm4hep::MCParticle();
-      part.setPDG((*particle_i)->pdg_id());
-      part.setGeneratorStatus((*particle_i)->status());
-      // look up charge from pdg_id
-      HepPDT::ParticleID particleID((*particle_i)->pdg_id());
-      part.setCharge(particleID.charge());
-      //  convert momentum
-      auto tmp = (*particle_i)->momentum();
-      part.setMomentum(edm4hep::FloatThree(tmp.px(), tmp.py(), tmp.pz()));
-      particles.push_back(part);
+      std::cout << "Converting particle with Pdg_ID" << (*particle_i)->pdg_id() << std::endl;
+      std::cout << "\t" << (*particle_i)->barcode() << std::endl;
+      
+      if (hepmcToEdmMap.find((*particle_i)->barcode()) == hepmcToEdmMap.end()) {
+        auto edm_particle = convert(*particle_i);
+        hepmcToEdmMap.insert({(*particle_i)->barcode(), edm_particle});
+      }
 
-      //TODO: mother/daughter links
 
-      writer.writeEvent();
-      store.clearCollections();
 
+      // mother/daughter links
+      auto prodvertex = (*particle_i)->production_vertex();
+      if (nullptr != prodvertex) {
+
+        for (auto particle_mother = prodvertex->particles_in_const_begin(); particle_mother != prodvertex->particles_in_const_end(); ++particle_mother) {
+          if (hepmcToEdmMap.find((*particle_mother)->barcode()) == hepmcToEdmMap.end()) {
+            auto edm_particle = convert(*particle_mother);
+            hepmcToEdmMap.insert({(*particle_mother)->barcode(), edm_particle});
+          }
+          hepmcToEdmMap[(*particle_i)->barcode()].addParent(hepmcToEdmMap[(*particle_mother)->barcode()]);
+        }
+      }
+
+      auto endvertex = (*particle_i)->end_vertex();
+      if (nullptr != prodvertex) {
+
+        for (auto particle_daughter = prodvertex->particles_in_const_begin(); particle_daughter != prodvertex->particles_in_const_end(); ++particle_daughter) {
+          if (hepmcToEdmMap.find((*particle_daughter)->barcode()) == hepmcToEdmMap.end()) {
+            auto edm_particle = convert(*particle_daughter);
+            hepmcToEdmMap.insert({(*particle_daughter)->barcode(), edm_particle});
+          }
+          hepmcToEdmMap[(*particle_i)->barcode()].addDaughter(hepmcToEdmMap[(*particle_daughter)->barcode()]);
+        }
+      }
+
+
+      particle_counter++;
     }
+
+    for (auto b_p: hepmcToEdmMap) {
+      edm_particle_collection.push_back(b_p.second);
+    }
+
+    writer.writeEvent();
+    store.clearCollections();
+
+
+    // after all events
     writer.finish();
 
   return 0;
