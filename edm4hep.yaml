@@ -42,7 +42,6 @@ components:
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
-
 datatypes :
 
   edm4hep::MCParticle:
@@ -112,3 +111,56 @@ datatypes :
       void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
       "
       implementation : ""
+
+
+
+
+  #----------- SimTrackerHit
+  edm4hep::SimTrackerHit:
+    Description: "LCIO simulated tracker hit"
+    Author : "F.Gaede, DESY"
+    Members:
+      - unsigned long long cellID            //ID of the sensor that created this hit
+      - float EDep                  //energy deposited in the hit [GeV].
+      - float time                  //proper time of the hit in the lab frame in [ns].
+      - float pathLength            //path length of the particle in the sensitive material that resulted in this hit.
+      - int   quality               //quality bit flag.
+      - edm4hep::Vector3d position  //the hit position in [mm].
+      - edm4hep::Vector3f momentum  //the 3-momentum of the particle at the hits position in [GeV]
+    OneToOneRelations:
+      - edm4hep::MCParticle MCParticle //MCParticle that caused the hit.
+    ExtraCode :
+      const_declaration: "
+      static const int  BITOverlay = 31;\n
+      static const int  BITProducedBySecondary = 30;\n
+      bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }\n
+      bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }\n
+      "
+      declaration: "
+      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
+      void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
+      void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
+      "
+
+  #------------- LCIO CaloHitContribution
+  edm4hep::CaloHitContribution:
+    Description: "Monte Carlo contribution to SimCalorimeterHit"
+    Author : "F.Gaede, DESY"
+    Members:
+      - int   PDG                        //PDG code of the shower particle that caused this contribution.
+      - float energy                     //energy in [GeV] of the this contribution
+      - float time                       //time in [ns] of this contribution
+      - edm4hep::Vector3f stepPosition   //position of this energy deposition (step)
+    OneToOneRelations:
+      - edm4hep::MCParticle particle       //primary MCParticle that caused the shower responsible for this contribution to the hit.
+
+  #------------- LCIO SimCalorimeterHit
+  edm4hep::SimCalorimeterHit:
+    Description: "LCIO simulated calorimeter hit"
+    Author : "F.Gaede, DESY"
+    Members:
+      - unsigned long long cellID       //ID of the sensor that created this hit
+      - float energy                    //energy of the hit in [GeV].
+      - edm4hep::Vector3f position      //position of the hit in world coordinates.
+    OneToManyRelations:
+      - edm4hep::CaloHitContribution contributions  //Monte Carlo step contribution - parallel to particle
