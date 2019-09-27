@@ -12,15 +12,9 @@ components:
       z : float
       ExtraCode :
         declaration: "
-<<<<<<< HEAD
         Vector3f() : x(0),y(0),z(0) {}\n
         Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
         Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-=======
-        FloatThree() : x(0),y(0),z(0) {}\n
-        FloatThree(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
-        FloatThree(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
->>>>>>> 5b654fc... [build infrastructure] pull initial setup from fcc-edm
         float operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 

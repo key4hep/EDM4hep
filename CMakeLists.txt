@@ -31,11 +31,10 @@ include_directories(
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
-
-# Offer the user the choice of overriding the installation directories
 set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Installation directory for libraries")
 set(INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Installation directory for executables")
+
 
 # - Define a default build type when using a single-mode tool like make/ninja
 # If you're using a build tool that supports multiple modes (Visual Studio,
