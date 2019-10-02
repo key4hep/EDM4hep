@@ -20,7 +20,11 @@ int glob = 0;
 void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
 
 
-  auto& mcps =  store.get<edm4hep::MCParticleCollection>("MCParticles");
+  auto& mcps   = store.get<edm4hep::MCParticleCollection>("MCParticles");
+  auto& sths   = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
+  auto& schs   = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
+  auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
+
 
   if( mcps.isValid() ){
 
@@ -61,8 +65,54 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
     // and so on ...
 
   } else {
-    throw std::runtime_error("Collection 'mcparticles' should be present");
+    throw std::runtime_error("Collection 'MCParticles' should be present");
   }
+
+  //===============================================================================
+  if( sths.isValid() ){
+
+    std::cout << "\n collection:  " << "SimTrackerHits" <<  " of type " <<  sths.getValueTypeName() << "\n\n"
+	      << sths << std::endl ;
+
+    int nsh = 5 ;
+    for(int j=0 ; j< nsh ; ++j){
+
+      auto sth1 = sths[2*j] ;
+      if( sth1.getCellID() !=  0xabadcaffee )  throw std::runtime_error("cellID != 0xabadcaffee") ;
+      if( sth1.getEDep() !=  j * 0.000001f ) throw std::runtime_error("e_dep != j * 0.000001") ;
+      if( !( sth1.getPosition() == edm4hep::Vector3d( j*10. , j*20., j*5. )) )
+	throw std::runtime_error("position != ( j*10. , j*20., j*5. )") ;
+      if( !(sth1.getMCParticle() == mcps[6]) )  throw std::runtime_error("mcp != mcps[6]")  ;
+
+      auto sth2 = sths[2*j+1] ;
+      if( sth2.getCellID() !=   0xcaffeebabe )  throw std::runtime_error("cellID != 0xcaffeebabe") ;
+      if( sth2.getEDep() !=  j * 0.001f ) throw std::runtime_error("e_dep != j * 0.001") ;
+      if( !( sth2.getPosition() == edm4hep::Vector3d( -j*10. , -j*20., -j*5. )) )
+	throw std::runtime_error("position != ( -j*10. , -j*20., -j*5. )") ;
+      if( !(sth2.getMCParticle() == mcps[7]) )  throw std::runtime_error("mcp != mcps[7]")  ;
+    }
+
+  } else {
+    throw std::runtime_error("Collection 'SimTrackerHits' should be present");
+  }
+
+  //===============================================================================
+  if( schs.isValid() ){
+  } else {
+    throw std::runtime_error("Collection 'SimCalorimeterHits' should be present");
+  }
+
+  //===============================================================================
+  if( sccons.isValid() ){
+  } else {
+    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
+  }
+
+ // //===============================================================================
+ //  if( sccons.isValid() ){
+ //  } else {
+ //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
+ //  }
 
 }
 

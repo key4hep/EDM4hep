@@ -23,6 +23,16 @@ void write(std::string outfilename) {
   auto& mcps  = store.create<edm4hep::MCParticleCollection>("MCParticles");
   writer.registerForWrite("MCParticles");
 
+  auto& sths  = store.create<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
+  writer.registerForWrite("SimTrackerHits");
+
+  auto& schs = store.create<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
+  writer.registerForWrite("SimCalorimeterHits");
+
+  auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
+  writer.registerForWrite("SimCalorimeterHitContributions");
+
+
   unsigned nevents = 10 ;
 
   // =============== event loop ================================
@@ -113,10 +123,31 @@ void write(std::string outfilename) {
 
 
     //-------- print particles for debugging:
-
     std::cout << "\n collection:  " << "MCParticles" <<  " of type " <<  mcps.getValueTypeName() << "\n\n"
 	      << mcps << std::endl ;
-    //-------------------------------
+    
+    
+    //===============================================================================
+    // write some SimTrackerHits
+    int nsh = 5 ;
+    for(int j=0 ; j< nsh ; ++j){
+      auto sth1 = sths.create() ;
+      sth1.setCellID( 0xabadcaffee ) ;
+      sth1.setEDep( j * 0.000001 );
+      sth1.setPosition( { j*10. , j*20., j*5. } ) ;
+      sth1.setMCParticle( mcp7 ) ;
+
+      auto sth2 = sths.create() ;
+      sth2.setCellID( 0xcaffeebabe ) ;
+      sth2.setPosition( { -j*10. , -j*20., -j*5. } ) ;
+      sth2.setEDep( j * .001 );
+      sth2.setMCParticle( mcp8 ) ;
+    }
+
+    std::cout << "\n collection:  " << "SimTrackerHits" <<  " of type " <<  sths.getValueTypeName() << "\n\n"
+	      << sths << std::endl ;
+
+    //===============================================================================
 
     writer.writeEvent();
     store.clearCollections();
