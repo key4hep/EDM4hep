@@ -19,86 +19,103 @@ void write(std::string outfilename) {
   podio::EventStore store ;
   podio::ROOTWriter  writer(outfilename, &store);
 
+  // create the collections to be written
   auto& mcps  = store.create<edm4hep::MCParticleCollection>("MCParticles");
   writer.registerForWrite("MCParticles");
 
-  unsigned nevents = 1000 ;
+  unsigned nevents = 10 ;
 
+  // =============== event loop ================================
   for(unsigned i=0; i<nevents; ++i) {
-    if(i % 100 == 0) {
-      std::cout << "processing event " << i << std::endl;
-    }
+    std::cout << " --- processing event " << i << std::endl;
 
 
-    // ---- add some MC particles ----
-    auto mcp0 = edm4hep::MCParticle();
-    auto mcp1 = edm4hep::MCParticle();
-    auto mcp2 = edm4hep::MCParticle();
-    auto mcp3 = edm4hep::MCParticle();
-    auto mcp4 = edm4hep::MCParticle();
-    auto mcp5 = edm4hep::MCParticle();
-    auto mcp6 = edm4hep::MCParticle();
-    auto mcp7 = edm4hep::MCParticle();
-    auto mcp8 = edm4hep::MCParticle();
-    auto mcp9 = edm4hep::MCParticle();
+    // place the following generator event to the MCParticle collection
+    //
+    //     name status pdg_id  parent Px       Py    Pz       Energy      Mass
+    //  1  !p+!    3   2212    0,0    0.000    0.000 7000.000 7000.000    0.938
+    //  2  !p+!    3   2212    0,0    0.000    0.000-7000.000 7000.000    0.938
+    //=========================================================================
+    //  3  !d!     3      1    1,1    0.750   -1.569   32.191   32.238    0.000
+    //  4  !u~!    3     -2    2,2   -3.047  -19.000  -54.629   57.920    0.000
+    //  5  !W-!    3    -24    1,2    1.517   -20.68  -20.605   85.925   80.799
+    //  6  !gamma! 1     22    1,2   -3.813    0.113   -1.833    4.233    0.000
+    //  7  !d!     1      1    5,5   -2.445   28.816    6.082   29.552    0.010
+    //  8  !u~!    1     -2    5,5    3.962  -49.498  -26.687   56.373    0.006
 
-    mcps.push_back( mcp0 ) ;
-    mcps.push_back( mcp1 ) ;
-    mcps.push_back( mcp2 ) ;
-    mcps.push_back( mcp3 ) ;
-    mcps.push_back( mcp4 ) ;
-    mcps.push_back( mcp5 ) ;
-    mcps.push_back( mcp6 ) ;
-    mcps.push_back( mcp7 ) ;
-    mcps.push_back( mcp8 ) ;
-    mcps.push_back( mcp9 ) ;
+    auto mcp1 = mcps.create();
+    mcp1.setPDG( 2212 ) ;
+    mcp1.setMass( 0.938 ) ;
+    mcp1.setMomentum( { 0.000, 0.000, 7000.000 }  ) ;
+    mcp1.setGeneratorStatus( 3 ) ;
 
-    // --- add some daughter relations
-    auto p = edm4hep::MCParticle();
-    auto d = edm4hep::MCParticle();
+    auto mcp2 = mcps.create();
+    mcp2.setPDG( 2212 ) ;
+    mcp2.setMass( 0.938 ) ;
+    mcp2.setMomentum( { 0.000, 0.000, -7000.000 }  ) ;
+    mcp2.setGeneratorStatus( 3 ) ;
 
-    p = mcps[0] ;
-    p.addDaughter( mcps[2] ) ;
-    p.addDaughter( mcps[3] ) ;
-    p.addDaughter( mcps[4] ) ;
-    p.addDaughter( mcps[5] ) ;
-    p = mcps[1] ;
-    p.addDaughter( mcps[2] ) ;
-    p.addDaughter( mcps[3] ) ;
-    p.addDaughter( mcps[4] ) ;
-    p.addDaughter( mcps[5] ) ;
-    p = mcps[2] ;
-    p.addDaughter( mcps[6] ) ;
-    p.addDaughter( mcps[7] ) ;
-    p.addDaughter( mcps[8] ) ;
-    p.addDaughter( mcps[9] ) ;
-    p = mcps[3] ;
-    p.addDaughter( mcps[6] ) ;
-    p.addDaughter( mcps[7] ) ;
-    p.addDaughter( mcps[8] ) ;
-    p.addDaughter( mcps[9] ) ;
+    auto mcp3 = mcps.create();
+    mcp3.setPDG( 1 ) ;
+    mcp3.setMass(0.0) ;
+    mcp3.setMomentum( {  0.750, -1.569, 32.191 }  ) ;
+    mcp3.setGeneratorStatus( 3 ) ;
+    mcp3.addParent( mcp1 ) ;
 
-    //--- now fix the parent relations
-    for( unsigned j=0,N=mcps.size();j<N;++j){
-      p = mcps[j] ;
-      for(auto it = p.daughters_begin(), end = p.daughters_end() ; it!=end ; ++it ){
-	int dIndex = it->getObjectID().index ;
-	d = mcps[ dIndex ] ;
-	d.addParent( p ) ;
-      }
-    }
-    //-------- print relations for debugging:
+    auto mcp4 = mcps.create();
+    mcp4.setPDG( -2) ;
+    mcp4.setMass(0.0) ;
+    mcp4.setMomentum( { -3.047, -19.000, -54.629 }  ) ;
+    mcp4.setGeneratorStatus( 3 ) ;
+    mcp4.addParent( mcp2 ) ;
+
+    auto mcp5 = mcps.create();
+    mcp5.setPDG( -24 ) ;
+    mcp5.setMass(80.799) ;
+    mcp5.setMomentum( { 1.517, -20.68, -20.605 }  ) ;
+    mcp5.setGeneratorStatus( 3 ) ;
+    mcp5.addParent( mcp1 ) ;
+    mcp5.addParent( mcp2 ) ;
+
+    auto mcp6 = mcps.create();
+    mcp6.setPDG( 22 ) ;
+    mcp6.setMass(0.0) ;
+    mcp6.setMomentum( { -3.813, 0.113, -1.833  }  ) ;
+    mcp6.setGeneratorStatus( 1 ) ;
+    mcp6.addParent( mcp1 ) ;
+    mcp6.addParent( mcp2 ) ;
+
+    auto mcp7 = mcps.create();
+    mcp7.setPDG( 1 ) ;
+    mcp7.setMass(0.0) ;
+    mcp7.setMomentum( {  -2.445, 28.816, 6.082  }  ) ;
+    mcp7.setGeneratorStatus( 1 ) ;
+    mcp7.addParent( mcp5 ) ;
+
+    auto mcp8 = mcps.create();
+    mcp8.setPDG( -2) ;
+    mcp8.setMass(0.0) ;
+    mcp8.setMomentum( { 3.962, -49.498, -26.687 }  ) ;
+    mcp8.setGeneratorStatus( 1 ) ;
+    mcp8.addParent( mcp5 ) ;
+
+
+    //--- now fix the daughter relations -------------------------
     for( auto p : mcps ){
-      std::cout << " particle " << p.getObjectID().index << " has daughters: " ;
-      for(auto it = p.daughters_begin(), end = p.daughters_end() ; it!=end ; ++it ){
-	std::cout << " " << it->getObjectID().index ;
-      }
-      std::cout << "  and parents: " ;
       for(auto it = p.parents_begin(), end = p.parents_end() ; it!=end ; ++it ){
-	std::cout << " " << it->getObjectID().index ;
+	int momIndex = it->getObjectID().index ;
+	auto pmom = mcps[ momIndex ] ;
+	pmom.addDaughter( p ) ;
       }
-      std::cout << std::endl ;
     }
+    //fixme: should this become a utility function ?
+    //-------------------------------------------------------------
+
+
+    //-------- print particles for debugging:
+
+    std::cout << "\n collection:  " << "MCParticles" <<  " of type " <<  mcps.getValueTypeName() << "\n\n"
+	      << mcps << std::endl ;
     //-------------------------------
 
     writer.writeEvent();
