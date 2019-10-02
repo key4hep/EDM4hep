@@ -26,6 +26,7 @@ components:
       ExtraCode :
         declaration: "
         Vector3d() : x(0),y(0),z(0) {}\n
+        Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
         Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         double operator[](unsigned i) const { return *( &x + i ) ; }\n
@@ -38,6 +39,7 @@ components:
       ExtraCode :
         declaration: "
         Vector2i() : a(0),b(0) {}\n
+        Vector2i(int aa,int bb) : a(aa),b(bb) {}\n
         Vector2i( const int* v) : a(v[0]), b(v[1]) {}\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
