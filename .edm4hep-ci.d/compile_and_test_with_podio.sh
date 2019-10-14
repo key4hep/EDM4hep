@@ -1,6 +1,5 @@
 source init.sh
-cd ..
-git clone https://github.com/AIDASoft/podio || true
+git clone --depth 1 https://github.com/AIDASoft/podio || true
 cd podio
 mkdir build install
 cd build
@@ -8,5 +7,6 @@ cd build
 make -j 4 install
 cd ..
 export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-cd ../EDM4HEP
+export PODIO=$PWD/install:$CMAKE_PREFIX_PATH
+cd ..
 ./.edm4hep-ci.d/compile_and_test.sh
