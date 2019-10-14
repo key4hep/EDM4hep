@@ -6,7 +6,7 @@ project(EDM4HEP VERSION 0.1.0)
 
 find_package(podio REQUIRED HINTS $ENV{PODIO})
 
-execute_process(COMMAND python ${podio_CMAKE_DIR}/../python/podio_class_generator.py edm4hep.yaml edm4hep edm4hep
+execute_process(COMMAND python ${podio_DIR}/../../../python/podio_class_generator.py edm4hep.yaml edm4hep edm4hep
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 link_directories(${podio_LIBRARY_DIR})
@@ -25,7 +25,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${PROJECT_BINARY_DIR}
   ${ROOT_INCLUDE_DIR}
-  ${podio_INCLUDE_DIRS} # Has to be changed to podio_INCLUDE_DIR with next update of podio
+  ${podio_INCLUDE_DIR}
   )
 
 #--- Define basic build settings -----------------------------------------------
