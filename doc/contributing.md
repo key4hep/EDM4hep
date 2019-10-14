@@ -1,11 +1,11 @@
-# Contributing to EDM4Hep
+# Contributing to EDM4hep
 
-Please read these guidelines if you want to contribute to the EDM4Hep project.
+Please read these guidelines if you want to contribute to the EDM4hep project.
 
 
 ## Git workflow
 
-For EDM4Hep we would like to follow a so called "No Switch Yard" (NoSY) workflow.
+For EDM4hep we would like to follow a so called "No Switch Yard" (NoSY) workflow.
 
 In essence this means that you develop your (small) new feature in a dedicated
 *feature branch* that is kept up to date with the master branch until you create
@@ -14,9 +14,9 @@ a PR, as we only allow *rebase merges* for PRs.
 
 ### Example workflow
 
-- checkout a copy of EDM4Hep from the origin at AIDASoft:
+- checkout a copy of EDM4hep from the origin at HSF:
 
-	 git clone https://github.com/AIDASoft/EDM4HEP.git
+	 git clone https://github.com/HSF/EDM4HEP.git
 	 cd EDM4HEP
 	
 - create a fork of the repository on the Github web page
@@ -35,7 +35,7 @@ a PR, as we only allow *rebase merges* for PRs.
       git fetch origin; git rebase origin/master
 	
 
-- after having committed everything to your new branch, push it to your fork of EDM4Hep:
+- after having committed everything to your new branch, push it to your fork of EDM4hep:
 
       git push downstream <myNewBranch>
 
@@ -44,7 +44,7 @@ a PR, as we only allow *rebase merges* for PRs.
   - now you can create a pull request on the web site
 
 
-### Release Notes
+### Release Notes 
 
 Please make sure you fill in meaningful release notes in the comment field that is
 provided at the Github web page when creating the PR, e.g.
