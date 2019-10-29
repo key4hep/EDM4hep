@@ -44,7 +44,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
     //-------- print particles for debugging:
 
     std::cout << "\n collection:  " << "MCParticles" <<  " of type " <<  mcps.getValueTypeName() << "\n\n"
-	      << mcps << std::endl ;
+        << mcps << std::endl ;
     //-------------------------------
 
     // check a few things (to be completed ...)
@@ -72,7 +72,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   if( sths.isValid() ){
 
     std::cout << "\n collection:  " << "SimTrackerHits" <<  " of type " <<  sths.getValueTypeName() << "\n\n"
-	      << sths << std::endl ;
+        << sths << std::endl ;
 
     int nsh = 5 ;
     for(int j=0 ; j< nsh ; ++j){
@@ -81,14 +81,14 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
       if( sth1.getCellID() !=  0xabadcaffee )  throw std::runtime_error("cellID != 0xabadcaffee") ;
       if( sth1.getEDep() !=  j * 0.000001f ) throw std::runtime_error("e_dep != j * 0.000001") ;
       if( !( sth1.getPosition() == edm4hep::Vector3d( j*10. , j*20., j*5. )) )
-	throw std::runtime_error("position != ( j*10. , j*20., j*5. )") ;
+        throw std::runtime_error("position != ( j*10. , j*20., j*5. )") ;
       if( !(sth1.getMCParticle() == mcps[6]) )  throw std::runtime_error("mcp != mcps[6]")  ;
 
       auto sth2 = sths[2*j+1] ;
       if( sth2.getCellID() !=   0xcaffeebabe )  throw std::runtime_error("cellID != 0xcaffeebabe") ;
       if( sth2.getEDep() !=  j * 0.001f ) throw std::runtime_error("e_dep != j * 0.001") ;
       if( !( sth2.getPosition() == edm4hep::Vector3d( -j*10. , -j*20., -j*5. )) )
-	throw std::runtime_error("position != ( -j*10. , -j*20., -j*5. )") ;
+        throw std::runtime_error("position != ( -j*10. , -j*20., -j*5. )") ;
       if( !(sth2.getMCParticle() == mcps[7]) )  throw std::runtime_error("mcp != mcps[7]")  ;
     }
 
@@ -100,8 +100,8 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   if( sccons.isValid() ){
 
     std::cout << "\n collection:  " << "SimCalorimeterHitContributions" <<  " of type "
-	      <<  sccons.getValueTypeName() << "\n\n"
-	      << sccons << std::endl ;
+        <<  sccons.getValueTypeName() << "\n\n"
+        << sccons << std::endl ;
 
   } else {
     throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
@@ -110,8 +110,8 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   if( schs.isValid() ){
 
     std::cout << "\n collection:  " << "SimCalorimeterHit" <<  " of type "
-	      <<  schs.getValueTypeName() << "\n\n"
-	      << schs << std::endl ;
+        <<  schs.getValueTypeName() << "\n\n"
+        << schs << std::endl ;
 
 
     int nch = 5 ;
@@ -121,41 +121,40 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
       if( sch1.getCellID() !=  0xabadcaffee )  throw std::runtime_error("cellID != 0xabadcaffee") ;
       if( sch1.getEnergy() !=  j*0.1f ) throw std::runtime_error("energy != j*0.1f") ;
       if( !( sch1.getPosition() == edm4hep::Vector3f( j*100.f , j*200.f, j*50.f )) )
-	throw std::runtime_error("position != ( j*100. , j*200., j*50. )") ;
+        throw std::runtime_error("position != ( j*100. , j*200., j*50. )") ;
 
       auto cont1 = sch1.getContributions(0) ;
 
       if( !( cont1.getPDG() == 11 )  ||
-	  !( cont1.getEnergy() ==  j*0.1f ) ||
-	  !( cont1.getTime() ==  j*1e-9f )  ||
-	  !( cont1.getStepPosition() == edm4hep::Vector3f( j*100.01f , j*200.01f, j*50.01f ) ) ||
-	  !( cont1.getParticle() == mcps[6] )
-	){
-	throw std::runtime_error("contribution1 does not match ") ;
+          !( cont1.getEnergy() ==  j*0.1f ) ||
+          !( cont1.getTime() ==  j*1e-9f )  ||
+          !( cont1.getStepPosition() == edm4hep::Vector3f( j*100.01f , j*200.01f, j*50.01f ) ) ||
+          !( cont1.getParticle() == mcps[6] )
+  ){
+  throw std::runtime_error("contribution1 does not match ") ;
       }
 
       auto sch2 = schs[2*j+1] ;
       if( sch2.getCellID() !=   0xcaffeebabe )  throw std::runtime_error("cellID != 0xcaffeebabe") ;
       if( sch2.getEnergy() !=  j*0.2f ) throw std::runtime_error("energy != j*0.2") ;
       if( !( sch2.getPosition() == edm4hep::Vector3f( -j*100.f , -j*200.f, -j*50.f )) )
-	throw std::runtime_error("position != ( -j*100.f , -j*200.f, -j*50.f )") ;
+          throw std::runtime_error("position != ( -j*100.f , -j*200.f, -j*50.f )") ;
 
      auto cont2 = sch2.getContributions(0) ;
 
       if( !( cont2.getPDG() == -11 )  ||
-	  !( cont2.getEnergy() ==  j*0.2f ) ||
-	  !( cont2.getTime() ==  j*1e-9f )  ||
-	  !( cont2.getStepPosition() == edm4hep::Vector3f( -j*100.01f , -j*200.01f, -j*50.01f ) ) ||
-	  !( cont2.getParticle() == mcps[7] )
-	){
-	throw std::runtime_error("contribution2 does not match ") ;
+          !( cont2.getEnergy() ==  j*0.2f ) ||
+          !( cont2.getTime() ==  j*1e-9f )  ||
+          !( cont2.getStepPosition() == edm4hep::Vector3f( -j*100.01f , -j*200.01f, -j*50.01f ) ) ||
+          !( cont2.getParticle() == mcps[7] )
+        ){
+          throw std::runtime_error("contribution2 does not match ") ;
       }
     }
 
   } else {
     throw std::runtime_error("Collection 'SimCalorimeterHits' should be present");
   }
-
 
  // //===============================================================================
  //  if( sccons.isValid() ){
