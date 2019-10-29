@@ -113,9 +113,9 @@ void write(std::string outfilename) {
     //--- now fix the daughter relations -------------------------
     for( auto p : mcps ){
       for(auto it = p.parents_begin(), end = p.parents_end() ; it!=end ; ++it ){
-	int momIndex = it->getObjectID().index ;
-	auto pmom = mcps[ momIndex ] ;
-	pmom.addDaughter( p ) ;
+        int momIndex = it->getObjectID().index ;
+        auto pmom = mcps[ momIndex ] ;
+        pmom.addDaughter( p ) ;
       }
     }
     //fixme: should this become a utility function ?
@@ -124,7 +124,7 @@ void write(std::string outfilename) {
 
     //-------- print particles for debugging:
     std::cout << "\n collection:  " << "MCParticles" <<  " of type " <<  mcps.getValueTypeName() << "\n\n"
-	      << mcps << std::endl ;
+        << mcps << std::endl ;
     
     
     //===============================================================================
@@ -145,7 +145,7 @@ void write(std::string outfilename) {
     }
 
     std::cout << "\n collection:  " << "SimTrackerHits" <<  " of type " <<  sths.getValueTypeName() << "\n\n"
-	      << sths << std::endl ;
+        << sths << std::endl ;
 
     //===============================================================================
     // write some SimCalorimeterHits
@@ -173,11 +173,11 @@ void write(std::string outfilename) {
     }
 
     std::cout << "\n collection:  " << "SimCalorimeterHitContributionss" <<  " of type "
-	      <<  sccons.getValueTypeName() << "\n\n"
-	      << sccons << std::endl ;
+        <<  sccons.getValueTypeName() << "\n\n"
+        << sccons << std::endl ;
 
     std::cout << "\n collection:  " << "SimCalorimeterHits" <<  " of type " <<  schs.getValueTypeName() << "\n\n"
-	      << schs << std::endl ;
+        << schs << std::endl ;
 
     //===============================================================================
 
