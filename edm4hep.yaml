@@ -217,7 +217,7 @@ datatypes :
       - std::array<float,6>  positionError   //covariance matrix of the position (6 Parameters)
       - float                iTheta          //intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP. 
       - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP. 
-      - plcio::FloatThree    directionError  //covariance matrix of the direction (3 Parameters)
+      - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters)
     VectorMembers:
       - float   shape                //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
       - float   weight               //weight of a particular cluster
