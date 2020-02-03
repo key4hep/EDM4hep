@@ -5,6 +5,7 @@ options:
 
 components:
 
+
     # Vector3D with floats
     edm4hep::Vector3f :
       x : float
@@ -46,6 +47,28 @@ components:
         bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
+      # Parametrized description of a particle track
+    edm4hep::TrackState:
+      location       : int # for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex|LastLocation}
+      D0             : float # transverse impact parameter
+      phi            : float # azimuthal angle 
+      omega          : float # is the signed curvature of the track in [1/mm].
+      Z0             : float # longitudinal impact parameter
+      tanLambda      : float # lambda is the dip angle of the track in r-z
+      referencePoint : edm4hep::Vector3f # Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
+      covMatrix      : std::array<float,15> # upper triangular covariance matrix of the track parameters.  the order of parameters is:   d0, phi, omega, z0, tan(lambda). 
+      ExtraCode :
+        const_declaration: "
+        static const int AtOther = 0 ; // any location other than the ones defined below\n   
+        static const int AtIP = 1 ;\n
+        static const int AtFirstHit = 2 ;\n                   
+        static const int AtLastHit = 3 ;\n                  
+        static const int AtCalorimeter = 4 ;\n                
+        static const int AtVertex = 5 ;\n     
+        static const int LastLocation = AtVertex  ;\n
+        "
+
+
 
 datatypes :
 
@@ -64,9 +87,9 @@ datatypes :
       - edm4hep::Vector3f momentum             //particle 3-momentum at the production vertex in [GeV]
       - edm4hep::Vector3f momentumAtEndpoint   //particle 3-momentum at the endpoint in [GeV]
       - edm4hep::Vector3f spin                 //spin (helicity) vector of the particle.
-      - edm4hep::Vector2i colorFlow                //color flow as defined by the generator
+      - edm4hep::Vector2i colorFlow            //color flow as defined by the generator
     OneToManyRelations:
-      - edm4hep::MCParticle parents // The parents of this particle.
+      - edm4hep::MCParticle parents   // The parents of this particle.
       - edm4hep::MCParticle daughters // The daughters this particle.
     ExtraCode :
       includes: "#include <math.h>\n
@@ -147,7 +170,7 @@ datatypes :
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
       "
 
-  #------------- LCIO CaloHitContribution
+  #------------- CaloHitContribution
   edm4hep::CaloHitContribution:
     Description: "Monte Carlo contribution to SimCalorimeterHit"
     Author : "F.Gaede, DESY"
@@ -159,9 +182,9 @@ datatypes :
     OneToOneRelations:
       - edm4hep::MCParticle particle       //primary MCParticle that caused the shower responsible for this contribution to the hit.
 
-  #------------- LCIO SimCalorimeterHit
+  #-------------  SimCalorimeterHit
   edm4hep::SimCalorimeterHit:
-    Description: "LCIO simulated calorimeter hit"
+    Description: "Simulated calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
       - unsigned long long cellID       //ID of the sensor that created this hit
@@ -169,6 +192,52 @@ datatypes :
       - edm4hep::Vector3f position      //position of the hit in world coordinates.
     OneToManyRelations:
       - edm4hep::CaloHitContribution contributions  //Monte Carlo step contribution - parallel to particle
+
+  #-------------  TrackerHit
+  edm4hep::TrackerHit:
+    Description : "Tracker hit"
+    Author : "F.Gaede, DESY"
+    Members :
+      - unsigned long long cellID      //ID of the sensor that created this hit
+      - int type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues". 
+      - int quality                    //quality bit flag of the hit.    
+      - float time                     //time of the hit.
+      - float eDep                     //energy deposited on the hit [GeV]. 
+      - float eDepError                //error measured on EDep [GeV].
+      - float edx                      //dE/dx of the hit in [GeV]. 
+      - edm4hep::Vector3d position     //hit position in [mm].
+      - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+
+
+ #----------  TPCHit
+  edm4hep::TPCHit:
+    Description: "Time Projection Chamber Hit"
+    Author : "F.Gaede, DESY"
+    Members:
+       - unsigned long long cellID  //detector specific cell id. 
+       - int quality                //quality flag for the hit. 
+       - float time                 //time of the hit. 
+       - float charge               //integrated charge of the hit. 
+    VectorMembers:
+        - int rawDataWords          //raw data (32-bit) word at i.
+
+ #-------- Track 
+  edm4hep::Track:
+    Description: "Reconstructed track"
+    Author : "F.Gaede, DESY"
+    Members:
+      - int type                         //flagword that defines the type of track.Bits 16-31 are used internally
+      - float chi2                       //Chi^2 of the track fit
+      - int ndf                          //number of degrees of freedom of the track fit
+      - float dEdx                       //dEdx of the track.
+      - float dEdxError                  //error of dEdx.
+      - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
+    VectorMembers:
+      - int subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
+      - edm4hep::TrackState trackStates  //track states
+    OneToManyRelations:
+      - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
+      - edm4hep::Track tracks            //tracks (segements) that have been combined to create this track
 
 
   #-------------  RawCalorimeterHit
