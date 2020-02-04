@@ -48,7 +48,7 @@ components:
         "
       # Parametrized description of a particle track
     edm4hep::TrackState:
-      location       : int # for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex|LastLocation}
+      location       : int # for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
       D0             : float # transverse impact parameter
       phi            : float # azimuthal angle 
       omega          : float # is the signed curvature of the track in [1/mm].
@@ -174,10 +174,10 @@ datatypes :
       static const int  BITProducedBySecondary = 30;\n
       bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }\n
       bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }\n
-      double x() const {return getPosition()[0];};\n
-      double y() const {return getPosition()[1];};\n
-      double z() const {return getPosition()[2];};\n
-      double rho() const {return sqrt(pow(getPosition()[1],2) + pow(getPosition()[0],2));};\n
+      double x() const {return getPosition()[0];}\n
+      double y() const {return getPosition()[1];}\n
+      double z() const {return getPosition()[2];}\n
+      double rho() const {return sqrt(x()*x() + y()*y());}\n
       "
       declaration: "
       int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
@@ -277,7 +277,7 @@ datatypes :
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV]. 
       - float eDepError                //error measured on EDep [GeV].
-      - float edx                      //dE/dx of the hit in [GeV]. 
+      - float edx                      //dE/dx of the hit in [GeV/mm]. 
       - edm4hep::Vector3d position     //hit position in [mm].
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
@@ -312,11 +312,11 @@ datatypes :
       - edm4hep::TrackState trackStates  //track states
     OneToManyRelations:
       - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
-      - edm4hep::Track tracks            //tracks (segements) that have been combined to create this track
+      - edm4hep::Track tracks            //tracks (segments) that have been combined to create this track
 
  #---------- Vertex
   edm4hep::Vertex:
-    Description: "LCIO vertex"
+    Description: "Vertex"
     Author : "F.Gaede, DESY"
     Members:
       - int                 primary       //boolean flag, if vertex is the primary vertex of the event
@@ -375,7 +375,7 @@ datatypes :
      - edm4hep::SimCalorimeterHit sim // The simulated hit.
 
   edm4hep::MCRecoTrackerAssociation:
-    Description: "Association between a TrackerHit and the corresponding simulated CaloHit"
+    Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
     Author : "C. Bernet, B. Hegner"
     OneToOneRelations:
      - edm4hep::TrackerHit rec // The reconstructed hit.
