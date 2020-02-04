@@ -46,6 +46,38 @@ components:
         bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
+      # Parametrized description of a particle track
+    edm4hep::TrackState:
+      location       : int # for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex|LastLocation}
+      D0             : float # transverse impact parameter
+      phi            : float # azimuthal angle 
+      omega          : float # is the signed curvature of the track in [1/mm].
+      Z0             : float # longitudinal impact parameter
+      tanLambda      : float # lambda is the dip angle of the track in r-z
+      referencePoint : edm4hep::Vector3f # Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
+      covMatrix      : std::array<float,15> # upper triangular covariance matrix of the track parameters.  the order of parameters is:   d0, phi, omega, z0, tan(lambda). 
+      ExtraCode :
+        const_declaration: "
+        static const int AtOther = 0 ; // any location other than the ones defined below\n   
+        static const int AtIP = 1 ;\n
+        static const int AtFirstHit = 2 ;\n                   
+        static const int AtLastHit = 3 ;\n                  
+        static const int AtCalorimeter = 4 ;\n                
+        static const int AtVertex = 5 ;\n     
+        static const int LastLocation = AtVertex  ;\n
+        "
+
+    #------ ObjectID helper struct for references/relations
+    edm4hep::ObjectID:
+      index        : int
+      collectionID : int
+      ExtraCode :
+        includes: "#include <podio/ObjectID.h>\n"
+        declaration: "
+        ObjectID() = default;\n
+        ObjectID(const podio::ObjectID& id ): index(id.index), collectionID(id.collectionID) {}\n
+      "
+
 
 datatypes :
 
