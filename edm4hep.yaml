@@ -265,3 +265,118 @@ datatypes :
       - edm4hep::Cluster        clusters     //clusters that have been combined to this cluster.
       - edm4hep::CalorimeterHit hits         //hits that have been combined to this cluster.
       - edm4hep::ParticleID     particleIDs  //particle IDs (sorted by their likelihood) 
+
+  #-------------  TrackerHit
+  edm4hep::TrackerHit:
+    Description : "Tracker hit"
+    Author : "F.Gaede, DESY"
+    Members :
+      - unsigned long long cellID      //ID of the sensor that created this hit
+      - int type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues". 
+      - int quality                    //quality bit flag of the hit.    
+      - float time                     //time of the hit.
+      - float eDep                     //energy deposited on the hit [GeV]. 
+      - float eDepError                //error measured on EDep [GeV].
+      - float edx                      //dE/dx of the hit in [GeV]. 
+      - edm4hep::Vector3d position     //hit position in [mm].
+      - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+    VectorMembers:
+      - edm4hep::ObjectID  rawHits       //raw data hits. Check getType to get actual data type. 
+
+
+ #----------  TPCHit
+  edm4hep::TPCHit:
+    Description: "Time Projection Chamber Hit"
+    Author : "F.Gaede, DESY"
+    Members:
+       - unsigned long long cellID  //detector specific cell id. 
+       - int quality                //quality flag for the hit. 
+       - float time                 //time of the hit. 
+       - float charge               //integrated charge of the hit. 
+    VectorMembers:
+       - int rawDataWords          //raw data (32-bit) word at i.
+
+ #-------- Track 
+  edm4hep::Track:
+    Description: "Reconstructed track"
+    Author : "F.Gaede, DESY"
+    Members:
+      - int type                         //flagword that defines the type of track.Bits 16-31 are used internally
+      - float chi2                       //Chi^2 of the track fit
+      - int ndf                          //number of degrees of freedom of the track fit
+      - float dEdx                       //dEdx of the track.
+      - float dEdxError                  //error of dEdx.
+      - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
+    VectorMembers:
+      - int subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
+      - edm4hep::TrackState trackStates  //track states
+    OneToManyRelations:
+      - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
+      - edm4hep::Track tracks            //tracks (segements) that have been combined to create this track
+
+ #---------- Vertex
+  edm4hep::Vertex:
+    Description: "LCIO vertex"
+    Author : "F.Gaede, DESY"
+    Members:
+      - int                 primary       //boolean flag, if vertex is the primary vertex of the event
+      - float               chi2          //chi-squared of the vertex fit
+      - float               probability   //probability of the vertex fit
+      - edm4hep::Vector3f   position      // [mm] position of the vertex.
+      - std::array<float,6> covMatrix     //covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
+      - int                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType. 
+    VectorMembers:
+      - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning. 
+    OneToOneRelations:
+      - edm4hep::ReconstructedParticle   associatedParticle //reconstructed particle associated to this vertex.
+
+
+  #------- ReconstructedParticle
+  edm4hep::ReconstructedParticle:
+    Description: "Reconstructed Particle"
+    Author : "F.Gaede, DESY"
+    Members:
+      - int                    type           //type of reconstructed particle. Check/set collection parameters ReconstructedParticleTypeNames and ReconstructedParticleTypeValues.
+      - float                  energy         // [GeV] energy of the reconstructed particle.
+      - edm4hep::Vector3f      momentum       // [GeV] particle momentum
+      - edm4hep::Vector3f      referencePoint // [mm] reference, i.e. where the particle has been measured
+      - float                  charge         //charge of the reconstructed particle.
+      - float                  mass           // [GeV] mass of the reconstructed particle, set independently from four vector
+      - float                  goodnessOfPID  //overall goodness of the PID on a scale of [0;1]
+      - std::array<float,10>   covMatrix      //cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
+    OneToOneRelations:
+      - edm4hep::Vertex          startVertex    //start vertex associated to this particle
+      - edm4hep::ParticleID      particleIDUsed //particle Id used for the kinematics of this particle
+    OneToManyRelations:
+      - edm4hep::Cluster               clusters     //clusters that have been used for this particle. 
+      - edm4hep::Track                 tracks       //tracks that have been used for this particle. 
+      - edm4hep::ReconstructedParticle particles    //reconstructed particles that have been combined to this particle.
+      - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood) 
+    ExtraCode:
+      declaration: "
+      bool isCompound() { return particles_size() > 0 ;}\n
+      //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n 
+      //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n     
+      "
+
+  edm4hep::MCRecoParticleAssociation:
+    Description: "Used to keep track of the correspondence between MC and reconstructed particles"
+    Author: "C. Bernet, B. Hegner"
+    OneToOneRelations :
+     - edm4hep::ReconstructedParticle  rec // Reference to the reconstructed particle
+     - edm4hep::MCParticle sim // Reference to the Monte-Carlo particle
+
+
+  edm4hep::MCRecoCaloAssociation:
+    Description: "Association between a CaloHit and the corresponding simulated CaloHit"
+    Author: "C. Bernet, B. Hegner"
+    OneToOneRelations:
+     - edm4hep::CalorimeterHit rec // The reconstructed hit.
+     - edm4hep::SimCalorimeterHit sim // The simulated hit.
+
+  edm4hep::MCRecoTrackerAssociation:
+    Description: "Association between a TrackerHit and the corresponding simulated CaloHit"
+    Author : "C. Bernet, B. Hegner"
+    OneToOneRelations:
+     - edm4hep::TrackerHit rec // The reconstructed hit.
+     - edm4hep::SimTrackerHit sim // The simulated hit.
