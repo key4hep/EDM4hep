@@ -1,0 +1,14 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: compile and test
+      run: |
+        ./.edm4hep-ci.d/compile_and_test_with_podio.sh
