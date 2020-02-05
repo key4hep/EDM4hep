@@ -154,16 +154,16 @@ datatypes :
 
   #----------- SimTrackerHit
   edm4hep::SimTrackerHit:
-    Description: "LCIO simulated tracker hit"
+    Description: "Simulated tracker hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID            //ID of the sensor that created this hit
-      - float EDep                  //energy deposited in the hit [GeV].
-      - float time                  //proper time of the hit in the lab frame in [ns].
-      - float pathLength            //path length of the particle in the sensitive material that resulted in this hit.
-      - int   quality               //quality bit flag.
-      - edm4hep::Vector3d position  //the hit position in [mm].
-      - edm4hep::Vector3f momentum  //the 3-momentum of the particle at the hits position in [GeV]
+      - unsigned long long cellID      //ID of the sensor that created this hit
+      - float EDep                     //energy deposited in the hit [GeV].
+      - float time                     //proper time of the hit in the lab frame in [ns].
+      - float pathLength               //path length of the particle in the sensitive material that resulted in this hit.
+      - int   quality                  //quality bit flag.
+      - edm4hep::Vector3d position     //the hit position in [mm].
+      - edm4hep::Vector3f momentum     //the 3-momentum of the particle at the hits position in [GeV]
     OneToOneRelations:
       - edm4hep::MCParticle MCParticle //MCParticle that caused the hit.
     ExtraCode :
@@ -185,7 +185,7 @@ datatypes :
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
       "
 
-  #------------- LCIO CaloHitContribution
+  #------------- CaloHitContribution
   edm4hep::CaloHitContribution:
     Description: "Monte Carlo contribution to SimCalorimeterHit"
     Author : "F.Gaede, DESY"
@@ -195,11 +195,11 @@ datatypes :
       - float time                       //time in [ns] of this contribution
       - edm4hep::Vector3f stepPosition   //position of this energy deposition (step)
     OneToOneRelations:
-      - edm4hep::MCParticle particle       //primary MCParticle that caused the shower responsible for this contribution to the hit.
+      - edm4hep::MCParticle particle     //primary MCParticle that caused the shower responsible for this contribution to the hit.
 
-  #------------- LCIO SimCalorimeterHit
+  #------------- SimCalorimeterHit
   edm4hep::SimCalorimeterHit:
-    Description: "LCIO simulated calorimeter hit"
+    Description: "Simulated calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
       - unsigned long long cellID       //ID of the sensor that created this hit
@@ -215,15 +215,15 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members:
       - unsigned long long cellID   //detector specific (geometrical) cell id.
-      - int amplitude //amplitude of the hit in ADC counts.
-      - int timeStamp //time stamp for the hit.
+      - int amplitude               //amplitude of the hit in ADC counts.
+      - int timeStamp               //time stamp for the hit.
 
   #-------------  CalorimeterHit
   edm4hep::CalorimeterHit:
     Description: "Calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID                //detector specific (geometrical) cell id.
+      - unsigned long long cellID  //detector specific (geometrical) cell id.
       - float energy               //energy of the hit in [GeV].
       - float energyError          //error of the hit energy in [GeV].
       - float time                 //time of the hit in [ns].
@@ -281,7 +281,7 @@ datatypes :
       - edm4hep::Vector3d position     //hit position in [mm].
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
-      - edm4hep::ObjectID  rawHits       //raw data hits. Check getType to get actual data type. 
+      - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type. 
 
 
  #----------  TPCHit
@@ -294,7 +294,7 @@ datatypes :
        - float time                 //time of the hit. 
        - float charge               //integrated charge of the hit. 
     VectorMembers:
-       - int rawDataWords          //raw data (32-bit) word at i.
+       - int rawDataWords           //raw data (32-bit) word at i.
 
  #-------- Track 
   edm4hep::Track:
@@ -328,7 +328,7 @@ datatypes :
     VectorMembers:
       - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning. 
     OneToOneRelations:
-      - edm4hep::ReconstructedParticle   associatedParticle //reconstructed particle associated to this vertex.
+      - edm4hep::ReconstructedParticle associatedParticle //reconstructed particle associated to this vertex.
 
 
   #------- ReconstructedParticle
@@ -363,20 +363,21 @@ datatypes :
     Description: "Used to keep track of the correspondence between MC and reconstructed particles"
     Author: "C. Bernet, B. Hegner"
     OneToOneRelations :
-     - edm4hep::ReconstructedParticle  rec // Reference to the reconstructed particle
-     - edm4hep::MCParticle sim // Reference to the Monte-Carlo particle
+     - edm4hep::ReconstructedParticle  rec  // Reference to the reconstructed particle
+     - edm4hep::MCParticle sim              // Reference to the Monte-Carlo particle
 
 
   edm4hep::MCRecoCaloAssociation:
     Description: "Association between a CaloHit and the corresponding simulated CaloHit"
     Author: "C. Bernet, B. Hegner"
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec // The reconstructed hit.
-     - edm4hep::SimCalorimeterHit sim // The simulated hit.
+     - edm4hep::CalorimeterHit rec     // The reconstructed hit.
+     - edm4hep::SimCalorimeterHit sim  // The simulated hit.
 
   edm4hep::MCRecoTrackerAssociation:
     Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
     Author : "C. Bernet, B. Hegner"
     OneToOneRelations:
-     - edm4hep::TrackerHit rec // The reconstructed hit.
+     - edm4hep::TrackerHit rec    // The reconstructed hit.
      - edm4hep::SimTrackerHit sim // The simulated hit.
+     
