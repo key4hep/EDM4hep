@@ -1,0 +1,10 @@
+<lcgdict>
+    <selection>
+
+            <function name="edm4hep::pt" />
+            <function name="edm4hep::eta" />
+            <function name="edm4hep::r" />
+            <function name="edm4hep::cos_theta" />
+
+    </selection>
+</lcgdict>
