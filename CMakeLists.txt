@@ -90,6 +90,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 
 add_subdirectory(edm4hep)
 add_subdirectory(test)
+add_subdirectory(dataframe)
 
 
 #--- create uninstall target ---------------------------------------------------
