@@ -61,6 +61,5 @@ The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere 
 
 ## Contributing
 
-Contributions and bug reports are welcomed!
+Contributions and bug reports are welcome!
 See our [contributing guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
-
