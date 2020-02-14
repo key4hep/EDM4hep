@@ -1,18 +1,26 @@
-include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/edm4hep
-)
 
 file(GLOB sources src/*.cc)
 file(GLOB headers edm4hep/*.h podio/PythonEventStore.h)
 
 add_library(edm4hep SHARED ${sources} ${headers})
-target_link_libraries(edm4hep podio)
+target_link_libraries(edm4hep
+  PUBLIC
+  podio::podio
+  )
+target_include_directories(edm4hep
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/edm4hep>
+  $<INSTALL_INTERFACE:edm4hep>
+)
 
-REFLEX_GENERATE_DICTIONARY(edm4hep ${headers} SELECTION src/selection.xml )
+PODIO_GENERATE_DICTIONARY(edm4hep ${headers} SELECTION src/selection.xml
+  USES edm4hep
+  )
+
 add_library(edm4hepDict SHARED edm4hep.cxx)
 add_dependencies(edm4hepDict edm4hep-dictgen)
-target_link_libraries(edm4hepDict edm4hep podio ROOT::RIO ROOT::Tree ROOT::Physics)
+target_link_libraries(edm4hepDict edm4hep podio::podio ROOT::RIO ROOT::Tree ROOT::Physics)
 
 set_target_properties(edm4hep PROPERTIES
   PUBLIC_HEADER "${headers}")

@@ -9,24 +9,11 @@ find_package(podio REQUIRED HINTS $ENV{PODIO})
 execute_process(COMMAND python ${podio_DIR}/../../../python/podio_class_generator.py edm4hep.yaml edm4hep edm4hep
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-link_directories(${podio_LIBRARY_DIR})
-
 #--- Declare ROOT dependency ---------------------------------------------------
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
-include_directories(${ROOT_INCLUDE_DIR})
-include(${ROOT_USE_FILE})
-link_directories(${ROOT_LIBRARY_DIR})
 set(ROOT_genreflex_cmd ${ROOT_genreflex_CMD})
-
-# set up include-directories
-include_directories(
-  ${PROJECT_SOURCE_DIR}
-  ${PROJECT_BINARY_DIR}
-  ${ROOT_INCLUDE_DIR}
-  ${podio_INCLUDE_DIR}
-  )
 
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
