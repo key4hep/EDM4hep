@@ -12,6 +12,10 @@ install
 edm4hep/edm4hep
 edm4hep/src
 
+# CI subfolders
+podio/
+tricktrack/
+
 # Compiled Object files
 *.slo
 *.lo
