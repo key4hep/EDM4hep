@@ -13,10 +13,11 @@ add_test(NAME read_events COMMAND read_events)
 
 find_package(tricktrack 1.0.9)
 if(tricktrack_FOUND)
-add_executable(edm4hep_tricktrack edm4hep_tricktrack.cc)
-target_include_directories(edm4hep_tricktrack PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep podio ${tricktrack_INCLUDE_DIR} )
-target_link_libraries(edm4hep_tricktrack edm4hep podio edm4hepDict ${tricktrack_LIBRARIES})
-add_test(NAME edm4hep_tricktrack COMMAND edm4hep_tricktrack)
+  add_executable(edm4hep_tricktrack edm4hep_tricktrack.cc)
+  target_link_libraries(edm4hep_tricktrack edm4hep podio::podio edm4hepDict ${tricktrack_LIBRARIES})
+  target_include_directories(edm4hep_tricktrack PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep)
+  target_include_directories(edm4hep_tricktrack SYSTEM PUBLIC ${tricktrack_INCLUDE_DIR})
+  add_test(NAME edm4hep_tricktrack COMMAND edm4hep_tricktrack)
 endif()
 
 
