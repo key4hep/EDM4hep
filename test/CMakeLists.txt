@@ -1,4 +1,6 @@
-
+IF(NOT BUILD_TESTING)
+  RETURN()
+ENDIF()
 
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
