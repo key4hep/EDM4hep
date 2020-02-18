@@ -78,7 +78,7 @@ endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EDM4HEPVersion.h
                ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/EDM4HEP )
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep )
 
 #--- add CMake infrastructure --------------------------------------------------
 include(cmake/EDM4HEPCreateConfig.cmake)
