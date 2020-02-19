@@ -18,6 +18,13 @@ before_install:
 script: 
   - docker run -it -v ${PWD}:/workspace -w /workspace  --privileged -e LHCB_ENV_MODE=none -u 0:0 -e USER=root -e GROUP=root -e CMTCONFIG=x86_64-centos7-gcc8-opt  gitlab-registry.cern.ch/lhcb-core/lbdocker/centos7-build:latest bash -c "pwd; ls ;./.edm4hep-ci.d/compile_and_test_with_podio.sh"
 
+after_success:
+  # Generate the docs only if master, the travis_build_docs is true and we can use secure variables
+  - >-
+    if [[ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]] ; then
+      cd ${TRAVIS_BUILD_DIR} && ./.edm4hep-ci.d/generateDocumentation.sh || travis_terminate 1
+    fi
+
 # Don't send e-mail notifications
 notifications:
   email: false

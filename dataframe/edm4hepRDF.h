@@ -12,12 +12,16 @@
 
 namespace edm4hep {
 
+/// get transverse momenta (GeV) of a MCParticle collection
 std::vector<float> pt (std::vector<MCParticleData> const& in);
 
+/// get pseudorapidities of a MCParticle collection
 std::vector<float> eta(std::vector<MCParticleData> const& in);
 
+/// get cosines of theta of a MCParticle collection
 std::vector<float> cos_theta(std::vector<MCParticleData> const& in);
 
+/// get transverse radial distances of the coordinates of a SimTrackerHit Collection
 std::vector<double> r (std::vector<SimTrackerHitData> const& in); 
 
 }
