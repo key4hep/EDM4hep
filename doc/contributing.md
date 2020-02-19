@@ -14,9 +14,9 @@ a PR, as we only allow *rebase merges* for PRs.
 
 ### Example workflow
 
-- checkout a copy of EDM4hep from the origin at HSF:
+- checkout a copy of EDM4hep from the origin at Key4HEP:
 
-	 git clone https://github.com/HSF/EDM4HEP.git
+	 git clone https://github.com/key4hep/EDM4HEP.git
 	 cd EDM4HEP
 	
 - create a fork of the repository on the Github web page
