@@ -2,10 +2,14 @@
 file(GLOB sources *.cc)
 file(GLOB headers *.h)
 
-PODIO_GENERATE_DICTIONARY(libedm4hepRDF edm4hepRDF.h SELECTION selection.xml USES edm4hep)
 
-add_library(edm4hepRDF SHARED ${sources} ${headers} libedm4hepRDF.cxx )
-target_link_libraries(edm4hepRDF edm4hep podio::podio ROOT::Physics)
+add_library(edm4hepRDF SHARED ${sources} ${headers})
+target_link_libraries(edm4hepRDF edm4hep ROOT::Physics)
+PODIO_GENERATE_DICTIONARY(edm4hepRDF ${headers} SELECTION selection.xml USES edm4hepRDF
+  OPTIONS --library libedm4hepRDF${CMAKE_SHARED_LIBRARY_SUFFIX}
+  )
+set_target_properties(edm4hepRDF-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
+target_sources(edm4hepRDF PRIVATE edm4hepRDF.cxx)
 
 set_target_properties(edm4hepRDF PROPERTIES
   PUBLIC_HEADER "${headers}")
@@ -19,7 +23,7 @@ install(TARGETS edm4hepRDF
     COMPONENT dev)
 
 install(FILES
-  "${PROJECT_BINARY_DIR}/dataframe/libedm4hepRDFDict.rootmap"
+  "${PROJECT_BINARY_DIR}/dataframe/edm4hepRDFDict.rootmap"
   DESTINATION "${INSTALL_LIB_DIR}" COMPONENT dev)
 
 if (${ROOT_VERSION} GREATER 6)
