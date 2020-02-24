@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.3)
 
 project(EDM4HEP VERSION 0.1.0)
 
+#--- User-definable options --------------
+
+option(BUILD_DDG4EDM4hep "Build the EDM4hep plugin for DD4hep" ON)
+
+
+
 #--- Run the podio class generator and link library -------
 
 find_package(podio REQUIRED HINTS $ENV{PODIO})
@@ -84,6 +90,9 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 add_subdirectory(edm4hep)
 add_subdirectory(test)
 add_subdirectory(dataframe)
+if(BUILD_DDG4EDM4hep)
+  add_subdirectory(plugins/DDG4EDM4hep)
+endif()
 
 
 #--- create uninstall target ---------------------------------------------------
