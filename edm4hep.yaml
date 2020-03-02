@@ -82,6 +82,16 @@ components:
 
 datatypes :
 
+
+  edm4hep::EventHeader:
+    Description: "Event Header. Additional parameters are assumed to go into the metadata tree."
+    Author : "F.Gaede"
+    Members:
+      - int eventNumber    //event number
+      - int runNumber      //run number
+      - unsigned long long timeStamp     //time stamp
+
+
   edm4hep::MCParticle:
     Description: "The Monte Carlo particle - based on the lcio::MCParticle."
     Author : "F.Gaede, DESY"
