@@ -89,6 +89,7 @@ datatypes :
       - int eventNumber    //event number
       - int runNumber      //run number
       - unsigned long long timeStamp     //time stamp
+      - float weight       // event weight
 
 
   edm4hep::MCParticle:
