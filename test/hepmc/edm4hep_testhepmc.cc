@@ -24,12 +24,11 @@ using namespace HepMC;
     edm_particle.setCharge(particleID.charge());
     //  convert momentum
     auto p = hepmcParticle->momentum();
-    //edm_particle.setMomentum( {p.px(), p.py(), p.pz()} );
+    edm_particle.setMomentum( {float(p.px()), float(p.py()), float(p.pz())} );
 
     return edm_particle;
 
-
- };
+ }
 
 int main() {
   // Part 1: Using the HepMC example code to "generate" an event

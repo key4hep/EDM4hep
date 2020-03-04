@@ -11,34 +11,30 @@ target_include_directories(edm4hep
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/edm4hep>
-  $<INSTALL_INTERFACE:edm4hep>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-PODIO_GENERATE_DICTIONARY(edm4hep ${headers} SELECTION src/selection.xml
-  USES edm4hep
-  )
+PODIO_GENERATE_DICTIONARY(edm4hep ${headers} SELECTION src/selection.xml USES edm4hep
+  OPTIONS --library libedm4hep${CMAKE_SHARED_LIBRARY_SUFFIX})
+set_target_properties(edm4hep-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-add_library(edm4hepDict SHARED edm4hep.cxx)
-add_dependencies(edm4hepDict edm4hep-dictgen)
-target_link_libraries(edm4hepDict edm4hep podio::podio ROOT::RIO ROOT::Tree ROOT::Physics)
+set_target_properties(edm4hep PROPERTIES PUBLIC_HEADER "${headers}")
+target_sources(edm4hep PRIVATE edm4hep.cxx)
 
-set_target_properties(edm4hep PROPERTIES
-  PUBLIC_HEADER "${headers}")
-
-install(TARGETS edm4hep edm4hepDict
+install(TARGETS edm4hep
   # IMPORTANT: Add the datamodel library to the "export-set"
   EXPORT EDM4HEPTargets
-  RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-  PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/edm4hep"
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
+  PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/edm4hep"
   COMPONENT dev)
 
 install(FILES
   "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDict.rootmap"
-  DESTINATION "${INSTALL_LIB_DIR}" COMPONENT dev)
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 if (${ROOT_VERSION} GREATER 6)
   install(FILES
-      "${PROJECT_BINARY_DIR}/edm4hep/edm4hep_rdict.pcm"
-      DESTINATION "${INSTALL_LIB_DIR}" COMPONENT dev)
+      "${PROJECT_BINARY_DIR}/edm4hep/libedm4hep_rdict.pcm"
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 endif()

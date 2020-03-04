@@ -18,10 +18,6 @@ set(ROOT_genreflex_cmd ${ROOT_genreflex_CMD})
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
-set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Installation directory for libraries")
-set(INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Installation directory for executables")
-
 
 # - Define a default build type when using a single-mode tool like make/ninja
 # If you're using a build tool that supports multiple modes (Visual Studio,
@@ -78,7 +74,7 @@ endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EDM4HEPVersion.h
                ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/EDM4HEP )
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep )
 
 #--- add CMake infrastructure --------------------------------------------------
 include(cmake/EDM4HEPCreateConfig.cmake)
