@@ -14,7 +14,7 @@
 #ifndef DD4HEP_DDG4_GEANT4OUTPUT2EDM4hep_H
 #define DD4HEP_DDG4_GEANT4OUTPUT2EDM4hep_H
 
-//	Framework include files
+//  Framework include files
 #include "DD4hep/Detector.h"
 #include "DD4hep/VolumeManager.h"
 #include "DDG4/Geant4HitCollection.h"
@@ -48,7 +48,7 @@ namespace dd4hep {
   /// Namespace for the Geant4 based simulation part of the AIDA detector description toolkit
   namespace sim {
 
-    class	Geant4ParticleMap;
+    class  Geant4ParticleMap;
 
     /// Base class to output Geant4 event data to EDM4hep
     /**
@@ -110,7 +110,7 @@ namespace dd4hep {
           printout(FATAL,"saveEventParameters","+++ Event parameter %s: FAILED to convert to type :%s",iter->first.c_str(),typeid(T).name());
           continue;
         }
-	printout( WARNING,"saveEventParameters", " not implemented in EDM4hep - not written:   %s  -> %x ",  iter->first,parameter ) ;
+  printout( WARNING,"saveEventParameters", " not implemented in EDM4hep - not written:   %s  -> %x ",  iter->first,parameter ) ;
 
 
 //        event->parameters().setValue(iter->first,parameter);
@@ -121,7 +121,7 @@ namespace dd4hep {
     template <>
     inline void Geant4Output2EDM4hep::saveEventParameters<std::string>(podio::EventStore* event, const std::map<std::string, std::string >& parameters)  {
       for(std::map<std::string, std::string >::const_iterator iter = parameters.begin(), endIter = parameters.end() ; iter != endIter ; ++iter)  {
-	printout( WARNING, "Geant4Output2EDM4hep","saveEventParameters(): not implemented in EDM4hep - not written:   %s  -> %s ",  iter->first.c_str(),iter->second.c_str() ) ;
+  printout( WARNING, "Geant4Output2EDM4hep","saveEventParameters(): not implemented in EDM4hep - not written:   %s  -> %s ",  iter->first.c_str(),iter->second.c_str() ) ;
 
 //        event->parameters().setValue(iter->first,iter->second);
       }
@@ -192,13 +192,16 @@ Geant4Output2EDM4hep::~Geant4Output2EDM4hep()  {
     m_file->finish();
     detail::deletePtr(m_file);
   }
+  if (nullptr != m_store) {
+    delete m_store;
+  }
   InstanceCount::decrement(this);
 }
 
 // Callback to store the Geant4 run information
 void Geant4Output2EDM4hep::beginRun(const G4Run* run)  {
+  G4AutoLock protection_lock(&action_mutex);
   if ( 0 == m_file && !m_output.empty() )   {
-    G4AutoLock protection_lock(&action_mutex);
     m_store = new podio::EventStore ;
     m_file = new podio::ROOTWriter(m_output, m_store);
 
@@ -294,14 +297,12 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
       if( p->genStatus ) {
         mcp.setGeneratorStatus( p->genStatus ) ;
       } else {
-
-	if ( mask.isSet(G4PARTICLE_GEN_STABLE) )             mcp.setGeneratorStatus(1);
-	else if ( mask.isSet(G4PARTICLE_GEN_DECAYED) )       mcp.setGeneratorStatus(2);
-	else if ( mask.isSet(G4PARTICLE_GEN_DOCUMENTATION) ) mcp.setGeneratorStatus(3);
-	else if ( mask.isSet(G4PARTICLE_GEN_BEAM) )          mcp.setGeneratorStatus(4);
-	else if ( mask.isSet(G4PARTICLE_GEN_OTHER) )         mcp.setGeneratorStatus(9);
+        if ( mask.isSet(G4PARTICLE_GEN_STABLE) )             mcp.setGeneratorStatus(1);
+        else if ( mask.isSet(G4PARTICLE_GEN_DECAYED) )       mcp.setGeneratorStatus(2);
+        else if ( mask.isSet(G4PARTICLE_GEN_DOCUMENTATION) ) mcp.setGeneratorStatus(3);
+        else if ( mask.isSet(G4PARTICLE_GEN_BEAM) )          mcp.setGeneratorStatus(4);
+        else if ( mask.isSet(G4PARTICLE_GEN_OTHER) )         mcp.setGeneratorStatus(9);
       }
-//      std::cout << " ********** mcp genstatus : " << mcp.getGeneratorStatus() << std::endl ;
 
       // Set simulation status
       mcp.setCreatedInSimulation(         mask.isSet(G4PARTICLE_SIM_CREATED) );
@@ -382,7 +383,7 @@ void Geant4Output2EDM4hep::saveEvent(OutputContext<G4Event>& ctxt)  {
   eventNumber = ctxt.context->GetEventID() + eventNumberOffset;
   // }
   printout(INFO,"Geant4Output2EDM4hep","+++ Saving EDM4hep event %d run %d.",
-	   eventNumber, runNumber);
+     eventNumber, runNumber);
 
   //FIXME: need a suitable EventHeader object in EDM4hep
   //        and a way to store meta data parameters with this
@@ -411,7 +412,7 @@ void Geant4Output2EDM4hep::saveCollection(OutputContext<G4Event>& /*ctxt*/, G4VH
   std::string colName = collection->GetName();
 
   printout(DEBUG,"Geant4Output2EDM4hep","+++ Saving EDM4hep collection %s with %d entries.",
-	   colName.c_str(),int(nhits));
+     colName.c_str(),int(nhits));
 
   Geant4HitCollection* coll = dynamic_cast<Geant4HitCollection*>(collection);
   if( coll == nullptr ){
@@ -446,20 +447,19 @@ void Geant4Output2EDM4hep::saveCollection(OutputContext<G4Event>& /*ctxt*/, G4VH
       sth.setTime(hit->truth.time/CLHEP::ns);
       sth.setMCParticle(mcp);
       sth.setPosition({hit->position.x()/CLHEP::mm,
-		       hit->position.y()/CLHEP::mm,
-		       hit->position.z()/CLHEP::mm});
+           hit->position.y()/CLHEP::mm,
+           hit->position.z()/CLHEP::mm});
       sth.setMomentum(edm4hep::Vector3f(hit->momentum.x()/CLHEP::GeV,
-					hit->momentum.y()/CLHEP::GeV,
-					hit->momentum.z()/CLHEP::GeV ));
+          hit->momentum.y()/CLHEP::GeV,
+          hit->momentum.z()/CLHEP::GeV ));
 
       auto particleIt = pm->particles().find(trackID);
       if( ( particleIt != pm->particles().end()) ){
-	// if the original track ID of the particle is not the same as the
-	// original track ID of the hit it was produced by an MCParticle that
-	// is no longer stored
-	sth.setProducedBySecondary( (particleIt->second->originalG4ID != t.trackID) );
+        // if the original track ID of the particle is not the same as the
+        // original track ID of the hit it was produced by an MCParticle that
+        // is no longer stored
+        sth.setProducedBySecondary( (particleIt->second->originalG4ID != t.trackID) );
       }
-
     }
   //-------------------------------------------------------------------
   }
@@ -468,54 +468,58 @@ void Geant4Output2EDM4hep::saveCollection(OutputContext<G4Event>& /*ctxt*/, G4VH
     Geant4Sensitive*       sd      = coll->sensitive();
     int hit_creation_mode = sd->hitCreationMode();
 
-    edm4hep::SimCalorimeterHitCollection* schc =
+    edm4hep::SimCalorimeterHitCollection* sCaloHitColl =
       const_cast<edm4hep::SimCalorimeterHitCollection*>(
-	&m_store->get<edm4hep::SimCalorimeterHitCollection>(colName));
+  &m_store->get<edm4hep::SimCalorimeterHitCollection>(colName));
 
     colName += "Contributions"  ;
 
-    edm4hep::CaloHitContributionCollection* schcc =
+    edm4hep::CaloHitContributionCollection* sCaloHitContColl =
       const_cast<edm4hep::CaloHitContributionCollection*>(
-	&m_store->get<edm4hep::CaloHitContributionCollection>(colName));
+  &m_store->get<edm4hep::CaloHitContributionCollection>(colName));
 
 
     for(unsigned i=0 ; i < nhits ; ++i){
-      auto sch = schc->create() ;
+      auto sch = sCaloHitColl->create() ;
 
       const Geant4Calorimeter::Hit* hit = coll->hit(i);
 
       sch.setCellID( hit->cellID );
-      sch.setPosition({float(hit->position.x()/mm),
-		       float(hit->position.y()/mm),
-		       float(hit->position.z()/mm)});
+      sch.setPosition({
+           float(hit->position.x()/CLHEP::mm),
+           float(hit->position.y()/CLHEP::mm),
+           float(hit->position.z()/CLHEP::mm)});
       sch.setEnergy( hit->energyDeposit );
 
       // now add the individual step contributions
       for(Geant4HitData::Contributions::const_iterator ci=hit->truth.begin();
-	  ci!=hit->truth.end(); ++ci){
+        ci!=hit->truth.end(); ++ci){
 
-	auto schc = schcc->create();
-	sch.addContribution( schc );
+        auto sCaloHitCont = sCaloHitContColl->create();
+        sch.addContribution( sCaloHitCont );
 
-	const Geant4HitData::Contribution& c = *ci;
-	int trackID = pm->particleID(c.trackID);
-	auto mcp = mcpc->at(trackID);
+        const Geant4HitData::Contribution& c = *ci;
+        int trackID = pm->particleID(c.trackID);
+        auto mcp = mcpc->at(trackID);
 
-	schc.setEnergy( c.deposit/GeV );
-	schc.setTime( c.time/ns );
-	schc.setParticle( mcp );
+        sCaloHitCont.setEnergy( c.deposit/CLHEP::GeV );
+        sCaloHitCont.setTime( c.time/CLHEP::ns );
+        sCaloHitCont.setParticle( mcp );
 
-	if ( hit_creation_mode == Geant4Sensitive::DETAILED_MODE )     {
-	  schc.setPDG( c.pdgID );
-	  schc.setStepPosition( edm4hep::Vector3f(c.x/mm,c.y/mm,c.z/mm) );
-	}
+        if ( hit_creation_mode == Geant4Sensitive::DETAILED_MODE )     {
+          sCaloHitCont.setPDG( c.pdgID );
+          sCaloHitCont.setStepPosition( edm4hep::Vector3f(
+            c.x/CLHEP::mm,
+            c.y/CLHEP::mm, 
+            c.z/CLHEP::mm) );
+        }
       }
     }
   //-------------------------------------------------------------------
   } else {
 
     printout(ERROR, "Geant4Output2EDM4hep" , " unknown type in Geant4HitCollection  %s ",
-	     coll->type().type.name() );
+       coll->type().type.name() );
   }
 }
 
@@ -558,7 +562,7 @@ void Geant4Output2EDM4hep::createCollections(OutputContext<G4Event>& ctxt){
     } else {
 
       printout(WARNING, "Geant4Output2EDM4hep" ,
-	       " unknown type in Geant4HitCollection  %s ", coll->type().type.name() );
+         " unknown type in Geant4HitCollection  %s ", coll->type().type.name() );
     }
   }
 
