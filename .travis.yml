@@ -23,7 +23,7 @@ after_success:
   - >-
     if [[ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]] ; then
       cd $PROJECT_DIR_ABS
-      .edm4hep-ci.d/generateDocumentation.sh || travis_terminate 1
+      ./.edm4hep-ci.d/generateDocumentation.sh || travis_terminate 1
     fi
 
 # Don't send e-mail notifications
