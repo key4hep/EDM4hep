@@ -29,7 +29,7 @@ cd ..
 # edm4hep
 mkdir build install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..  \
+cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=17 -DEDM4HEP_documentation=ON -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..  \
       && ninja -k0 \
       && ninja doc \
       && ninja install \
