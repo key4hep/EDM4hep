@@ -229,7 +229,7 @@ void Geant4Output2EDM4hep::commit( OutputContext<G4Event>& /* ctxt */)   {
 
 /// Callback to store the Geant4 run information
 void Geant4Output2EDM4hep::saveRun(const G4Run* run)  {
-  G4AutoLock protection_lock(&action_mutex);
+  //G4AutoLock protection_lock(&action_mutex);
 
   printout( WARNING, "Geant4Output2EDM4hep" ,"saveRun(): RunHeader not implemented in EDM4hep, nothing written ..." ) ;
 

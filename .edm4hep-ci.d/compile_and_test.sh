@@ -3,6 +3,7 @@ source init.sh
 export CMAKE_PREFIX_PATH=/cvmfs/sw-nightlies.hsf.org/key4hep/packageviews/podio/latest/x86_64-centos7-gcc8-opt:$CMAKE_PREFIX_PATH
 export CMAKE_PREFIX_PATH=/cvmfs/sw-nightlies.hsf.org/key4hep/packageviews/tricktrack/latest/x86_64-centos7-gcc8-opt:$CMAKE_PREFIX_PATH
 export CMAKE_PREFIX_PATH=/cvmfs/sw-nightlies.hsf.org/key4hep/packageviews/DD4hep/latest/x86_64-centos7-gcc8-opt:$CMAKE_PREFIX_PATH
+source /cvmfs/sw-nightlies.hsf.org/key4hep/packageviews/DD4hep/latest/x86_64-centos7-gcc8-opt/bin/thisdd4hep.sh
 
 
 # edm4hep
