@@ -7,6 +7,7 @@
 source /cvmfs/sft.cern.ch/lcg/views/LCG_96c_LS/x86_64-centos7-gcc8-opt/setup.sh
 
 # workaround for ROOT requiring a higher version of CMake than is provided by lcg
-export PATH=/cvmfs/sft.cern.ch/lcg/releases/CMake/3.11.1-773ff/x86_64-centos7-gcc8-opt/bin/:$PATH
+export PATH=/cvmfs/sft.cern.ch/lcg/releases/CMake/3.14.3-34449/x86_64-centos7-gcc8-opt/bin/:$PATH
+
 
 
