@@ -7,7 +7,7 @@
 export LCG_VERSION=96c_LS
 export OS=centos7
 export COMPILER_VERSION=gcc8
-export BINARY_TAG=x86_64-$OS-$COMPILER_VERSION
+export BINARY_TAG=x86_64-$OS-$COMPILER_VERSION-opt
 source /cvmfs/sft.cern.ch/lcg/views/LCG_${LCG_VERSION}/$BINARY_TAG/setup.sh
 
 # workaround for ROOT requiring a higher version of CMake than is provided by lcg
