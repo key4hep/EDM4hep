@@ -27,7 +27,6 @@ else() # compatibility with older DD4hep versions
 endif()
 
 install(TARGETS DDG4EDM4hep
-  # IMPORTANT: Add the datamodel library to the "export-set"
   EXPORT DDG4EDM4HEPTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
@@ -35,8 +34,8 @@ install(TARGETS DDG4EDM4hep
   COMPONENT dev)
 
 add_test(NAME ddsim_edm4hep COMMAND ddsim --compactFile /cvmfs/sw-nightlies.hsf.org/key4hep/views/latest/x86_64-centos7-gcc8-opt/DDDetectors/compact/SiD.xml -N 2 -G --gun.particle pi+ --outputFile my_edm4hep.root --part.userParticleHandler= )
-set_property(TEST ddsim_edm4hep APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/edm4hep:$ENV{LD_LIBRARY_PATH}")
-set_property(TEST ddsim_edm4hep APPEND PROPERTY ENVIRONMENT "DD4HEP_LIBRARY_PATH=${CMAKE_BINARY_DIR}/plugins/DDG4EDM4hep/lib/:$ENV{DD4HEP_LIBRARY_PATH}")
-set_property(TEST ddsim_edm4hep APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/plugins/DDG4EDM4hep/lib/:$ENV{LD_LIBRARY_PATH}")
-
+set_tests_properties(ddsim_edm4hep PROPERTIES ENVIRONMENT
+LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:DDG4EDM4hep>:$ENV{LD_LIBRARY_PATH}
+  DD4HEP_LIBRARY_PATH=$<TARGET_FILE_DIR:DDG4EDM4hep>:$ENV{DD4HEP_LIBRARY_PATH}
+)
 
