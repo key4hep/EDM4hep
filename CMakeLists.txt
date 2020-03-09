@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.3)
 
 project(EDM4HEP VERSION 0.1.0)
 
-#--- User-definable options --------------
-
-option(BUILD_DDG4EDM4hep "Build the EDM4hep plugin for DD4hep" ON)
 
 
 
@@ -59,7 +56,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DDROP_CGAL ${CPP_STANDARD_FLAGS} 
 
 
 #--- Declare options -----------------------------------------------------------
-option(EDM4HEP_documentation "Whether or not to create doxygen doc target.")
+
+option(BUILD_DDG4EDM4HEP "Build the EDM4hep plugin for DD4hep" ON)
+option(EDM4HEP_DOCUMENTATION "Whether or not to create doxygen doc target.")
 
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
@@ -68,7 +67,7 @@ include(CTest)
 include(cmake/EDM4HEPCPack.cmake)
 
 #--- target for Doxygen documentation ------------------------------------------
-if(EDM4HEP_documentation)
+if(EDM4HEP_DOCUMENTATION)
   include(cmake/EDM4HEPDoxygen.cmake)
 endif()
 
@@ -90,7 +89,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 add_subdirectory(edm4hep)
 add_subdirectory(test)
 add_subdirectory(dataframe)
-if(BUILD_DDG4EDM4hep)
+if(BUILD_DDG4EDM4HEP)
   add_subdirectory(plugins/DDG4EDM4hep)
 endif()
 
