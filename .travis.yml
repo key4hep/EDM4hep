@@ -1,6 +1,5 @@
 
 
-sudo: required
 dist: bionic
 
 services:
@@ -35,7 +34,6 @@ before_install:
   - sudo mkdir -p /cvmfs/geant4.cern.ch
   - sudo mkdir -p /cvmfs/sw-nightlies.hsf.org
   - ls /cvmfs/sft.cern.ch
-  - ls /cvmfs/sft-nightlies.cern.ch
   - ls /cvmfs/geant4.cern.ch
   - ls /cvmfs/sw-nightlies.hsf.org
   - export CVMFS_REPOS="-v /cvmfs/sft.cern.ch:/cvmfs/sft.cern.ch"
