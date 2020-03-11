@@ -2,6 +2,7 @@
 options:
   getSyntax: True
   exposePODMembers: False
+  includeSubfolder: True
 
 components:
 

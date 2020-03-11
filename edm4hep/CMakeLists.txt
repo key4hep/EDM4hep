@@ -10,19 +10,28 @@ target_link_libraries(edm4hep
 target_include_directories(edm4hep
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/edm4hep>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+set_target_properties(edm4hep PROPERTIES PUBLIC_HEADER "${headers}")
+
+add_library(edm4hepDict SHARED)
+add_library(edm4hep::edm4hepDict ALIAS edm4hepDict )
+target_link_libraries(edm4hepDict
+  PUBLIC
+  podio::podio
+  )
+target_include_directories(edm4hepDict
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-PODIO_GENERATE_DICTIONARY(edm4hep ${headers} SELECTION src/selection.xml USES edm4hep
+PODIO_GENERATE_DICTIONARY(edm4hepDict ${headers} SELECTION src/selection.xml
   OPTIONS --library libedm4hep${CMAKE_SHARED_LIBRARY_SUFFIX})
-set_target_properties(edm4hep-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
+set_target_properties(edm4hepDict-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
+add_dependencies(edm4hepDict edm4hep)
 
-set_target_properties(edm4hep PROPERTIES PUBLIC_HEADER "${headers}")
-target_sources(edm4hep PRIVATE edm4hep.cxx)
-
-install(TARGETS edm4hep
-  # IMPORTANT: Add the datamodel library to the "export-set"
+install(TARGETS edm4hep edm4hepDict
   EXPORT EDM4HEPTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
