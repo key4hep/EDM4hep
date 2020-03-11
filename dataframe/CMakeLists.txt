@@ -5,11 +5,10 @@ file(GLOB headers *.h)
 
 add_library(edm4hepRDF SHARED ${sources} ${headers})
 target_link_libraries(edm4hepRDF edm4hep ROOT::Physics)
-PODIO_GENERATE_DICTIONARY(edm4hepRDF ${headers} SELECTION selection.xml USES edm4hepRDF
+PODIO_GENERATE_DICTIONARY(edm4hepRDF ${headers} SELECTION selection.xml
   OPTIONS --library libedm4hepRDF${CMAKE_SHARED_LIBRARY_SUFFIX}
   )
 set_target_properties(edm4hepRDF-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
-target_sources(edm4hepRDF PRIVATE edm4hepRDF.cxx)
 
 set_target_properties(edm4hepRDF PROPERTIES
   PUBLIC_HEADER "${headers}")
