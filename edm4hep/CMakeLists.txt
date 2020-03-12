@@ -1,4 +1,24 @@
 
+
+# we need to boostrap the data model, so this has to be executed in the cmake run
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E echo "Creating EDM4hep DataModel"
+    COMMAND python ${podio_DIR}/../../../python/podio_class_generator.py ../edm4hep.yaml ./ edm4hep
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/edm4hep)
+
+
+# for this to work the command has to be in the same CMakeLists.txt as the PODIO_GENERATE_DICTIONARY
+# This ensures that we re-run the class generator if the yaml file is touched
+# the command is run of datalayout.yaml is newer then selection.xml
+add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/edm4hep/src/selection.xml  # we specify one output file so this doesn't always run
+  COMMENT "Re-Creating EDM4hep DataModel"
+  MAIN_DEPENDENCY ../edm4hep.yaml
+  # This removal ensures selection.xml is newer than datalayout.yaml, other wise this command always runs
+  COMMAND ${CMAKE_COMMAND} -E remove src/selection.xml
+  COMMAND python ${podio_DIR}/../../../python/podio_class_generator.py ../edm4hep.yaml ./ edm4hep
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/edm4hep
+  )
+
 file(GLOB sources src/*.cc)
 file(GLOB headers edm4hep/*.h podio/PythonEventStore.h)
 

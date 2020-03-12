@@ -6,9 +6,6 @@ project(EDM4HEP VERSION 0.1.0)
 
 find_package(podio REQUIRED HINTS $ENV{PODIO})
 
-execute_process(COMMAND python ${podio_DIR}/../../../python/podio_class_generator.py edm4hep.yaml edm4hep edm4hep
-                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-
 #--- Declare ROOT dependency ---------------------------------------------------
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
