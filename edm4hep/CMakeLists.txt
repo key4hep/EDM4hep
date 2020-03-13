@@ -59,7 +59,7 @@ install(TARGETS edm4hep edm4hepDict
   COMPONENT dev)
 
 install(FILES
-  "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDict.rootmap"
+  "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 if (${ROOT_VERSION} GREATER 6)
