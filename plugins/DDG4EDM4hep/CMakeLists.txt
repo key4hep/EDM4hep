@@ -12,7 +12,7 @@ dd4hep_configure_output()
 # target available with DD4hep > v00-11
 IF(TARGET DD4hep::DDG4)
   dd4hep_add_plugin(DDG4EDM4hep SOURCES edm4hep/*.cpp)
-  target_link_libraries(DDG4EDM4hep edm4hep DD4hep::DDCore DD4hep::DDG4)
+  target_link_libraries(DDG4EDM4hep edm4hep podio::podioRootIO DD4hep::DDCore DD4hep::DDG4)
 else() # compatibility with older DD4hep versions
   dd4hep_package(DDG4EDM4hep)
   link_directories(${DD4hep_LIBRARY_DIRS})
