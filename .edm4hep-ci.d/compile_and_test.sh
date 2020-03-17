@@ -1,12 +1,9 @@
 source init.sh
 
-export K4PACKAGEVIEW=/cvmfs/sw-nightlies.hsf.org/key4hep/packageviews
+export K4VIEW=/cvmfs/sw-nightlies.hsf.org/key4hep/views/latest
 export BINARY_TAG=x86_64-centos7-gcc8-opt
+source $K4VIEW/$BINARY_TAG/setup.sh
 
-export CMAKE_PREFIX_PATH=${K4PACKAGEVIEW}/podio/latest/${BINARY_TAG}:$CMAKE_PREFIX_PATH
-export CMAKE_PREFIX_PATH=${K4PACKAGEVIEW}/tricktrack/latest/${BINARY_TAG}:$CMAKE_PREFIX_PATH
-export CMAKE_PREFIX_PATH=${K4PACKAGEVIEW}/DD4hep/latest/${BINARY_TAG}:$CMAKE_PREFIX_PATH
-source ${K4PACKAGEVIEW}/DD4hep/latest/$BINARY_TAG/bin/thisdd4hep.sh
 
 
 # edm4hep
