@@ -19,7 +19,6 @@ else() # compatibility with older DD4hep versions
   dd4hep_add_plugin(DDG4EDM4hep SOURCES edm4hep/*.cpp)
   target_link_libraries(DDG4EDM4hep edm4hep ${DD4hep_LIBRARIES} ${DD4hep_COMPONENT_LIBRARIES}  ${Geant4_LIBRARIES} )
   target_include_directories(DDG4EDM4hep PUBLIC ${DD4hep_INCLUDE_DIRS} ${Geant4_INCLUDE_DIRS})
-  dd4hep_generate_rootmap( DDG4EDM4hep)
 endif()
 
 install(TARGETS DDG4EDM4hep
