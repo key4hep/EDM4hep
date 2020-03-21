@@ -8,7 +8,7 @@ source $K4VIEW/$BINARY_TAG/setup.sh
 # edm4hep
 mkdir build install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=${STANDARD:=17} -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..  \
+cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=${STANDARD:=17} -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -DEDM4HEP_DOCUMENTATION=ON -G Ninja ..  \
       && ninja -k0 \
       && ninja install \
       && ctest --output-on-failure || exit 1
