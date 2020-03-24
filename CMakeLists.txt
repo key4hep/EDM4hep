@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.3)
 
-project(EDM4HEP VERSION 0.1.0)
+project(EDM4HEP VERSION 0.1.1)
 
 
 
