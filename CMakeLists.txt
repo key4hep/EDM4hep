@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.3)
 
-project(EDM4HEP VERSION 0.1.0)
+project(EDM4HEP)
 
+# project version
+SET( ${PROJECT_NAME}_VERSION_MAJOR 0 )
+SET( ${PROJECT_NAME}_VERSION_MINOR 1 )
+SET( ${PROJECT_NAME}_VERSION_PATCH 0 )
 
 
 
