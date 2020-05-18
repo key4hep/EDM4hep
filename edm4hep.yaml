@@ -269,8 +269,8 @@ datatypes :
       - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP. 
       - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters)
     VectorMembers:
-      - float   shape                //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
-      - float   weight               //weight of a particular cluster
+      - float   shapeParameters      //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
+      - float   weights              //weight of a particular cluster
       - float   hitContributions     //energy contribution of the hits Runs parallel to the CalorimeterHitVec from getCalorimeterHits(). 
       - float   subdetectorEnergies  //energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array. 
     OneToManyRelations:
