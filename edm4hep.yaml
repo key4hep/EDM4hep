@@ -249,7 +249,7 @@ datatypes :
     Members:
       - int   type           //userdefined type 
       - int   pDG            //PDG code of this id - ( 999999 ) if unknown. 
-      - int   algorythmType  //type of the algorithm/module that created this hypothesis
+      - int   algorithmType  //type of the algorithm/module that created this hypothesis
       - float likelihood     //likelihood of this hypothesis - in a user defined normalization.
     VectorMembers:
       - float parameters     //parameters associated with this hypothesis. Check/set collection parameters ParameterNames_PIDAlgorithmTypeName for decoding the indices.
