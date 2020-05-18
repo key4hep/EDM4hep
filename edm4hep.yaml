@@ -374,22 +374,28 @@ datatypes :
   edm4hep::MCRecoParticleAssociation:
     Description: "Used to keep track of the correspondence between MC and reconstructed particles"
     Author: "C. Bernet, B. Hegner"
+    Members:
+      - float weight                        // weight of this association
     OneToOneRelations :
-     - edm4hep::ReconstructedParticle  rec  // Reference to the reconstructed particle
-     - edm4hep::MCParticle sim              // Reference to the Monte-Carlo particle
+     - edm4hep::ReconstructedParticle  rec  // reference to the reconstructed particle
+     - edm4hep::MCParticle sim              // reference to the Monte-Carlo particle
 
 
   edm4hep::MCRecoCaloAssociation:
     Description: "Association between a CaloHit and the corresponding simulated CaloHit"
     Author: "C. Bernet, B. Hegner"
+    Members:
+      - float weight                    // weight of this association
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec     // The reconstructed hit.
-     - edm4hep::SimCalorimeterHit sim  // The simulated hit.
+     - edm4hep::CalorimeterHit rec     // reference to the reconstructed hit
+     - edm4hep::SimCalorimeterHit sim  // reference to the simulated hit
 
   edm4hep::MCRecoTrackerAssociation:
     Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
     Author : "C. Bernet, B. Hegner"
+    Members:
+      - float weight              // weight of this association
     OneToOneRelations:
-     - edm4hep::TrackerHit rec    // The reconstructed hit.
-     - edm4hep::SimTrackerHit sim // The simulated hit.
+     - edm4hep::TrackerHit rec    // reference to the reconstructed hit
+     - edm4hep::SimTrackerHit sim // reference to the simulated hit
      
