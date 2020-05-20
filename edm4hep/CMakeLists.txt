@@ -17,12 +17,15 @@ add_library(edm4hepDict SHARED)
 add_library(edm4hep::edm4hepDict ALIAS edm4hepDict )
 target_link_libraries(edm4hepDict
   PUBLIC
+  edm4hep
   podio::podio
+  ROOT::Core
   )
 target_include_directories(edm4hepDict
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  ${ROOT_INCLUDE_DIRS}
 )
 
 PODIO_GENERATE_DICTIONARY(edm4hepDict ${headers} SELECTION src/selection.xml
