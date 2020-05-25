@@ -145,7 +145,7 @@ int main() {
             auto edm_particle = convert(*particle_mother);
             hepmcToEdmMap.insert({(*particle_mother)->barcode(), edm_particle});
           }
-          hepmcToEdmMap[(*particle_i)->barcode()].addParent(hepmcToEdmMap[(*particle_mother)->barcode()]);
+          hepmcToEdmMap[(*particle_i)->barcode()].addToParents(hepmcToEdmMap[(*particle_mother)->barcode()]);
         }
       }
 
@@ -157,7 +157,7 @@ int main() {
             auto edm_particle = convert(*particle_daughter);
             hepmcToEdmMap.insert({(*particle_daughter)->barcode(), edm_particle});
           }
-          hepmcToEdmMap[(*particle_i)->barcode()].addDaughter(hepmcToEdmMap[(*particle_daughter)->barcode()]);
+          hepmcToEdmMap[(*particle_i)->barcode()].addToDaughters(hepmcToEdmMap[(*particle_daughter)->barcode()]);
         }
       }
 
