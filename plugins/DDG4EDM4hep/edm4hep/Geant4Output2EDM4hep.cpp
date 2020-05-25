@@ -341,7 +341,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
         }
         int iqdau = (*k).second;
         MCParticle qdau = p_edm4hep[iqdau];
-        qdau.addParent(q);
+        qdau.addToParents(q);
       }
       const Geant4Particle::Particles& par = p->parents;
       for(Geant4Particle::Particles::const_iterator j=par.begin(); j!=par.end(); ++j)  {
@@ -352,7 +352,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
         }
         int iqpar = (*k).second;
         MCParticle qpar = p_edm4hep[iqpar];
-        q.addParent(qpar);
+        q.addToParents(qpar);
       }
     }
   }
@@ -496,7 +496,7 @@ void Geant4Output2EDM4hep::saveCollection(OutputContext<G4Event>& /*ctxt*/, G4VH
         ci!=hit->truth.end(); ++ci){
 
         auto sCaloHitCont = sCaloHitContColl->create();
-        sch.addContribution( sCaloHitCont );
+        sch.addToContributions( sCaloHitCont );
 
         const Geant4HitData::Contribution& c = *ci;
         int trackID = pm->particleID(c.trackID);
