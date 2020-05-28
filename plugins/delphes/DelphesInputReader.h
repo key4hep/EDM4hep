@@ -9,13 +9,14 @@ class Delphes;
 class DelphesInputReader {
 public:
 
-  virtual bool init(int argc, char *argv[]) = 0;
+  virtual bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) = 0;
 
   virtual std::string getUsage() = 0;
 
   virtual int getNumberOfEvents() = 0;
+  virtual bool finished() = 0;
 
-  virtual void readEvent(Delphes* modularDelphes, TObjArray* allParticleOutputArray,
+  virtual bool readEvent(Delphes* modularDelphes, TObjArray* allParticleOutputArray,
   TObjArray* stableParticleOutputArray, TObjArray* partonOutputArray) = 0;
 
 };
