@@ -80,23 +80,15 @@ void SignalHandler(int sig) {
 // main function with generic input
 int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
   std::string appName = "DelphesROOT_EDM4HEP";
-  inputReader.init(argc, argv);
+  Delphes* modularDelphes = new Delphes("Delphes");
+  std::string outputfile;
+  inputReader.init(modularDelphes,argc, argv, outputfile);
   Long64_t eventCounter, numberOfEvents;
-  // command line argument handling
-  if(argc < 4) {
-    cout << " Usage: " << appName << " config_file"
-         << " output_file"
-         << " input_file(s)" << endl;
-    cout << " config_file - configuration file in Tcl format," << endl;
-    cout << " output_file - output file in ROOT format," << endl;
-    cout << " input_file(s) - input file(s) in ROOT format." << endl;
-    return 1;
-  }
   // gracefully handle ctrl+c
   signal(SIGINT, SignalHandler);
   try {
     podio::EventStore store;
-    podio::ROOTWriter  writer(argv[2], &store);
+    podio::ROOTWriter  writer(outputfile, &store);
     // expose ttree directly to add additional branches (experimental)
     TTree* eventsTree = writer.getEventsTree();
 
@@ -104,10 +96,13 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
     confReader->ReadFile(argv[1]);
 
     // todo: ROOT error on 6.20.04 if this is a unique pointer
-    Delphes* modularDelphes = new Delphes("Delphes");
     modularDelphes->SetConfReader(confReader.get());
 
     ExRootConfParam branches = confReader->GetParam("TreeWriter::Branch");
+    int maxEvents = confReader->GetInt("::MaxEvents", 0);
+
+
+
     int nParams = branches.GetSize();
 
     std::unordered_map<std::string, podio::CollectionBase*> collmap;
@@ -337,9 +332,13 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
     modularDelphes->Clear();
 
 
-    for (Int_t entry = 0; entry < inputReader.getNumberOfEvents() && !interrupted; ++entry) {
+    for (Int_t entry = 0; inputReader.finished() && maxEvents > 0 ?  entry < maxEvents : true && !interrupted; ++entry) {
+      std::cout << inputReader.finished() << " "<< entry << " " << maxEvents << " " << (maxEvents > 0 ?  entry < maxEvents : true) <<   std::endl;
       
-      inputReader.readEvent(modularDelphes, allParticleOutputArray, stableParticleOutputArray, partonOutputArray);
+      bool success = inputReader.readEvent(modularDelphes, allParticleOutputArray, stableParticleOutputArray, partonOutputArray);
+      if (!success) {
+      break;
+      }
 
       modularDelphes->ProcessTask();
 

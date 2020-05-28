@@ -22,7 +22,8 @@
 class DelphesRootReader: public DelphesInputReader {
   public:
   inline DelphesRootReader() {};
-  inline bool init(int argc, char *argv[]) {
+  inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
+    outputfile = argv[2];
 
     m_chain = new TChain("Delphes");
 
@@ -41,10 +42,11 @@ class DelphesRootReader: public DelphesInputReader {
 
     };
   inline int getNumberOfEvents() {return m_numberOfEvents;}
+  inline bool finished() {return m_entry < m_numberOfEvents;}
 
   inline std::string getUsage() {return m_appName;};
 
-  inline void readEvent(Delphes* modularDelphes, TObjArray* allParticleOutputArray,
+  inline bool readEvent(Delphes* modularDelphes, TObjArray* allParticleOutputArray,
   TObjArray* stableParticleOutputArray, TObjArray* partonOutputArray) {
 
 
@@ -71,6 +73,8 @@ class DelphesRootReader: public DelphesInputReader {
         }
       }
     ++m_entry;
+
+    return true;
     };
 
 private:
