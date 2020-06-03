@@ -60,6 +60,28 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DDROP_CGAL ${CPP_STANDARD_FLAGS} -Wall -Wextra -Wpedantic -Wno-unused-variable -Wno-unused-parameter")
 
 
+#=====================================================================
+# check if the linker supports as needed or not
+#   (needed for ROOT dict, specifically on Ubuntu)
+set(STORE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+include(CheckCCompilerFlag)
+set(CMAKE_REQUIRED_FLAGS "-Wl,--no-as-needed")
+check_c_compiler_flag("" TEST_NO_AS_NEEDED)
+set(CMAKE_REQUIRED_FLAGS "-Wl,--as-needed")
+check_c_compiler_flag("" TEST_AS_NEEDED)
+set(CMAKE_REQUIRED_FLAGS ${STORE_REQUIRED_FLAGS})
+
+function(target_link_libraries_force_dict target dict)
+  if(TEST_NO_AS_NEEDED AND TEST_AS_NEEDED)
+    target_link_libraries(${target}
+      -Wl,--push-state,--no-as-needed ${dict} -Wl,--pop-state
+      ${ARGN})
+  else()
+    target_link_libraries(${target} ${dict} ${ARGN})
+  endif()
+endfunction()
+#=====================================================================
+
 #--- Declare options -----------------------------------------------------------
 
 option(BUILD_DDG4EDM4HEP "Build the EDM4hep plugin for DD4hep" ON)
