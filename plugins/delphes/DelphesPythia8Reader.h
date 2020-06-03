@@ -185,8 +185,20 @@ void fillPartons(int id, double pMax, double etaMax,
 class DelphesPythia8Reader: public DelphesInputReader {
   public:
   inline DelphesPythia8Reader() {};
-  inline ~DelphesPythia8Reader() {delete pythia;};
+    inline ~DelphesPythia8Reader() {
+      if (pythia) {
+        delete pythia;
+      }
+    };
+
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
+    if (argc != 4) {
+      std::cout << "Usage: " << m_appName << "config_file pythia_card output_file\n"
+                << "config_file - configuration file in Tcl format,\n"
+                << "pythia_card - Pythia8 configuration file,\n"
+                << "output_file - output file in ROOT format." << std::endl;
+      return false;
+    }
     outputfile = argv[3];
 
     // Initialize Pythia
@@ -293,7 +305,7 @@ private:
   const std::string m_usage;
   int m_numberOfEvents;
   int m_entry = 0;
-  Pythia8::Pythia* pythia;
+  Pythia8::Pythia* pythia{nullptr};
 
   FILE *inputFile = 0;
   TFile *outputFile = 0;

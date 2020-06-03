@@ -184,7 +184,9 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
   std::string appName = "DelphesROOT_EDM4HEP";
   Delphes* modularDelphes = new Delphes("Delphes");
   std::string outputfile;
-  inputReader.init(modularDelphes,argc, argv, outputfile);
+  if(!inputReader.init(modularDelphes,argc, argv, outputfile)) {
+    return 1;
+  }
   Long64_t eventCounter, numberOfEvents;
   // gracefully handle ctrl+c
   signal(SIGINT, SignalHandler);
