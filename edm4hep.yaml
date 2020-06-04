@@ -127,8 +127,8 @@ datatypes :
       static const int BITStopped = 24 ;    \n
       static const int BITOverlay = 23 ;    \n
       /// return energy computed from momentum and mass \n
-      double getEnergy() { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+\n
-                                        getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;}    \n
+      double getEnergy() const { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+\n
+                                        getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;} \n
 
       /// True if the particle has been created by the simulation program (rather than the generator).     \n
       bool isCreatedInSimulation() const { return ( getSimulatorStatus() & ( 0x1 << BITCreatedInSimulation ))  ; }    \n
