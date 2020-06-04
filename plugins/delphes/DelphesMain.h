@@ -300,7 +300,7 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
 
 
     for (Int_t entry = 0;
-         inputReader.finished() && maxEvents > 0 ?  entry < maxEvents : true && !interrupted; 
+         inputReader.finished() && (maxEvents > 0 ?  entry < maxEvents : true) && !interrupted;
          ++entry) {
       
       bool success = inputReader.readEvent(modularDelphes, 
