@@ -56,7 +56,7 @@
 
 // podio specific includes
 // NOTE: locally updated  prototypes!
-#include "ROOTWriter.h"
+#include "ROOTWriter2.h"
 #include "EventStore2.h"
 
 

@@ -9,6 +9,9 @@
 // podio specific includes
 #include "podio/CollectionIDTable.h"
 #include "podio/ICollectionProvider.h"
+#include "podio/IMetaDataProvider.h"
+#include "podio/GenericParameters.h"
+
 
 /**
 This is an *example* event store
@@ -26,7 +29,10 @@ namespace podio {
   class CollectionBase;
   class IReader;
 
-  class EventStore : public ICollectionProvider {
+  typedef std::map<int,GenericParameters>    RunMDMap;
+  typedef std::map<int,GenericParameters>    ColMDMap;
+
+  class EventStore : public ICollectionProvider, public IMetaDataProvider {
 
   public:
     /// Collection entry. Each collection is identified by a name
@@ -47,13 +53,9 @@ namespace podio {
     template<typename T>
     bool get(const std::string& name, const T*& collection);
 
-    /// access a collection by name. returns true if successful
-    template<typename T>
-    bool get2(const std::string& name, T*& collection);
-
     /// fast access to cached collections
     CollectionBase* getFast(int id) const{
-      return ( m_cachedCollections.size() > (unsigned int) id ? m_cachedCollections[id] : nullptr ) ;
+      return ( m_cachedCollections.size() > id ? m_cachedCollections[id] : nullptr ) ;
     }
 
     /// access a collection by ID. returns true if successful
@@ -63,6 +65,10 @@ namespace podio {
     /// returns a collection w/ setting isValid to true if successful
     template<typename T>
     const T& get(const std::string& name );
+
+    /// access a collection by name. returns true if successful
+    template<typename T>
+    bool get2(const std::string& name, T*& collection);
 
     /// empties collections.
     void clearCollections();
@@ -80,7 +86,20 @@ namespace podio {
 
     virtual bool isValid() const final;
 
-  private:
+    /// return the event meta data for the current event
+    virtual GenericParameters& getEventMetaData() const override ;
+
+    /// return the run meta data for the given runID
+    virtual GenericParameters& getRunMetaData(int runID) const override ;
+
+    /// return the collection meta data for the given colID
+    virtual GenericParameters& getCollectionMetaData(int colID) const override ;
+
+    RunMDMap* getRunMetaDataMap() const {return &m_runMDMap ; }
+    ColMDMap* getColMetaDataMap() const {return &m_colMDMap ; }
+    GenericParameters* eventMetaDataPtr() const {return &m_evtMD; }
+
+   private:
 
     /// get the collection of given name; returns true if successfull
     bool doGet(const std::string& name, CollectionBase*& collection, bool setReferences = true) const;
@@ -93,8 +112,12 @@ namespace podio {
     mutable CollContainer m_collections;
     mutable std::vector<const CollectionBase*> m_failedRetrieves;
     mutable std::vector<CollectionBase*> m_cachedCollections;
-    IReader* m_reader;
+    IReader* m_reader=nullptr;
     CollectionIDTable* m_table;
+
+    mutable GenericParameters  m_evtMD ;
+    mutable RunMDMap m_runMDMap ;
+    mutable ColMDMap m_colMDMap ;
   };
 
 
@@ -119,15 +142,6 @@ bool EventStore::get(const std::string& name, const T*& collection){
   return false;
 }
 
-template<typename T>
-bool EventStore::get2(const std::string& name, T*& collection){
-  CollectionBase* tmp(0);
-  doGet(name, tmp);
-  collection = static_cast<T*>(tmp);
-  if (collection != nullptr) { return true;}
-  return false;
-}
-
 
 template<typename T>
 const T& EventStore::get(const std::string& name) {
@@ -140,6 +154,15 @@ const T& EventStore::get(const std::string& name) {
     m_failedRetrieves.push_back(tmp);
     return *tmp;
   }
+}
+
+template<typename T>
+bool EventStore::get2(const std::string& name, T*& collection){
+  CollectionBase* tmp(0);
+  doGet(name, tmp);
+  collection = static_cast<T*>(tmp);
+  if (collection != nullptr) { return true;}
+  return false;
 }
 
 } //namespace
