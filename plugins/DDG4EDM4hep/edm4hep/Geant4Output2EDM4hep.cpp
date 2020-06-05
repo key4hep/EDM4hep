@@ -20,6 +20,8 @@
 #include "DDG4/Geant4HitCollection.h"
 #include "DDG4/Geant4OutputAction.h"
 #include "DDG4/Geant4SensDetAction.h"
+#include "DDG4/EventParameters.h"
+
 // Geant4 headers
 #include "G4Threading.hh"
 #include "G4AutoLock.hh"
@@ -27,18 +29,19 @@
 #include <G4SystemOfUnits.hh>
 
 // edm4hep include files
+#include "edm4hep/EventHeaderCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
-//#include "EDM4hepEventParameters.h"
 #include "podio/EventStore.h"
 #include "podio/ROOTWriter.h"
 
 #include <typeinfo>
 #include <iostream>
+#include <ctime>
 
-using namespace edm4hep ;
+//using namespace edm4hep ;
 
 /// Namespace for the AIDA detector description toolkit
 namespace dd4hep {
@@ -47,6 +50,20 @@ namespace dd4hep {
 
   /// Namespace for the Geant4 based simulation part of the AIDA detector description toolkit
   namespace sim {
+
+    template <class T=podio::EventStore> void EventParameters::extractParameters(T& event){
+      auto& lcparameters = event.getEventMetaData();
+
+      for(auto const& ival: this->intParameters()) {
+        lcparameters.setValues(ival.first, ival.second);
+      }
+      for(auto const& ival: this->fltParameters()) {
+        lcparameters.setValues(ival.first, ival.second);
+      }
+      for(auto const& ival: this->strParameters()) {
+        lcparameters.setValues(ival.first, ival.second);
+      }
+    }
 
     class  Geant4ParticleMap;
 
@@ -97,12 +114,12 @@ namespace dd4hep {
     protected:
       /// Fill event parameters in EDM4hep event
       template <typename T>
-      void saveEventParameters(podio::EventStore* event, const std::map<std::string, std::string >& parameters);
+      void saveEventParameters(const std::map<std::string, std::string >& parameters);
     };
     
     /// Fill event parameters in EDM4hep event
     template <typename T>
-    inline void Geant4Output2EDM4hep::saveEventParameters(podio::EventStore* event, const std::map<std::string, std::string >& parameters)  {
+    inline void Geant4Output2EDM4hep::saveEventParameters(const std::map<std::string, std::string >& parameters)  {
       for(std::map<std::string, std::string >::const_iterator iter = parameters.begin(), endIter = parameters.end() ; iter != endIter ; ++iter)  {
         T parameter;
         std::istringstream iss(iter->second);
@@ -110,20 +127,17 @@ namespace dd4hep {
           printout(FATAL,"saveEventParameters","+++ Event parameter %s: FAILED to convert to type :%s",iter->first.c_str(),typeid(T).name());
           continue;
         }
-  printout( WARNING,"saveEventParameters", " not implemented in EDM4hep - not written:   %s  -> %x ",  iter->first,parameter ) ;
-
-
-//        event->parameters().setValue(iter->first,parameter);
+	auto& evtMD = m_store->getEventMetaData();
+	evtMD.setValue(iter->first,parameter);
       }
     }
 
     /// Fill event parameters in EDM4hep event - std::string specialization
     template <>
-    inline void Geant4Output2EDM4hep::saveEventParameters<std::string>(podio::EventStore* event, const std::map<std::string, std::string >& parameters)  {
+    inline void Geant4Output2EDM4hep::saveEventParameters<std::string>(const std::map<std::string, std::string >& parameters)  {
       for(std::map<std::string, std::string >::const_iterator iter = parameters.begin(), endIter = parameters.end() ; iter != endIter ; ++iter)  {
-  printout( WARNING, "Geant4Output2EDM4hep","saveEventParameters(): not implemented in EDM4hep - not written:   %s  -> %s ",  iter->first.c_str(),iter->second.c_str() ) ;
-
-//        event->parameters().setValue(iter->first,iter->second);
+	auto& evtMD = m_store->getEventMetaData();
+	evtMD.setValue(iter->first,iter->second);
       }
     }
 
@@ -228,7 +242,7 @@ void Geant4Output2EDM4hep::commit( OutputContext<G4Event>& /* ctxt */)   {
 }
 
 /// Callback to store the Geant4 run information
-void Geant4Output2EDM4hep::saveRun(const G4Run* run)  {
+void Geant4Output2EDM4hep::saveRun(const G4Run* /*run*/)  {
   //G4AutoLock protection_lock(&action_mutex);
 
   printout( WARNING, "Geant4Output2EDM4hep" ,"saveRun(): RunHeader not implemented in EDM4hep, nothing written ..." ) ;
@@ -265,7 +279,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
     size_t cnt = 0;
     map<int,int> p_ids;
     vector<const Geant4Particle*> p_part(pm.size(),0);
-    vector<MCParticle> p_edm4hep(pm.size());
+    vector<edm4hep::MCParticle> p_edm4hep(pm.size());
     // First create the particles
     for(ParticleMap::const_iterator i=pm.begin(); i!=pm.end();++i, ++cnt)   {
       int id = (*i).first;
@@ -273,7 +287,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
       PropertyMask mask(p->status);
       //      std::cout << " ********** mcp status : 0x" << std::hex << p->status << ", mask.isSet(G4PARTICLE_GEN_STABLE) x" << std::dec << mask.isSet(G4PARTICLE_GEN_STABLE)  <<std::endl ;
       const G4ParticleDefinition* def = p.definition();
-      MCParticle mcp = edm4hep::MCParticle();
+      edm4hep::MCParticle mcp = edm4hep::MCParticle();
       mcp.setPDG(p->pdgID);
 
       float ps_fa[3] = {float(p->psx/CLHEP::GeV),float(p->psy/CLHEP::GeV),float(p->psz/CLHEP::GeV)};
@@ -331,7 +345,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
     for(size_t i=0, n=p_ids.size(); i<n; ++i)   {
       map<int,int>::iterator k;
       const Geant4Particle* p = p_part[i];
-      MCParticle q = p_edm4hep[i];
+      edm4hep::MCParticle q = p_edm4hep[i];
       const Geant4Particle::Particles& dau = p->daughters;
       for(Geant4Particle::Particles::const_iterator j=dau.begin(); j!=dau.end(); ++j)  {
         int idau = *j;
@@ -340,7 +354,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
           continue;
         }
         int iqdau = (*k).second;
-        MCParticle qdau = p_edm4hep[iqdau];
+        edm4hep::MCParticle qdau = p_edm4hep[iqdau];
         qdau.addToParents(q);
       }
       const Geant4Particle::Particles& par = p->parents;
@@ -351,7 +365,7 @@ void Geant4Output2EDM4hep::saveParticles(Geant4ParticleMap* particles)    {
           continue;
         }
         int iqpar = (*k).second;
-        MCParticle qpar = p_edm4hep[iqpar];
+        edm4hep::MCParticle qpar = p_edm4hep[iqpar];
         q.addToParents(qpar);
       }
     }
@@ -366,35 +380,36 @@ void Geant4Output2EDM4hep::saveEvent(OutputContext<G4Event>& ctxt)  {
     m_FirstEvent = false ;
   }
 
-//  podio::EventStore* e = context()->event().extension<podio::EventStore>();
-//  EDM4hepEventParameters* parameters = context()->event().extension<EDM4hepEventParameters>(false);
+  EventParameters* parameters = context()->event().extension<EventParameters>(false);
   int runNumber(0), eventNumber(0);
   const int eventNumberOffset(m_eventNumberOffset > 0 ? m_eventNumberOffset : 0);
   const int runNumberOffset(m_runNumberOffset > 0 ? m_runNumberOffset : 0);
-  // // Get event number, run number and parameters from extension ...
-  // if ( parameters ) {
-  //   runNumber = parameters->runNumber() + runNumberOffset;
-  //   eventNumber = parameters->eventNumber() + eventNumberOffset;
-  // //   EDM4hepEventParameters::copyLCParameters(parameters->eventParameters(),e->parameters());
-  // }
-  // // ... or from DD4hep framework
-  // else {
-  runNumber = m_runNo + runNumberOffset;
-  eventNumber = ctxt.context->GetEventID() + eventNumberOffset;
-  // }
+  // Get event number, run number and parameters from extension ...
+  if ( parameters ) {
+    runNumber = parameters->runNumber() + runNumberOffset;
+    eventNumber = parameters->eventNumber() + eventNumberOffset;
+    parameters->extractParameters(*m_store);
+  } else { // ... or from DD4hep framework
+    runNumber = m_runNo + runNumberOffset;
+    eventNumber = ctxt.context->GetEventID() + eventNumberOffset;
+  }
   printout(INFO,"Geant4Output2EDM4hep","+++ Saving EDM4hep event %d run %d.",
-     eventNumber, runNumber);
+	   eventNumber, runNumber);
 
-  //FIXME: need a suitable EventHeader object in EDM4hep
-  //        and a way to store meta data parameters with this
+  // this does not compile as create() is we only get a const ref - need to review PODIO EventStore API
+  // auto& evtHCol = m_store->get<edm4hep::EventHeaderCollection>("EventHeader") ;
+  // auto evtHdr = evtHCol.create() ;
+  auto* evtHCol = const_cast<edm4hep::EventHeaderCollection*>(&m_store->get<edm4hep::EventHeaderCollection>("EventHeader") );
+  auto evtHdr = evtHCol->create() ;
 
-  // // e->setRunNumber(runNumber);
-  // // e->setEventNumber(eventNumber);
-  // // e->setDetectorName(context()->detectorDescription().header().name());
+  evtHdr.setRunNumber(runNumber);
+  evtHdr.setEventNumber(eventNumber);
+//not implemented in EDM4hep ?  evtHdr.setDetectorName(context()->detectorDescription().header().name());
+  evtHdr.setTimeStamp( std::time(nullptr) ) ;
 
-  // saveEventParameters<int>(e, m_eventParametersInt);
-  // saveEventParameters<float>(e, m_eventParametersFloat);
-  // saveEventParameters<std::string>(e, m_eventParametersString);
+  saveEventParameters<int>(m_eventParametersInt);
+  saveEventParameters<float>(m_eventParametersFloat);
+  saveEventParameters<std::string>(m_eventParametersString);
 
   Geant4ParticleMap* part_map = context()->event().extension<Geant4ParticleMap>(false);
   if ( part_map )   {
@@ -528,6 +543,12 @@ void Geant4Output2EDM4hep::createCollections(OutputContext<G4Event>& ctxt){
 
   m_store->create<edm4hep::MCParticleCollection>("MCParticles");
   m_file->registerForWrite("MCParticles");
+  printout(DEBUG,"Geant4Output2EDM4hep","+++ created collection MCParticles" );
+
+  m_store->create<edm4hep::EventHeaderCollection>("EventHeader") ;
+  m_file->registerForWrite("EventHeader");
+  printout(DEBUG,"Geant4Output2EDM4hep","+++ created collection EventHeader" );
+
 
   const G4Event* evt = ctxt.context ;
   G4HCofThisEvent* hce = evt->GetHCofThisEvent();
@@ -552,12 +573,12 @@ void Geant4Output2EDM4hep::createCollections(OutputContext<G4Event>& ctxt){
 
       m_store->create<edm4hep::SimCalorimeterHitCollection>(colName);
       m_file->registerForWrite(colName);
-      printout(DEBUG,"Geant4Output2EDM4hep""+++ created collection %s",colName.c_str() );
+      printout(DEBUG,"Geant4Output2EDM4hep","+++ created collection %s",colName.c_str() );
 
       colName += "Contributions"  ;
       m_store->create<edm4hep::CaloHitContributionCollection>(colName);
       m_file->registerForWrite(colName);
-      printout(DEBUG,"Geant4Output2EDM4hep""+++ created collection %s",colName.c_str() );
+      printout(DEBUG,"Geant4Output2EDM4hep","+++ created collection %s",colName.c_str() );
 
     } else {
 
