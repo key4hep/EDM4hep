@@ -1,8 +1,6 @@
 #ifndef ROOTWRITER_H
 #define ROOTWRITER_H
 
-/* updated new ROTOWRITER prototype */
-
 #include "podio/CollectionBase.h"
 #include "EventStore2.h"
 
@@ -28,8 +26,7 @@ namespace podio {
     void registerForWrite(const std::string& name);
     void writeEvent();
     void finish();
-    TTree* getEventsTree() {return m_datatree;};
-    TTree* getMetaDataTree() {return m_metadatatree;};
+    inline TTree* getEventsTree() {return m_datatree;};
 
   private:
     // members
@@ -38,6 +35,10 @@ namespace podio {
     TFile* m_file;
     TTree* m_datatree;
     TTree* m_metadatatree;
+    TTree* m_runMDtree;
+    TTree* m_evtMDtree;
+    TTree* m_colMDtree;
+    GenericParameters* m_evtMD ;
     std::vector<CollectionBase*> m_storedCollections;
 
   };
