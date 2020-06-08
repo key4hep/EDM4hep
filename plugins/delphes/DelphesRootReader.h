@@ -74,7 +74,7 @@ class DelphesRootReader: public DelphesInputReader {
       }
     ++m_entry;
 
-    return true;
+    return finished();
     };
 
 private:
