@@ -63,6 +63,7 @@
 #include "edm4hep/ParticleIDCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
+#include "edm4hep/TrackCollection.h"
 
 #include "DelphesRootReader.h"
 
@@ -200,12 +201,18 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
     ExRootConfParam branches = confReader->GetParam("TreeWriter::Branch");
     int maxEvents = confReader->GetInt("::MaxEvents", 0);
 
-
+    // Need to get the magnetic field value for calculating the omega track
+    // parameter.
+    const double magFieldBz = confReader->GetDouble("ParticlePropagator::Bz", 0);
 
     int nParams = branches.GetSize();
 
     std::unordered_map<std::string, podio::CollectionBase*> collmap;
     edm4hep::ReconstructedParticleCollection* _col;
+
+    auto& trackCollection = store.create<edm4hep::TrackCollection>("Tracks");
+    writer.registerForWrite("Tracks");
+
     for(int b = 0; b < nParams; b += 3) {
       TString input = branches[b].GetString();
       TString name = branches[b + 1].GetString();
@@ -306,7 +313,7 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
 
       // collect all associations and process them after all Delphes candidates
       // have been stored
-      std::vector<std::pair<UInt_t, edm4hep::ConstReconstructedParticle>> mcParticleRelations;
+      std::vector<std::pair<UInt_t, edm4hep::ReconstructedParticle>> mcParticleRelations;
       std::unordered_map<UInt_t, edm4hep::ConstMCParticle> mcParticleIds;
 
 
@@ -473,10 +480,56 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
               //           << delphesCand->Momentum.Py() << ", " << delphesCand->Momentum.Pz() << "), "
               //           << "E = " << delphesCand->Momentum.E() << ", M = " << delphesCand->Momentum.M() << "\n";
             }
+          } else if (className == "Track") {
+            for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
+              auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
+              // Delphes does not really provide any information that would go
+              // into the track itself
+              auto track = trackCollection.create();
+              // But some information can be used to at least partially populate
+              // a TrackState
+              edm4hep::TrackState trackState{};
+              trackState.D0 = delphesCand->D0;
+              trackState.Z0 = delphesCand->DZ;
 
+              // Delphes calculates this from the momentum 4-vector at the track
+              // perigee so this should be what we want. Note that this value
+              // only undergoes smearing in the TrackSmearing module but e.g.
+              // not in the MomentumSmearing module
+              trackState.phi = delphesCand->Phi;
+              // Same thing under different name in Delphes
+              trackState.tanLambda = delphesCand->CtgTheta;
+              // Only do omega when there is actually a magnetic field.
+              double varOmega = 0;
+              if (magFieldBz) {
+                // conversion to have omega in [1/mm]
+                // TODO: define this globally somewhere?
+                constexpr double cLight = 299792458;
+                constexpr double a = cLight * 1e3 * 1e-15;
+
+                trackState.omega = a * magFieldBz / delphesCand->PT * std::copysign(1.0, delphesCand->Charge);
+                // calculate variation using simple error propagation, assuming
+                // constant B-field -> relative error on pT is relative error on omega
+                varOmega = delphesCand->ErrorPT * delphesCand->ErrorPT / delphesCand->PT / delphesCand->PT * trackState.omega * trackState.omega;
+              }
+
+              // fill the covariance matrix. Indices on the diagonal are 0, 5,
+              // 9, 12, and 14, corresponding to D0, phi, omega, Z0 and
+              // tan(lambda) respectively. Currently Delphes doesn't provide
+              // correlations
+              auto& covMatrix = trackState.covMatrix;
+              covMatrix[0] = delphesCand->ErrorD0 * delphesCand->ErrorD0;
+              covMatrix[5] = delphesCand->ErrorPhi * delphesCand->ErrorPhi;
+              covMatrix[9] = varOmega;
+              covMatrix[12] = delphesCand->ErrorDZ * delphesCand->ErrorDZ;
+              covMatrix[14] = delphesCand->ErrorCtgTheta * delphesCand->ErrorCtgTheta;
+
+              track.addToTrackStates(trackState);
+            }
           }
         }
-             // should technically be a set, but for now we will just emulate that
+
+        // should technically be a set, but for now we will just emulate that
         std::vector<UInt_t> usedIds;
         std::vector<UInt_t> notFoundIds;
 
