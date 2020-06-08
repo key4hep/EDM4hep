@@ -61,7 +61,9 @@
 
 
 #include "edm4hep/ReconstructedParticleCollection.h"
+#include "edm4hep/ParticleIDCollection.h"
 #include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/MCRecoParticleAssociationCollection.h"
 
 #include "DelphesRootReader.h"
 
@@ -76,6 +78,106 @@ void SignalHandler(int sig) {
   interrupted = true;
 }
 
+/**
+ * To fill the basic information that is shared by all edm4hep types
+ */
+template <typename EDM4hepT>
+EDM4hepT fromDelphesBase(Candidate* delphesCand) {
+  EDM4hepT cand;
+  cand.setCharge(delphesCand->Charge);
+  // TODO: Delphes deals with masses a bit strangely. For the Muons and
+  // Electrons it is set at the Candidate level (i.e. before TreeWriter) but for
+  // Jets it is not. On the other hand, at the level of the classes that are
+  // written out by the TreeWriter, it doesn't store the masses for the Muons
+  // and Electrons, but it computes the Jet masses from the 4-momentum and
+  // stores that. Additionally, when getting the 4-vector via Muon::P4() or
+  // Electron::P4() delphes sets the masses to 0, but uses the Jet::Mass
+  // member in the case of Jet::P4()
+  // See: https://github.com/delphes/delphes/blob/master/classes/DelphesClasses.cc#L84-L98
+  //
+  // The consequence is that Muons and Electrons stored as
+  // edm4hep::ReconstructedParticle will currently have non-zero masses, whereas
+  // Jets will have zero masses. Delphes outputs on the other hand will have
+  // zero masses for the Muons and Electrons, but non-zero masses for the Jets
+  // (i.e. reversed to edm4hep).
+  //
+  // This mainly makes a difference for the Energy computation of the
+  // reconstructed Jets, as can be seen by comparing the histograms produced by
+  // examples/read_{delphes,edm4hep}.C. For the Muons and Electrons the masses
+  // are negligible enough for the total energy that no difference arises.
+  cand.setMass(delphesCand->Mass);
+  cand.setMomentum({
+    (float) delphesCand->Momentum.Px(),
+    (float) delphesCand->Momentum.Py(),
+    (float) delphesCand->Momentum.Pz()
+  });
+
+  return cand;
+}
+
+// Following what is done in TreeWriter::FillParticles
+std::vector<UInt_t> findParticles(Candidate* candidate) {
+  std::vector<UInt_t> relatedParticles;
+  TIter it1(candidate->GetCandidates());
+  it1.Reset();
+
+  while((candidate = static_cast<Candidate*>(it1.Next()))) {
+    TIter it2(candidate->GetCandidates());
+
+    // particle
+    if (candidate->GetCandidates()->GetEntriesFast() == 0) {
+      relatedParticles.push_back(candidate->GetUniqueID());
+      continue;
+    }
+
+    // track
+    candidate = static_cast<Candidate*>(candidate->GetCandidates()->At(0));
+    if (candidate->GetCandidates()->GetEntriesFast() == 0) {
+      relatedParticles.push_back(candidate->GetUniqueID());
+      continue;
+    }
+
+    // tower
+    it2.Reset();
+    while((candidate = static_cast<Candidate*>(it2.Next()))) {
+      relatedParticles.push_back(candidate->GetCandidates()->At(0)->GetUniqueID());
+    }
+  }
+
+  return relatedParticles;
+}
+
+int findPhotonMC(Candidate* candidate) {
+  const auto relatedParticles = findParticles(candidate);
+  // If there is only one relation, assume that it is the generated particle and
+  // return the ID. Otherwise return -1 to signal that this was not the case
+  if (relatedParticles.size() == 1) {
+    return relatedParticles[0];
+  }
+
+  std::cout << "Found " << relatedParticles.size() << " candidates related to the photon" << std::endl;
+
+  return -1;
+}
+
+
+void printCandidates(TObjArray* candArray)
+{
+  Candidate* candidate = nullptr;
+  TIter candidatesIt(candArray);
+  candidatesIt.Reset();
+
+
+  std::cout << "*** Related candidates as they appear without sorting\n";
+  while((candidate = static_cast<Candidate*>(candidatesIt.Next()))) {
+    const TLorentzVector& momentum = candidate->Momentum;
+    std::cout << " UniqueID: " << candidate->GetUniqueID() << ", "
+              << "(Px, Py, Pz) = " << "(" << momentum.Px() << ", " << momentum.Py() << ", " << momentum.Pz() << "), "
+              << "E = " << momentum.E() << ", M = " << momentum.M() << "\n";
+  }
+}
+
+
 
 // main function with generic input
 int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
@@ -89,8 +191,6 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
   try {
     podio::EventStore store;
     podio::ROOTWriter  writer(outputfile, &store);
-    // expose ttree directly to add additional branches (experimental)
-    TTree* eventsTree = writer.getEventsTree();
 
     auto confReader = std::make_unique<ExRootConfReader>();
     confReader->ReadFile(argv[1]);
@@ -106,217 +206,77 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
     int nParams = branches.GetSize();
 
     std::unordered_map<std::string, podio::CollectionBase*> collmap;
-    std::unordered_map<std::string, TLorentzVector*> collmap_met;
-    std::unordered_map<std::string, std::vector<ROOT::Math::PxPyPzEVector>*> collmap_4v;
-    std::unordered_map<std::string, std::vector<float>*> collmap_float;
+    edm4hep::ReconstructedParticleCollection* _col;
     for(int b = 0; b < nParams; b += 3) {
       TString input = branches[b].GetString();
       TString name = branches[b + 1].GetString();
       TString className = branches[b + 2].GetString();
+      std::string _name;
       //std::cout <<  input << "\t" << name << "\t" << className << std::endl;
       // classes that are to be translated to a Reconstructed Particle
       if (className == "Jet") {
-        store.create<edm4hep::ReconstructedParticleCollection>(name.Data());
 
-        writer.registerForWrite(name.Data());
-        edm4hep::ReconstructedParticleCollection* col2;
-        store.get2(name.Data(), col2);
-        collmap.insert({name.Data(), col2});
+        // convert TString to std::string
+        _name = name.Data();
+        store.create<edm4hep::ReconstructedParticleCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
 
-        // additional unstructured branches
-        std::vector<ROOT::Math::PxPyPzEVector>* _v = new std::vector<ROOT::Math::PxPyPzEVector>();
-        collmap_4v.insert({(name+"SoftDroppedJet").Data(), _v});
-        eventsTree->Branch((name + "SoftDroppedJet").Data(), &(collmap_4v[(name+"SoftDroppedJet").Data()]));
+        _name = (name + "SubJets").Data();
+        store.create<edm4hep::ReconstructedParticleCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
 
-        // additional unstructured branches
-        _v = new std::vector<ROOT::Math::PxPyPzEVector>();
-        collmap_4v.insert({(name+"SoftDroppedSubJet1").Data(), _v});
-        eventsTree->Branch((name + "SoftDroppedSubJet1").Data(), &(collmap_4v[(name+"SoftDroppedSubJet1").Data()]));
-
-        _v = new std::vector<ROOT::Math::PxPyPzEVector>();
-        collmap_4v.insert({(name+"SoftDroppedSubJet2").Data(), _v});
-        eventsTree->Branch((name + "SoftDroppedSubJet2").Data(), &(collmap_4v[(name+"SoftDroppedSubJet2").Data()]));
-
-        auto _vf = new std::vector<float>();
-        collmap_float.insert({(name+"Tau1").Data(), _vf});
-        eventsTree->Branch((name + "Tau1").Data(), &(collmap_float[(name+"Tau1").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"Tau2").Data(), _vf});
-        eventsTree->Branch((name + "Tau2").Data(), &(collmap_float[(name+"Tau2").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"Tau3").Data(), _vf});
-        eventsTree->Branch((name + "Tau3").Data(), &(collmap_float[(name+"Tau3").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"Tau4").Data(), _vf});
-        eventsTree->Branch((name + "Tau4").Data(), &(collmap_float[(name+"Tau4").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"Tau5").Data(), _vf});
-        eventsTree->Branch((name + "Tau5").Data(), &(collmap_float[(name+"Tau5").Data()]));
-
-        auto _vff = new std::vector<Float_t[5]>();
-        eventsTree->Branch((name + "Tau").Data(), &_vff);
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"DeltaEta").Data(), _vf});
-        eventsTree->Branch((name + "DeltaEta").Data(), &(collmap_float[(name+"DeltaEta").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"DeltaPhi").Data(), _vf});
-        eventsTree->Branch((name + "DeltaPhi").Data(), &(collmap_float[(name+"DeltaPhi").Data()]));
-
-        // ...
+        _name = (name + "ParticleIDs").Data();
+        store.create<edm4hep::ParticleIDCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
 
 
-      } else if (className == "Photon") {
-        store.create<edm4hep::ReconstructedParticleCollection>(name.Data());
-        writer.registerForWrite(name.Data());
-        edm4hep::ReconstructedParticleCollection* col2;
-        store.get2(name.Data(), col2);
-        collmap.insert({name.Data(), col2});
-        auto _vf = new std::vector<float>();
-        collmap_float.insert({(name+"EhadOverEem").Data(), _vf});
-        eventsTree->Branch((name + "EhadOverEem").Data(), &(collmap_float[(name+"EhadOverEem").Data()]));
+      } else if (className == "Photon" || className == "Electron" || className == "Muon") {
 
-         _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVar").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVar").Data(), &(collmap_float[(name+"IsolationVar").Data()]));
+        _name = name.Data();
+        store.create<edm4hep::ReconstructedParticleCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
 
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVarRhoCorr").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVarRhoCorr").Data(), &(collmap_float[(name+"IsolationVarRhoCorr").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtCharged").Data(), _vf});
-        eventsTree->Branch((name + "SumPtCharged").Data(), &(collmap_float[(name+"SumPtCharged").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtChargedPU").Data(), _vf});
-        eventsTree->Branch((name + "SumPtChargedPU").Data(), &(collmap_float[(name+"SumPtChargedPU").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPt").Data(), _vf});
-        eventsTree->Branch((name + "SumPt").Data(), &(collmap_float[(name+"SumPt").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtNeutral").Data(), _vf});
-        eventsTree->Branch((name + "SumPtNeutral").Data(), &(collmap_float[(name+"SumPtNeutral").Data()]));
-
-      } else if (className == "Electron") {
-        store.create<edm4hep::ReconstructedParticleCollection>(name.Data());
-        writer.registerForWrite(name.Data());
-        edm4hep::ReconstructedParticleCollection* col2;
-        store.get2(name.Data(), col2);
-        collmap.insert({name.Data(), col2});
+        _name = (name + "ParticleIDs").Data();
+        store.create<edm4hep::ParticleIDCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
 
 
-
-
-        auto _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVar").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVar").Data(), &(collmap_float[(name+"IsolationVar").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVarRhoCorr").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVarRhoCorr").Data(), &(collmap_float[(name+"IsolationVarRhoCorr").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtCharged").Data(), _vf});
-        eventsTree->Branch((name + "SumPtCharged").Data(), &(collmap_float[(name+"SumPtCharged").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtChargedPU").Data(), _vf});
-        eventsTree->Branch((name + "SumPtChargedPU").Data(), &(collmap_float[(name+"SumPtChargedPU").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPt").Data(), _vf});
-        eventsTree->Branch((name + "SumPt").Data(), &(collmap_float[(name+"SumPt").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtNeutral").Data(), _vf});
-        eventsTree->Branch((name + "SumPtNeutral").Data(), &(collmap_float[(name+"SumPtNeutral").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"D0").Data(), _vf});
-        eventsTree->Branch((name + "D0").Data(), &(collmap_float[(name+"D0").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"ErrorD0").Data(), _vf});
-        eventsTree->Branch((name + "ErrorD0").Data(), &(collmap_float[(name+"ErrorD0").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"DZ").Data(), _vf});
-        eventsTree->Branch((name + "DZ").Data(), &(collmap_float[(name+"DZ").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"ErrorDZ").Data(), _vf});
-        eventsTree->Branch((name + "ErrorDZ").Data(), &(collmap_float[(name+"ErrorDZ").Data()]));
-
-
-
-      } else if (className == "Muon") {
-        store.create<edm4hep::ReconstructedParticleCollection>(name.Data());
-        writer.registerForWrite(name.Data());
-        edm4hep::ReconstructedParticleCollection* col2;
-        store.get2(name.Data(), col2);
-        collmap.insert({name.Data(), col2});
-
-        auto _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVar").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVar").Data(), &(collmap_float[(name+"IsolationVar").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"IsolationVarRhoCorr").Data(), _vf});
-        eventsTree->Branch((name + "IsolationVarRhoCorr").Data(), &(collmap_float[(name+"IsolationVarRhoCorr").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtCharged").Data(), _vf});
-        eventsTree->Branch((name + "SumPtCharged").Data(), &(collmap_float[(name+"SumPtCharged").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtChargedPU").Data(), _vf});
-        eventsTree->Branch((name + "SumPtChargedPU").Data(), &(collmap_float[(name+"SumPtChargedPU").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPt").Data(), _vf});
-        eventsTree->Branch((name + "SumPt").Data(), &(collmap_float[(name+"SumPt").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"SumPtNeutral").Data(), _vf});
-        eventsTree->Branch((name + "SumPtNeutral").Data(), &(collmap_float[(name+"SumPtNeutral").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"D0").Data(), _vf});
-        eventsTree->Branch((name + "D0").Data(), &(collmap_float[(name+"D0").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"ErrorD0").Data(), _vf});
-        eventsTree->Branch((name + "ErrorD0").Data(), &(collmap_float[(name+"ErrorD0").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"DZ").Data(), _vf});
-        eventsTree->Branch((name + "DZ").Data(), &(collmap_float[(name+"DZ").Data()]));
-
-        _vf = new std::vector<float>();
-        collmap_float.insert({(name+"ErrorDZ").Data(), _vf});
-        eventsTree->Branch((name + "ErrorDZ").Data(), &(collmap_float[(name+"ErrorDZ").Data()]));
       } else if (className == "GenParticle") {
-        //TODO
+        // see below
       } else if (className == "ScalarHT") {
-        auto _vf = new std::vector<float>();
-        collmap_float.insert({(name+"HT").Data(), _vf});
-        eventsTree->Branch((name+"HT").Data(), &(collmap_float[(name+"HT").Data()]));
+        _name = name.Data();
+        store.create<edm4hep::ParticleIDCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
       } else if (className == "MissingET") {
-        TLorentzVector* _v = new TLorentzVector();
-        collmap_met.insert({name.Data(), _v});
-        eventsTree->Branch(name.Data(), &(collmap_met[name.Data()]));
+        _name = name.Data();
+        store.create<edm4hep::ReconstructedParticleCollection>(_name);
+        writer.registerForWrite(_name);
+        store.get2(_name, _col);
+        collmap.insert({_name, _col});
       }
+
     }
 
-
+    auto& mcParticleCollection = store.create<edm4hep::MCParticleCollection>("MCParticles");
+    writer.registerForWrite("MCParticles");
+    store.get2("MCParticles", _col);
+    collmap.insert({"MCParticles", _col});
+    auto& mcRecoAssociationCollection = store.create<edm4hep::MCRecoParticleAssociationCollection>("MCRecoAssociations");
+    writer.registerForWrite("MCRecoAssociations");
+    store.get2("MCRecoAssociations", _col);
+    collmap.insert({"MCRecoAssociations", _col});
 
     // has to happen before InitTask
     TObjArray* allParticleOutputArray = modularDelphes->ExportArray("allParticles");
@@ -325,22 +285,31 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
 
     modularDelphes->InitTask();
 
-
     ExRootProgressBar progressBar(-1);
     // Loop over all objects
     eventCounter = 0;
     modularDelphes->Clear();
 
 
-    for (Int_t entry = 0; inputReader.finished() && maxEvents > 0 ?  entry < maxEvents : true && !interrupted; ++entry) {
-      std::cout << inputReader.finished() << " "<< entry << " " << maxEvents << " " << (maxEvents > 0 ?  entry < maxEvents : true) <<   std::endl;
+    for (Int_t entry = 0;
+         inputReader.finished() && maxEvents > 0 ?  entry < maxEvents : true && !interrupted; 
+         ++entry) {
       
-      bool success = inputReader.readEvent(modularDelphes, allParticleOutputArray, stableParticleOutputArray, partonOutputArray);
+      bool success = inputReader.readEvent(modularDelphes, 
+                                           allParticleOutputArray, 
+                                           stableParticleOutputArray, 
+                                           partonOutputArray);
       if (!success) {
-      break;
+        break;
       }
 
       modularDelphes->ProcessTask();
+
+      // collect all associations and process them after all Delphes candidates
+      // have been stored
+      std::vector<std::pair<UInt_t, edm4hep::ConstReconstructedParticle>> mcParticleRelations;
+      std::unordered_map<UInt_t, edm4hep::ConstMCParticle> mcParticleIds;
+
 
         unsigned int collcounter = 0;
         for(int b = 0; b < nParams; b += 3) {
@@ -349,30 +318,18 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
           TString className = branches[b + 2].GetString();
           //std::cout << input << "\t" << name << "\t" << className << std::endl;
           const TObjArray* delphesColl = modularDelphes->ImportArray(input);
+          std::string _name = name.Data();
           if (className == "Jet") {
             edm4hep::ReconstructedParticleCollection* mcps = 
-                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[name.Data()]);
-            std::vector<ROOT::Math::PxPyPzEVector>* _softdropped = 
-                collmap_4v[(name+"SoftDroppedJet").Data()];
-            _softdropped->clear();
-            std::vector<ROOT::Math::PxPyPzEVector>* _softdroppedsubjet1 = collmap_4v[(name+"SoftDroppedSubJet1").Data()];
-            _softdroppedsubjet1->clear();
-            std::vector<ROOT::Math::PxPyPzEVector>* _softdroppedsubjet2 = collmap_4v[(name+"SoftDroppedSubJet2").Data()];
-            _softdroppedsubjet2->clear();
-            std::vector<float>* _tau1 = collmap_float[(name+"Tau1").Data()];
-            _tau1->clear();
-            std::vector<float>* _tau2 = collmap_float[(name+"Tau2").Data()];
-            _tau2->clear();
-            std::vector<float>* _tau3 = collmap_float[(name+"Tau3").Data()];
-            _tau3->clear();
-            std::vector<float>* _tau4 = collmap_float[(name+"Tau4").Data()];
-            _tau4->clear();
-            std::vector<float>* _tau5 = collmap_float[(name+"Tau5").Data()];
-            _tau5->clear();
-            std::vector<float>* _DeltaEta = collmap_float[(name+"DeltaEta").Data()];
-            _DeltaEta->clear();
-            std::vector<float>* _DeltaPhi = collmap_float[(name+"DeltaPhi").Data()];
-            _DeltaPhi->clear();
+                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[_name]);
+
+            // subjets
+            edm4hep::ReconstructedParticleCollection* subjetcoll = 
+                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[_name + "SubJets"]);
+
+            edm4hep::ParticleIDCollection* idcoll = 
+                static_cast<edm4hep::ParticleIDCollection*>(collmap[_name + "ParticleIDs"]);
+
             for (int j = 0; j < delphesColl->GetEntries(); j++) {
               auto cand = static_cast<Candidate*>(delphesColl->At(j));
               auto mcp1 = mcps->create();
@@ -381,182 +338,181 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
               mcp1.setMomentum( { (float) cand->Momentum.Px(), 
                                   (float) cand->Momentum.Py(),
                                   (float) cand->Momentum.Pz() }  ) ;
-              _softdropped->emplace_back(cand->SoftDroppedJet.Px(), 
-                                         cand->SoftDroppedJet.Py(),
-                                         cand->SoftDroppedJet.Pz(),
-                                         cand->SoftDroppedJet.E());
 
-              _tau1->emplace_back(cand->Tau[0]);
-              _tau2->emplace_back(cand->Tau[1]);
-              _tau3->emplace_back(cand->Tau[2]);
-              _tau4->emplace_back(cand->Tau[3]);
-              _tau5->emplace_back(cand->Tau[4]);
-              _DeltaEta->emplace_back(cand->DeltaEta);
-              _DeltaPhi->emplace_back(cand->DeltaPhi);
-              //TODO set particleID
-              //TODO set location
-              //TODO ...
+              for (const auto delphesId : findParticles(cand)) {
+                mcParticleRelations.emplace_back(delphesId, mcp1);
+              }
+
+              auto ids = idcoll->create();
+              // T calculated as in Delphes TreeWriter
+              ids.addToParameters(cand->Position.T() * 1.0E-3  / 2.99792458E8 ); 
+              ids.addToParameters(cand->DeltaEta);
+              ids.addToParameters(cand->DeltaPhi);
+              ids.addToParameters(cand->DeltaPhi);
+              ids.addToParameters(cand->Flavor);
+              ids.addToParameters(cand->FlavorAlgo);
+              ids.addToParameters(cand->FlavorPhys);
+              ids.addToParameters(cand->BTag);
+              ids.addToParameters(cand->BTagAlgo);
+              ids.addToParameters(cand->BTagPhys);
+              ids.addToParameters(cand->TauTag);
+              ids.addToParameters(cand->TauWeight);
+
+              TIter itConstituents(cand->GetCandidates());
+              itConstituents.Reset();
+              double ecalEnergy = 0.0;
+              double hcalEnergy = 0.0;
+              Candidate* constituent = 0; 
+              while((constituent = static_cast<Candidate *>(itConstituents.Next()))) {
+                // todo:
+                ////entry->Constituents.Add(constituent);
+                ecalEnergy += constituent->Eem;
+                hcalEnergy += constituent->Ehad;
+              }
+              float EhadOverEem = ecalEnergy > 0.0 ? hcalEnergy / ecalEnergy : 999.9;
+              ids.addToParameters(EhadOverEem);
+
+              auto area = subjetcoll->create();
+              area.setMomentum( { (float) cand->Area.Px(), 
+                                     (float) cand->Area.Py(),
+                                     (float) cand->Area.Pz() }  ) ;
+              area.setMass( cand->Area.M());
+              mcp1.addToParticles(area);
+
+              auto subjet1 = subjetcoll->create();
+              subjet1.setMomentum( { (float) cand->SoftDroppedJet.Px(), 
+                                     (float) cand->SoftDroppedJet.Py(),
+                                     (float) cand->SoftDroppedJet.Pz() }  ) ;
+              subjet1.setMass( cand->SoftDroppedJet.M());
+              mcp1.addToParticles(subjet1);
+              auto subjet2 = subjetcoll->create();
+              subjet2.setMomentum( { (float) cand->SoftDroppedSubJet1.Px(), 
+                                     (float) cand->SoftDroppedSubJet1.Py(),
+                                     (float) cand->SoftDroppedSubJet1.Pz() }  ) ;
+              subjet2.setMass( cand->SoftDroppedSubJet1.M());
+              mcp1.addToParticles(subjet2);
+              auto subjet3 = subjetcoll->create();
+              subjet3.setMomentum( { (float) cand->SoftDroppedSubJet2.Px(), 
+                                     (float) cand->SoftDroppedSubJet2.Py(),
+                                     (float) cand->SoftDroppedSubJet2.Pz() }  ) ;
+              subjet3.setMass( cand->SoftDroppedSubJet2.M());
+              mcp1.addToParticles(subjet3);
             }
-          } else if (className == "Photon") {
+
+          } else if (className == "Photon" || className == "Electron" || className == "Muon") {
             edm4hep::ReconstructedParticleCollection* mcps =
                 static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[name.Data()]);
-            std::vector<float>* _EhadOverEem = collmap_float[(name+"EhadOverEem").Data()];
-            _EhadOverEem->clear();
+            edm4hep::ParticleIDCollection* idcoll = 
+                static_cast<edm4hep::ParticleIDCollection*>(collmap[_name + "ParticleIDs"]);
 
-            std::vector<float>* _IsolationVar = collmap_float[(name+"IsolationVar").Data()];
-            _IsolationVar->clear();
-
-            std::vector<float>* _IsolationVarRhoCorr = collmap_float[(name+"IsolationVarRhoCorr").Data()];
-            _IsolationVarRhoCorr->clear();
-
-            std::vector<float>* _SumPtCharged = collmap_float[(name+"SumPtCharged").Data()];
-            _SumPtCharged->clear();
-
-            std::vector<float>* _SumPtNeutral = collmap_float[(name+"SumPtNeutral").Data()];
-            _SumPtNeutral->clear();
-
-            std::vector<float>* _SumPtChargedPU = collmap_float[(name+"SumPtChargedPU").Data()];
-            _SumPtChargedPU->clear();
-
-            std::vector<float>* _SumPt = collmap_float[(name+"SumPt").Data()];
-            _SumPt->clear();
             for (int j = 0; j < delphesColl->GetEntries(); j++) {
               auto cand = static_cast<Candidate*>(delphesColl->At(j));
               auto mcp1 = mcps->create();
-              mcp1.setMass( cand->Mass ) ;
+              if (className == "Photon") {
+                auto mcId = findPhotonMC(cand);
+                if (mcId > -1) {
+                  mcParticleRelations.emplace_back(mcId, mcp1);
+                }
+              } else {
+                auto* genCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
+                mcParticleRelations.emplace_back(genCand->GetUniqueID(), mcp1);
+              }
+
+              // const auto& mom = cand->Momentum;
+              // std::cout << className << ": UniqueId: " << cand->GetUniqueID()
+              //           << "(Px, Py, Pz) = (" << mom.Px() << ", " << mom.Py() << ", " << mom.Pz() << ")"
+              //           << " | total related: "  << cand->GetCandidates()->GetEntries() << std::endl;
+              // printCandidates(cand->GetCandidates());
+              mcp1.setMass( cand->Mass );
               mcp1.setCharge( cand->Charge );
               mcp1.setMomentum( { (float) cand->Momentum.Px(), 
                                   (float) cand->Momentum.Py(),
                                   (float) cand->Momentum.Pz() }  ) ;
 
-                _EhadOverEem->emplace_back(cand->Eem > 0.0 ? cand->Ehad / cand->Eem : 999.9);
-                _IsolationVar->emplace_back(cand->IsolationVar);
-                _IsolationVarRhoCorr->emplace_back(cand->IsolationVarRhoCorr);
-                _SumPt->emplace_back(cand->SumPt);
-                _SumPtCharged->emplace_back(cand->SumPtCharged);
-                _SumPtChargedPU->emplace_back(cand->SumPtChargedPU);
-                _SumPtNeutral->emplace_back(cand->SumPtNeutral);
-            }
-          } else if (className == "Electron") {
+              auto ids = idcoll->create();
+              ids.addToParameters(cand->DeltaEta);
 
-            edm4hep::ReconstructedParticleCollection* mcps =
-                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[name.Data()]);
-
-            std::vector<float>* _IsolationVar = collmap_float[(name+"IsolationVar").Data()];
-            _IsolationVar->clear();
-
-            std::vector<float>* _IsolationVarRhoCorr = collmap_float[(name+"IsolationVarRhoCorr").Data()];
-            _IsolationVarRhoCorr->clear();
-
-            std::vector<float>* _SumPtCharged = collmap_float[(name+"SumPtCharged").Data()];
-            _SumPtCharged->clear();
-
-            std::vector<float>* _SumPtNeutral = collmap_float[(name+"SumPtNeutral").Data()];
-            _SumPtNeutral->clear();
-
-            std::vector<float>* _SumPtChargedPU = collmap_float[(name+"SumPtChargedPU").Data()];
-            _SumPtChargedPU->clear();
-
-            std::vector<float>* _SumPt = collmap_float[(name+"SumPt").Data()];
-            _SumPt->clear();
-
-            std::vector<float>* _D0 = collmap_float[(name+"D0").Data()];
-            _D0->clear();
-
-            std::vector<float>* _ErrorD0 = collmap_float[(name+"ErrorD0").Data()];
-            _ErrorD0->clear();
-
-            std::vector<float>* _DZ = collmap_float[(name+"D0").Data()];
-            _DZ->clear();
-
-            std::vector<float>* _ErrorDZ = collmap_float[(name+"ErrorD0").Data()];
-            _ErrorDZ->clear();
-
-            for (int j = 0; j < delphesColl->GetEntries(); j++) {
-              auto cand = static_cast<Candidate*>(delphesColl->At(j));
-              auto mcp1 = mcps->create();
-              mcp1.setMass( cand->Mass ) ;
-              mcp1.setCharge( cand->Charge );
-              mcp1.setMomentum( { (float) cand->Momentum.Px(), 
-                                  (float) cand->Momentum.Py(),
-                                  (float) cand->Momentum.Pz() }  ) ;
-
-
-                _IsolationVar->emplace_back(cand->IsolationVar);
-                _IsolationVarRhoCorr->emplace_back(cand->IsolationVarRhoCorr);
-                _SumPt->emplace_back(cand->SumPt);
-                _SumPtCharged->emplace_back(cand->SumPtCharged);
-                _SumPtChargedPU->emplace_back(cand->SumPtChargedPU);
-                _SumPtNeutral->emplace_back(cand->SumPtNeutral);
-                _D0->emplace_back(cand->D0);
-                _DZ->emplace_back(cand->DZ);
-                _ErrorDZ->emplace_back(cand->ErrorDZ);
-                _ErrorD0->emplace_back(cand->ErrorD0);
-            }
-          } else if (className == "Muon") {
-            edm4hep::ReconstructedParticleCollection* mcps =
-                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[name.Data()]);
-            std::vector<float>* _IsolationVar = collmap_float[(name+"IsolationVar").Data()];
-            _IsolationVar->clear();
-
-            std::vector<float>* _IsolationVarRhoCorr = collmap_float[(name+"IsolationVarRhoCorr").Data()];
-            _IsolationVarRhoCorr->clear();
-
-            std::vector<float>* _SumPtCharged = collmap_float[(name+"SumPtCharged").Data()];
-            _SumPtCharged->clear();
-
-            std::vector<float>* _SumPtNeutral = collmap_float[(name+"SumPtNeutral").Data()];
-            _SumPtNeutral->clear();
-
-            std::vector<float>* _SumPtChargedPU = collmap_float[(name+"SumPtChargedPU").Data()];
-            _SumPtChargedPU->clear();
-
-            std::vector<float>* _SumPt = collmap_float[(name+"SumPt").Data()];
-            _SumPt->clear();
-
-            std::vector<float>* _D0 = collmap_float[(name+"D0").Data()];
-            _D0->clear();
-
-            std::vector<float>* _ErrorD0 = collmap_float[(name+"ErrorD0").Data()];
-            _ErrorD0->clear();
-
-            std::vector<float>* _DZ = collmap_float[(name+"D0").Data()];
-            _DZ->clear();
-
-            std::vector<float>* _ErrorDZ = collmap_float[(name+"ErrorD0").Data()];
-            _ErrorDZ->clear();
-            for (int j = 0; j < delphesColl->GetEntries(); j++) {
-              auto cand = static_cast<Candidate*>(delphesColl->At(j));
-              auto mcp1 = mcps->create();
-              mcp1.setMass( cand->Mass ) ;
-              mcp1.setCharge( cand->Charge );
-              mcp1.setMomentum( { (float) cand->Momentum.Px(), 
-                                  (float) cand->Momentum.Py(),
-                                  (float) cand->Momentum.Pz() }  ) ;
-
-                _IsolationVar->emplace_back(cand->IsolationVar);
-                _IsolationVarRhoCorr->emplace_back(cand->IsolationVarRhoCorr);
-                _SumPt->emplace_back(cand->SumPt);
-                _SumPtCharged->emplace_back(cand->SumPtCharged);
-                _SumPtChargedPU->emplace_back(cand->SumPtChargedPU);
-                _SumPtNeutral->emplace_back(cand->SumPtNeutral);
-                _D0->emplace_back(cand->D0);
-                _DZ->emplace_back(cand->DZ);
-                _ErrorDZ->emplace_back(cand->ErrorDZ);
-                _ErrorD0->emplace_back(cand->ErrorD0);
+              double EhadOverEem = cand->Eem > 0.0 ? cand->Ehad / cand->Eem : 999.9;
+              ids.addToParameters(EhadOverEem);
+              ids.addToParameters(cand->IsolationVar);
+              ids.addToParameters(cand->IsolationVarRhoCorr);
+              ids.addToParameters(cand->SumPt);
+              ids.addToParameters(cand->SumPtCharged);
+              ids.addToParameters(cand->SumPtChargedPU);
+              ids.addToParameters(cand->SumPtNeutral);
             }
           } else if (className == "ScalarHT") {
-            std::vector<float>* _ScalarHTHT = collmap_float[(name+"HT").Data()];
-            _ScalarHTHT->clear();
+            edm4hep::ParticleIDCollection* mcps =
+                static_cast<edm4hep::ParticleIDCollection*>(collmap[name.Data()]);
+            auto mcp1 = mcps->create();
             auto cand = static_cast<Candidate*>(delphesColl->At(0));
-            _ScalarHTHT->emplace_back(cand->Momentum.Pt());
+            mcp1.addToParameters(cand->Momentum.Pt());
           } else if (className == "MissingET") {
-            // there will only ever be one element in this array
-            // no need to save it as a container 
+            edm4hep::ReconstructedParticleCollection* mcps =
+                static_cast<edm4hep::ReconstructedParticleCollection*>(collmap[name.Data()]);
             auto cand = static_cast<Candidate*>(delphesColl->At(0));
-            collmap_met[name.Data()] = &(cand->Momentum);
+             auto mcp1 = mcps->create();
+             mcp1.setMass( cand->Mass ) ;
+              mcp1.setMomentum( { (float) cand->Momentum.Px(), 
+                                  (float) cand->Momentum.Py(),
+                                  (float) cand->Momentum.Pz() }  ) ;
+          } else if (className == "GenParticle") {
+              for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
+              auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
+              auto cand = fromDelphesBase<edm4hep::MCParticle>(delphesCand);
+              cand.setVertex({(float) delphesCand->Position.X(),
+                              (float) delphesCand->Position.Y(),
+                              (float) delphesCand->Position.Z()});
+              cand.setPDG(delphesCand->PID); // delphes uses whatever hepevt.idhep provides
+              mcParticleCollection.push_back(cand);
+              // TODO: - status
+              // TODO: - ...
+
+              mcParticleIds.emplace(delphesCand->GetUniqueID(), cand);
+              // std::cout << "MC Particle, UniqueID: " << delphesCand->GetUniqueID() <<", "
+              //           << "(Px, Py, Pz) = (" << delphesCand->Momentum.Px() << ", "
+              //           << delphesCand->Momentum.Py() << ", " << delphesCand->Momentum.Pz() << "), "
+              //           << "E = " << delphesCand->Momentum.E() << ", M = " << delphesCand->Momentum.M() << "\n";
+            }
+
           }
         }
+             // should technically be a set, but for now we will just emulate that
+        std::vector<UInt_t> usedIds;
+        std::vector<UInt_t> notFoundIds;
+
+        // now register the MC <-> reco associations
+        for (const auto& delphesRelation : mcParticleRelations) {
+          const auto mcIt = mcParticleIds.find(delphesRelation.first);
+          if (mcIt != mcParticleIds.end()) {
+            auto relation = mcRecoAssociationCollection.create();
+            relation.setRec(delphesRelation.second);
+            relation.setSim(mcIt->second);
+            if (std::find(usedIds.cbegin(), usedIds.cend(), delphesRelation.first) == usedIds.cend()) {
+              usedIds.push_back(delphesRelation.first);
+            }
+          } else {
+            std::cerr << "WARNING: delphes candidate had relation to candidate that "
+                      << "was not part of the GenParticle collection (UniqueId = "
+                      << delphesRelation.first << "). Not registering "
+                      << "this relation" << std::endl;
+            notFoundIds.push_back(delphesRelation.first);
+          }
+
+          // // get all Ids here and remove the found ones to arrive at the unused ones
+          // std::vector<UInt_t> unusedIds;
+          // for (const auto& mcId : mcParticleIds) {
+          //   if (std::find(usedIds.cbegin(), usedIds.cend(), mcId.first) == usedIds.cend()) {
+          //     unusedIds.push_back(mcId.first);
+          //   }
+          // }
+
+          // std::cout << "Registered " << mcRecoAssociationCollection.size() << " relations. "
+          //           << "used " << usedIds.size() << " unique MC Particles and found "
+          //           << notFoundIds.size() << " Delphes candidates that were not in the GenParticle array\n";
+
+        }
+
         modularDelphes->Clear();
         writer.writeEvent();
         store.clearCollections();
