@@ -212,9 +212,6 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
     std::unordered_map<std::string, podio::CollectionBase*> collmap;
     edm4hep::ReconstructedParticleCollection* _col;
 
-    auto& trackCollection = store.create<edm4hep::TrackCollection>("Tracks");
-    writer.registerForWrite("Tracks");
-
     for(int b = 0; b < nParams; b += 3) {
       TString input = branches[b].GetString();
       TString name = branches[b + 1].GetString();
@@ -273,6 +270,11 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         writer.registerForWrite(_name);
         store.get(_name, _col);
         collmap.insert({_name, _col});
+      } else if (className == "Track") {
+        store.create<edm4hep::TrackCollection>(name.Data());
+        writer.registerForWrite(name.Data());
+        store.get(name.Data(), _col);
+        collmap.emplace(name.Data(), _col);
       }
 
     }
@@ -484,10 +486,11 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
             }
           } else if (className == "Track") {
             for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
+              auto* trackCollection = static_cast<edm4hep::TrackCollection*>(collmap[name.Data()]);
               auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
               // Delphes does not really provide any information that would go
               // into the track itself
-              auto track = trackCollection.create();
+              auto track = trackCollection->create();
               // But some information can be used to at least partially populate
               // a TrackState
               edm4hep::TrackState trackState{};
