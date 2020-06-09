@@ -55,9 +55,8 @@
 #include "ExRootAnalysis/ExRootTreeWriter.h"
 
 // podio specific includes
-// NOTE: locally updated  prototypes!
-#include "ROOTWriter2.h"
-#include "EventStore2.h"
+#include "podio/ROOTWriter.h"
+#include "podio/EventStore.h"
 
 
 #include "edm4hep/ReconstructedParticleCollection.h"
@@ -220,19 +219,19 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         _name = name.Data();
         store.create<edm4hep::ReconstructedParticleCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
 
         _name = (name + "SubJets").Data();
         store.create<edm4hep::ReconstructedParticleCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
 
         _name = (name + "ParticleIDs").Data();
         store.create<edm4hep::ParticleIDCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
 
 
@@ -241,13 +240,13 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         _name = name.Data();
         store.create<edm4hep::ReconstructedParticleCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
 
         _name = (name + "ParticleIDs").Data();
         store.create<edm4hep::ParticleIDCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
 
 
@@ -257,13 +256,13 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         _name = name.Data();
         store.create<edm4hep::ParticleIDCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
       } else if (className == "MissingET") {
         _name = name.Data();
         store.create<edm4hep::ReconstructedParticleCollection>(_name);
         writer.registerForWrite(_name);
-        store.get2(_name, _col);
+        store.get(_name, _col);
         collmap.insert({_name, _col});
       }
 
@@ -271,11 +270,11 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
 
     auto& mcParticleCollection = store.create<edm4hep::MCParticleCollection>("MCParticles");
     writer.registerForWrite("MCParticles");
-    store.get2("MCParticles", _col);
+    store.get("MCParticles", _col);
     collmap.insert({"MCParticles", _col});
     auto& mcRecoAssociationCollection = store.create<edm4hep::MCRecoParticleAssociationCollection>("MCRecoAssociations");
     writer.registerForWrite("MCRecoAssociations");
-    store.get2("MCRecoAssociations", _col);
+    store.get("MCRecoAssociations", _col);
     collmap.insert({"MCRecoAssociations", _col});
 
     // has to happen before InitTask
