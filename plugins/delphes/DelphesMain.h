@@ -78,43 +78,6 @@ void SignalHandler(int sig) {
   interrupted = true;
 }
 
-/**
- * To fill the basic information that is shared by all edm4hep types
- */
-template <typename EDM4hepT>
-EDM4hepT fromDelphesBase(Candidate* delphesCand) {
-  EDM4hepT cand;
-  cand.setCharge(delphesCand->Charge);
-  // TODO: Delphes deals with masses a bit strangely. For the Muons and
-  // Electrons it is set at the Candidate level (i.e. before TreeWriter) but for
-  // Jets it is not. On the other hand, at the level of the classes that are
-  // written out by the TreeWriter, it doesn't store the masses for the Muons
-  // and Electrons, but it computes the Jet masses from the 4-momentum and
-  // stores that. Additionally, when getting the 4-vector via Muon::P4() or
-  // Electron::P4() delphes sets the masses to 0, but uses the Jet::Mass
-  // member in the case of Jet::P4()
-  // See: https://github.com/delphes/delphes/blob/master/classes/DelphesClasses.cc#L84-L98
-  //
-  // The consequence is that Muons and Electrons stored as
-  // edm4hep::ReconstructedParticle will currently have non-zero masses, whereas
-  // Jets will have zero masses. Delphes outputs on the other hand will have
-  // zero masses for the Muons and Electrons, but non-zero masses for the Jets
-  // (i.e. reversed to edm4hep).
-  //
-  // This mainly makes a difference for the Energy computation of the
-  // reconstructed Jets, as can be seen by comparing the histograms produced by
-  // examples/read_{delphes,edm4hep}.C. For the Muons and Electrons the masses
-  // are negligible enough for the total energy that no difference arises.
-  cand.setMass(delphesCand->Mass);
-  cand.setMomentum({
-    (float) delphesCand->Momentum.Px(),
-    (float) delphesCand->Momentum.Py(),
-    (float) delphesCand->Momentum.Pz()
-  });
-
-  return cand;
-}
-
 
 void printCandidates(TObjArray* candArray)
 {
@@ -282,11 +245,18 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
             for (int j = 0; j < delphesColl->GetEntries(); j++) {
               auto cand = static_cast<Candidate*>(delphesColl->At(j));
               auto mcp1 = mcps->create();
-              mcp1.setMass( cand->Mass ) ;
               mcp1.setCharge( cand->Charge );
               mcp1.setMomentum( { (float) cand->Momentum.Px(), 
                                   (float) cand->Momentum.Py(),
                                   (float) cand->Momentum.Pz() }  ) ;
+              // set mass after momentum has been set to ensure consistent
+              // storage of energy
+              //
+              // NOTE: In the case of the jets, Delphes has the Candidate::Mass
+              // member set to 0 (in contrast to Muons, Electrons, ...) and
+              // instead calculates the mass from the 4-momentum in the
+              // TreeWriter
+              mcp1.setMass( cand->Momentum.M() ) ;
 
               auto ids = idcoll->create();
               // T calculated as in Delphes TreeWriter
@@ -359,11 +329,14 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
               //           << "(Px, Py, Pz) = (" << mom.Px() << ", " << mom.Py() << ", " << mom.Pz() << ")"
               //           << " | total related: "  << cand->GetCandidates()->GetEntries() << std::endl;
               // printCandidates(cand->GetCandidates());
-              mcp1.setMass( cand->Mass );
               mcp1.setCharge( cand->Charge );
               mcp1.setMomentum( { (float) cand->Momentum.Px(), 
                                   (float) cand->Momentum.Py(),
                                   (float) cand->Momentum.Pz() }  ) ;
+              // need to set the mass after the momentum in order to calculate
+              // the energy correctly internally
+              mcp1.setMass( cand->Mass );
+
 
               auto ids = idcoll->create();
               ids.addToParameters(cand->DeltaEta);
@@ -395,12 +368,18 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
           } else if (className == "GenParticle") {
               for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
               auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
-              auto cand = fromDelphesBase<edm4hep::MCParticle>(delphesCand);
+              auto cand = mcParticleCollection.create();
+              cand.setCharge(delphesCand->Charge);
+              cand.setMass(delphesCand->Mass);
+              cand.setMomentum({
+                (float) delphesCand->Momentum.Px(),
+                (float) delphesCand->Momentum.Py(),
+                (float) delphesCand->Momentum.Pz()
+              });
               cand.setVertex({(float) delphesCand->Position.X(),
                               (float) delphesCand->Position.Y(),
                               (float) delphesCand->Position.Z()});
               cand.setPDG(delphesCand->PID); // delphes uses whatever hepevt.idhep provides
-              mcParticleCollection.push_back(cand);
               // TODO: - status
               // TODO: - ...
 
