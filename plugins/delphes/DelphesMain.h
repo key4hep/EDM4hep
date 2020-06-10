@@ -466,6 +466,19 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
           electron.addToTracks(track);
         }
 
+        auto* delphesJetCollection = modularDelphes->ImportArray("UniqueObjectFinder/jets");
+        auto* jetCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(collmap["Jet"]);
+
+        for (int iJet = 0; iJet < delphesJetCollection->GetEntriesFast(); ++iJet) {
+          auto* delphesJet = static_cast<Candidate*>(delphesJetCollection->At(iJet));
+          auto jet = jetCollection->at(iJet);
+
+          const auto jetTrkMatchIndices = delphesTrackMatcher.getMatchingIndices(delphesJet->GetCandidates());
+          for (const auto indices : jetTrkMatchIndices) {
+            auto track = trackCollection->at(indices.first);
+            jet.addToTracks(track);
+          }
+        }
 
         // TODO: Get the array name from the Delphes card?
         DelphesUniqueIDGenMatcher genParticleMatcher(modularDelphes->ImportArray("Delphes/allParticles"));

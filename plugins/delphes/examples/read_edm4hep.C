@@ -128,10 +128,27 @@ void read_edm4hep(std::string&& inputfile) {
             jetGenE->Fill(gen4Momentum.E());
             jetRecoM->Fill(jet.getMass());
             jetGenM->Fill(gen4Momentum.M());
+
+            jetNTracks->Fill(jet.tracks_size());
         }
+
+        // std::unordered_map<int, int> countMap;
+        // for (const auto& mcPart : genParticles) {
+        //     const auto recoParticles = mcRecoNavigator.getRec(mcPart);
+        //     for (const auto& recoPart : recoParticles) {
+        //         countMap[recoPart.getType()]++;
+        //     }
         // }
 
+        // std::cout << "jets: " << jets.size() << ", "
+        //           << " photons: " << photons.size()
+        //           << " electrons: " << electrons.size()
+        //           << " muons: " << muons.size()
+        //           << " relations: " << recoMCAssociations.size() << "\n";
 
+        // for (const auto& types : countMap) {
+        //     std::cout << types.first << ": " << types.second << "\n";
+        //     typeCountMap[types.first]->Fill(types.second);
         // }
 
 

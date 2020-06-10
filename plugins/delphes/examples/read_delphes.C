@@ -81,6 +81,19 @@ void fillHists(TH1F* hDeltaPt, TH1F* hDeltaE, RecoT* recoCand) {
     hDeltaE->Fill(deltaInfo.E);
 }
 
+int getNTracks(const Jet* jet) {
+    int nTracks = 0;
+    for (int i = 0; i < jet->Constituents.GetEntriesFast(); ++i) {
+        auto* object = jet->Constituents.At(i);
+        // if (!object) std::cout << "NULL\n";
+        if (object && object->IsA() == Track::Class()) {
+            nTracks++;
+        }
+    }
+
+    return nTracks;
+}
+
 
 // Following delphes/examples/Example3.C (more or less)
 void read_delphes(const char* inputfile) {
@@ -96,6 +109,7 @@ void read_delphes(const char* inputfile) {
     auto* muons = treeReader->UseBranch("Muon");
     auto* photons = treeReader->UseBranch("Photon");
     auto* jets = treeReader->UseBranch("Jet");
+    auto* tracks = treeReader->UseBranch("EFlowTrack");
 
     defineHists();
 
@@ -126,6 +140,8 @@ void read_delphes(const char* inputfile) {
             jetGenE->Fill(gen4momentum.E());
             jetRecoM->Fill(jet->Mass);
             jetGenM->Fill(gen4momentum.M());
+
+            jetNTracks->Fill(getNTracks(jet));
         }
     }
 

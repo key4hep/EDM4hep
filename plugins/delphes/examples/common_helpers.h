@@ -1,5 +1,5 @@
 #include "TH1F.h"
-#include "TH1F.h"
+#include "TH1I.h"
 
 #include <cmath>
 #include <vector>
@@ -19,6 +19,8 @@ TH1F* jetRecoE;
 TH1F* jetGenE;
 TH1F* jetRecoM;
 TH1F* jetGenM;
+
+TH1I *jetNTracks;
 
 TH1F* logXScaleBinned(const char* name, const int nBins, const float min, const float max)
 {
@@ -50,6 +52,7 @@ void defineHists() {
     jetGenE = logXScaleBinned("jetGenE", 100, 2, 2000);
     jetRecoM = new TH1F("jetRecoM", "jetRecoM", 100, 2, 150);
     jetGenM = new TH1F("jetGenM", "jetGenM", 100, 2, 150);
+    jetNTracks = new TH1I("jetNTracks", "jetNTracks", 30, 0, 30);
 }
 
 void storeHists(const char* filename) {
@@ -68,5 +71,7 @@ void storeHists(const char* filename) {
     jetGenE->Write();
     jetRecoM->Write();
     jetGenM->Write();
+    jetNTracks->Write();
+
     file->Close();
 }
