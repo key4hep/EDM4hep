@@ -11,8 +11,8 @@
 #include <map>
 #include <functional>
 
-UInt_t uniqueID(Candidate* genCand) {
-  return genCand->GetUniqueID();
+std::vector<UInt_t> uniqueID(Candidate* genCand) {
+  return { genCand->GetUniqueID() };
 }
 
 UInt_t trivialGenID(Candidate* cand) {
@@ -56,14 +56,14 @@ std::vector<UInt_t> getAllParticleIDs(Candidate* candidate) {
 }
 
 using MatchingIndices = std::vector<std::pair<int, int>>;
-using UniqueIdF = std::function<UInt_t(Candidate*)>;
+// using UniqueIdF = std::function<UInt_t(Candidate*)>;
 using AllUniqueIdsF = std::function<std::vector<UInt_t>(Candidate*)>;
 
 class DelphesUniqueIDGenMatcher {
 public:
   DelphesUniqueIDGenMatcher() = default;
 
-  DelphesUniqueIDGenMatcher(const TObjArray* matchToArray, UniqueIdF getUniqueID=uniqueID) {
+  DelphesUniqueIDGenMatcher(const TObjArray* matchToArray, AllUniqueIdsF getUniqueID=uniqueID) {
     const auto genSize = matchToArray->GetEntriesFast();
     for (int i = 0; i < genSize; ++i) {
       auto* genCand = static_cast<Candidate*>(matchToArray->At(i));
@@ -71,10 +71,12 @@ public:
     }
   }
 
-  void addCandidate(Candidate* cand, const int index, UniqueIdF getUniqueID=uniqueID) {
-    const auto it = m_genIdIndices.emplace(getUniqueID(cand), index);
+  void addCandidate(Candidate* cand, const int index, AllUniqueIdsF getUniqueID=uniqueID) {
+    for (const auto id : getUniqueID(cand)) {
+      const auto it = m_genIdIndices.emplace(id, index);
       if (it.second == false) {
-        std::cerr << "genCand already in the matching array (by UniqueID)" << std::endl;
+        std::cerr << "WARNING: genCand already in the matching array (by UniqueID)" << std::endl;
+      }
     }
   }
 

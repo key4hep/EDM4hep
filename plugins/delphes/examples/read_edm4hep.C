@@ -98,6 +98,10 @@ void read_edm4hep(std::string&& inputfile) {
         auto& electrons = store.get<edm4hep::ReconstructedParticleCollection>("Electron");
         auto& photons = store.get<edm4hep::ReconstructedParticleCollection>("Photon");
         auto& jets = store.get<edm4hep::ReconstructedParticleCollection>("Jet");
+        auto& tracks = store.get<edm4hep::TrackCollection>("EFlowTrack");
+        auto& ecalClusters = store.get<edm4hep::ClusterCollection>("EFlowPhoton");
+        auto& hcalClusters = store.get<edm4hep::ClusterCollection>("EFlowNeutralHadron");
+
         auto& muonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("MuonMCAssociation");
         auto& electronRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("ElectronMCAssociation");
         auto& photonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("PhotonMCAssociation");
@@ -130,6 +134,7 @@ void read_edm4hep(std::string&& inputfile) {
             jetGenM->Fill(gen4Momentum.M());
 
             jetNTracks->Fill(jet.tracks_size());
+            jetNClusters->Fill(jet.clusters_size());
         }
 
         // std::unordered_map<int, int> countMap;

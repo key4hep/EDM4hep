@@ -81,17 +81,19 @@ void fillHists(TH1F* hDeltaPt, TH1F* hDeltaE, RecoT* recoCand) {
     hDeltaE->Fill(deltaInfo.E);
 }
 
-int getNTracks(const Jet* jet) {
-    int nTracks = 0;
+
+template<typename RecoT>
+int getNType(const Jet* jet) {
+    int nType = 0;
     for (int i = 0; i < jet->Constituents.GetEntriesFast(); ++i) {
         auto* object = jet->Constituents.At(i);
         // if (!object) std::cout << "NULL\n";
-        if (object && object->IsA() == Track::Class()) {
-            nTracks++;
+        if (object && object->IsA() == RecoT::Class()) {
+            nType++;
         }
     }
 
-    return nTracks;
+    return nType;
 }
 
 
@@ -110,6 +112,8 @@ void read_delphes(const char* inputfile) {
     auto* photons = treeReader->UseBranch("Photon");
     auto* jets = treeReader->UseBranch("Jet");
     auto* tracks = treeReader->UseBranch("EFlowTrack");
+    auto* ecalClusters = treeReader->UseBranch("EFlowPhoton");
+    auto* hcalClusters = treeReader->UseBranch("EFlowNeutralHadron");
 
     defineHists();
 
@@ -141,7 +145,8 @@ void read_delphes(const char* inputfile) {
             jetRecoM->Fill(jet->Mass);
             jetGenM->Fill(gen4momentum.M());
 
-            jetNTracks->Fill(getNTracks(jet));
+            jetNTracks->Fill(getNType<Track>(jet));
+            jetNClusters->Fill(getNType<Tower>(jet));
         }
     }
 

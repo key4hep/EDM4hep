@@ -64,6 +64,7 @@
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
 #include "edm4hep/TrackCollection.h"
+#include "edm4hep/ClusterCollection.h"
 
 #include "DelphesRootReader.h"
 #include "delphesHelpers.h"
@@ -184,6 +185,12 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         store.create<edm4hep::TrackCollection>(name.Data());
         writer.registerForWrite(name.Data());
         edm4hep::TrackCollection* col;
+        store.get(name.Data(), col);
+        collmap.emplace(name.Data(), col);
+      } else if (className == "Tower") {
+        store.create<edm4hep::ClusterCollection>(name.Data());
+        writer.registerForWrite(name.Data());
+        edm4hep::ClusterCollection* col;
         store.get(name.Data(), col);
         collmap.emplace(name.Data(), col);
       }
@@ -389,8 +396,9 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
               //           << "E = " << delphesCand->Momentum.E() << ", M = " << delphesCand->Momentum.M() << "\n";
             }
           } else if (className == "Track") {
+            auto* trackCollection = static_cast<edm4hep::TrackCollection*>(collmap[name.Data()]);
+
             for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
-              auto* trackCollection = static_cast<edm4hep::TrackCollection*>(collmap[name.Data()]);
               auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
               // Delphes does not really provide any information that would go
               // into the track itself
@@ -435,6 +443,25 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
 
               track.addToTrackStates(trackState);
             }
+          } else if (className == "Tower") {
+            auto* clusterCollection = static_cast<edm4hep::ClusterCollection*>(collmap[name.Data()]);
+
+            for (int iCand = 0; iCand < delphesColl->GetEntriesFast(); ++iCand) {
+              auto* delphesCand = static_cast<Candidate*>(delphesColl->At(iCand));
+              auto cluster = clusterCollection->create();
+              cluster.setEnergy(delphesCand->Momentum.E());
+              cluster.setPosition({(float) delphesCand->Position.X(),
+                                   (float) delphesCand->Position.Y(),
+                                   (float) delphesCand->Position.Z()});
+
+              // TODO: time? (could be stored in a CalorimeterHit)
+              // TODO: mc relations? would definitely need a CalorimeterHit for that
+              //
+              // TODO: Potentially every delphes tower could be split into two
+              // edm4hep::clusters, with energies split according to Eem and
+              // Ehad. But that would probably make the matching that is done
+              // below much harder
+            }
           }
         }
 
@@ -443,7 +470,7 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         // TODO: When and how do we decide which of the delphes track arrays
         // that we use?
         DelphesUniqueIDGenMatcher delphesTrackMatcher(
-          modularDelphes->ImportArray("HCal/eflowTracks"), trivialGenID);
+          modularDelphes->ImportArray("HCal/eflowTracks"), getTrivialGenID);
         auto* trackCollection = static_cast<edm4hep::TrackCollection*>(collmap["EFlowTrack"]);
 
         // muon tracks
@@ -469,6 +496,16 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
         auto* delphesJetCollection = modularDelphes->ImportArray("UniqueObjectFinder/jets");
         auto* jetCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(collmap["Jet"]);
 
+        // TODO: When and how do we decide which of the delphes tower arrays we
+        // are going to use here?
+        DelphesUniqueIDGenMatcher delphesECalClusterMatcher(
+          modularDelphes->ImportArray("ECal/eflowPhotons"), getAllParticleIDs);
+        auto* ecalClusterCollection = static_cast<edm4hep::ClusterCollection*>(collmap["EFlowPhoton"]);
+
+        DelphesUniqueIDGenMatcher delphesHCalClusterMatcher(
+          modularDelphes->ImportArray("HCal/eflowNeutralHadrons"), getAllParticleIDs);
+        auto* hcalClusterCollection = static_cast<edm4hep::ClusterCollection*>(collmap["EFlowNeutralHadron"]);
+
         for (int iJet = 0; iJet < delphesJetCollection->GetEntriesFast(); ++iJet) {
           auto* delphesJet = static_cast<Candidate*>(delphesJetCollection->At(iJet));
           auto jet = jetCollection->at(iJet);
@@ -477,6 +514,18 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
           for (const auto indices : jetTrkMatchIndices) {
             auto track = trackCollection->at(indices.first);
             jet.addToTracks(track);
+          }
+
+          const auto ecalClusterMatchIndices = delphesECalClusterMatcher.getMatchingIndices(delphesJet->GetCandidates());
+          for (const auto indices : ecalClusterMatchIndices) {
+            auto cluster = ecalClusterCollection->at(indices.first);
+            jet.addToClusters(cluster);
+          }
+
+          const auto hcalClusterMatchIndices = delphesHCalClusterMatcher.getMatchingIndices(delphesJet->GetCandidates());
+          for (const auto indices : hcalClusterMatchIndices) {
+            auto cluster = hcalClusterCollection->at(indices.first);
+            jet.addToClusters(cluster);
           }
         }
 
