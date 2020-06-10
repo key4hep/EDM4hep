@@ -98,31 +98,41 @@ void read_edm4hep(std::string&& inputfile) {
         auto& electrons = store.get<edm4hep::ReconstructedParticleCollection>("Electron");
         auto& photons = store.get<edm4hep::ReconstructedParticleCollection>("Photon");
         auto& jets = store.get<edm4hep::ReconstructedParticleCollection>("Jet");
-        auto& recoMCAssociations = store.get<edm4hep::MCRecoParticleAssociationCollection>("MCRecoAssociations");
+        auto& muonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("MuonMCAssociation");
+        auto& electronRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("ElectronMCAssociation");
+        auto& photonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("PhotonMCAssociation");
+        auto& jetRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("JetMCAssociation");
 
-        MCRecoParticleAssociationNavigator mcRecoNavigator(recoMCAssociations);
+        MCRecoParticleAssociationNavigator muonMCRecoNavigator(muonRecoMCAssocs);
+        MCRecoParticleAssociationNavigator electronMCRecoNavigator(electronRecoMCAssocs);
+        MCRecoParticleAssociationNavigator photonMCRecoNavigator(photonRecoMCAssocs);
+        MCRecoParticleAssociationNavigator jetMCRecoNavigator(jetRecoMCAssocs);
 
         for (const auto& muon : muons) {
-            fillHists(muonDeltaPt, muonDeltaE, muon, mcRecoNavigator);
+            fillHists(muonDeltaPt, muonDeltaE, muon, muonMCRecoNavigator);
         }
 
         for (const auto& electron : electrons) {
-            fillHists(electronDeltaPt, electronDeltaE, electron, mcRecoNavigator);
+            fillHists(electronDeltaPt, electronDeltaE, electron, electronMCRecoNavigator);
         }
 
         for (const auto& photon : photons) {
-            fillHists(photonDeltaPt, photonDeltaE, photon, mcRecoNavigator);
+            fillHists(photonDeltaPt, photonDeltaE, photon, photonMCRecoNavigator);
         }
 
         for (const auto& jet : jets) {
-            fillHists(jetDeltaPt, jetDeltaE, jet, mcRecoNavigator);
+            fillHists(jetDeltaPt, jetDeltaE, jet, jetMCRecoNavigator);
 
-            const auto gen4Momentum = getGen4Momentum(jet, mcRecoNavigator);
+            const auto gen4Momentum = getGen4Momentum(jet, jetMCRecoNavigator);
             jetRecoE->Fill(jet.getEnergy());
             jetGenE->Fill(gen4Momentum.E());
             jetRecoM->Fill(jet.getMass());
             jetGenM->Fill(gen4Momentum.M());
         }
+        // }
+
+
+        // }
 
 
         store.clear();
