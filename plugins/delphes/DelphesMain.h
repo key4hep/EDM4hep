@@ -273,8 +273,9 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
       } else if (className == "Track") {
         store.create<edm4hep::TrackCollection>(name.Data());
         writer.registerForWrite(name.Data());
-        store.get(name.Data(), _col);
-        collmap.emplace(name.Data(), _col);
+        edm4hep::TrackCollection* col;
+        store.get(name.Data(), col);
+        collmap.emplace(name.Data(), col);
       }
 
     }
