@@ -109,7 +109,7 @@ private:
   int getMatchingGenIndex(UInt_t uid) const {
     const auto it = m_genIdIndices.find(uid);
     if (it == m_genIdIndices.cend()) {
-      std::cerr << "Passed UniqueID does not point to a known generated particle in the matching  collection" << std::endl;
+      // std::cerr << "Passed UniqueID does not point to a known generated particle in the matching  collection" << std::endl;
       return -1;
     }
 
