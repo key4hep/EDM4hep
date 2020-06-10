@@ -66,7 +66,7 @@
 #include "edm4hep/TrackCollection.h"
 
 #include "DelphesRootReader.h"
-
+#include "delphesHelpers.h"
 
 using std::cout;
 using std::cerr;
@@ -534,6 +534,36 @@ int doit(int argc, char *argv[], DelphesInputReader& inputReader) {
           }
         }
 
+
+
+        // TODO: When and how do we decide which of the delphes track arrays
+        // that we use?
+        DelphesUniqueIDGenMatcher delphesTrackMatcher(
+          modularDelphes->ImportArray("HCal/eflowTracks"),
+          getCandidateUniqueGenID);
+        auto* trackCollection = static_cast<edm4hep::TrackCollection*>(collmap["EFlowTrack"]);
+
+        // muon tracks
+        const auto muonTrkMatchIndices = delphesTrackMatcher.getMatchingIndices(
+          modularDelphes->ImportArray("UniqueObjectFinder/muons"), getCandidateUniqueGenID);
+        auto* muonCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(collmap["Muon"]);
+
+        for (const auto indices : muonTrkMatchIndices) {
+          auto track = trackCollection->at(indices.first);
+          auto muon = muonCollection->at(indices.second);
+          muon.addToTracks(track);
+        }
+
+        // electron tracks
+        const auto eleTrkMatchIndices = delphesTrackMatcher.getMatchingIndices(
+          modularDelphes->ImportArray("UniqueObjectFinder/electrons"), getCandidateUniqueGenID);
+        auto* electronCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(collmap["Electron"]);
+
+        for (const auto indices : eleTrkMatchIndices) {
+          auto track = trackCollection->at(indices.first);
+          auto electron = electronCollection->at(indices.second);
+          electron.addToTracks(track);
+        }
         // should technically be a set, but for now we will just emulate that
         std::vector<UInt_t> usedIds;
         std::vector<UInt_t> notFoundIds;
