@@ -8,18 +8,27 @@
 #include "TObjArray.h"
 #include "TChain.h"
 #include "TClonesArray.h"
+#include "TParticlePDG.h"
+#include "TStopwatch.h"
+#include "TDatabasePDG.h"
 
 #include "classes/DelphesClasses.h"
 #include "classes/DelphesFactory.h"
 #include "classes/DelphesStream.h"
 #include "classes/DelphesLHEFReader.h"
 #include "modules/Delphes.h"
+#include "ExRootAnalysis/ExRootTreeWriter.h"
 
 #include "Pythia.h"
 #include "Pythia8Plugins/CombineMatchingInput.h"
 
+#include <iostream>
+
 using std::runtime_error;
 using std::stringstream;
+using std::endl;
+using std::cout;
+using std::cerr;
 
 void ConvertInput(Long64_t eventCounter,
                   Pythia8::Pythia *pythia,
