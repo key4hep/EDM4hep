@@ -2,6 +2,11 @@
 
 find_package(Delphes)
 
+add_library(DelphesEDM4HepConverter SHARED DelphesEDM4HepConverter.cc DelphesEDM4HepConverter.h)
+target_include_directories(DelphesEDM4HepConverter PRIVATE ${DELPHES_INCLUDE_DIRS}
+  PRIVATE ${podio_INCLUDE_DIR})
+install(TARGETS DelphesEDM4HepConverter DESTINATION lib)
+
 # build all executables and put them into bin/
 add_executable(DelphesROOT_EDM4HEP DelphesROOT_EDM4HEP.cpp Delphes.cc)
 target_include_directories(DelphesROOT_EDM4HEP PRIVATE ${DELPHES_INCLUDE_DIRS})
