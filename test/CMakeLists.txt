@@ -2,14 +2,16 @@ IF(NOT BUILD_TESTING)
   RETURN()
 ENDIF()
 
+force_link_dict(decor_edm4hepDict edm4hepDict)
+
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
-target_link_libraries_force_dict(write_events edm4hepDict edm4hep podio::podioRootIO )
+target_link_libraries(write_events edm4hep ${decor_edm4hepDict} podio::podioRootIO )
 add_test(NAME write_events COMMAND write_events)
 
 add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
-target_link_libraries_force_dict(read_events edm4hepDict edm4hep podio::podioRootIO )
+target_link_libraries(read_events edm4hep ${decor_edm4hepDict} podio::podioRootIO )
 add_test(NAME read_events COMMAND read_events)
 set_tests_properties(read_events PROPERTIES DEPENDS write_events)
 
@@ -17,7 +19,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep ${CMAKE_SOURCE_DIR}/dataframe )
 
-  target_link_libraries_force_dict(test_rdf edm4hepDict edm4hepRDF ROOT::ROOTDataFrame )
+  target_link_libraries(test_rdf edm4hepRDF ${decor_edm4heptDict} ROOT::ROOTDataFrame )
   add_test(NAME test_rdf COMMAND test_rdf)
   set_tests_properties(test_rdf PROPERTIES DEPENDS write_events)
 endif()
