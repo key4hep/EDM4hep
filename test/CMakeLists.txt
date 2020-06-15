@@ -19,7 +19,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep ${CMAKE_SOURCE_DIR}/dataframe )
 
-  target_link_libraries(test_rdf edm4hepRDF ${decor_edm4heptDict} ROOT::ROOTDataFrame )
+  target_link_libraries(test_rdf edm4hepRDF ${decor_edm4hepDict} ROOT::ROOTDataFrame )
   add_test(NAME test_rdf COMMAND test_rdf)
   set_tests_properties(test_rdf PROPERTIES DEPENDS write_events)
 endif()
