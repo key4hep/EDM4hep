@@ -72,11 +72,14 @@ function(force_link_dict decor_dict dict)
  check_c_compiler_flag("" TEST_AS_NEEDED)
  set(CMAKE_REQUIRED_FLAGS ${STORE_REQUIRED_FLAGS})
 
+ add_library(decorated_${dict} INTERFACE)
+
  if (TEST_NO_AS_NEEDED AND TEST_AS_NEEDED)
-   set(${decor_dict} "-Wl,--push-state,--no-as-needed $<TARGET_LINKER_FILE:${dict}> -Wl,--pop-state" PARENT_SCOPE)
+   target_link_libraries(decorated_${dict} INTERFACE -Wl,--push-state,--no-as-needed ${dict} -Wl,--pop-state)
  else()
-   set(${decor_dict} "$<TARGET_LINKER_FILE:${dict}>" PARENT_SCOPE)
+   target_link_libraries(decorated_${dict} INTERFACE ${dict})
  endif()
+ set(${decor_dict} decorated_${dict} PARENT_SCOPE)
 endfunction()
 #=====================================================================
 
