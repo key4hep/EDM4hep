@@ -2,56 +2,31 @@ IF(NOT BUILD_TESTING)
   RETURN()
 ENDIF()
 
-#=====================================================================
-# check if the linker supports as needed or not
-#   (needed for ROOT dict, specifically on Ubuntu)
-set(STORE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
-include(CheckCCompilerFlag)
-set(CMAKE_REQUIRED_FLAGS "-Wl,--no-as-needed")
-check_c_compiler_flag("" TEST_NO_AS_NEEDED)
-set(CMAKE_REQUIRED_FLAGS "-Wl,--as-needed")
-check_c_compiler_flag("" TEST_AS_NEEDED)
-set(CMAKE_REQUIRED_FLAGS ${STORE_REQUIRED_FLAGS})
-#=====================================================================
-
-
-
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
-if(TEST_NO_AS_NEEDED AND TEST_AS_NEEDED)
-  target_link_libraries(write_events edm4hep
-   -Wl,--push-state,--no-as-needed edm4hepDict -Wl,--pop-state
-   podio::podioRootIO )
-else()
-  target_link_libraries(write_events edm4hep edm4hepDict podio::podioRootIO )
-endif()
+target_link_libraries(write_events edm4hep podio::podioRootIO)
 add_test(NAME write_events COMMAND write_events)
+set_tests_properties(write_events PROPERTIES
+  ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+  )
 
 add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
-if(TEST_NO_AS_NEEDED AND TEST_AS_NEEDED)
-  target_link_libraries(read_events edm4hep
-   -Wl,--push-state,--no-as-needed edm4hepDict -Wl,--pop-state
-   podio::podioRootIO )
-else()
-  target_link_libraries(read_events edm4hep edm4hepDict podio::podioRootIO )
-endif()
+target_link_libraries(read_events edm4hep podio::podioRootIO)
 add_test(NAME read_events COMMAND read_events)
-set_tests_properties(read_events PROPERTIES DEPENDS write_events)
+set_tests_properties(read_events PROPERTIES
+  DEPENDS write_events
+  ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+  )
 
 IF(TARGET ROOT::ROOTDataFrame)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep ${CMAKE_SOURCE_DIR}/dataframe )
-
-  if(TEST_NO_AS_NEEDED AND TEST_AS_NEEDED)
-    target_link_libraries(test_rdf edm4hepRDF
-      -Wl,--push-state,--no-as-needed edm4hepDict -Wl,--pop-state
-      ROOT::ROOTDataFrame )
-  else()
-    target_link_libraries(test_rdf edm4hepRDF edm4hepDict ROOT::ROOTDataFrame )
-  endif()
+  target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame)
   add_test(NAME test_rdf COMMAND test_rdf)
-  set_tests_properties(test_rdf PROPERTIES DEPENDS write_events)
+  set_tests_properties(test_rdf PROPERTIES
+    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    )
 endif()
 
 
@@ -61,6 +36,9 @@ if(tricktrack_FOUND)
   target_link_libraries(edm4hep_tricktrack edm4hep ${tricktrack_LIBRARIES})
   target_include_directories(edm4hep_tricktrack SYSTEM PUBLIC ${tricktrack_INCLUDE_DIR})
   add_test(NAME edm4hep_tricktrack COMMAND edm4hep_tricktrack)
+  set_tests_properties(edm4hep_tricktrack PROPERTIES
+    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    )
 endif()
 
 
@@ -73,4 +51,7 @@ if(HepMC_FOUND AND HepPDT_FOUND )
   target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
   target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC_LIBRARIES})
   add_test(NAME edm4hep_testhepmc COMMAND edm4hep_testhepmc)
+  set_tests_properties(edm4hep_testhepmc PROPERTIES
+    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    )
 endif()
