@@ -29,7 +29,7 @@ target_include_directories(edm4hepDict
 )
 
 PODIO_GENERATE_DICTIONARY(edm4hepDict ${headers} SELECTION src/selection.xml
-  OPTIONS --library libedm4hep${CMAKE_SHARED_LIBRARY_SUFFIX})
+  OPTIONS --library ${CMAKE_SHARED_LIBRARY_PREFIX}edm4hepDict${CMAKE_SHARED_LIBRARY_SUFFIX} )
 set_target_properties(edm4hepDict-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
 add_dependencies(edm4hepDict edm4hep)
 
@@ -46,6 +46,6 @@ install(FILES
 
 if (${ROOT_VERSION} GREATER 6)
   install(FILES
-      "${PROJECT_BINARY_DIR}/edm4hep/libedm4hep_rdict.pcm"
+      "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
       DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 endif()
