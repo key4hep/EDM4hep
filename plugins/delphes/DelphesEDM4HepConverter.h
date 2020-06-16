@@ -11,6 +11,10 @@
 #include "podio/ROOTWriter.h"
 #include "podio/CollectionBase.h"
 
+// edm4hep
+#include "edm4hep/MCParticleConst.h"
+#include "edm4hep/ReconstructedParticle.h"
+
 #include <vector>
 #include <string>
 #include <string_view>
@@ -23,11 +27,11 @@
  * Order in which the different delphes output classes will be processed.
  * Everything not defined here will not be processed
  */
-constexpr std::array<std::string_view, 3> PROCESSING_ORDER = {
+constexpr std::array<std::string_view, 4> PROCESSING_ORDER = {
   "GenParticle",
   "Track",
   "Tower",
-  // "Jet",
+  "Jet",
   // "Photon",
   // "Muon",
   // "Electron",
@@ -41,7 +45,8 @@ constexpr std::array<std::string_view, 3> PROCESSING_ORDER = {
 constexpr std::array<std::string_view, 1> MCPARTICLE_OUTPUT = {"GenParticle"};
 
 /**
- * Branches that will be stored in the global reconstructed particle collection
+ * Branches that will be stored in the global reconstructed particle collection.
+ * These will also get associations with MC particles
  */
 constexpr std::array<std::string_view, 3> RECOPARTICLE_OUTPUT = {
   "EFlowTrack",
@@ -49,7 +54,24 @@ constexpr std::array<std::string_view, 3> RECOPARTICLE_OUTPUT = {
   "EFlowNeutralHadron"
 };
 
+/**
+ * Name of the output global reconstructed particle collection that is the
+ * combination of all delphes collections in RECOPARTICLE_OUTPUT
+ */
 constexpr std::string_view RECOPARTICLE_COLLECTION_NAME = "ReconstructedParticles";
+
+/**
+ * Name of the collection holding the MC <-> Reco associations
+ */
+constexpr std::string_view MCRECO_ASSOCIATION_COLLECTION_NAME = "MCRecoAssociations";
+
+
+/**
+ * Name of the delphes jet collections that are converted (each collection gets
+ * its own edm4hep output collection)
+ */
+constexpr std::array<std::string_view, 1> JET_COLLECTIONS = {"Jet"};
+
 
 /**
  * Classes that will be stored as reconstructed particle with an attached track
@@ -87,7 +109,9 @@ private:
   void processParticles(const TObjArray* delphesCollection, std::string_view const branch);
   void processTracks(const TObjArray* delphesCollection, std::string_view const branch);
   void processClusters(const TObjArray* delphesCollection, std::string_view const branch);
+  void processJets(const TObjArray* delphesCollection, std::string_view const branch);
 
+  void registerGlobalCollections();
 
   using ProcessFunction = void (DelphesEDM4HepConverter::*)(const TObjArray*, std::string_view const);
 
@@ -97,6 +121,12 @@ private:
   std::unordered_map<std::string_view, podio::CollectionBase*> m_collections;
   std::unordered_map<std::string_view, ProcessFunction> m_processFunctions;
   double m_magneticFieldBz; // necessary for determining track parameters
+
+  // map from UniqueIDs (delphes generated particles) to MCParticles
+  std::unordered_map<UInt_t, edm4hep::ConstMCParticle> m_genParticleIds;
+  // map from UniqueIDs (delphes generated particles) to (possibly multiple)
+  // ReconstructedParticles
+  std::unordered_multimap<UInt_t, edm4hep::ReconstructedParticle> m_recoParticleGenIds;
 };
 
 #endif
