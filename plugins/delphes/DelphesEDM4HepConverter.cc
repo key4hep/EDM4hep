@@ -6,11 +6,13 @@
 #include "edm4hep/TrackCollection.h"
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
+#include "edm4hep/RecoParticleRefCollection.h"
 
 #include <string_view>
 #include <algorithm>
 #include <unordered_map>
 #include <iostream>
+#include <iterator>
 
 template<size_t N>
 void sortBranchesProcessingOrder(std::vector<BranchSettings>& branches,
@@ -43,6 +45,11 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
   }
 
   sortBranchesProcessingOrder(m_branches, PROCESSING_ORDER);
+
+  std::unordered_map<std::string, ProcessFunction> refProcessFunctions = {
+    {"Photon", &DelphesEDM4HepConverter::processPhotons},
+    {"Muon", &DelphesEDM4HepConverter::processMuonsElectrons},
+    {"Electron", &DelphesEDM4HepConverter::processMuonsElectrons}};
 
   for (const auto& branch : m_branches) {
     if (contains(MCPARTICLE_OUTPUT, branch.className.c_str())) {
@@ -91,7 +98,17 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processJets);
     }
 
-    // if (contains())
+    if (contains(MUON_COLLECTIONS, branch.name.c_str()) ||
+        contains(ELECTRON_COLLECTIONS, branch.name.c_str()) ||
+        contains(PHOTON_COLLECTIONS, branch.name.c_str())) {
+      m_store.create<edm4hep::RecoParticleRefCollection>(branch.name);
+      m_writer.registerForWrite(branch.name);
+      edm4hep::RecoParticleRefCollection* col;
+      m_store.get(branch.name, col);
+      m_collections.emplace(branch.name, col);
+
+      m_processFunctions.emplace(branch.name, refProcessFunctions[branch.className]);
+    }
   }
 }
 
@@ -270,6 +287,56 @@ void DelphesEDM4HepConverter::processJets(const TObjArray* delphesCollection, st
   }
 }
 
+void DelphesEDM4HepConverter::processPhotons(const TObjArray* delphesCollection, std::string_view const branch)
+{
+  auto* collection = static_cast<edm4hep::RecoParticleRefCollection*>(m_collections[branch]);
+
+  for (auto iCand = 0; iCand < delphesCollection->GetEntriesFast(); ++iCand) {
+    auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(iCand));
+    auto photonRef = collection->create();
+
+    const auto genIds = getAllParticleIDs(delphesCand);
+    if (genIds.empty() || genIds.size() > 1) {
+      std::cerr << "**** WARNING: Delphes algorithm did not return a unique generated particle for a photon" << std::endl;
+      continue;
+    }
+
+    const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genIds[0]);
+    if (std::distance(recoBegin, recoEnd) > 1) {
+      std::cerr << "**** WARNING: More than one reconstructed particle attached to the genParticle UniqueID " << genIds[0] << ", which is supposed to be a photon" << std::endl;
+      continue;
+    }
+    if (recoBegin == m_recoParticleGenIds.end() && recoEnd == m_recoParticleGenIds.end()) {
+      std::cerr << "**** WARNING: Could not find a reconstructed particle attached to the genParticle UniqueID " << genIds[0] << ", which is supposed to be a photon" << std::endl;
+      continue;
+    }
+    photonRef.setParticle(recoBegin->second);
+  }
+}
+
+void DelphesEDM4HepConverter::processMuonsElectrons(const TObjArray* delphesCollection, std::string_view const branch)
+{
+  auto* collection = static_cast<edm4hep::RecoParticleRefCollection*>(m_collections[branch]);
+
+  for (auto iCand = 0; iCand < delphesCollection->GetEntriesFast(); ++iCand) {
+    auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(iCand));
+    auto particleRef = collection->create();
+
+    const auto genId = delphesCand->GetCandidates()->At(0)->GetUniqueID();
+    const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genId);
+    if (std::distance(recoBegin, recoEnd) > 1) {
+      std::cerr << "**** WARNING: More than one reconstructed particle attached to the genParticle UniqueID " << genId << ", which is supposed to be a muon or an electron" << std::endl;
+      continue;
+    }
+    if (recoBegin == m_recoParticleGenIds.end() && recoEnd == m_recoParticleGenIds.end()) {
+      std::cerr << "**** WARNING: Could not find a reconstructed particle attached to the genParticle UniqueID " << genId << ", which is supposed to be muon or an electron" << std::endl;
+      continue;
+    }
+    particleRef.setParticle(recoBegin->second);
+  }
+
+}
+
 void DelphesEDM4HepConverter::writeEvent()
 {
   m_writer.writeEvent();
@@ -284,16 +351,19 @@ void DelphesEDM4HepConverter::finish()
 void DelphesEDM4HepConverter::registerGlobalCollections()
 {
   if (m_collections.find(RECOPARTICLE_COLLECTION_NAME) == m_collections.end()) {
-    m_store.create<edm4hep::ReconstructedParticleCollection>(RECOPARTICLE_COLLECTION_NAME.data());
+    const auto collStr = std::string(RECOPARTICLE_COLLECTION_NAME);
+    m_store.create<edm4hep::ReconstructedParticleCollection>(collStr);
+    m_writer.registerForWrite(collStr);
     edm4hep::ReconstructedParticleCollection* col;
-    m_store.get(RECOPARTICLE_COLLECTION_NAME.data(), col);
+    m_store.get(collStr, col);
     m_collections.emplace(RECOPARTICLE_COLLECTION_NAME, col);
   }
   if (m_collections.find(MCRECO_ASSOCIATION_COLLECTION_NAME) == m_collections.end()) {
-    m_store.create<edm4hep::MCRecoParticleAssociationCollection>(MCRECO_ASSOCIATION_COLLECTION_NAME.data());
-    m_writer.registerForWrite(MCRECO_ASSOCIATION_COLLECTION_NAME.data());
+    const auto collStr = std::string(MCRECO_ASSOCIATION_COLLECTION_NAME.data());
+    m_store.create<edm4hep::MCRecoParticleAssociationCollection>(collStr);
+    m_writer.registerForWrite(collStr);
     edm4hep::MCRecoParticleAssociationCollection* col;
-    m_store.get(MCRECO_ASSOCIATION_COLLECTION_NAME.data(), col);
+    m_store.get(collStr, col);
     m_collections.emplace(MCRECO_ASSOCIATION_COLLECTION_NAME, col);
   }
 }
