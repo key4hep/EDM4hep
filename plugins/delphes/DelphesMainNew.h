@@ -34,7 +34,7 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
       // to get a const version of it here
       auto branches = confReader->GetParam("TreeWriter::Branch");
 
-      DelphesEDM4HepConverter edm4hepConverter(outputfile, branches);
+      DelphesEDM4HepConverter edm4hepConverter(outputfile, branches, confReader.get());
 
       // has to happen before InitTask
       TObjArray* allParticleOutputArray = modularDelphes->ExportArray("allParticles");
@@ -61,6 +61,7 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
 
         modularDelphes->ProcessTask();
         edm4hepConverter.process(modularDelphes);
+        edm4hepConverter.writeEvent();
         modularDelphes->Clear();
         progressBar.Update(eventCounter, eventCounter);
         eventCounter++;
