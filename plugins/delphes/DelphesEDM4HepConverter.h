@@ -23,24 +23,10 @@
 #include <unordered_map>
 
 
-/**
- * Order in which the different delphes output classes will be processed.
- * Everything not defined here will not be processed
- */
-constexpr std::array<std::string_view, 4> PROCESSING_ORDER = {
-  "GenParticle",
-  "Track",
-  "Tower",
-  "Jet",
-  // "Photon",
-  // "Muon",
-  // "Electron",
-  // "MissingET",
-  // "SclalarHT"
-};
 
 /**
- * Classes that will be stored as MCParticles
+ * Classes that will be stored as MCParticles (each collection gets its own
+ * edm4hep output collection)
  */
 constexpr std::array<std::string_view, 1> MCPARTICLE_OUTPUT = {"GenParticle"};
 
@@ -72,6 +58,25 @@ constexpr std::string_view MCRECO_ASSOCIATION_COLLECTION_NAME = "MCRecoAssociati
  */
 constexpr std::array<std::string_view, 1> JET_COLLECTIONS = {"Jet"};
 
+/**
+ * Name of the delphes muon collections that are converted and stored as
+ * RecoParticleRefs that point into the global reconstructed particle collection
+ */
+constexpr std::array<std::string_view, 1> MUON_COLLECTIONS = {"Muon"};
+
+
+/**
+ * Name of the delphes electron collections that are converted and stored as
+ * RecoParticleRefs that point into the global reconstructed particle collection
+ */
+constexpr std::array<std::string_view, 1> ELECTRON_COLLECTIONS = {"Electron"};
+
+/**
+ * Name of the delphes photon collections that are converted and stored as
+ * RecoParticleRefs that point into the global reconstructed particle collection
+ */
+constexpr std::array<std::string_view, 1> PHOTON_COLLECTIONS = {"Photon"};
+
 
 /**
  * Classes that will be stored as reconstructed particle with an attached track
@@ -83,12 +88,25 @@ constexpr std::array<std::string_view, 1> RECO_TRACK_OUTPUT = {"Track"};
  */
 constexpr std::array<std::string_view, 1> RECO_CLUSTER_OUTPUT = {"Tower"};
 
-// /**
-//  *
-//  */
-// constexpr std::string_view TRACK_PARTICLE_NAME = ""
 
-// constexpr std::array<std::pair<const char*, const char*>>
+/**
+ * Order in which the different delphes output classes will be processed.
+ * Everything not defined here will not be processed.
+ *
+ * NOTE: not a configuration parameter. this has to be done in this order to
+ * ensure that products required by later stages are producd early enough
+ */
+constexpr std::array<std::string_view, 7> PROCESSING_ORDER = {
+  "GenParticle",
+  "Track",
+  "Tower",
+  "Jet",
+  "Muon",
+  "Electron",
+  "Photon",
+  // "MissingET",
+  // "SclalarHT"
+};
 
 
 struct BranchSettings {
@@ -110,6 +128,8 @@ private:
   void processTracks(const TObjArray* delphesCollection, std::string_view const branch);
   void processClusters(const TObjArray* delphesCollection, std::string_view const branch);
   void processJets(const TObjArray* delphesCollection, std::string_view const branch);
+  void processPhotons(const TObjArray* delphesCollection, std::string_view const branch);
+  void processMuonsElectrons(const TObjArray* delphesCollection, std::string_view const branch);
 
   void registerGlobalCollections();
 
