@@ -23,3 +23,7 @@ constexpr std::array<std::string_view, 3> PHOTON_COLLECTIONS = {
 "Photon",
 "Photon_MainCal",
 "beamcalPhotons"};
+
+constexpr std::array<std::string_view, 1> MISSINGET_COLLECTIONS = {"MissingET"};
+
+constexpr std::array<std::string_view, 1> SCALARHT_COLLECTIONS = {"ScalarHT"};

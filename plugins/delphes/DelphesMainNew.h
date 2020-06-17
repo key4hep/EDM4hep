@@ -12,7 +12,7 @@
 
 // gracefully handle ctrl+c
 static bool interrupted = false;
-void SignalHandler(int sig) {
+void SignalHandler(int /*sig*/) {
   interrupted = true;
 }
 

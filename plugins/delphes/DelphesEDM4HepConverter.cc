@@ -7,6 +7,7 @@
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
 #include "edm4hep/RecoParticleRefCollection.h"
+#include "edm4hep/ParticleIDCollection.h"
 
 #include <string_view>
 #include <algorithm>
@@ -81,6 +82,16 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
         contains(PHOTON_COLLECTIONS, branch.name.c_str())) {
       registerCollection<edm4hep::RecoParticleRefCollection>(branch.name);
       m_processFunctions.emplace(branch.name, refProcessFunctions[branch.className]);
+    }
+
+    if (contains(MISSINGET_COLLECTIONS, branch.name.c_str())) {
+      registerCollection<edm4hep::ReconstructedParticleCollection>(branch.name);
+      m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processMissingET);
+    }
+
+    if (contains(SCALARHT_COLLECTIONS, branch.name.c_str())) {
+      registerCollection<edm4hep::ParticleIDCollection>(branch.name);
+      m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processScalarHT);
     }
   }
 }
@@ -312,6 +323,28 @@ void DelphesEDM4HepConverter::processMuonsElectrons(const TObjArray* delphesColl
   }
 
 }
+
+void DelphesEDM4HepConverter::processMissingET(const TObjArray* delphesCollection, std::string_view const branch)
+{
+  auto* collection = static_cast<edm4hep::ReconstructedParticleCollection*>(m_collections[branch]);
+  auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(0));
+
+  auto cand = collection->create();
+  cand.setMomentum({(float) delphesCand->Momentum.Px(),
+                    (float) delphesCand->Momentum.Px(),
+                    (float) delphesCand->Momentum.Px()});
+  cand.setMass(delphesCand->Mass);
+}
+
+void DelphesEDM4HepConverter::processScalarHT(const TObjArray* delphesCollection, std::string_view const branch)
+{
+  auto* collection = static_cast<edm4hep::ParticleIDCollection*>(m_collections[branch]);
+  auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(0));
+
+  auto cand = collection->create();
+  cand.addToParameters(delphesCand->Momentum.Pt());
+}
+
 
 void DelphesEDM4HepConverter::writeEvent()
 {
