@@ -23,8 +23,8 @@
 #include <unordered_map>
 
 
-// #include "output_config.h"
-#include "output_config_ILD_new.h"
+#include "output_config.h"
+// #include "output_config_ILD_new.h"
 
 
 /**
@@ -45,7 +45,7 @@ constexpr std::array<std::string_view, 1> RECO_CLUSTER_OUTPUT = {"Tower"};
  * NOTE: not a configuration parameter. this has to be done in this order to
  * ensure that products required by later stages are producd early enough
  */
-constexpr std::array<std::string_view, 7> PROCESSING_ORDER = {
+constexpr std::array<std::string_view, 9> PROCESSING_ORDER = {
   "GenParticle",
   "Track",
   "Tower",
@@ -53,8 +53,8 @@ constexpr std::array<std::string_view, 7> PROCESSING_ORDER = {
   "Muon",
   "Electron",
   "Photon",
-  // "MissingET",
-  // "SclalarHT"
+  "MissingET",
+  "SclalarHT"
 };
 
 
@@ -79,6 +79,8 @@ private:
   void processJets(const TObjArray* delphesCollection, std::string_view const branch);
   void processPhotons(const TObjArray* delphesCollection, std::string_view const branch);
   void processMuonsElectrons(const TObjArray* delphesCollection, std::string_view const branch);
+  void processMissingET(const TObjArray* delphesCollection, std::string_view const branch);
+  void processScalarHT(const TObjArray* delphesCollection, std::string_view const branch);
 
   void registerGlobalCollections();
 
