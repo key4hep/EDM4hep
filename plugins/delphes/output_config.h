@@ -50,3 +50,15 @@ constexpr std::array<std::string_view, 1> ELECTRON_COLLECTIONS = {"Electron"};
  * RecoParticleRefs that point into the global reconstructed particle collection
  */
 constexpr std::array<std::string_view, 1> PHOTON_COLLECTIONS = {"Photon"};
+
+/**
+ * Name of the delphes MissingET collections that are converted and stored as
+ * ReconstructedParticles (one per event)
+ */
+constexpr std::array<std::string_view, 1> MISSINGET_COLLECTIONS = {"MissingET"};
+
+/**
+ * Name of the delphes ScalarHT collections that are converted and stored as
+ * ParticleID objects (one per event)
+ */
+constexpr std::array<std::string_view, 1> SCALARHT_COLLECTIONS = {"ScalarHT"};
