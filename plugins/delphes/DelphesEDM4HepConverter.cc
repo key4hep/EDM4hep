@@ -303,13 +303,14 @@ void DelphesEDM4HepConverter::processPhotons(const TObjArray* delphesCollection,
       continue;
     }
 
-    const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genIds[0]);
+    const auto genId = *genIds.begin();
+    const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genId);
     if (std::distance(recoBegin, recoEnd) > 1) {
-      std::cerr << "**** WARNING: More than one reconstructed particle attached to the genParticle UniqueID " << genIds[0] << ", which is supposed to be a photon" << std::endl;
+      std::cerr << "**** WARNING: More than one reconstructed particle attached to the genParticle UniqueID " << genId << ", which is supposed to be a photon" << std::endl;
       continue;
     }
     if (recoBegin == m_recoParticleGenIds.end() && recoEnd == m_recoParticleGenIds.end()) {
-      std::cerr << "**** WARNING: Could not find a reconstructed particle attached to the genParticle UniqueID " << genIds[0] << ", which is supposed to be a photon" << std::endl;
+      std::cerr << "**** WARNING: Could not find a reconstructed particle attached to the genParticle UniqueID " << genId << ", which is supposed to be a photon" << std::endl;
       continue;
     }
     photonRef.setParticle(recoBegin->second);
