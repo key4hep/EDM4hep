@@ -273,15 +273,17 @@ void DelphesEDM4HepConverter::processJets(const TObjArray* delphesCollection, st
     for (auto iConst = 0; iConst < constituents->GetEntriesFast(); ++iConst) {
       auto* constituent = static_cast<Candidate*>(constituents->At(iConst));
 
-      const auto genId = constituent->GetCandidates()->At(0)->GetUniqueID();
-      const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genId);
+      const auto genIds = getAllParticleIDs(constituent);
+      for (const auto genId : genIds) {
+        const auto [recoBegin, recoEnd] = m_recoParticleGenIds.equal_range(genId);
 
-      if (recoBegin == m_recoParticleGenIds.end() && recoEnd == m_recoParticleGenIds.begin()) {
-        std::cerr << "**** WARNING: No reconstructed particles were found for genParticle UniqueID " << genId << ", which is a jet constituent" << std::endl;
-      }
+        if (recoBegin == m_recoParticleGenIds.end() && recoEnd == m_recoParticleGenIds.end()) {
+          std::cerr << "**** WARNING: No reconstructed particles were found for genParticle UniqueID " << genId << ", which is a jet constituent" << std::endl;
+        }
 
-      for (auto it = recoBegin; it != recoEnd; ++it) {
-        jet.addToParticles(it->second);
+        for (auto it = recoBegin; it != recoEnd; ++it) {
+          jet.addToParticles(it->second);
+        }
       }
     }
   }
