@@ -82,6 +82,9 @@ private:
 
   void registerGlobalCollections();
 
+  template<typename CollectionT>
+  void registerCollection(std::string_view const name);
+
   using ProcessFunction = void (DelphesEDM4HepConverter::*)(const TObjArray*, std::string_view const);
 
   podio::EventStore m_store{};
@@ -97,5 +100,16 @@ private:
   // ReconstructedParticles
   std::unordered_multimap<UInt_t, edm4hep::ReconstructedParticle> m_recoParticleGenIds;
 };
+
+template<typename CollectionT>
+void DelphesEDM4HepConverter::registerCollection(std::string_view const name)
+{
+  std::string nameStr(name);
+  m_store.create<CollectionT>(nameStr);
+  m_writer.registerForWrite(nameStr);
+  CollectionT* col;
+  m_store.get(nameStr, col);
+  m_collections.emplace(name, col);
+}
 
 #endif
