@@ -1,5 +1,5 @@
 
-#include "DelphesMain.h"
+#include "DelphesMainNew.h"
 #include "DelphesRootReader.h"
 
 int main(int argc, char *argv[]) {

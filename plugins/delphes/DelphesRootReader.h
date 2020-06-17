@@ -1,13 +1,13 @@
 #ifndef DELPHESEDM4HEP_DELPHESROOTREADER
 #define DELPHESEDM4HEP_DELPHESROOTREADER
 
-#include <iostream>
 
 #include "DelphesInputReader.h"
 
 #include "TObjArray.h"
 #include "TChain.h"
 #include "TClonesArray.h"
+#include "TStopwatch.h"
 
 #include "classes/DelphesClasses.h"
 #include "classes/DelphesFactory.h"
@@ -17,6 +17,10 @@
 #include "ExRootAnalysis/ExRootTreeBranch.h"
 #include "ExRootAnalysis/ExRootTreeReader.h"
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 
 class DelphesRootReader: public DelphesInputReader {

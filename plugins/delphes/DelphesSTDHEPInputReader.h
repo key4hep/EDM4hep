@@ -1,13 +1,8 @@
 #ifndef DELPHESEDM4HEP_DELPHESTDREADER
 #define DELPHESEDM4HEP_DELPHESTDREADER
 
-#include <iostream>
 
 #include "DelphesInputReader.h"
-
-#include "TObjArray.h"
-#include "TChain.h"
-#include "TClonesArray.h"
 
 #include "classes/DelphesClasses.h"
 #include "classes/DelphesFactory.h"
@@ -18,11 +13,20 @@
 #include "ExRootAnalysis/ExRootTreeBranch.h"
 #include "ExRootAnalysis/ExRootTreeReader.h"
 
+#include "TObjArray.h"
+#include "TChain.h"
+#include "TClonesArray.h"
+#include "TStopwatch.h"
+
+#include <iostream>
+
 
 //// TODO: handle case of more than one input file
 
 using std::stringstream;
 using std::runtime_error;
+using std::endl;
+using std::cout;
 
 class DelphesSTDHEPInputReader: public DelphesInputReader {
   public:
