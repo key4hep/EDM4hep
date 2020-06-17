@@ -48,7 +48,7 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
       ExRootProgressBar progressBar(-1);
       Int_t eventCounter = 0;
       for (Int_t entry = 0;
-           inputReader.finished() && (maxEvents > 0 ?  entry < maxEvents : true) && !interrupted;
+           !inputReader.finished() && (maxEvents > 0 ?  entry < maxEvents : true) && !interrupted;
            ++entry) {
 
         bool success = inputReader.readEvent(modularDelphes,

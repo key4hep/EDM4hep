@@ -75,7 +75,7 @@ class DelphesSTDHEPInputReader: public DelphesInputReader {
           //continue;
         }
       }
-
+      // TODO: multiple input files
       reader->SetInputFile(inputFile);
 
     return true;
@@ -87,15 +87,18 @@ class DelphesSTDHEPInputReader: public DelphesInputReader {
 
   inline bool readEvent(Delphes* modularDelphes, TObjArray* allParticleOutputArray,
   TObjArray* stableParticleOutputArray, TObjArray* partonOutputArray) {
+      reader->Clear();
       readStopWatch.Start();
       auto factory = modularDelphes->GetFactory();
-      do {
-        m_finished = reader->ReadBlock(factory, allParticleOutputArray, stableParticleOutputArray, partonOutputArray);
-      } while(m_finished && !reader->EventReady());
-      readStopWatch.Stop();
-      reader->AnalyzeEvent(branchEvent, eventCounter, &readStopWatch, &procStopWatch);
-      reader->Clear();
-      return m_finished;
+      while(reader->ReadBlock(factory, allParticleOutputArray, stableParticleOutputArray, partonOutputArray)) {
+        if (reader->EventReady()) {
+          readStopWatch.Stop();
+          reader->AnalyzeEvent(branchEvent, eventCounter, &readStopWatch, &procStopWatch);
+          return true;
+        }
+      }
+      m_finished = true; // ?
+      return false;
     };
 
     inline bool finished() {return m_finished;};

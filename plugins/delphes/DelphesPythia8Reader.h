@@ -304,10 +304,11 @@ class DelphesPythia8Reader: public DelphesInputReader {
       ConvertInput(eventCounter, pythia, branchEvent, factory,
         allParticleOutputArray, stableParticleOutputArray, partonOutputArray,
         &readStopWatch, &procStopWatch);
+      ++m_entry;
     return true;
     };
 
-    inline bool finished() {return m_entry < m_numberOfEvents;};
+    inline bool finished() {return m_entry >= m_numberOfEvents;};
 
 private:
   const std::string m_appName = "DelphesPythia8";
