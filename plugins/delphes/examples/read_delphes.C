@@ -147,6 +147,7 @@ void read_delphes(const char* inputfile) {
 
             jetNTracks->Fill(getNType<Track>(jet));
             jetNClusters->Fill(getNType<Tower>(jet));
+            jetNConstituents->Fill(jet->Constituents.GetEntriesFast());
         }
     }
 
