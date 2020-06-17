@@ -22,7 +22,7 @@ TH1F* jetGenM;
 
 TH1I *jetNTracks;
 TH1I *jetNClusters;
-
+TH1I *jetNConstituents;
 
 TH1F* logXScaleBinned(const char* name, const int nBins, const float min, const float max)
 {
@@ -56,6 +56,7 @@ void defineHists() {
     jetGenM = new TH1F("jetGenM", "jetGenM", 100, 2, 150);
     jetNTracks = new TH1I("jetNTracks", "jetNTracks", 30, 0, 30);
     jetNClusters = new TH1I("jetNClusters", "jetNClusters", 30, 0, 30);
+    jetNConstituents = new TH1I("jetNConstituents", "jetNConstituents", 60, 0, 60);
 }
 
 void storeHists(const char* filename) {
@@ -76,6 +77,7 @@ void storeHists(const char* filename) {
     jetGenM->Write();
     jetNTracks->Write();
     jetNClusters->Write();
+    jetNConstituents->Write();
 
     file->Close();
 }
