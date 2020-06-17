@@ -14,6 +14,7 @@ R__LOAD_LIBRARY(libedm4hepDict)
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
+#include "edm4hep/RecoParticleRefCollection.h"
 
 // also make sure that the podio include directory is in ROOT_INCLUDE_PATH
 #include "podio/EventStore.h"
@@ -33,10 +34,21 @@ struct BasicInfo {
 };
 
 
-LorentzVectorT getGen4Momentum(edm4hep::ReconstructedParticle const& recoCand,
+LorentzVectorT getGen4Momentum(edm4hep::ConstReconstructedParticle recoCand,
                             MCRecoParticleAssociationNavigator const& relationNavigator)
 {
-    const auto mcParticles = relationNavigator.getSim(recoCand);
+    auto mcParticles = relationNavigator.getSim(recoCand);
+
+    // for Jets the MC Particles are not attached to the jet
+    // ReconstructedParticle but instead to the constituents
+    if (mcParticles.empty()) {
+        for (auto constIt = recoCand.particles_begin(); constIt != recoCand.particles_end(); ++constIt) {
+            const auto constMCParticles = relationNavigator.getSim(*constIt);
+            for (const auto& mcParticle : constMCParticles) {
+                mcParticles.push_back(mcParticle);
+            }
+        }
+    }
 
     LorentzVectorT momentum{};
     // NOTE: for the moment using all the related particles here. This should
@@ -53,7 +65,7 @@ LorentzVectorT getGen4Momentum(edm4hep::ReconstructedParticle const& recoCand,
     return momentum;
 }
 
-BasicInfo getDeltaInfo(edm4hep::ReconstructedParticle const& recoCand,
+BasicInfo getDeltaInfo(edm4hep::ConstReconstructedParticle recoCand,
                        MCRecoParticleAssociationNavigator const& relationNavigator) {
 
     const auto gen4Momentum = getGen4Momentum(recoCand, relationNavigator);
@@ -68,7 +80,7 @@ BasicInfo getDeltaInfo(edm4hep::ReconstructedParticle const& recoCand,
 }
 
 
-void fillHists(TH1F* hDeltaPt, TH1F* hDeltaE, edm4hep::ReconstructedParticle const& recoCand,
+void fillHists(TH1F* hDeltaPt, TH1F* hDeltaE, edm4hep::ConstReconstructedParticle recoCand,
                MCRecoParticleAssociationNavigator const& relationNavigator) {
     const auto deltaInfo = getDeltaInfo(recoCand, relationNavigator);
     hDeltaPt->Fill(deltaInfo.pt);
@@ -92,49 +104,58 @@ void read_edm4hep(std::string&& inputfile) {
 
     const auto nEntries = reader.getEntries();
     for (int entry = 0; entry < nEntries; ++entry) {
-
-        auto& genParticles = store.get<edm4hep::MCParticleCollection>("MCParticles");
-        auto& muons = store.get<edm4hep::ReconstructedParticleCollection>("Muon");
-        auto& electrons = store.get<edm4hep::ReconstructedParticleCollection>("Electron");
-        auto& photons = store.get<edm4hep::ReconstructedParticleCollection>("Photon");
+        auto& genParticles = store.get<edm4hep::MCParticleCollection>("Particle");
+        auto& recoParticles = store.get<edm4hep::ReconstructedParticleCollection>("ReconstructedParticles");
         auto& jets = store.get<edm4hep::ReconstructedParticleCollection>("Jet");
-        auto& tracks = store.get<edm4hep::TrackCollection>("EFlowTrack");
-        auto& ecalClusters = store.get<edm4hep::ClusterCollection>("EFlowPhoton");
-        auto& hcalClusters = store.get<edm4hep::ClusterCollection>("EFlowNeutralHadron");
 
-        auto& muonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("MuonMCAssociation");
-        auto& electronRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("ElectronMCAssociation");
-        auto& photonRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("PhotonMCAssociation");
-        auto& jetRecoMCAssocs = store.get<edm4hep::MCRecoParticleAssociationCollection>("JetMCAssociation");
+        auto& muons = store.get<edm4hep::RecoParticleRefCollection>("Muon");
+        auto& electrons = store.get<edm4hep::RecoParticleRefCollection>("Electron");
+        auto& photons = store.get<edm4hep::RecoParticleRefCollection>("Photon");
+       
+        // auto& tracks = store.get<edm4hep::TrackCollection>("EFlowTrack");
+        // auto& ecalClusters = store.get<edm4hep::ClusterCollection>("EFlowPhoton");
+        // auto& hcalClusters = store.get<edm4hep::ClusterCollection>("EFlowNeutralHadron");
 
-        MCRecoParticleAssociationNavigator muonMCRecoNavigator(muonRecoMCAssocs);
-        MCRecoParticleAssociationNavigator electronMCRecoNavigator(electronRecoMCAssocs);
-        MCRecoParticleAssociationNavigator photonMCRecoNavigator(photonRecoMCAssocs);
-        MCRecoParticleAssociationNavigator jetMCRecoNavigator(jetRecoMCAssocs);
+        auto& recoMCAssociations = store.get<edm4hep::MCRecoParticleAssociationCollection>("MCRecoAssociations");
+        MCRecoParticleAssociationNavigator mcRecoNavigator(recoMCAssociations);
 
-        for (const auto& muon : muons) {
-            fillHists(muonDeltaPt, muonDeltaE, muon, muonMCRecoNavigator);
+
+        for (const auto& muonRef : muons) {
+            const auto& muon = muonRef.getParticle();
+            fillHists(muonDeltaPt, muonDeltaE, muon, mcRecoNavigator);
         }
 
-        for (const auto& electron : electrons) {
-            fillHists(electronDeltaPt, electronDeltaE, electron, electronMCRecoNavigator);
+        for (const auto& electronRef : electrons) {
+            const auto& electron = electronRef.getParticle();
+            fillHists(electronDeltaPt, electronDeltaE, electron, mcRecoNavigator);
         }
 
-        for (const auto& photon : photons) {
-            fillHists(photonDeltaPt, photonDeltaE, photon, photonMCRecoNavigator);
+        for (const auto& photonRef : photons) {
+            const auto& photon = photonRef.getParticle();
+            fillHists(photonDeltaPt, photonDeltaE, photon, mcRecoNavigator);
         }
 
         for (const auto& jet : jets) {
-            fillHists(jetDeltaPt, jetDeltaE, jet, jetMCRecoNavigator);
+            // TODO: Jets can now no longer as easily get their generated
+            // particles. Need to work on that first before these examples work
+            // again
+            fillHists(jetDeltaPt, jetDeltaE, jet, mcRecoNavigator);
 
-            const auto gen4Momentum = getGen4Momentum(jet, jetMCRecoNavigator);
+            const auto gen4Momentum = getGen4Momentum(jet, mcRecoNavigator);
             jetRecoE->Fill(jet.getEnergy());
             jetGenE->Fill(gen4Momentum.E());
             jetRecoM->Fill(jet.getMass());
             jetGenM->Fill(gen4Momentum.M());
 
-            jetNTracks->Fill(jet.tracks_size());
-            jetNClusters->Fill(jet.clusters_size());
+            int nTracks = 0, nClusters = 0;
+            for (auto constIt = jet.particles_begin(); constIt != jet.particles_end(); ++constIt) {
+                nTracks += std::distance(constIt->tracks_begin(), constIt->tracks_end());
+                nClusters += std::distance(constIt->clusters_begin(), constIt->clusters_end());
+            }
+            jetNTracks->Fill(nTracks);
+            jetNClusters->Fill(nClusters);
+
+            jetNConstituents->Fill(std::distance(jet.particles_begin(), jet.particles_end()));
         }
 
         // std::unordered_map<int, int> countMap;
