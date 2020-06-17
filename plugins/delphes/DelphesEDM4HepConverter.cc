@@ -53,60 +53,33 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
 
   for (const auto& branch : m_branches) {
     if (contains(MCPARTICLE_OUTPUT, branch.className.c_str())) {
-      m_store.create<edm4hep::MCParticleCollection>(branch.name);
-      m_writer.registerForWrite(branch.name);
-      edm4hep::MCParticleCollection* col;
-      m_store.get(branch.name, col);
-      m_collections.emplace(branch.name, col);
-
+      registerCollection<edm4hep::MCParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processParticles);
     }
 
     if (contains(RECOPARTICLE_OUTPUT, branch.name.c_str()) &&
         contains(RECO_TRACK_OUTPUT, branch.className.c_str())) {
       registerGlobalCollections();
-
-      m_store.create<edm4hep::TrackCollection>(branch.name);
-      m_writer.registerForWrite(branch.name);
-      edm4hep::TrackCollection* col;
-      m_store.get(branch.name, col);
-      m_collections.emplace(branch.name, col);
-
+      registerCollection<edm4hep::TrackCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processTracks);
     }
 
     if (contains(RECOPARTICLE_OUTPUT, branch.name.c_str()) &&
         contains(RECO_CLUSTER_OUTPUT, branch.className.c_str())) {
       registerGlobalCollections();
-
-      m_store.create<edm4hep::ClusterCollection>(branch.name);
-      m_writer.registerForWrite(branch.name);
-      edm4hep::ClusterCollection* col;
-      m_store.get(branch.name, col);
-      m_collections.emplace(branch.name, col);
-
+      registerCollection<edm4hep::ClusterCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processClusters);
     }
 
     if (contains(JET_COLLECTIONS, branch.name.c_str())) {
-      m_store.create<edm4hep::ReconstructedParticleCollection>(branch.name);
-      m_writer.registerForWrite(branch.name);
-      edm4hep::ReconstructedParticleCollection* col;
-      m_store.get(branch.name, col);
-      m_collections.emplace(branch.name, col);
-
+      registerCollection<edm4hep::ReconstructedParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processJets);
     }
 
     if (contains(MUON_COLLECTIONS, branch.name.c_str()) ||
         contains(ELECTRON_COLLECTIONS, branch.name.c_str()) ||
         contains(PHOTON_COLLECTIONS, branch.name.c_str())) {
-      m_store.create<edm4hep::RecoParticleRefCollection>(branch.name);
-      m_writer.registerForWrite(branch.name);
-      edm4hep::RecoParticleRefCollection* col;
-      m_store.get(branch.name, col);
-      m_collections.emplace(branch.name, col);
-
+      registerCollection<edm4hep::RecoParticleRefCollection>(branch.name);
       m_processFunctions.emplace(branch.name, refProcessFunctions[branch.className]);
     }
   }
@@ -353,21 +326,12 @@ void DelphesEDM4HepConverter::finish()
 
 void DelphesEDM4HepConverter::registerGlobalCollections()
 {
+  // Make sure that these are only registered once
   if (m_collections.find(RECOPARTICLE_COLLECTION_NAME) == m_collections.end()) {
-    const auto collStr = std::string(RECOPARTICLE_COLLECTION_NAME);
-    m_store.create<edm4hep::ReconstructedParticleCollection>(collStr);
-    m_writer.registerForWrite(collStr);
-    edm4hep::ReconstructedParticleCollection* col;
-    m_store.get(collStr, col);
-    m_collections.emplace(RECOPARTICLE_COLLECTION_NAME, col);
+    registerCollection<edm4hep::ReconstructedParticleCollection>(RECOPARTICLE_COLLECTION_NAME);
   }
   if (m_collections.find(MCRECO_ASSOCIATION_COLLECTION_NAME) == m_collections.end()) {
-    const auto collStr = std::string(MCRECO_ASSOCIATION_COLLECTION_NAME.data());
-    m_store.create<edm4hep::MCRecoParticleAssociationCollection>(collStr);
-    m_writer.registerForWrite(collStr);
-    edm4hep::MCRecoParticleAssociationCollection* col;
-    m_store.get(collStr, col);
-    m_collections.emplace(MCRECO_ASSOCIATION_COLLECTION_NAME, col);
+    registerCollection<edm4hep::MCRecoParticleAssociationCollection>(MCRECO_ASSOCIATION_COLLECTION_NAME);
   }
 }
 
