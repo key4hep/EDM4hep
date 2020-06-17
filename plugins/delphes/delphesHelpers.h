@@ -10,8 +10,9 @@
 #include <utility>
 #include <map>
 #include <functional>
+#include <set>
 
-std::vector<UInt_t> uniqueID(Candidate* genCand) {
+std::set<UInt_t> uniqueID(Candidate* genCand) {
   return { genCand->GetUniqueID() };
 }
 
@@ -19,13 +20,13 @@ UInt_t trivialGenID(Candidate* cand) {
   return static_cast<Candidate*>(cand->GetCandidates()->At(0))->GetUniqueID();
 }
 
-std::vector<UInt_t> getTrivialGenID(Candidate* cand) {
+std::set<UInt_t> getTrivialGenID(Candidate* cand) {
   return { trivialGenID(cand) };
 }
 
 // Following what is done in TreeWriter::FillParticles
-std::vector<UInt_t> getAllParticleIDs(Candidate* candidate) {
-  std::vector<UInt_t> relatedParticles;
+std::set<UInt_t> getAllParticleIDs(Candidate* candidate) {
+  std::set<UInt_t> relatedParticles;
   TIter it1(candidate->GetCandidates());
   it1.Reset();
 
@@ -34,21 +35,21 @@ std::vector<UInt_t> getAllParticleIDs(Candidate* candidate) {
 
     // particle
     if (candidate->GetCandidates()->GetEntriesFast() == 0) {
-      relatedParticles.push_back(candidate->GetUniqueID());
+      relatedParticles.insert(candidate->GetUniqueID());
       continue;
     }
 
     // track
     candidate = static_cast<Candidate*>(candidate->GetCandidates()->At(0));
     if (candidate->GetCandidates()->GetEntriesFast() == 0) {
-      relatedParticles.push_back(candidate->GetUniqueID());
+      relatedParticles.insert(candidate->GetUniqueID());
       continue;
     }
 
     // tower
     it2.Reset();
     while((candidate = static_cast<Candidate*>(it2.Next()))) {
-      relatedParticles.push_back(candidate->GetCandidates()->At(0)->GetUniqueID());
+      relatedParticles.insert(candidate->GetCandidates()->At(0)->GetUniqueID());
     }
   }
 
@@ -57,7 +58,7 @@ std::vector<UInt_t> getAllParticleIDs(Candidate* candidate) {
 
 using MatchingIndices = std::vector<std::pair<int, int>>;
 // using UniqueIdF = std::function<UInt_t(Candidate*)>;
-using AllUniqueIdsF = std::function<std::vector<UInt_t>(Candidate*)>;
+using AllUniqueIdsF = std::function<std::set<UInt_t>(Candidate*)>;
 
 class DelphesUniqueIDGenMatcher {
 public:
