@@ -54,7 +54,7 @@ class DelphesRootReader: public DelphesInputReader {
 
     };
   inline int getNumberOfEvents() {return m_numberOfEvents;}
-  inline bool finished() {return m_entry < m_numberOfEvents;}
+  inline bool finished() {return m_entry >= m_numberOfEvents;}
 
   inline std::string getUsage() {return m_appName;};
 
