@@ -4,7 +4,7 @@
 // delphes
 #include "classes/DelphesClasses.h"
 #include "ExRootAnalysis/ExRootConfReader.h" // ExRootConfParam
-#include "Delphes.h" // NOTE: currently own "fork"
+#include "modules/Delphes.h"
 
 // podio
 #include "podio/EventStore.h"
