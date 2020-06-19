@@ -4,7 +4,7 @@
 #include "TObjArray.h"
 
 #include "ExRootAnalysis/ExRootProgressBar.h"
-#include "Delphes.h"
+#include "modules/Delphes.h"
 
 #include <iostream>
 #include <signal.h> // SIGINT
@@ -104,6 +104,32 @@ OutputSettings getEDM4hepOutputSettings(ExRootConfReader* confReader)
   return settings;
 }
 
+bool validateDelphesCard(ExRootConfReader* confReader)
+{
+  const auto* modules = confReader->GetModules();
+  const auto execPath = toVecString(confReader->GetParam("::ExecutionPath"), {});
+
+  const std::vector<std::string> outputModules = {"TreeWriter", "EDM4HepOutput"};
+
+  // collect / print all error messages before returning, so that all can be
+  // fixed in one go
+  bool valid = true;
+
+  for (const auto& required : outputModules) {
+    const auto modIt = modules->find(required);
+    if (modIt == modules->end()) {
+      std::cerr << "**** ERROR: Required module \'" << required << "\' is not defined in the configuration. Please define it." << std::endl;
+      valid = false;
+    }
+
+    if (std::find(execPath.cbegin(), execPath.cend(), required) != execPath.cend()) {
+      std::cerr << "**** ERROR: Module \'" << required << "\' is set in ExecutionPath. Please remove it." << std::endl;
+      valid = false;
+    }
+  }
+
+  return valid;
+}
 
 int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
     Delphes* modularDelphes = new Delphes("Delphes");
@@ -116,7 +142,11 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
     try {
       auto confReader = std::make_unique<ExRootConfReader>();
       confReader->ReadFile(argv[1]);
+      if(!validateDelphesCard(confReader.get())) {
+        return 1;
+      }
       modularDelphes->SetConfReader(confReader.get());
+
       // since even ExRootConfParam::GetSize() is not marked const it is useless
       // to get a const version of it here
       auto branches = confReader->GetParam("TreeWriter::Branch");
