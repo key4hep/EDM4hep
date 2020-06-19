@@ -31,9 +31,11 @@ inline bool contains(Container const& container, typename Container::value_type 
 }
 
 DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, ExRootConfParam /*const*/& branches,
-                                                 ExRootConfReader* confReader) :
+                                                 OutputSettings const& outputSettings, double magFieldBz) :
   m_writer(outputFile, &m_store),
-  m_magneticFieldBz(confReader->GetDouble("ParticlePropagator::Bz", 0))
+  m_magneticFieldBz(magFieldBz),
+  m_recoCollName(outputSettings.RecoParticleCollectionName),
+  m_mcRecoAssocCollName(outputSettings.MCRecoAssociationCollectionName)
 {
   for (int b = 0; b < branches.GetSize(); b += 3) {
     BranchSettings branch{branches[b].GetString(),
@@ -53,43 +55,43 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
     {"Electron", &DelphesEDM4HepConverter::processMuonsElectrons}};
 
   for (const auto& branch : m_branches) {
-    if (contains(MCPARTICLE_OUTPUT, branch.className.c_str())) {
+    if (contains(outputSettings.GenParticleCollections, branch.className.c_str())) {
       registerCollection<edm4hep::MCParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processParticles);
     }
 
-    if (contains(RECOPARTICLE_OUTPUT, branch.name.c_str()) &&
+    if (contains(outputSettings.ReconstructedParticleCollections, branch.name.c_str()) &&
         contains(RECO_TRACK_OUTPUT, branch.className.c_str())) {
       registerGlobalCollections();
       registerCollection<edm4hep::TrackCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processTracks);
     }
 
-    if (contains(RECOPARTICLE_OUTPUT, branch.name.c_str()) &&
+    if (contains(outputSettings.ReconstructedParticleCollections, branch.name.c_str()) &&
         contains(RECO_CLUSTER_OUTPUT, branch.className.c_str())) {
       registerGlobalCollections();
       registerCollection<edm4hep::ClusterCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processClusters);
     }
 
-    if (contains(JET_COLLECTIONS, branch.name.c_str())) {
+    if (contains(outputSettings.JetCollections, branch.name.c_str())) {
       registerCollection<edm4hep::ReconstructedParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processJets);
     }
 
-    if (contains(MUON_COLLECTIONS, branch.name.c_str()) ||
-        contains(ELECTRON_COLLECTIONS, branch.name.c_str()) ||
-        contains(PHOTON_COLLECTIONS, branch.name.c_str())) {
+    if (contains(outputSettings.MuonCollections, branch.name.c_str()) ||
+        contains(outputSettings.ElectronCollections, branch.name.c_str()) ||
+        contains(outputSettings.PhotonCollections, branch.name.c_str())) {
       registerCollection<edm4hep::RecoParticleRefCollection>(branch.name);
       m_processFunctions.emplace(branch.name, refProcessFunctions[branch.className]);
     }
 
-    if (contains(MISSINGET_COLLECTIONS, branch.name.c_str())) {
+    if (contains(outputSettings.MissingETCollections, branch.name.c_str())) {
       registerCollection<edm4hep::ReconstructedParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processMissingET);
     }
 
-    if (contains(SCALARHT_COLLECTIONS, branch.name.c_str())) {
+    if (contains(outputSettings.ScalarHTCollections, branch.name.c_str())) {
       registerCollection<edm4hep::ParticleIDCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processScalarHT);
     }
@@ -164,9 +166,9 @@ void DelphesEDM4HepConverter::processParticles(const TObjArray* delphesCollectio
 
 void DelphesEDM4HepConverter::processTracks(const TObjArray* delphesCollection, std::string_view const branch)
 {
-  auto* particleCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(m_collections[RECOPARTICLE_COLLECTION_NAME]);
+  auto* particleCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(m_collections[m_recoCollName]);
   auto* trackCollection = static_cast<edm4hep::TrackCollection*>(m_collections[branch]);
-  auto* mcRecoRelations = static_cast<edm4hep::MCRecoParticleAssociationCollection*>(m_collections[MCRECO_ASSOCIATION_COLLECTION_NAME]);
+  auto* mcRecoRelations = static_cast<edm4hep::MCRecoParticleAssociationCollection*>(m_collections[m_mcRecoAssocCollName]);
 
   for (auto iCand = 0; iCand < delphesCollection->GetEntriesFast(); ++iCand) {
     auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(iCand));
@@ -196,9 +198,9 @@ void DelphesEDM4HepConverter::processTracks(const TObjArray* delphesCollection, 
 
 void DelphesEDM4HepConverter::processClusters(const TObjArray* delphesCollection, std::string_view const branch)
 {
-  auto* particleCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(m_collections[RECOPARTICLE_COLLECTION_NAME]);
+  auto* particleCollection = static_cast<edm4hep::ReconstructedParticleCollection*>(m_collections[m_recoCollName]);
   auto* clusterCollection = static_cast<edm4hep::ClusterCollection*>(m_collections[branch]);
-  auto* mcRecoRelations = static_cast<edm4hep::MCRecoParticleAssociationCollection*>(m_collections[MCRECO_ASSOCIATION_COLLECTION_NAME]);
+  auto* mcRecoRelations = static_cast<edm4hep::MCRecoParticleAssociationCollection*>(m_collections[m_mcRecoAssocCollName]);
 
   for (auto iCand = 0; iCand < delphesCollection->GetEntriesFast(); ++iCand) {
     auto* delphesCand = static_cast<Candidate*>(delphesCollection->At(iCand));
@@ -360,11 +362,11 @@ void DelphesEDM4HepConverter::finish()
 void DelphesEDM4HepConverter::registerGlobalCollections()
 {
   // Make sure that these are only registered once
-  if (m_collections.find(RECOPARTICLE_COLLECTION_NAME) == m_collections.end()) {
-    registerCollection<edm4hep::ReconstructedParticleCollection>(RECOPARTICLE_COLLECTION_NAME);
+  if (m_collections.find(m_recoCollName) == m_collections.end()) {
+    registerCollection<edm4hep::ReconstructedParticleCollection>(m_recoCollName);
   }
-  if (m_collections.find(MCRECO_ASSOCIATION_COLLECTION_NAME) == m_collections.end()) {
-    registerCollection<edm4hep::MCRecoParticleAssociationCollection>(MCRECO_ASSOCIATION_COLLECTION_NAME);
+  if (m_collections.find(m_mcRecoAssocCollName) == m_collections.end()) {
+    registerCollection<edm4hep::MCRecoParticleAssociationCollection>(m_mcRecoAssocCollName);
   }
 }
 
