@@ -16,6 +16,93 @@ void SignalHandler(int /*sig*/) {
   interrupted = true;
 }
 
+std::vector<std::string> toVecString(ExRootConfParam param, std::vector<std::string>&& defVals)
+{
+  if (!param.GetSize()) {
+    return defVals;
+  }
+
+  std::vector<std::string> paramVals(param.GetSize());
+  for (int i = 0; i < param.GetSize(); ++i) {
+    paramVals[i] = param[i].GetString();
+  }
+  return paramVals;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, std::vector<T> const& container) {
+  if (container.empty()) {
+    os << " -empty- ";
+    return os;
+  }
+
+  for (size_t i = 0; i < container.size() - 1; ++i) {
+    os << container[i] << ", ";
+  }
+  os << container.back();
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, OutputSettings const& settings) {
+  os << "---------- DelphesEDM4HepConverter OutputSettings ----------\n";
+  os << std::setw(40) << " ReconstructedParticleCollections: " << settings.ReconstructedParticleCollections << "\n";
+  os << std::setw(40) << " GenParticleCollections: " << settings.GenParticleCollections << "\n";
+  os << std::setw(40) << " JetCollections: " << settings.JetCollections << "\n";
+  os << std::setw(40) << " MuonCollections: " << settings.MuonCollections << "\n";
+  os << std::setw(40) << " ElectronCollections: " << settings.ElectronCollections << "\n";
+  os << std::setw(40) << " PhotonCollections: " << settings.PhotonCollections << "\n";
+  os << std::setw(40) << " MissingETCollections: " << settings.MissingETCollections << "\n";
+  os << std::setw(40) << " ScalarHTCollections: " << settings.ScalarHTCollections << "\n";
+  os << std::setw(40) << " RecoParticleCollectionName: " << settings.RecoParticleCollectionName << "\n";
+  os << std::setw(40) << " MCRecoAssociationCollectionName: " << settings.MCRecoAssociationCollectionName << "\n";
+  os << "------------------------------------------------------------\n";
+
+  return os;
+}
+
+OutputSettings getEDM4hepOutputSettings(ExRootConfReader* confReader)
+{
+  OutputSettings settings;
+
+  settings.ReconstructedParticleCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::ReconstructedParticleCollections"),
+    {"EFlowTrack", "EFlowPhoton", "EFlowNeutralHadron"});
+
+  settings.GenParticleCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::GenParticleCollections"),
+    {"GenParticle"});
+
+  settings.JetCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::JetCollections"),
+    {"Jet"});
+
+  settings.MuonCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::MuonCollections"),
+    {"Muon"});
+
+  settings.ElectronCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::ElectronCollections"),
+    {"Electron"});
+
+  settings.PhotonCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::PhotonCollections"),
+    {"Photon"});
+
+  settings.MissingETCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::MissingETCollections"),
+    {"MissingET"});
+
+   settings.ScalarHTCollections = toVecString(
+    confReader->GetParam("EDM4HepOutput::ScalarHTCollections"),
+    {"ScalarHT"});
+
+   settings.RecoParticleCollectionName = confReader->GetString("EDM4HepOutput::RecoParticleCollectionName", "ReconstructedParticles");
+
+   settings.MCRecoAssociationCollectionName = confReader->GetString("EDM4HepOutput::MCRecoAssociationCollectionName", "MCRecoAssociations");
+
+  std::cout << settings << std::endl;
+  return settings;
+}
 
 
 int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
@@ -34,7 +121,10 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
       // to get a const version of it here
       auto branches = confReader->GetParam("TreeWriter::Branch");
 
-      DelphesEDM4HepConverter edm4hepConverter(outputfile, branches, confReader.get());
+      const auto edm4hepOutSettings = getEDM4hepOutputSettings(confReader.get());
+      DelphesEDM4HepConverter edm4hepConverter(outputfile, branches,
+                                               edm4hepOutSettings,
+                                               confReader->GetDouble("ParticlePropagator::Bz", 0) );
 
       // has to happen before InitTask
       TObjArray* allParticleOutputArray = modularDelphes->ExportArray("allParticles");
