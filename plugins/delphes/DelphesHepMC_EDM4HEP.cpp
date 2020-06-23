@@ -1,5 +1,5 @@
 
-#include "DelphesMainNew.h"
+#include "DelphesMain.h"
 #include "DelphesHepMCReader.h"
 
 int main(int argc, char *argv[]) {
