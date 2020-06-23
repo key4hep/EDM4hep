@@ -41,7 +41,6 @@
 #include <iostream>
 #include <ctime>
 
-//using namespace edm4hep ;
 
 /// Namespace for the AIDA detector description toolkit
 namespace dd4hep {
@@ -393,8 +392,7 @@ void Geant4Output2EDM4hep::saveEvent(OutputContext<G4Event>& ctxt)  {
     runNumber = m_runNo + runNumberOffset;
     eventNumber = ctxt.context->GetEventID() + eventNumberOffset;
   }
-  printout(INFO,"Geant4Output2EDM4hep","+++ Saving EDM4hep event %d run %d.",
-	   eventNumber, runNumber);
+  printout(INFO,"Geant4Output2EDM4hep","+++ Saving EDM4hep event %d run %d.", eventNumber, runNumber);
 
   // this does not compile as create() is we only get a const ref - need to review PODIO EventStore API
   // auto& evtHCol = m_store->get<edm4hep::EventHeaderCollection>("EventHeader") ;
