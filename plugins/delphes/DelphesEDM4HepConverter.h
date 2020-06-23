@@ -182,8 +182,7 @@ void DelphesEDM4HepConverter::registerCollection(std::string_view const name)
   std::string nameStr(name);
   m_store.create<CollectionT>(nameStr);
   m_writer.registerForWrite(nameStr);
-  CollectionT* col;
-  m_store.get(nameStr, col);
+  auto* col = const_cast<CollectionT*>(&m_store.get<CollectionT>(nameStr));
   m_collections.emplace(name, col);
 }
 
