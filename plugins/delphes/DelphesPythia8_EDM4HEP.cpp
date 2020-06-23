@@ -1,6 +1,5 @@
 
-#include "DelphesMainNew.h"
-// #include "DelphesMain.h"
+#include "DelphesMain.h"
 #include "DelphesPythia8Reader.h"
 
 int main(int argc, char *argv[]) {
