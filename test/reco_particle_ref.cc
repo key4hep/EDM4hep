@@ -9,7 +9,6 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include <filesystem>
 #include <vector>
 #include <random>
 #include <numeric>
@@ -190,8 +189,6 @@ int main(int, char**) {
     const TestState testState(NEVENTS);
     writeRecoParticleRef(testState);
     readRecoParticleRef(testState);
-    // if we get here, there is no need to keep the temporary file around
-    std::filesystem::remove("reco_particle_ref.root");
   } catch (std::runtime_error const& ex) {
     std::cerr << ex.what() << std::endl;
     return 1;
