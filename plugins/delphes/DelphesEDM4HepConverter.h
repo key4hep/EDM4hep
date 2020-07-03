@@ -180,9 +180,9 @@ template<typename CollectionT>
 void DelphesEDM4HepConverter::registerCollection(std::string_view const name)
 {
   std::string nameStr(name);
-  m_store.create<CollectionT>(nameStr);
+  CollectionT* col = new CollectionT();
+  m_store.registerCollection(nameStr, col);
   m_writer.registerForWrite(nameStr);
-  auto* col = const_cast<CollectionT*>(&m_store.get<CollectionT>(nameStr));
   m_collections.emplace(name, col);
 }
 
