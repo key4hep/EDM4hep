@@ -415,9 +415,7 @@ edm4hep::Track convertTrack(Candidate const* cand, const double magFieldBz)
   double varOmega = 0;
   if (magFieldBz) {
     // conversion to have omega in [1/mm]
-    // TODO: define this globally somewhere?
-    constexpr double cLight = 299792458;
-    constexpr double a = cLight * 1e3 * 1e-15;
+    constexpr double a = c_light * 1e3 * 1e-15;
 
     trackState.omega = a * magFieldBz / cand->PT * std::copysign(1.0, cand->Charge);
     // calculate variation using simple error propagation, assuming
