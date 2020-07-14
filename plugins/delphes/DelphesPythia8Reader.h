@@ -24,12 +24,6 @@
 
 #include <iostream>
 
-using std::runtime_error;
-using std::stringstream;
-using std::endl;
-using std::cout;
-using std::cerr;
-
 void ConvertInput(Long64_t eventCounter,
                   Pythia8::Pythia *pythia,
                   ExRootTreeBranch *branch,
@@ -217,23 +211,23 @@ class DelphesPythia8Reader: public DelphesInputReader {
     matching = combined->getHook(*pythia);
     if(!matching)
     {
-      throw runtime_error("can't do matching");
+      throw std::runtime_error("can't do matching");
     }
     pythia->setUserHooksPtr(matching);
 
     if(pythia == NULL)
     {
-      throw runtime_error("can't create Pythia instance");
+      throw std::runtime_error("can't create Pythia instance");
     }
 
     // Read in commands from configuration file
 
-    stringstream message;
+    std::stringstream message;
     std::string pythia8configname(argv[2]);
     if(!pythia->readFile(pythia8configname))
     {
-      message << "can't read Pythia8 configuration file " << pythia8configname << endl;
-      throw runtime_error(message.str());
+      message << "can't read Pythia8 configuration file " << pythia8configname << std::endl;
+      throw std::runtime_error(message.str());
     }
 
     // Extract settings to be used in the main program
@@ -288,12 +282,12 @@ class DelphesPythia8Reader: public DelphesInputReader {
       if(!pythia->next()) {
         // If failure because reached end of file then exit event loop
         if(pythia->info.atEndOfFile()) {
-          cerr << "Aborted since reached end of Les Houches Event File" << endl;
+          std::cerr << "Aborted since reached end of Les Houches Event File" << std::endl;
           return false;
         }
         // First few failures write off as "acceptable" errors, then quit
         if(++errorCounter > timesAllowErrors) {
-          cerr << "Event generation aborted prematurely, owing to error!" << endl;
+          std::cerr << "Event generation aborted prematurely, owing to error!" << std::endl;
           return false;
         }
         modularDelphes->Clear();
@@ -308,7 +302,7 @@ class DelphesPythia8Reader: public DelphesInputReader {
     return true;
     };
 
-    inline bool finished() {return m_entry >= m_numberOfEvents;};
+  inline bool finished() {return m_entry >= m_numberOfEvents;};
 
 private:
   const std::string m_appName = "DelphesPythia8";

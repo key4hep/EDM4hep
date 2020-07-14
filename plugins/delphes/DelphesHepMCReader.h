@@ -19,13 +19,8 @@
 
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
 //// TODO: handle case of more than one input file
 
-using std::stringstream;
-using std::runtime_error;
 
 class DelphesHepMCInputReader: public DelphesInputReader {
   public:
@@ -49,19 +44,19 @@ class DelphesHepMCInputReader: public DelphesInputReader {
 
       if(i == argc || strncmp(argv[i], "-", 2) == 0)
       {
-        cout << "** Reading standard input" << endl;
+        std::cout << "** Reading standard input" << std::endl;
         inputFile = stdin;
         length = -1;
       }
       else
       {
-        cout << "** Reading " << argv[i] << endl;
+        std::cout << "** Reading " << argv[i] << std::endl;
         inputFile = fopen(argv[i], "r");
 
         if(inputFile == NULL)
         {
           message << "can't open " << argv[i];
-          throw runtime_error(message.str());
+          throw std::runtime_error(message.str());
         }
 
         fseek(inputFile, 0L, SEEK_END);
