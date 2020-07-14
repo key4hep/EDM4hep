@@ -70,7 +70,7 @@ option(EDM4HEP_DOCUMENTATION "Whether or not to create doxygen doc target.")
 include(CTest)
 
 #--- enable CPack --------------------------------------------------------------
-#//include(cmake/EDM4HEPCPack.cmake)
+include(cmake/EDM4HEPCPack.cmake)
 
 #--- target for Doxygen documentation ------------------------------------------
 if(EDM4HEP_DOCUMENTATION)
