@@ -35,7 +35,7 @@ TH1F* logXScaleBinned(const char* name, const int nBins, const float min, const 
     const float l10 = std::log(10);
 
     for (int i = 0; i < nBins + 1; ++i) {
-        xBinning.push_back(lmin + std::exp(l10 * i * dx));
+        xBinning.push_back(std::exp(l10 * (lmin + i * dx)));
     }
 
     return new TH1F(name, name, nBins, xBinning.data());
