@@ -3,6 +3,7 @@
 
 
 #include "DelphesInputReader.h"
+#include "delphesHelpers.h"
 
 #include "TObjArray.h"
 #include "TChain.h"
@@ -95,7 +96,6 @@ private:
   TClonesArray* m_branchParticle;
   TClonesArray* m_branchHepMCEvent;
 
-  const double c_light = 2.99792458E8;
   GenParticle *gen;
   Candidate *candidate;
   int pdgCode;

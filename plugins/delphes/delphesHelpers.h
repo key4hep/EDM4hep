@@ -5,6 +5,9 @@
 
 #include <set>
 
+// TODO: If CLHEP ever gets part of edm4hep, take this from there.
+static constexpr double c_light = 2.99792458e+8;
+
 // Following what is done in TreeWriter::FillParticles
 std::set<UInt_t> getAllParticleIDs(Candidate* candidate) {
   std::set<UInt_t> relatedParticles;
