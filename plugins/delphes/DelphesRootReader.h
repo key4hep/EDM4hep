@@ -19,10 +19,6 @@
 
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
-
 class DelphesRootReader: public DelphesInputReader {
   public:
   inline DelphesRootReader() {};
