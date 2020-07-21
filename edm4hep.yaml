@@ -118,9 +118,21 @@ datatypes :
       - edm4hep::MCParticle parents // The parents of this particle.
       - edm4hep::MCParticle daughters // The daughters this particle.
     ExtraCode :
-      includes: "#include <math.h>\n
+      includes: "#include <cmath>"
+      declaration: "
+      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
+      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
+      void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
+      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
+      void setDecayedInTracker(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
+      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  		     \n
+      void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
+      void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
+      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
       "
-      const_declaration: "
+
+    ConstExtraCode:
+      declaration: "
       // define the bit positions for the simulation flag\n
       static const int BITEndpoint = 31;\n
       static const int BITCreatedInSimulation = 30;\n
@@ -153,21 +165,6 @@ datatypes :
       bool isOverlay() const { return ( getSimulatorStatus() & ( 0x1 << BITOverlay )) ; }     \n
       "
 
-      declaration: "
-      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
-      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
-      void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
-      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
-      void setDecayedInTracker(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
-      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  		     \n
-      void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
-      void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
-      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
-      "
-      implementation : ""
-
-
-
 
   #----------- SimTrackerHit
   edm4hep::SimTrackerHit:
@@ -184,9 +181,14 @@ datatypes :
     OneToOneRelations:
       - edm4hep::MCParticle MCParticle //MCParticle that caused the hit.
     ExtraCode :
-      includes: "#include <math.h>\n
+      includes: "#include <cmath>"
+      declaration: "
+      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
+      void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
+      void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
       "
-      const_declaration: "
+    ConstExtraCode:
+      declaration: "
       static const int  BITOverlay = 31;\n
       static const int  BITProducedBySecondary = 30;\n
       bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }\n
@@ -196,11 +198,7 @@ datatypes :
       double z() const {return getPosition()[2];}\n
       double rho() const {return sqrt(x()*x() + y()*y());}\n
       "
-      declaration: "
-      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
-      void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
-      void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
-      "
+
 
   #------------- CaloHitContribution
   edm4hep::CaloHitContribution:
