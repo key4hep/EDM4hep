@@ -8,9 +8,10 @@ components:
 
     # Vector3D with floats
     edm4hep::Vector3f :
-      x : float
-      y : float
-      z : float
+      Members:
+        - float x
+        - float y
+        - float z
       ExtraCode :
         declaration: "
         Vector3f() : x(0),y(0),z(0) {}\n
@@ -22,9 +23,10 @@ components:
 
     # Vector3D with doubles
     edm4hep::Vector3d :
-      x : double
-      y : double
-      z : double
+      Members:
+        - double x
+        - double y
+        - double z
       ExtraCode :
         declaration: "
         Vector3d() : x(0),y(0),z(0) {}\n
@@ -37,8 +39,9 @@ components:
 
     # Vector2D with ints
     edm4hep::Vector2i :
-      a : int
-      b : int
+      Members:
+        - int a
+        - int b
       ExtraCode :
         declaration: "
         Vector2i() : a(0),b(0) {}\n
@@ -49,14 +52,15 @@ components:
         "
       # Parametrized description of a particle track
     edm4hep::TrackState:
-      location       : int # for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
-      D0             : float # transverse impact parameter
-      phi            : float # azimuthal angle 
-      omega          : float # is the signed curvature of the track in [1/mm].
-      Z0             : float # longitudinal impact parameter
-      tanLambda      : float # lambda is the dip angle of the track in r-z
-      referencePoint : edm4hep::Vector3f # Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
-      covMatrix      : std::array<float,15> # upper triangular covariance matrix of the track parameters.  the order of parameters is:   d0, phi, omega, z0, tan(lambda). 
+      Members:
+        - int location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
+        - float D0 // transverse impact parameter
+        - float phi // azimuthal angle
+        - float omega // is the signed curvature of the track in [1/mm].
+        - float Z0 // longitudinal impact parameter
+        - float tanLambda // lambda is the dip angle of the track in r-z
+        - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
+        - std::array<float, 15> covMatrix // upper triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda).
       ExtraCode :
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n   
@@ -70,8 +74,9 @@ components:
 
     #------ ObjectID helper struct for references/relations
     edm4hep::ObjectID:
-      index        : int
-      collectionID : int
+      Members:
+        - int index
+        - int collectionID
       ExtraCode :
         includes: "#include <podio/ObjectID.h>\n"
         declaration: "
