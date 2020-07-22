@@ -30,9 +30,8 @@ inline bool contains(Container const& container, typename Container::value_type 
   return std::find(container.cbegin(), container.cend(), value) != container.cend();
 }
 
-DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, ExRootConfParam /*const*/& branches,
+DelphesEDM4HepConverter::DelphesEDM4HepConverter(ExRootConfParam /*const*/& branches,
                                                  OutputSettings const& outputSettings, double magFieldBz) :
-  m_writer(outputFile, &m_store),
   m_magneticFieldBz(magFieldBz),
   m_recoCollName(outputSettings.RecoParticleCollectionName),
   m_mcRecoAssocCollName(outputSettings.MCRecoAssociationCollectionName)
@@ -98,9 +97,11 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(std::string const& outputFile, 
   }
 }
 
-void DelphesEDM4HepConverter::process(Delphes *modularDelphes)
-{
-  m_store.clearCollections();
+void DelphesEDM4HepConverter::process(Delphes *modularDelphes) {
+  // beginning of processing: clear previous event from containers
+  for (auto& coll : m_collections) {
+   coll.second->clear();
+  }
   m_genParticleIds.clear();
   m_recoParticleGenIds.clear();
 
@@ -348,16 +349,6 @@ void DelphesEDM4HepConverter::processScalarHT(const TObjArray* delphesCollection
 }
 
 
-void DelphesEDM4HepConverter::writeEvent()
-{
-  m_writer.writeEvent();
-  m_store.clearCollections();
-}
-
-void DelphesEDM4HepConverter::finish()
-{
-  m_writer.finish();
-}
 
 void DelphesEDM4HepConverter::registerGlobalCollections()
 {

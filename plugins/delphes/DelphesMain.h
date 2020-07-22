@@ -152,9 +152,16 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
       auto branches = confReader->GetParam("TreeWriter::Branch");
 
       const auto edm4hepOutSettings = getEDM4hepOutputSettings(confReader.get());
-      DelphesEDM4HepConverter edm4hepConverter(outputfile, branches,
+      podio::EventStore eventstore;
+      podio::ROOTWriter podio_writer(outputfile, &eventstore);
+      DelphesEDM4HepConverter edm4hepConverter(branches,
                                                edm4hepOutSettings,
                                                confReader->GetDouble("ParticlePropagator::Bz", 0) );
+      auto collections = edm4hepConverter.getCollections();
+      for (auto& c: collections) {
+        eventstore.registerCollection(std::string(c.first), c.second);
+        podio_writer.registerForWrite(std::string(c.first));
+      }
 
       // has to happen before InitTask
       TObjArray* allParticleOutputArray = modularDelphes->ExportArray("allParticles");
@@ -181,7 +188,9 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
 
         modularDelphes->ProcessTask();
         edm4hepConverter.process(modularDelphes);
-        edm4hepConverter.writeEvent();
+        podio_writer.writeEvent();
+        eventstore.clearCollections();
+
         modularDelphes->Clear();
         progressBar.Update(eventCounter, eventCounter);
         eventCounter++;
@@ -189,7 +198,7 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
 
       progressBar.Update(eventCounter, eventCounter, true);
       progressBar.Finish();
-      edm4hepConverter.finish();
+      podio_writer.finish();
       modularDelphes->Finish();
       std::cout << "** Exiting ..." << std::endl;
 
