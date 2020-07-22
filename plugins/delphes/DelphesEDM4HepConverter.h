@@ -137,11 +137,10 @@ struct BranchSettings {
 
 class DelphesEDM4HepConverter {
 public:
-  DelphesEDM4HepConverter(std::string const& outputFile, ExRootConfParam /*const*/& branches,
+  DelphesEDM4HepConverter( ExRootConfParam /*const*/& branches,
                           OutputSettings const& outputSettings, double magFieldBz);
   void process(Delphes* modularDelphes);
-  void writeEvent();
-  void finish();
+  inline std::unordered_map<std::string_view, podio::CollectionBase*> getCollections() {return m_collections;};
 
 private:
   void processParticles(const TObjArray* delphesCollection, std::string_view const branch);
@@ -160,8 +159,6 @@ private:
 
   using ProcessFunction = void (DelphesEDM4HepConverter::*)(const TObjArray*, std::string_view const);
 
-  podio::EventStore m_store{};
-  podio::ROOTWriter m_writer;
   std::vector<BranchSettings> m_branches;
   std::unordered_map<std::string_view, podio::CollectionBase*> m_collections;
   std::unordered_map<std::string_view, ProcessFunction> m_processFunctions;
@@ -177,12 +174,11 @@ private:
 };
 
 template<typename CollectionT>
-void DelphesEDM4HepConverter::registerCollection(std::string_view const name)
-{
+void DelphesEDM4HepConverter::registerCollection(std::string_view name) {
+  // todo: this is not registering in the event store anymore,
+  // but only in the collections map, could be renamed.
   std::string nameStr(name);
   CollectionT* col = new CollectionT();
-  m_store.registerCollection(nameStr, col);
-  m_writer.registerForWrite(nameStr);
   m_collections.emplace(name, col);
 }
 
