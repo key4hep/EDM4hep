@@ -195,14 +195,15 @@ class DelphesPythia8Reader: public DelphesInputReader {
     };
 
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
-    if (argc != 4) {
+    if (argc != 5) {
       std::cout << "Usage: " << m_appName << "config_file pythia_card output_file\n"
                 << "config_file - configuration file in Tcl format,\n"
+                << "output_config_file - configuration file steering the content of the edm4hep output in Tcl format,\n"
                 << "pythia_card - Pythia8 configuration file,\n"
                 << "output_file - output file in ROOT format." << std::endl;
       return false;
     }
-    outputfile = argv[3];
+    outputfile = argv[4];
 
     // Initialize Pythia
     pythia = new Pythia8::Pythia;
@@ -223,7 +224,7 @@ class DelphesPythia8Reader: public DelphesInputReader {
     // Read in commands from configuration file
 
     std::stringstream message;
-    std::string pythia8configname(argv[2]);
+    std::string pythia8configname(argv[3]);
     if(!pythia->readFile(pythia8configname))
     {
       message << "can't read Pythia8 configuration file " << pythia8configname << std::endl;
