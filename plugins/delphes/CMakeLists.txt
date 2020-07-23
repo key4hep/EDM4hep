@@ -7,8 +7,10 @@ target_include_directories(DelphesEDM4HepConverter SYSTEM PUBLIC ${DELPHES_INCLU
 target_link_libraries(DelphesEDM4HepConverter edm4hep ${DELPHES_LIBRARY} podio::podioRootIO ROOT::MathCore ROOT::EG)
 set_target_properties(DelphesEDM4HepConverter PROPERTIES PUBLIC_HEADER "DelphesEDM4HepConverter.h;Delphes.h")
 install(TARGETS DelphesEDM4HepConverter 
+        EXPORT EDM4HEPTargets
         LIBRARY DESTINATION lib
-        PUBLIC_HEADER DESTINATION include/edm4hep)
+        PUBLIC_HEADER DESTINATION include/edm4hep
+        COMPONENT dev)
 
 # build all executables and put them into bin/
 add_executable(DelphesROOT_EDM4HEP DelphesROOT_EDM4HEP.cpp Delphes.cc)
