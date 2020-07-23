@@ -27,7 +27,7 @@ install(TARGETS DDG4EDM4hep
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
   COMPONENT dev)
 
-add_test(NAME ddsim_edm4hep COMMAND ddsim --compactFile $ENV{DD4hep_DIR}/DDDetectors/compact/SiD.xml -N 2 -G --gun.particle pi+ --outputFile my_edm4hep.root --part.userParticleHandler= )
+add_test(NAME ddsim_edm4hep COMMAND ddsim --compactFile $ENV{DD4hepINSTALL}/DDDetectors/compact/SiD.xml -N 2 -G --gun.particle pi+ --outputFile my_edm4hep.root --part.userParticleHandler= )
 set_tests_properties(ddsim_edm4hep PROPERTIES ENVIRONMENT
   "LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:DDG4EDM4hep>:$ENV{LD_LIBRARY_PATH};DD4HEP_LIBRARY_PATH=$<TARGET_FILE_DIR:DDG4EDM4hep>:$ENV{DD4HEP_LIBRARY_PATH}"
   FAIL_REGULAR_EXPRESSION "Error;ERROR;Failed"
