@@ -4,7 +4,7 @@
 #include "TObjArray.h"
 
 #include "ExRootAnalysis/ExRootProgressBar.h"
-#include "modules/Delphes.h"
+#include "Delphes.h"
 
 #include <iostream>
 #include <signal.h> // SIGINT
