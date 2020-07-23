@@ -32,17 +32,18 @@ class DelphesSTDHEPInputReader: public DelphesInputReader {
   public:
   inline DelphesSTDHEPInputReader() {};
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
-    if (argc < 3) {
+    if (argc < 4) {
       std::cout << "Usage: " << m_appName << " config_file output_file [input_file(s)]\n"
                 << "config_file - configuration file in Tcl format,\n"
+                << "output_config_file - configuration file steering the content of the edm4hep output in Tcl format,\n"
                 << "output_file - output file in ROOT format,\n"
                 << "input_file(s) - input file(s) in STDHEP format,\n"
                 << "with no input_file, or when input_file is -, read standard input."<< std::endl;
       return false;
     }
-    outputfile = argv[2];
+    outputfile = argv[3];
 
-    int i = 3;
+    int i = 4;
 
     branchEvent = new ExRootTreeBranch("Event", LHEFEvent::Class());
     reader = new DelphesSTDHEPReader;

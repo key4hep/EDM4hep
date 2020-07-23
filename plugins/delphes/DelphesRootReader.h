@@ -24,19 +24,20 @@ class DelphesRootReader: public DelphesInputReader {
   public:
   inline DelphesRootReader() {};
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
-    if (argc < 4) {
+    if (argc < 5) {
       std::cout << "Usage: " << m_appName << " config_file output_file input_file(s)\n"
                 << "config_file - configuration file in Tcl format,\n"
+                << "output_config_file - configuration file steering the content of the edm4hep output in Tcl format,\n"
                 << "output_file - output file in ROOT format\n"
                 << "input_file(s) - input file(s) in ROOT format" << std::endl;
       return false;
     }
 
-    outputfile = argv[2];
+    outputfile = argv[3];
 
     m_chain = new TChain("Delphes");
 
-    for(int i = 3; i < argc; ++i) {
+    for(int i = 4; i < argc; ++i) {
       //std::cout << argv[i] << std::endl;
       m_chain->Add(argv[i]);
     }
