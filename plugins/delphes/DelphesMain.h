@@ -142,16 +142,19 @@ int doit(int argc, char* argv[], DelphesInputReader& inputReader) {
     try {
       auto confReader = std::make_unique<ExRootConfReader>();
       confReader->ReadFile(argv[1]);
-      if(!validateDelphesCard(confReader.get())) {
-        return 1;
-      }
+      //if(!validateDelphesCard(confReader.get())) {
+      //  return 1;
+      //}
+      
       modularDelphes->SetConfReader(confReader.get());
 
       // since even ExRootConfParam::GetSize() is not marked const it is useless
       // to get a const version of it here
       auto branches = confReader->GetParam("TreeWriter::Branch");
 
-      const auto edm4hepOutSettings = getEDM4hepOutputSettings(confReader.get());
+      auto confReaderEDM4HEP = std::make_unique<ExRootConfReader>();
+      confReaderEDM4HEP->ReadFile("edm4hep_output_config.tcl");
+      const auto edm4hepOutSettings = getEDM4hepOutputSettings(confReaderEDM4HEP.get());
       podio::EventStore eventstore;
       podio::ROOTWriter podio_writer(outputfile, &eventstore);
       DelphesEDM4HepConverter edm4hepConverter(branches,
