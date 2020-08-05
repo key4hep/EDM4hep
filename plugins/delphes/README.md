@@ -8,24 +8,25 @@ process.
 The `DelphesEDM4HepConverter` takes an
 [`OutputSetting`](DelphesEDM4HepConverter.h#L25-L98) parameter to configure which
 `delphes` branches go into which `edm4hep` output collections. In the current
-implementation of the conversions this is filled from an addition to the delphes
-card that defines the necessary parameters:
+implementation of the conversions this is filled from an additional configuration file
+that defines the necessary parameters:
+
 [edm4hep_output_config.tcl](edm4hep_output_config.tcl). This `tcl` file has to
-be placed in the **same directory as the delphes card** that is used and can then be
-included in the main delphes `tcl` configuration using
+be passed to the conversion executable as parameter from the command line. **No
+changes to the delphes card that is used are necessary.** An exemplary call
+could look something like this (replacing the `delphes_card.tcl` and the
+`input_file.stdhep` with actual input files):
 
-``` tcl
-source edm4hep_output_config.tcl
+``` bash
+DelphesSTDHEP_EDM4HEP delphes_card.tcl \
+                      edm4hep_output_config.tcl \
+                      edm4hep_output.root \
+                      input_file.stdhep
 ```
-
-It is not possible to use absolute paths to include this file, as this will
-crash the delphes `tcl` parser.
 
 A module `EDM4HepOutput` is introduced solely for the purpose of being able to
 easily reuse the `tcl` parser from delphes and to introduce a logical
-containment for the parameters. In order for the conversion to work the
-`TreeWriter` has to be removed from the `ExecutionPath` (but not from the
-delphes card). The names of the delphes branches are taken from the `TreeWriter`
+containment for the parameters. The names of the delphes branches are taken from the `TreeWriter`
 module defintion and used in the `EDM4HepOutput`.
 
 ### Collection conversions
@@ -38,7 +39,7 @@ from the `TreeWriter` definition. Each of the following configuration parameters
 takes a list of collection names that will then also be available in the output.
 
 #### `ReconstructedParticleCollections`
-All 'Track' and 'Tower' input collections that will be stored in one global
+All `Track` and `Tower` input collections that will be stored in one global
 `edm4hep::ReconstructedParticleCollection`. These will be associated to the
 generated particles stored as `edm4hep::MCParticle`s. The converter works under
 the assumption that this is a non-overlapping list of particles. It is the users

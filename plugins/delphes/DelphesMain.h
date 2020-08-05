@@ -9,6 +9,7 @@
 #include <iostream>
 #include <signal.h> // SIGINT
 #include <memory>
+#include <iomanip>
 
 // gracefully handle ctrl+c
 static bool interrupted = false;
