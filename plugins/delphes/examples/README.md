@@ -40,6 +40,11 @@ is added at the top of `cards/delphes_card_CMS.tcl` (resp.
 is added in the first section (`1) Settings used in the main program`) of
 `inputs/configNoLHE.cmnd`
 
+Finally also copy the `edm4hep` output configuration to the `cards` directory
+(not strictly necessary but in this case makes for cleaner commands in the
+examples below)
+
+    cp path/to/EDM4hep/plugins/delphes/edm4hep_output_config.tcl cards
 
 ## Generating Delphes output
 
@@ -58,6 +63,7 @@ The corresponding edm4hep output is produced using the following command
 
     ${EDM4HEP_DIR}/bin/DelphesPythia8_EDM4HEP \
         cards/delphes_card_CMS.tcl \
+        cards/edm4hep_output_config.tcl \
         inputs/configNoLHE.cmnd \
         edm4hep_test_output.root
 
@@ -75,6 +81,5 @@ should ideally be equivalent (but are currently not).
 
 After this the files `histograms_delphes.root` and `histograms_edm4hep.root`
 should be present and filled with some histograms that can be compared. The
-differences in the Jet energy histogram are caused by the slightly different
-ways of how masses for Jets and other Candidates are handled by Delphes (see
-comment in [DelphesMain.h](../DelphesMain.h#L88-L107)).
+differences in the Jet energy and momentum are caused by a potential double
+counting of tracks and towers (see [known issues](../README.md#known-issues)).
