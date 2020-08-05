@@ -25,7 +25,7 @@ class DelphesRootReader: public DelphesInputReader {
   inline DelphesRootReader() {};
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
     if (argc < 5) {
-      std::cout << "Usage: " << m_appName << " config_file output_file input_file(s)\n"
+      std::cout << "Usage: " << m_appName << " config_file output_config_file output_file input_file(s)\n"
                 << "config_file - configuration file in Tcl format,\n"
                 << "output_config_file - configuration file steering the content of the edm4hep output in Tcl format,\n"
                 << "output_file - output file in ROOT format\n"
