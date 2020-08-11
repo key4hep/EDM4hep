@@ -31,7 +31,7 @@ before_install:
   - echo "CVMFS_HTTP_PROXY=DIRECT"                                  | sudo tee -a  /etc/cvmfs/default.local > /dev/null
   - echo "CVMFS_CACHE_BASE='/var/lib/cvmfs'"                        | sudo tee -a  /etc/cvmfs/default.local > /dev/null
   - echo "CVMFS_FORCE_SIGNING='yes'"                                | sudo tee -a  /etc/cvmfs/default.local > /dev/null
-  - echo "CVMFS_REPOSITORIES='sft.cern.ch,sw-nightlies.hsf.org'"    | sudo tee -a  /etc/cvmfs/default.local > /dev/null
+  - echo "CVMFS_REPOSITORIES='sft.cern.ch,sw-nightlies.hsf.org,sft-nightlies.cern.ch,geant4.cern.ch'"    | sudo tee -a  /etc/cvmfs/default.local > /dev/null
   - echo "CVMFS_SEND_INFO_HEADER=no"                                | sudo tee -a  /etc/cvmfs/default.local > /dev/null
   - cat /etc/cvmfs/default.local
   - # change wrt dd4hep setup: don't manually mount cvmfs folders
