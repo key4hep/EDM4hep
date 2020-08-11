@@ -248,7 +248,7 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members:
       - int   type           //userdefined type 
-      - int   pDG            //PDG code of this id - ( 999999 ) if unknown. 
+      - int   PDG            //PDG code of this id - ( 999999 ) if unknown. 
       - int   algorithmType  //type of the algorithm/module that created this hypothesis
       - float likelihood     //likelihood of this hypothesis - in a user defined normalization.
     VectorMembers:
