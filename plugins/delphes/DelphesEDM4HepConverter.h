@@ -95,6 +95,12 @@ struct OutputSettings {
    * generated to reconstructed particles.
    */
   std::string MCRecoAssociationCollectionName{"MCRecoAssociations"};
+
+
+  /**
+   * Name of the ParticleIDCollection holding the ctags / isolation variables.
+   */
+  std::string ParticleIDCollectionName{"ParticleIDs"};
 };
 
 
@@ -164,6 +170,7 @@ private:
   std::unordered_map<std::string_view, ProcessFunction> m_processFunctions;
   double m_magneticFieldBz; // necessary for determining track parameters
   std::string m_recoCollName;
+  std::string m_particleIDName;
   std::string m_mcRecoAssocCollName;
 
   // map from UniqueIDs (delphes generated particles) to MCParticles
