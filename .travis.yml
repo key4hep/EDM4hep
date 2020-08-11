@@ -60,7 +60,7 @@ install:
 
 # command to run tests
 script:
-  - docker run -ti --name CI_CONTAINER -v $PKGDIR:/workspace  -e SETUPSCRIPT=${SETUPSCRIPT}  -e BUILD_DDG4PLUGIN=${BUILD_DDG4PLUGIN} -e BUILD_DELPHESPLUGIN=${BUILD_DELPHESPLUGIN} -e STANDARD=${STANDARD}  ${CVMFS_REPOS} -d clicdp/cc7-lcg bash 
+  - docker run -ti --name CI_CONTAINER -v $PKGDIR:/workspace  -e SETUPSCRIPT=${SETUPSCRIPT}  -e BUILD_DDG4PLUGIN=${BUILD_DDG4PLUGIN} -e BUILD_DELPHESPLUGIN=${BUILD_DELPHESPLUGIN} -e STANDARD=${STANDARD} -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg bash 
   - if [[ "$PODIO_FROM" == "STACK" ]]; 
     then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls; source ${SETUPSCRIPT}; source ./.edm4hep-ci.d/compile_and_test.sh";
     elif [[ "$PODIO_FROM" == "BUILD_HEAD_ONTHEFLY" ]];
