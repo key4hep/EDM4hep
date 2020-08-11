@@ -1,14 +1,8 @@
 
-export K4VIEW=/cvmfs/sw-nightlies.hsf.org/key4hep/views/latest
-export BINARY_TAG=x86_64-centos7-gcc8-opt
-source $K4VIEW/$BINARY_TAG/setup.sh
-
-
-
 # edm4hep
 mkdir build install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=${STANDARD:=17} -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -DEDM4HEP_DOCUMENTATION=ON -G Ninja ..  \
+cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=${STANDARD:=17} -DBUILD_DDG4EDM4HEP=${BUILD_DDG4EDM4HEP:=ON} -DBUILD_DELPHESEDM4HEP=${BUILD_DELPHESEDM4HEP:=ON} -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -DEDM4HEP_DOCUMENTATION=ON -G Ninja ..  \
       && ninja -k0 \
       && ninja install \
       && ctest --output-on-failure || exit 1

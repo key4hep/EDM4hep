@@ -9,7 +9,12 @@ language: cpp
 
 env:
   matrix:
-    - COMPILER=gcc;   LCG_RELEASE=LCG_96c_LS; STANDARD=17; COMPILER_VERSION=gcc8;
+    - SETUPSCRIPT=/cvmfs/sw-nightlies.hsf.org/key4hep/views/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; BUILD_DDG4PLUGIN=ON; BUILD_DELPHESPLUGIN=ON; PODIO_FROM=STACK; STACK=KEY4HEPNIGHTLY;
+    - SETUPSCRIPT=/cvmfs/sw-nightlies.hsf.org/key4hep/views/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; BUILD_DDG4PLUGIN=ON; BUILD_DELPHESPLUGIN=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
+
+matrix:
+  allow_failures:
+  - env: SETUPSCRIPT=/cvmfs/sw-nightlies.hsf.org/key4hep/views/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; BUILD_DDG4PLUGIN=ON; BUILD_DELPHESPLUGIN=ON; PODIO_FROM=STACK; STACK=KEY4HEPNIGHTLY;
 
 before_install:
   - wget --no-check-certificate https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
@@ -51,8 +56,13 @@ install:
 
 # command to run tests
 script:
-  - docker run -ti --name CI_CONTAINER -v $PKGDIR:/workspace -e COMPILER_TYPE=$COMPILER -e LCG_RELEASE=${LCG_RELEASE} -e STANDARD=${STANDARD} -e COMPILER_VERSION=${COMPILER_VERSION} ${CVMFS_REPOS} -d clicdp/cc7-lcg bash 
-  - docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls;  ./.edm4hep-ci.d/compile_and_test.sh"
+  - docker run -ti --name CI_CONTAINER -v $PKGDIR:/workspace  -e SETUPSCRIPT=${SETUPSCRIPT}  -e BUILD_DDG4PLUGIN=${BUILD_DDG4PLUGIN} -e BUILD_DELPHESPLUGIN=${BUILD_DELPHESPLUGIN} -e STANDARD=${STANDARD}  ${CVMFS_REPOS} -d clicdp/cc7-lcg bash 
+  - if [[ "$PODIO_FROM" == "STACK" ]]; 
+    then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls; source ${SETUPSCRIPT}; source ./.edm4hep-ci.d/compile_and_test.sh";
+    elif [[ "$PODIO_FROM" == "BUILD_HEAD_ONTHEFLY" ]];
+    then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls; source ${SETUPSCRIPT}; source ./.edm4hep-ci.d/compile_and_test_with_podio.sh; source ./.edm4hep-ci.d/compile_and_test.sh;";
+    fi
+
 
 
 after_success:
