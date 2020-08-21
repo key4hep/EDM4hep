@@ -1,3 +1,57 @@
+# v00-02
+
+* 2020-08-20 Valentin Volkl ([PR#78](https://github.com/key4hep/edm4hep/pull/78))
+  - Add a cmake option for cpack
+
+* 2020-08-19 Valentin Volkl ([PR#77](https://github.com/key4hep/edm4hep/pull/77))
+  - CI Update: Add option to build PODIO on the fly, dev3
+
+* 2020-08-19 Valentin Volkl ([PR#76](https://github.com/key4hep/edm4hep/pull/76))
+  - Fix capitalization in edm4hep.yaml: pDG -> PDG
+
+* 2020-08-19 tmadlener ([PR#69](https://github.com/key4hep/edm4hep/pull/69))
+  - Add additional comment to `mass`, `energy` and `momentum` members of `ReconstructedParticle` description to clearly state that the 4-momentum state is not automatically kept consistent internally. Since there are too many different use-cases, a general solution that always works was deemed hard to achieve and it is, thus, the users responsibility to keep this state consistent if it is necessary.
+
+* 2020-08-11 tmadlener ([PR#75](https://github.com/key4hep/edm4hep/pull/75))
+  - Updated datamodel definition yaml file to work with new podio version
+
+* 2020-08-11 tmadlener ([PR#56](https://github.com/key4hep/edm4hep/pull/56))
+  - Add a converter module for delphes that can output edm4hep files. The module is used in several standalone delphes executables that take different input formats (e.g. stdhep, pythia8, etc.) and **standard delphes cards** and produce edm4hep output root files. It can also be used in conjunction with gaudi. **This is an early release to gather feedback and to iterate on that feedback. Currently not all of the input readers that come with standard delphes are implemented and also the information content of the edm4hep files is restricted to the most important information. More information can be added on demand.** A brief introduction and some examples are included.
+
+* 2020-08-04 vvolkl ([PR#73](https://github.com/key4hep/edm4hep/pull/73))
+  - Change DD4hep environment variable in tests
+
+* 2020-06-23 Andre Sailer ([PR#68](https://github.com/key4hep/edm4hep/pull/68))
+  - The rootmap file should point to the dictionary library, and not the base library
+  
+  - Tests: Fill the LD_LIBRARY_PATH environment variable with the location of the rootmap file
+
+* 2020-06-23 Frank Gaede ([PR#65](https://github.com/key4hep/edm4hep/pull/65))
+  - finalize the EDM4hep output module for DDG4/ddsim
+        - add treatment of event parameter meta data
+
+* 2020-06-18 tmadlener ([PR#67](https://github.com/key4hep/edm4hep/pull/67))
+  - mark MCParticle::getEnergy const to make it accessible in const context
+
+* 2020-05-26 Frank Gaede ([PR#63](https://github.com/key4hep/edm4hep/pull/63))
+  - fix linking on Ubuntu
+       - use -Wl,--no-as-needed for linking edm4hepDict (if available)
+       - follows https://github.com/AIDASoft/podio/pull/91
+
+* 2020-05-26 Thomas Madlener ([PR#62](https://github.com/key4hep/edm4hep/pull/62))
+  - Adapt to new naming of functions in podio
+
+* 2020-05-26 Valentin Volkl ([PR#58](https://github.com/key4hep/edm4hep/pull/58))
+  - Rename cluster vectormembers with a plural form
+
+* 2020-05-25 Frank Gaede ([PR#61](https://github.com/key4hep/edm4hep/pull/61))
+  - adapt for Macos:
+       - add missing libs and includes for dictionary building
+  - adapt to method name changes in https://github.com/AIDASoft/podio/pull/88
+
+* 2020-05-19 Valentin Volkl ([PR#57](https://github.com/key4hep/edm4hep/pull/57))
+  - add weights to associations
+
 # v00-01
 
 * 2020-04-14 Frank Gaede ([PR#53](https://github.com/key4hep/edm4hep/pull/53))
