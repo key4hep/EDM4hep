@@ -183,6 +183,7 @@ void DelphesEDM4HepConverter::processTracks(const TObjArray* delphesCollection, 
 
     auto cand = particleCollection->create();
     cand.setCharge(delphesCand->Charge);
+    cand.setEnergy(delphesCand->Momentum.E());
     cand.setMomentum({(float) delphesCand->Momentum.Px(),
                       (float) delphesCand->Momentum.Py(),
                       (float) delphesCand->Momentum.Pz()});
@@ -260,6 +261,7 @@ void DelphesEDM4HepConverter::processJets(const TObjArray* delphesCollection, st
     // NOTE: Filling the jet with the information delievered by Delphes, which
     // is not necessarily the same as the sum of its constituents (filled below)
     jet.setCharge(delphesCand->Charge);
+    jet.setEnergy(delphesCand->Momentum.E());
     jet.setMomentum({(float) delphesCand->Momentum.Px(),
                      (float) delphesCand->Momentum.Py(),
                      (float) delphesCand->Momentum.Pz()});
