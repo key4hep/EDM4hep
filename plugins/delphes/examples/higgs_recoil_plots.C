@@ -12,14 +12,14 @@
 
 /*
 put this into your .rootlogon.C file
-
+and make sure the (DY)LD_LIBRARY_PATH contains the podio and edm4hep installations
 {
  gInterpreter->AddIncludePath("$PODIO/include");
- gSystem->Load("$PODIO/lib/libpodio.so");
- gSystem->Load("$PODIO/lib/libpodioDict.so");
- gSystem->Load("$PODIO/lib/libpodioRootIO.so");
- gSystem->Load("$EDM4HEP/lib/libedm4hep.dylib");
- gSystem->Load("$EDM4HEP/lib/libedm4hepDict.dylib");
+ gSystem->Load("libpodio");
+ gSystem->Load("libpodioDict");
+ gSystem->Load("libpodioRootIO");
+ gSystem->Load("libedm4hep");
+ gSystem->Load("libedm4hepDict");
 }
 */
 
