@@ -213,7 +213,7 @@ class DelphesPythia8Reader: public DelphesInputReader {
     matching = combined->getHook(*pythia);
     if(!matching)
     {
-      throw runtime_error("can't do matching");
+      throw std::runtime_error("can't do matching");
     }
     pythia->setUserHooksPtr(matching);
 #endif
