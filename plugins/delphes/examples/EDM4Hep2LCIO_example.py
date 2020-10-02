@@ -45,8 +45,8 @@ def generateEvents(inputFileName, outputFileName, nEvents):
         tracks = IMPL.LCCollectionVec(EVENT.LCIO.TRACK)
         recops = IMPL.LCCollectionVec(EVENT.LCIO.RECONSTRUCTEDPARTICLE)
         
-        print ('n reco particles  ',e.ReconstructedParticles.size())
-        print ('ntracks  ',e.EFlowTrack_1.size())
+        #print ('n reco particles  ',e.ReconstructedParticles.size())
+        #print ('ntracks  ',e.EFlowTrack_1.size())
 
         counter=1
         #loop over the reconstructed particles
