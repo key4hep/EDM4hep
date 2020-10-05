@@ -139,8 +139,7 @@ void DelphesEDM4HepConverter::processParticles(const TObjArray* delphesCollectio
         (float) delphesCand->Position.Y(),
         (float) delphesCand->Position.Z()});
     cand.setPDG(delphesCand->PID); // delphes uses whatever hepevt.idhep provides
-    // TODO: - status
-    // TODO: - ...
+    cand.setGeneratorStatus(delphesCand->Status);
 
     if (const auto [it, inserted] = m_genParticleIds.emplace(delphesCand->GetUniqueID(), cand); !inserted) {
       std::cerr << "**** WARNING: UniqueID " << delphesCand->GetUniqueID() << " is already used by MCParticle with id: " << it->second.id() << std::endl;
