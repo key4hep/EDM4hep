@@ -55,7 +55,7 @@ DelphesEDM4HepConverter::DelphesEDM4HepConverter(ExRootConfParam /*const*/& bran
     {"Electron", &DelphesEDM4HepConverter::processMuonsElectrons}};
 
   for (const auto& branch : m_branches) {
-    if (contains(outputSettings.GenParticleCollections, branch.className.c_str())) {
+    if (contains(outputSettings.GenParticleCollections, branch.name.c_str())) {
       registerCollection<edm4hep::MCParticleCollection>(branch.name);
       m_processFunctions.emplace(branch.name, &DelphesEDM4HepConverter::processParticles);
     }
