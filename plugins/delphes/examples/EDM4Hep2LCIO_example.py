@@ -44,11 +44,7 @@ def generateEvents(inputFileName, outputFileName, nEvents):
 
         tracks = IMPL.LCCollectionVec(EVENT.LCIO.TRACK)
         recops = IMPL.LCCollectionVec(EVENT.LCIO.RECONSTRUCTEDPARTICLE)
-        
-        #print ('n reco particles  ',e.ReconstructedParticles.size())
-        #print ('ntracks  ',e.EFlowTrack_1.size())
 
-        counter=1
         #loop over the reconstructed particles
         for rp in range(e.ReconstructedParticles.size()):
 
@@ -63,38 +59,31 @@ def generateEvents(inputFileName, outputFileName, nEvents):
             #get the track associated to the reco particle
             track = IMPL.TrackImpl()
 
-            #print ('ReconstructedParticles.tracks_begin  ',e.ReconstructedParticles.at(rp).tracks_begin)
-            #print ('ReconstructedParticles.tracks_end    ',e.ReconstructedParticles.at(rp).tracks_end)
-            #print ('ReconstructedParticles#3.size        ',getattr(e,'ReconstructedParticles#3.size'))
-            #print ('ReconstructedParticles#3.index       ',getattr(e,'ReconstructedParticles#3.index'))
-            #print ('ReconstructedParticles#3.collectionID       ',getattr(e,'ReconstructedParticles#3.collectionID'))
-            #toto=getattr(e,'ReconstructedParticles#3.index')
-            #print ('reco particle  ',counter)
-            counter+=1
-
             if e.ReconstructedParticles.at(rp).tracks_begin<e.EFlowTrack_1.size():
             
-                #print ('pt reco part  ',math.sqrt(e.ReconstructedParticles.at(rp).momentum.x*e.ReconstructedParticles.at(rp).momentum.x+e.ReconstructedParticles.at(rp).momentum.y*e.ReconstructedParticles.at(rp).momentum.y))
                 trkind=e.ReconstructedParticles.at(rp).tracks_begin
-                #print ('pt track      ',0.000299792*2/abs(e.EFlowTrack_1.at(trkind).omega))
             
+                track.setD0(e.EFlowTrack_1.at(trkind).D0)
                 track.setPhi(e.EFlowTrack_1.at(trkind).phi)
                 track.setOmega(e.EFlowTrack_1.at(trkind).omega)
                 track.setZ0(e.EFlowTrack_1.at(trkind).Z0)
                 track.setTanLambda(e.EFlowTrack_1.at(trkind).tanLambda)
                 track.subdetectorHitNumbers().resize(50)
 
+                #In EDM4Hep the covariance matrix is the upper triangle. In LCIO the bottom triangle. Only diagonals terms are filled because correlations are ignored.
                 vec = r.std.vector('float')(15)
-                for j in range(15):
-                    vec[j]=e.EFlowTrack_1.at(trkind).covMatrix[j]
-
+                vec[0]  = e.EFlowTrack_1.at(trkind).covMatrix[0]
+                vec[2]  = e.EFlowTrack_1.at(trkind).covMatrix[5]
+                vec[5]  = e.EFlowTrack_1.at(trkind).covMatrix[9]
+                vec[9]  = e.EFlowTrack_1.at(trkind).covMatrix[12]
+                vec[14] = e.EFlowTrack_1.at(trkind).covMatrix[14]
+                
                 track.setCovMatrix(vec)
             
                 tracks.addElement(track)
             
                 recp.addTrack(track)
                 recops.addElement(recp)
-            
 
         event.addCollection(tracks,EVENT.LCIO.TRACK)
         event.addCollection(recops,EVENT.LCIO.RECONSTRUCTEDPARTICLE)
@@ -113,5 +102,4 @@ if __name__ == '__main__':
     if len( sys.argv ) < 4:
         usage()
         sys.exit( 1 )
-    #print(sys.argv[1],' ----  ', int( sys.argv[2] ))
     generateEvents( sys.argv[1],sys.argv[2], int( sys.argv[3] ) )
