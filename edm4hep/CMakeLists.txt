@@ -1,37 +1,19 @@
 
-PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources)
+# For now unconditionally generate all the code that is supported by the
+# installed podio
+PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS})
 
-add_library(edm4hep SHARED ${sources} ${headers})
-target_link_libraries(edm4hep
-  PUBLIC
-  podio::podio
-  )
-target_include_directories(edm4hep
-  PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
-set_target_properties(edm4hep PROPERTIES PUBLIC_HEADER "${headers}")
+PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 
-add_library(edm4hepDict SHARED)
+PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(edm4hep::edm4hepDict ALIAS edm4hepDict )
-target_link_libraries(edm4hepDict
-  PUBLIC
-  edm4hep
-  podio::podio
-  ROOT::Core
-  )
-target_include_directories(edm4hepDict
-  PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-  ${ROOT_INCLUDE_DIRS}
-)
 
-PODIO_GENERATE_DICTIONARY(edm4hepDict ${headers} SELECTION src/selection.xml
-  OPTIONS --library ${CMAKE_SHARED_LIBRARY_PREFIX}edm4hepDict${CMAKE_SHARED_LIBRARY_SUFFIX} )
-set_target_properties(edm4hepDict-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
-add_dependencies(edm4hepDict edm4hep)
+PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
+IF(TARGET edm4hepSioBlocks)
+  message(STATUS "SioBlocks are here!")
+ELSE()
+  message(STATUS "SioBlocks are not here")
+ENDIF()
 
 install(TARGETS edm4hep edm4hepDict
   EXPORT EDM4HEPTargets
