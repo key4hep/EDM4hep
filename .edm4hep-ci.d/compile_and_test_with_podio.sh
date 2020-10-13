@@ -13,5 +13,6 @@ cd ..
 export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
 export PODIO=$PWD/install:$CMAKE_PREFIX_PATH
 export LD_LIBRARY_PATH=$PWD/install/lib:$PWD/install/lib64:$LD_LIBRARY_PATH
+export ROOT_INCLUDE_PATH=$PWD/install/include:$ROOT_INCLUDE_PATH
 cd ..
 

@@ -8,7 +8,7 @@ target_link_libraries(DelphesEDM4HepConverter edm4hep ${DELPHES_LIBRARY} podio::
 set_target_properties(DelphesEDM4HepConverter PROPERTIES PUBLIC_HEADER "DelphesEDM4HepConverter.h;Delphes.h")
 install(TARGETS DelphesEDM4HepConverter 
         EXPORT EDM4HEPTargets
-        LIBRARY DESTINATION lib
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION include/edm4hep
         COMPONENT dev)
 
