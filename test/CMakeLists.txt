@@ -28,6 +28,25 @@ set_tests_properties(reco_particle_ref PROPERTIES
   LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
   )
 
+IF(TARGET edm4hepSioBlocks)
+  add_executable(write_events_sio write_events_sio.cc)
+  target_include_directories(write_events_sio PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep)
+  target_link_libraries(write_events_sio edm4hep podio::podioSioIO)
+  add_test(NAME write_events_sio COMMAND write_events_sio)
+  set_tests_properties(write_events_sio PROPERTIES
+    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    )
+
+  add_executable(read_events_sio read_events_sio.cc)
+  target_include_directories(read_events_sio PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep)
+  target_link_libraries(read_events_sio edm4hep podio::podioSioIO)
+  add_test(NAME read_events_sio COMMAND read_events_sio)
+  set_tests_properties(read_events_sio PROPERTIES
+    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    DEPENDS write_events_sio
+    )
+ENDIF()
+
 IF(TARGET ROOT::ROOTDataFrame)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep ${CMAKE_SOURCE_DIR}/dataframe )
