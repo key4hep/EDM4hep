@@ -52,7 +52,7 @@ All Delphes `GenParticle` collections that will be considered and stored as
 `edm4hep` output collection under the same name, but all generated particles
 will be considered for the associations to the `ReconstructedParticle`s in the
 global collection (See [above](#reconstructedparticlecollections)). Usually it
-is enough to use the `GenParticle` branch here since that contains all generated
+is enough to use the `Particle` branch here since that contains all generated
 particles from Delphes.
 
 #### `JetCollections`
