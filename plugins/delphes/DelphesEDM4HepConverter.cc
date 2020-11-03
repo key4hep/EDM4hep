@@ -103,8 +103,6 @@ void DelphesEDM4HepConverter::process(Delphes *modularDelphes) {
   for (auto& coll : m_collections) {
    coll.second->clear();
   }
-  m_genParticleIds.clear();
-  m_recoParticleGenIds.clear();
 
   for (const auto& branch : m_branches) {
     const auto* delphesCollection = modularDelphes->ImportArray(branch.input.c_str());
@@ -119,6 +117,11 @@ void DelphesEDM4HepConverter::process(Delphes *modularDelphes) {
       (this->*processFuncIt->second)(delphesCollection, branch.name);
     }
   }
+
+  // Clear the internal maps that hold references to entites that have been put
+  // into maps here for internal use only (see #89)
+  m_genParticleIds.clear();
+  m_recoParticleGenIds.clear();
 }
 
 void DelphesEDM4HepConverter::processParticles(const TObjArray* delphesCollection, std::string_view const branch)
