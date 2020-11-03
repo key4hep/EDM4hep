@@ -1,5 +1,7 @@
 
 
+
+
 find_package(Delphes)
 
 add_library(DelphesEDM4HepConverter SHARED DelphesEDM4HepConverter.cc)
@@ -29,8 +31,9 @@ install(TARGETS DelphesSTDHEP_EDM4HEP DESTINATION bin)
 
 find_package(Pythia8)
 if(Pythia8_FOUND)
+  find_package(EvtGen)
   add_executable(DelphesPythia8_EDM4HEP DelphesPythia8_EDM4HEP.cpp Delphes.cc)
-  target_include_directories(DelphesPythia8_EDM4HEP PRIVATE ${PYTHIA8_INCLUDE_DIRS})
-  target_link_libraries(DelphesPythia8_EDM4HEP DelphesEDM4HepConverter ${PYTHIA8_LIBRARIES} ${DELPHES_LIBRARY})
+  target_include_directories(DelphesPythia8_EDM4HEP PRIVATE ${PYTHIA8_INCLUDE_DIRS} ${EVTGEN_INCLUDE_DIR})
+  target_link_libraries(DelphesPythia8_EDM4HEP DelphesEDM4HepConverter ${PYTHIA8_LIBRARIES} ${DELPHES_LIBRARY} ${EVTGEN_LIBRARIES})
   install(TARGETS DelphesPythia8_EDM4HEP DESTINATION bin)
 endif()

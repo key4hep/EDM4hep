@@ -9,4 +9,4 @@ module EDM4HepOutput EDM4HepOutput {
     add ScalarHTCollections              ScalarHT
     set RecoParticleCollectionName       ReconstructedParticles
     set MCRecoAssociationCollectionName  MCRecoAssociations
-}
+ }
