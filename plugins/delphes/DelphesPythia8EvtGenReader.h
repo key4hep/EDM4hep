@@ -1,5 +1,5 @@
-#ifndef DELPHESEDM4HEP_DELPHESPYTHIA8READER
-#define DELPHESEDM4HEP_DELPHESPYTHIA8READER
+#ifndef DELPHESEDM4HEP_DELPHESPYTHIA8EVTGENREADER
+#define DELPHESEDM4HEP_DELPHESPYTHIA8EVTGENREADER
 
 #include <iostream>
 
@@ -21,28 +21,32 @@
 
 #include "Pythia.h"
 #include "Pythia8Plugins/CombineMatchingInput.h"
+#include "Pythia8Plugins/EvtGen.h"
 
 #include <iostream>
 
 //---------------------------------------------------------------------------
 
 
-class DelphesPythia8Reader: public DelphesInputReader {
+class DelphesPythia8EvtGenReader: public DelphesInputReader {
   public:
-  inline DelphesPythia8Reader() {};
-    inline ~DelphesPythia8Reader() {
+  inline DelphesPythia8EvtGenReader() {};
+    inline ~DelphesPythia8EvtGenReader() {
       if (pythia) {
         delete pythia;
       }
     };
 
   inline bool init(Delphes* modularDelphes, int argc, char *argv[], std::string& outputfile) {
-    if (argc != 5) {
-      std::cout << "Usage: " << m_appName << "config_file output_config_file pythia_card output_file\n"
+    if (argc!=8) {
+      std::cout << "Usage: " << m_appName << "config_file output_config_file pythia_card output_file DECAY.DEC evt.pdl user.dec\n"
                 << "config_file - configuration file in Tcl format,\n"
                 << "output_config_file - configuration file steering the content of the edm4hep output in Tcl format,\n"
                 << "pythia_card - Pythia8 configuration file,\n"
-                << "output_file - output file in ROOT format." << std::endl;
+                << "output_file - output file in ROOT format,\n" 
+	        << "DECAY.DEC - EvtGen full decay file,\n"
+                << "evt.pdl - EvtGen particle list,\n"
+	        << "user.dec - EvtGen user decay file." << std::endl;
       return false;
     }
     outputfile = argv[4];
@@ -100,6 +104,20 @@ class DelphesPythia8Reader: public DelphesInputReader {
       }
     }
 
+
+    // Initialize EvtGen.
+    evtgen = new Pythia8::EvtGenDecays(pythia, // a pointer to the PYTHIA generator
+				       argv[5], // the EvtGen decay file name
+				       argv[6], // the EvtGen particle data file name
+				       nullptr, // the optional EvtExternalGenList pointer (must be be provided if the next argument is provided to avoid double initializations)
+				       nullptr, // the EvtAbsRadCorr pointer to pass to EvtGen
+				       1, // the mixing type to pass to EvtGen
+				       false, // a flag to use XML files to pass to EvtGen
+				       true, // a flag to limit decays based on the Pythia criteria (based on the particle decay vertex)
+				       true, // a flag to use external models with EvtGen
+				       false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
+
+    evtgen->readDecayFile(argv[7]);
     pythia->init();
 
     return true;
@@ -137,7 +155,9 @@ class DelphesPythia8Reader: public DelphesInputReader {
         modularDelphes->Clear();
         reader->Clear();
       }
-      
+      else{
+	evtgen->decay();
+      }
       readStopWatch.Stop();
       procStopWatch.Start();
       ConvertInput(eventCounter, pythia, branchEvent, factory,
@@ -150,11 +170,12 @@ class DelphesPythia8Reader: public DelphesInputReader {
   inline bool finished() {return m_entry >= m_numberOfEvents;};
 
 private:
-  const std::string m_appName = "DelphesPythia8";
+  const std::string m_appName = "DelphesPythia8EvtGen";
   const std::string m_usage;
   int m_numberOfEvents;
   int m_entry = 0;
   Pythia8::Pythia* pythia{nullptr};
+  Pythia8::EvtGenDecays* evtgen = nullptr;
   FILE *inputFile = 0;
   TFile *outputFile = 0;
   TStopwatch readStopWatch, procStopWatch;

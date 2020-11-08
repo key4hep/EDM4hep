@@ -12,7 +12,7 @@ import ROOT as r
 import sys, math
 #from sixlcio.moves import range
 
-def generateEvents(inputFileName, outputFileName, nEvents):
+def generateEvents(inputFileName, outputFileName, nEvents=-1, nSplit=-1):
     
     fin = r.TFile(inputFileName)
     ttree = fin.events
@@ -32,9 +32,18 @@ def generateEvents(inputFileName, outputFileName, nEvents):
     writer.writeRunHeader( run )
     iEvent=0
 
-
+    flag=True
     for e in ttree:
-        if iEvent>nEvents:break
+        if iEvent==nEvents and nEvents>-1:
+            print ('END file ',iEvent-1)
+            flag=True
+            break
+        if nSplit>-1 and nSplit>iEvent:
+            iEvent+=1
+            continue
+        elif flag:
+            print ('START file ',iEvent)
+            flag=False
         # create an event and set its parameters
         event = IMPL.LCEventImpl()
         event.setEventNumber( iEvent )
@@ -50,17 +59,25 @@ def generateEvents(inputFileName, outputFileName, nEvents):
 
             recp = IMPL.ReconstructedParticleImpl()
             recp.setCharge(e.ReconstructedParticles.at(rp).charge)
+            #print ('charge  ',e.ReconstructedParticles.at(rp).charge)
             momentum = r.TVector3(e.ReconstructedParticles.at(rp).momentum.x,
                                   e.ReconstructedParticles.at(rp).momentum.y,
                                   e.ReconstructedParticles.at(rp).momentum.z)
             recp.setMomentumVec(momentum)
             recp.setEnergy(e.ReconstructedParticles.at(rp).energy)
-
+            #print ('get recp energy ',recp.getEnergy(), '  get charge  ',recp.getCharge(),'  get m  ',recp.getMass())
+            #print ('set recp energy ',e.ReconstructedParticles.at(rp).energy, '  px  ',e.ReconstructedParticles.at(rp).momentum.x, ' m ',e.ReconstructedParticles.at(rp).mass,' charge ',e.ReconstructedParticles.at(rp).charge)
+            tlv=r.TLorentzVector()
+            tlv.SetXYZM(e.ReconstructedParticles.at(rp).momentum.x,
+                        e.ReconstructedParticles.at(rp).momentum.y,
+                        e.ReconstructedParticles.at(rp).momentum.z,
+                        e.ReconstructedParticles.at(rp).mass)
+            #print ('tlv e ',tlv.E(),'  tlv m ',tlv.M())
+            #recp.setEnergy(tlv.E())
             #get the track associated to the reco particle
-            track = IMPL.TrackImpl()
 
             if e.ReconstructedParticles.at(rp).tracks_begin<e.EFlowTrack_1.size():
-            
+                track = IMPL.TrackImpl()
                 trkind=e.ReconstructedParticles.at(rp).tracks_begin
             
                 track.setD0(e.EFlowTrack_1.at(trkind).D0)
@@ -96,10 +113,26 @@ def generateEvents(inputFileName, outputFileName, nEvents):
 
 def usage():
     print('Generates an MCParticle with associated SimTrackerHits for each event')
-    print('Usage:\n  python %s <inputFile> <outputFile> <nEvents>' % (sys.argv[0]))
+    print('Usage:\n  python %s <inputFile> <outputFile> <nEvents> <split=True/False>' % (sys.argv[0]))
 
 if __name__ == '__main__':
-    if len( sys.argv ) < 4:
+    if len( sys.argv ) < 5:
         usage()
         sys.exit( 1 )
-    generateEvents( sys.argv[1],sys.argv[2], int( sys.argv[3] ) )
+    if sys.argv[4]=='False':
+        generateEvents( sys.argv[1],sys.argv[2], int( sys.argv[3] ) )
+    elif sys.argv[4]=='True':
+        fin = r.TFile(sys.argv[1])
+        ttree = fin.events
+        nentries=ttree.GetEntries()
+        if nentries<1000:
+            generateEvents( sys.argv[1],sys.argv[2], -1)
+        nentriesTmp=0
+        count=0
+        while nentriesTmp<nentries:
+            
+            generateEvents( sys.argv[1],sys.argv[2]+'_{}'.format(count), nentriesTmp+1000, nentriesTmp)
+            count+=1
+            nentriesTmp+=1000
+            
+    else: print ('bad argument')
