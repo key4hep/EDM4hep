@@ -63,7 +63,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DDROP_CGAL ${CPP_STANDARD_FLAGS} 
 #--- Declare options -----------------------------------------------------------
 
 option(BUILD_DDG4EDM4HEP "Build the EDM4hep plugin for DD4hep" ON)
-option(BUILD_DELPHESEDM4HEP "Build the DELPHES plugin for DD4hep" ON)
 option(EDM4HEP_DOCUMENTATION "Whether or not to create doxygen doc target.")
 
 #--- enable unit testing capabilities ------------------------------------------
@@ -100,9 +99,6 @@ add_subdirectory(test)
 add_subdirectory(dataframe)
 if(BUILD_DDG4EDM4HEP)
   add_subdirectory(plugins/DDG4EDM4hep)
-endif()
-if(BUILD_DELPHESEDM4HEP)
-  add_subdirectory(plugins/delphes)
 endif()
 
 
