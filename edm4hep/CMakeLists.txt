@@ -8,14 +8,15 @@ PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(edm4hep::edm4hepDict ALIAS edm4hepDict )
 
+list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
+
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
 IF(TARGET edm4hepSioBlocks)
-  message(STATUS "SioBlocks are here!")
-ELSE()
-  message(STATUS "SioBlocks are not here")
+  message(STATUS "Building and installing the SioBlocks since podio supports it")
+  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
 ENDIF()
 
-install(TARGETS edm4hep edm4hepDict
+install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   EXPORT EDM4HEPTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
