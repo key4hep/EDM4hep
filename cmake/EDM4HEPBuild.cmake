@@ -33,7 +33,7 @@ macro(edm4hep_set_rpath)
 endmacro(edm4hep_set_rpath)
 
 #---------------------------------------------------------------------------------------------------
-#---podio_set_compiler_flags
+#---edm4hep_set_compiler_flags
 #
 #  Set compiler and linker flags
 #
