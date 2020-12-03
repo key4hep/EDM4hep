@@ -50,7 +50,7 @@ macro(edm4hep_set_compiler_flags)
   endif()
 
   FOREACH( FLAG ${COMPILER_FLAGS} )
-    ## meed to replace the minus or plus signs from the variables, because it is passed
+    ## need to replace the minus or plus signs from the variables, because it is passed
     ## as a macro to g++ which causes a warning about no whitespace after macro
     ## definition
     STRING(REPLACE "-" "_" FLAG_WORD ${FLAG} )
