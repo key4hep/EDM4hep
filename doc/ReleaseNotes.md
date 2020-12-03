@@ -1,3 +1,56 @@
+# v00-03
+
+* 2020-12-03 Valentin Volkl ([PR#101](https://github.com/key4hep/edm4hep/pull/101))
+  - Remove DDG4 plugin (moves to upstream dd4hep, https://github.com/AIDASoft/DD4hep/pull/740)
+
+* 2020-12-03 vvolkl ([PR#98](https://github.com/key4hep/edm4hep/pull/98))
+  - Add rpath setup and update compiler flags and linker setup
+
+* 2020-11-24 Valentin Volkl ([PR#97](https://github.com/key4hep/edm4hep/pull/97))
+  - [cmake] add call to find_package_handle_standard_args to get a Found: msg
+
+* 2020-11-11 tmadlener ([PR#84](https://github.com/key4hep/edm4hep/pull/84))
+  - Use new cmake macros from podio to build the datamodel libraries and dictionary, building everything that is supported by podio.
+  - Add tests for reading/writing using the SIO backend.
+
+* 2020-11-10 Valentin Volkl ([PR#94](https://github.com/key4hep/edm4hep/pull/94))
+  - Remove Delphes plugin (which is migrated to its own repository key4hep/k4simdelphes)
+
+* 2020-11-08 clementhelsens ([PR#93](https://github.com/key4hep/edm4hep/pull/93))
+  This patch is to avoid a segmentation fault when calling the Delphes treeWriter only occurring when reading a LHE file from Pythia8
+
+* 2020-11-08 clementhelsens ([PR#92](https://github.com/key4hep/edm4hep/pull/92))
+  - This add a new executable to run EvtGen with the Pythia8 plugin
+
+* 2020-11-08 vvolkl ([PR#88](https://github.com/key4hep/edm4hep/pull/88))
+  - update lcg release used in init script to 97a
+
+* 2020-11-05 tmadlener ([PR#90](https://github.com/key4hep/edm4hep/pull/90))
+  - Fix double free in Delphes EDM4Hep converter that lead to spurious segmentation violations (#89)
+
+* 2020-10-14 tmadlener ([PR#83](https://github.com/key4hep/edm4hep/pull/83))
+  - Make delphes output configuration more consistent, by using branch names also for the generated particle collections.
+
+* 2020-10-14 Valentin Volkl ([PR#82](https://github.com/key4hep/edm4hep/pull/82))
+  - save the delphes particle status as edm4hep::MCparticle.GeneratorStatus
+
+* 2020-10-14 clementhelsens ([PR#81](https://github.com/key4hep/edm4hep/pull/81))
+  - Add a python script to convert EDM4Hep to LCIO
+  - Currently just converting ReconstructedParticles and Tracks
+
+* 2020-10-13 Valentin Volkl ([PR#85](https://github.com/key4hep/edm4hep/pull/85))
+  - [ci] fix the library path for builds with a local podio
+
+* 2020-09-16 Frank Gaede ([PR#79](https://github.com/key4hep/edm4hep/pull/79))
+  - fix delphes EDM4Hep plugin
+       - set energy for clusters and reco particles in DelphesEDM4HepConverter
+       - add example higgs_recoil_plots.C  (same as in delphes2lcio)
+       - minor fix for building DelphesPythia8 on MacOS
+       - make plugin compatible w/ Pythia8.3
+
+* 2020-09-15 vvolkl ([PR#80](https://github.com/key4hep/edm4hep/pull/80))
+  - Fix CI to pick up the local podio at runtime
+
 # v00-02
 
 * 2020-08-20 Valentin Volkl ([PR#78](https://github.com/key4hep/edm4hep/pull/78))
