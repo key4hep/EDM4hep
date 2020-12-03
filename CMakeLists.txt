@@ -54,10 +54,12 @@ endif()
 
 message (STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
 
-if (${APPLE})
-    set(CPP_STANDARD_FLAGS "-std=c++${CMAKE_CXX_STANDARD}\ -stdlib=libc++")
-endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DDROP_CGAL ${CPP_STANDARD_FLAGS} -Wall -Wextra -Wpedantic -Wno-unused-variable -Wno-unused-parameter")
+option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" OFF)
+include(cmake/EDM4HEPBuild.cmake)
+edm4hep_set_compiler_flags()
+edm4hep_set_rpath()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDROP_CGAL")
 
 
 #--- Declare options -----------------------------------------------------------
