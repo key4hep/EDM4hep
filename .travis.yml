@@ -9,16 +9,15 @@ language: cpp
 
 env:
   matrix:
-    - SETUPSCRIPT=/cvmfs/sw.hsf.org/key4hep/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=STACK; STACK=KEY4HEPNIGHTLY;
-    - SETUPSCRIPT=/cvmfs/sw.hsf.org/key4hep/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
-    - SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
-    - SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-clang8-opt/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
+    - SETUPSCRIPT=/cvmfs/sw.hsf.org/key4hep/setup.sh; STANDARD=17; PODIO_FROM=STACK; STACK=KEY4HEPNIGHTLY;
+    - SETUPSCRIPT=/cvmfs/sw.hsf.org/key4hep/setup.sh; STANDARD=17; PODIO_FROM=SPACK_LOCAL_BUILD; STACK=KEY4HEPNIGHTLY;
+    - SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
+    - SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-clang8-opt/setup.sh; STANDARD=17; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
 
 matrix:
   allow_failures:
-  - env: SETUPSCRIPT=/cvmfs/sw.hsf.org/key4hep/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=STACK; STACK=KEY4HEPNIGHTLY;
-  - env: SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-clang8-opt/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
-  - env: SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; BUILD_DDG4EDM4HEP=ON; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
+  - env: SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-clang8-opt/setup.sh; STANDARD=17; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
+  - env: SETUPSCRIPT=/cvmfs/sft.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc8-opt/setup.sh; STANDARD=17; PODIO_FROM=BUILD_HEAD_ONTHEFLY; STACK=KEY4HEPNIGHTLY;
 
 before_install:
   - wget --no-check-certificate https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
@@ -68,6 +67,8 @@ script:
     then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls; source ${SETUPSCRIPT}; source ./.edm4hep-ci.d/compile_and_test.sh";
     elif [[ "$PODIO_FROM" == "BUILD_HEAD_ONTHEFLY" ]];
     then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; pwd; ls; source ${SETUPSCRIPT}; source ./.edm4hep-ci.d/compile_and_test_with_podio.sh; source ./.edm4hep-ci.d/compile_and_test.sh;";
+    elif [[ "$PODIO_FROM" == "SPACK_LOCAL_BUILD" ]];
+    then docker exec -ti CI_CONTAINER  /bin/bash -c "cd /workspace; source ./.edm4hep-ci.d/compile_and_test_with_spack.sh;";
     fi
 
 
