@@ -64,7 +64,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDROP_CGAL")
 
 #--- Declare options -----------------------------------------------------------
 
-option(EDM4HEP_DOCUMENTATION "Whether or not to create doxygen doc target.")
+option(BUILD_DOCS "Whether or not to create doxygen doc target.")
 
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
@@ -76,8 +76,13 @@ if(ENABLE_CPACK)
 endif()
 
 #--- target for Doxygen documentation ------------------------------------------
-if(EDM4HEP_DOCUMENTATION)
+if(BUILD_DOCS)
   include(cmake/EDM4HEPDoxygen.cmake)
+  # copy images needed for documentation to build folder and install them
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/edm4hep_diagram.svg
+                 ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg COPYONLY)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg
+          DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 #--- add version files ---------------------------------------------------------
