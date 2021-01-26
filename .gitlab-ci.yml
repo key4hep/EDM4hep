@@ -1,0 +1,69 @@
+
+# -- Gitlab CI configuration for EDM4HEP -----------------------------
+# 
+# This file configures the deployment of the code reference generated 
+# by doxygen to a web site. The site produced in the generate-docs
+# is static and relocatable, the html files can simply be hosted by any
+# server. Here, the CERN gitlab and eos infrastructure is used to publish
+# to https://edm4hep.web.cern.ch (shorter alias: cern.ch/edm4hep)
+
+
+# -- Run Doxygen ------------------------------ 
+# Doxygen is set up in CMake, so need to load all
+# dependencies to run it. This step requires a runner
+# that can build edm4hep and run doxygen. The easiest way to
+# ensure this is require cvmfs access on the runner and take the
+# software from there. 
+generate-docs:
+  # need a runner with cvmfs installed. On the CERN gitlab instance,
+  # these are usually tagged with "cvmfs"
+  tags:
+   - cvmfs
+  script:
+    # use a setup that provides all dependencies - if the dependencies change,
+    # this needs to be updated
+    - source /cvmfs/sft.cern.ch/lcg/views/LCG_99/x86_64-centos7-gcc8-opt/setup.sh 
+    - mkdir build; cd build;
+    # the documentation option is off by default, explicitly switch it on
+    - cmake .. -DBUILD_DOCS=ON
+    - make doc
+  # make the build folder (which includes the generated html) accessible to the next step by declaring it
+  # as an artifact
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 week
+
+
+
+# -- Deploy to EOS ---------------------------- 
+# Use the standard workflow to publish to eos
+# see https://gitlab.cern.ch/ci-tools/ci-web-deployer
+# The variables for this particular deployment:
+# CI_OUTPUT_DIR: build/doxygen/html/
+# EOS_ACCOUNT_PASSWORD: xxx
+# EOS_ACCOUNT_USERNAME: xxx
+# EOS_PATH: /eos/project-k/key4hep/www/edm4hep/
+# METHOD: rsync
+# are set in the repository https://gitlab.cern.ch/key4hep/edm4hep,
+# which mirrors https://github.com/key4hep/edm4hep
+# In particular, the service account key4hep is used to write
+# to the eos space /eos/project/k/key4hep/www/edm4hep
+# Other accounts which are part of the e-groups 
+# cernbox-project-key4hep-{readers|writers} may be used.
+# The eos path and website are configured using https://webeos.cern.ch/
+deployment:
+  # make sure that changes are deployed only when they are merged to master
+  only:
+    refs:
+      - master
+  # need the doxygen artifacts for this step
+  dependencies:
+    - generate-docs
+  stage: deploy
+  # see see https://gitlab.cern.ch/ci-tools/ci-web-deployer
+  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  script:
+    - deploy-eos
+  before_script: []
+  after_script: []
