@@ -60,7 +60,7 @@ components:
         - float Z0 // longitudinal impact parameter
         - float tanLambda // lambda is the dip angle of the track in r-z
         - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
-        - std::array<float, 15> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda).
+        - std::array<float, 15> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda). the array is a row-major flattening of the matrix.
       ExtraCode :
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n   
