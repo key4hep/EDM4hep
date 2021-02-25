@@ -1,3 +1,14 @@
+# v00-03-01
+
+* 2021-02-23 Valentin Volkl ([PR#110](https://github.com/key4hep/edm4hep/pull/110))
+  - Update relation diagram for docs
+
+* 2021-02-11 Andre Sailer ([PR#108](https://github.com/key4hep/edm4hep/pull/108))
+  - TrackState Covariance: should be the lower triangle, like other covariance matrices, fixes #107
+
+* 2021-02-02 Valentin Volkl ([PR#105](https://github.com/key4hep/edm4hep/pull/105))
+  - Use gitlab CI to deploy doxygen site to eos
+
 # v00-03
 
 * 2020-12-03 Valentin Volkl ([PR#101](https://github.com/key4hep/edm4hep/pull/101))
