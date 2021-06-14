@@ -6,6 +6,8 @@
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/UserFloatCollection.h"
 
 // STL
 #include <iostream>
@@ -33,6 +35,9 @@ void write(std::string outfilename) {
 
   auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
   writer.registerForWrite("SimCalorimeterHitContributions");
+
+  auto& usrflts  = store.create<edm4hep::UserFloatCollection>("UserFloats");
+  writer.registerForWrite("UserFloats");
 
 
   unsigned nevents = 10 ;
@@ -123,6 +128,19 @@ void write(std::string outfilename) {
     //fixme: should this become a utility function ?
     //-------------------------------------------------------------
 
+
+    //----  add a user float value per MCParticle as 'user data'
+
+    for( auto p : mcps ){
+
+      auto ufv =  usrflts.create();
+
+      auto pv = p.getMomentum() ;
+
+      float pp = sqrt( pv[0] * pv[0] +  pv[1] * pv[1] +  pv[2] * pv[2] );
+
+      ufv.setValue( pp  ) ;
+    }
 
     //-------- print particles for debugging:
     std::cout << "\n collection:  " << "MCParticles" <<  " of type " <<  mcps.getValueTypeName() << "\n\n"

@@ -407,3 +407,11 @@ datatypes :
      - edm4hep::TrackerHit rec    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit sim // reference to the simulated hit
      
+
+
+  edm4hep::UserFloat:
+      Description: "A simple struct with one user defined float value"
+      Author : "F.Gaede"
+      Members:
+        - float value      // the single float value for extra user data
+
