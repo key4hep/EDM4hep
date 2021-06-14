@@ -6,6 +6,7 @@
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/UserFloatCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -21,6 +22,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sths   = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs   = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
+  auto& usrflts = store.get<edm4hep::UserFloatCollection>("UserFloats");
 
 
   if( mcps.isValid() ){
@@ -60,6 +62,27 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
     auto mcp2 = mcps[1] ;
     if( mcp2.getGeneratorStatus() != 3 ) throw std::runtime_error("wrong genStat for 2. particle - should be 3" );
     // and so on ...
+
+
+    // check user float data for MCParticles
+    int nmcp = mcps.size() ;
+    int nflts = usrflts.size() ;
+
+    if( nmcp != nflts ) throw std::runtime_error("number of user floats not equal to number of MCParticles");
+
+    for(int i=0 ; i<nmcp ; ++i){
+
+      auto pv = mcps[i].getMomentum() ;
+
+      float pp = sqrt( pv[0] * pv[0] +  pv[1] * pv[1] +  pv[2] * pv[2] );
+
+      float upp = usrflts[i].getValue() ;
+
+      if( pp != upp ){
+	std::cout << " incorrect user momentum stored: " << upp << " should be pp " << std::endl ;
+	throw std::runtime_error(" test failed...") ;
+      }
+    }
 
   } else {
     throw std::runtime_error("Collection 'MCParticles' should be present");
