@@ -382,13 +382,6 @@ datatypes :
      - edm4hep::ReconstructedParticle  rec  // reference to the reconstructed particle
      - edm4hep::MCParticle sim              // reference to the Monte-Carlo particle
 
-  edm4hep::RecoParticleRef:
-    Description: "Used to get a subset of reconstructed particles from a collection (or many collections)"
-    Author: "T. Madlener, DESY"
-    Members: {}
-    OneToOneRelations:
-      - edm4hep::ReconstructedParticle particle // reference to the reconstructed particle
-
   edm4hep::MCRecoCaloAssociation:
     Description: "Association between a CaloHit and the corresponding simulated CaloHit"
     Author: "C. Bernet, B. Hegner"

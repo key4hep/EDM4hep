@@ -1,5 +1,4 @@
 #include "edm4hep/ReconstructedParticleCollection.h"
-#include "edm4hep/RecoParticleRefCollection.h"
 
 #include "podio/EventStore.h"
 #include "podio/ROOTWriter.h"
@@ -114,7 +113,8 @@ void writeRecoParticleRef(const TestState& testState) {
   auto& recoColl = store.create<edm4hep::ReconstructedParticleCollection>("RecoParticles");
   writer.registerForWrite("RecoParticles");
 
-  auto& refColl = store.create<edm4hep::RecoParticleRefCollection>("RecoRefs");
+  auto& refColl = store.create<edm4hep::ReconstructedParticleCollection>("RecoRefs");
+  refColl.setSubsetCollection();
   writer.registerForWrite("RecoRefs");
 
   for (int iEvent = 0; iEvent < NEVENTS; ++iEvent) {
@@ -126,8 +126,7 @@ void writeRecoParticleRef(const TestState& testState) {
     ASSERT_EQUAL(testState.nRefs[iEvent], (int)testState.relationIndices[iEvent].size(), "Wrong number of relation indices");
 
     for (const int index : testState.relationIndices[iEvent]) {
-      auto ref = refColl.create();
-      ref.setParticle(recoColl[index]);
+      refColl.push_back(recoColl[index]);
     }
 
     // Check that what we write out is as expected
@@ -137,7 +136,7 @@ void writeRecoParticleRef(const TestState& testState) {
     int i = 0;
     for (const auto& ref : refColl) {
       auto expectedParticle = recoColl[testState.relationIndices[iEvent][i]];
-      ASSERT_EQUAL(ref.getParticle(), expectedParticle, "Wrong particle reference during creation");
+      ASSERT_EQUAL(ref, expectedParticle, "Wrong particle reference during creation");
       i++;
     }
 
@@ -160,7 +159,7 @@ void readRecoParticleRef(const TestState& testState) {
     ASSERT_EQUAL(recoColl.size(), testState.nEntries[iEvent],
                  "'RecoParticles' collection has the wrong number of entries");
 
-    auto& refColl = store.get<edm4hep::RecoParticleRefCollection>("RecoRefs");
+    auto& refColl = store.get<edm4hep::ReconstructedParticleCollection>("RecoRefs");
     ASSERT_CONDITION(refColl.isValid(), "'RecoRefs' collection is not present");
     ASSERT_EQUAL(refColl.size(), testState.nRefs[iEvent],
                  "'RecoRefs' collection has the wrong number of entries");
@@ -174,7 +173,7 @@ void readRecoParticleRef(const TestState& testState) {
     i = 0;
     for (const auto& ref : refColl) {
       const auto expectedReco = recoColl[testState.relationIndices[iEvent][i]];
-      ASSERT_EQUAL(ref.getParticle(), expectedReco, "Wrong particle in reference after reading");
+      ASSERT_EQUAL(ref, expectedReco, "Wrong particle in reference after reading");
       i++;
     }
 
