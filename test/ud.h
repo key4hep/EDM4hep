@@ -48,10 +48,14 @@ struct ud {
                 ue.addToValI(mi[k]);
             } else if (ti == 1) { // float
                 ue.addToValF(mf[k]);
+            } else {
+                // todo: throw an error
             }
 
                 
         }
+
+        return *this;
     }
 
     // internal idx

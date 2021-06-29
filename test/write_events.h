@@ -252,12 +252,21 @@ void write(std::string outfilename) {
         float x = 1.0;
         float y = 2.0;
         float z = 3.0;
+
+        xyzi.put("x", x)
+            .put("y", y)
+            .put("z", z)
+            .put("i", i);
+
+        xyzi.to(udv2);
+
         
-        // push some value to this x/y/z/i
-        udv2.addToValF(x);
-        udv2.addToValF(y);
-        udv2.addToValF(z);
-        udv2.addToValI(i);
+        // // push some value to this x/y/z/i
+        // udv2.addToValF(x);
+        // udv2.addToValF(y);
+        // udv2.addToValF(z);
+        // udv2.addToValI(i);
+        
     }
 
 
