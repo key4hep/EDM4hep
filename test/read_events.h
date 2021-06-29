@@ -18,6 +18,8 @@
 #include <exception>
 #include <cassert>
 
+#include "ud.h"
+
 void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& mcps   = store.get<edm4hep::MCParticleCollection>("MCParticles");
   auto& sths   = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
@@ -179,20 +181,35 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
     throw std::runtime_error("Collection 'SimCalorimeterHits' should be present");
   }
 
+  ud xyzi;
+  xyzi.reg("x", 1, 0)
+      .reg("y", 1, 1)
+      .reg("z", 1, 2)
+      .reg("t", 0, 0);
 
   if (usrexts.isValid()) {
       int nusrexts = usrexts.size();
 
       std::cout << "User data summary: " << std::endl;
       for (int i = 0; i < nusrexts; ++i) {
-          int ix = 0;
-          int iy = 1;
-          int iz = 2;
-          int ii = 0;
-          float x = usrexts[i].getValF(ix);
-          float y = usrexts[i].getValF(iy);
-          float z = usrexts[i].getValF(iz);
-          int iii = usrexts[i].getValI(ii);
+
+          float x,y,z;
+          int iii;
+          
+          xyzi.from(usrexts[i], 0)
+              .get("x", x)
+              .get("y", y)
+              .get("z", z)
+              .get("i", iii);
+          
+          // int ix = 0;
+          // int iy = 1;
+          // int iz = 2;
+          // int ii = 0;
+          // float x = usrexts[i].getValF(ix);
+          // float y = usrexts[i].getValF(iy);
+          // float z = usrexts[i].getValF(iz);
+          // int iii = usrexts[i].getValI(ii);
           std::cout << "User Ext: "
                     << i << " " << iii
                     << " " << x << " " << y << " " << z
@@ -208,15 +225,25 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
                 << "(size: " << nusrexts2 << ")" << std::endl;
       // loop all the values
       for (int i = 0; i < 10; ++i) {
-          int ix = i*3 + 0;
-          int iy = i*3 + 1;
-          int iz = i*3 + 2;
-          int ii = i;
 
-          float x = usrexts2[0].getValF(ix);
-          float y = usrexts2[0].getValF(iy);
-          float z = usrexts2[0].getValF(iz);
-          int iii = usrexts2[0].getValI(ii);
+          float x,y,z;
+          int iii;
+          
+          xyzi.from(usrexts2[0], i)
+              .get("x", x)
+              .get("y", y)
+              .get("z", z)
+              .get("i", iii);
+
+          // int ix = i*3 + 0;
+          // int iy = i*3 + 1;
+          // int iz = i*3 + 2;
+          // int ii = i;
+
+          // float x = usrexts2[0].getValF(ix);
+          // float y = usrexts2[0].getValF(iy);
+          // float z = usrexts2[0].getValF(iz);
+          // int iii = usrexts2[0].getValI(ii);
           std::cout << "Second User Ext: "
                     << i << " " << iii
                     << " " << x << " " << y << " " << z
