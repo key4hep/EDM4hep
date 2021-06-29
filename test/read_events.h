@@ -185,7 +185,8 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   xyzi.reg("x", 1, 0)
       .reg("y", 1, 1)
       .reg("z", 1, 2)
-      .reg("t", 0, 0);
+      .reg("t", 2, 0)
+      .reg("i", 0, 0);
 
   if (usrexts.isValid()) {
       int nusrexts = usrexts.size();
@@ -194,12 +195,14 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
       for (int i = 0; i < nusrexts; ++i) {
 
           float x,y,z;
+          double t;
           int iii;
           
           xyzi.from(usrexts[i], 0)
               .get("x", x)
               .get("y", y)
               .get("z", z)
+              .get("t", t)
               .get("i", iii);
           
           // int ix = 0;
@@ -212,7 +215,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
           // int iii = usrexts[i].getValI(ii);
           std::cout << "User Ext: "
                     << i << " " << iii
-                    << " " << x << " " << y << " " << z
+                    << " " << x << " " << y << " " << z << " " << t
                     << std::endl;
       }
   }
@@ -227,12 +230,14 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
       for (int i = 0; i < 10; ++i) {
 
           float x,y,z;
+          double t;
           int iii;
           
           xyzi.from(usrexts2[0], i)
               .get("x", x)
               .get("y", y)
               .get("z", z)
+              .get("t", t)
               .get("i", iii);
 
           // int ix = i*3 + 0;
@@ -246,7 +251,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
           // int iii = usrexts2[0].getValI(ii);
           std::cout << "Second User Ext: "
                     << i << " " << iii
-                    << " " << x << " " << y << " " << z
+                    << " " << x << " " << y << " " << z << " " << t
                     << std::endl;
       }
   }

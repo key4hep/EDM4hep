@@ -220,16 +220,19 @@ void write(std::string outfilename) {
     xyzi.reg("x", 1, 0)
         .reg("y", 1, 1)
         .reg("z", 1, 2)
-        .reg("t", 0, 0);
+        .reg("t", 2, 0)
+        .reg("i", 0, 0);
 
     for (int i = 0; i < 10; ++i) {
         float x = 1.0;
         float y = 2.0;
         float z = 3.0;
+        double t = 0.01*i;
 
         xyzi.put("x", x)
             .put("y", y)
             .put("z", z)
+            .put("t", t)
             .put("i", i);
         
         auto udv = usrexts.create();
@@ -252,10 +255,12 @@ void write(std::string outfilename) {
         float x = 1.0;
         float y = 2.0;
         float z = 3.0;
+        double t = 0.01*i;
 
         xyzi.put("x", x)
             .put("y", y)
             .put("z", z)
+            .put("t", t)
             .put("i", i);
 
         xyzi.to(udv2);

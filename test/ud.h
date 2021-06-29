@@ -40,6 +40,12 @@ struct ud {
         return *this;
     }
 
+    template<>
+    ud& put(const std::string& name, double v) {
+        md[name] = v;
+        return *this;
+    }
+    
     // for simplicity, return the value via argument
     template<class T>
     ud& get(const std::string&, T&) {
@@ -57,6 +63,12 @@ struct ud {
         v = mf[name];
         return *this;
     }
+
+    template<>
+    ud& get(const std::string& name, double& v) {
+        v = md[name];
+        return *this;
+    }
     
     ud& to(edm4hep::UserExt ue) {
         for (int i = 0; i < ns.size(); ++i) {
@@ -68,6 +80,8 @@ struct ud {
                 ue.addToValI(mi[k]);
             } else if (ti == 1) { // float
                 ue.addToValF(mf[k]);
+            } else if (ti == 2) { // double
+                ue.addToValD(md[k]);
             } else {
                 // todo: throw an error
             }
@@ -90,6 +104,8 @@ struct ud {
                 mi[k] = ue.getValI(ei);
             } else if (ti == 1) { // float
                 mf[k] = ue.getValF(ei);
+            } else if (ti == 2) { // double
+                md[k] = ue.getValD(ei);
             } else {
                 // todo: throw an error
             }
@@ -110,6 +126,7 @@ struct ud {
     // holder
     std::map<std::string, int> mi;
     std::map<std::string, float> mf;
+    std::map<std::string, double> md;
 };
 
 #endif
