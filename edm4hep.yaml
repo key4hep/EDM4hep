@@ -415,3 +415,10 @@ datatypes :
       Members:
         - float value      // the single float value for extra user data
 
+  edm4hep::UserExt:
+      Description: "A simple struct with one user defined data"
+      Author : "Tao Lin"
+      VectorMembers:
+        - int valI // data int
+        - float valF // data float
+

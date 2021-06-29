@@ -8,6 +8,7 @@
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/UserFloatCollection.h"
+#include "edm4hep/UserExtCollection.h"
 
 // STL
 #include <iostream>
@@ -38,6 +39,12 @@ void write(std::string outfilename) {
 
   auto& usrflts  = store.create<edm4hep::UserFloatCollection>("UserFloats");
   writer.registerForWrite("UserFloats");
+
+  auto& usrexts  = store.create<edm4hep::UserExtCollection>("UserExts");
+  writer.registerForWrite("UserExts");
+
+  auto& usrexts2  = store.create<edm4hep::UserExtCollection>("SecondUserExts");
+  writer.registerForWrite("SecondUserExts");
 
 
   unsigned nevents = 10 ;
@@ -198,6 +205,45 @@ void write(std::string outfilename) {
 
     std::cout << "\n collection:  " << "SimCalorimeterHits" <<  " of type " <<  schs.getValueTypeName() << "\n\n"
         << schs << std::endl ;
+
+
+
+    //===============================================================================
+    // Usage 1: each element is a user ext data
+    // write some User Defined Type Data
+    // - save 10 elements
+    // - each element contains x/y/z (float) and i (int)
+    for (int i = 0; i < 10; ++i) {
+        float x = 1.0;
+        float y = 2.0;
+        float z = 3.0;
+        
+        auto udv = usrexts.create();
+
+        // push some value to this x/y/z/i
+        udv.addToValF(x);
+        udv.addToValF(y);
+        udv.addToValF(z);
+        udv.addToValI(i);
+    }
+
+    // Usage 2: only create one user defined type data
+    //          then push the values into this container
+    auto udv2 = usrexts2.create();
+
+
+    for (int i = 0; i < 10; ++i) {
+        float x = 1.0;
+        float y = 2.0;
+        float z = 3.0;
+        
+        // push some value to this x/y/z/i
+        udv2.addToValF(x);
+        udv2.addToValF(y);
+        udv2.addToValF(z);
+        udv2.addToValI(i);
+    }
+
 
     //===============================================================================
 

@@ -7,6 +7,7 @@
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/UserFloatCollection.h"
+#include "edm4hep/UserExtCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -24,6 +25,8 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
   auto& usrflts = store.get<edm4hep::UserFloatCollection>("UserFloats");
 
+  auto& usrexts = store.get<edm4hep::UserExtCollection>("UserExts");
+  auto& usrexts2 = store.get<edm4hep::UserExtCollection>("SecondUserExts");
 
   if( mcps.isValid() ){
 
@@ -176,6 +179,51 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
     throw std::runtime_error("Collection 'SimCalorimeterHits' should be present");
   }
 
+
+  if (usrexts.isValid()) {
+      int nusrexts = usrexts.size();
+
+      std::cout << "User data summary: " << std::endl;
+      for (int i = 0; i < nusrexts; ++i) {
+          int ix = 0;
+          int iy = 1;
+          int iz = 2;
+          int ii = 0;
+          float x = usrexts[i].getValF(ix);
+          float y = usrexts[i].getValF(iy);
+          float z = usrexts[i].getValF(iz);
+          int iii = usrexts[i].getValI(ii);
+          std::cout << "User Ext: "
+                    << i << " " << iii
+                    << " " << x << " " << y << " " << z
+                    << std::endl;
+      }
+  }
+  
+  if (usrexts2.isValid()) {
+      int nusrexts2 = usrexts2.size();
+
+      // need to know the length of the array
+      std::cout << "SecondUserExts summary: "
+                << "(size: " << nusrexts2 << ")" << std::endl;
+      // loop all the values
+      for (int i = 0; i < 10; ++i) {
+          int ix = i*3 + 0;
+          int iy = i*3 + 1;
+          int iz = i*3 + 2;
+          int ii = i;
+
+          float x = usrexts2[0].getValF(ix);
+          float y = usrexts2[0].getValF(iy);
+          float z = usrexts2[0].getValF(iz);
+          int iii = usrexts2[0].getValI(ii);
+          std::cout << "Second User Ext: "
+                    << i << " " << iii
+                    << " " << x << " " << y << " " << z
+                    << std::endl;
+      }
+  }
+  
  // //===============================================================================
  //  if( sccons.isValid() ){
  //  } else {
