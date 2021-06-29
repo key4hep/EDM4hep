@@ -17,6 +17,8 @@
 // podio specific includes
 #include "podio/EventStore.h"
 
+#include "ud.h"
+
 template<class WriterT>
 void write(std::string outfilename) {
   std::cout<<"start processing"<<std::endl;
@@ -213,18 +215,32 @@ void write(std::string outfilename) {
     // write some User Defined Type Data
     // - save 10 elements
     // - each element contains x/y/z (float) and i (int)
+
+    ud xyzi;
+    xyzi.reg("x", 1, 0)
+        .reg("y", 1, 1)
+        .reg("z", 1, 2)
+        .reg("t", 0, 0);
+
     for (int i = 0; i < 10; ++i) {
         float x = 1.0;
         float y = 2.0;
         float z = 3.0;
+
+        xyzi.put("x", x)
+            .put("y", y)
+            .put("z", z)
+            .put("i", i);
         
         auto udv = usrexts.create();
 
+        xyzi.to(udv);
+        
         // push some value to this x/y/z/i
-        udv.addToValF(x);
-        udv.addToValF(y);
-        udv.addToValF(z);
-        udv.addToValI(i);
+        // udv.addToValF(x);
+        // udv.addToValF(y);
+        // udv.addToValF(z);
+        // udv.addToValI(i);
     }
 
     // Usage 2: only create one user defined type data
