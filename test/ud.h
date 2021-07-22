@@ -28,19 +28,16 @@ struct ud {
         return *this;
     }
 
-    template<>
     ud& put(const std::string& name, int v) {
         mi[name] = v;
         return *this;
     }
 
-    template<>
     ud& put(const std::string& name, float v) {
         mf[name] = v;
         return *this;
     }
 
-    template<>
     ud& put(const std::string& name, double v) {
         md[name] = v;
         return *this;
@@ -52,19 +49,16 @@ struct ud {
         return *this;
     }
     
-    template<>
     ud& get(const std::string& name, int& v) {
         v = mi[name];
         return *this;
     }
 
-    template<>
     ud& get(const std::string& name, float& v) {
         v = mf[name];
         return *this;
     }
 
-    template<>
     ud& get(const std::string& name, double& v) {
         v = md[name];
         return *this;
