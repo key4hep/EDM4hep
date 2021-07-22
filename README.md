@@ -1,5 +1,4 @@
 
-[![Build Status](https://travis-ci.com/key4hep/EDM4HEP.svg?branch=master)](https://travis-ci.com/key4hep/EDM4HEP)
 [![linux](https://github.com/key4hep/EDM4hep/workflows/linux.yml/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/linux.yml)
 [![key4hep](https://github.com/key4hep/EDM4hep/workflows/key4hep.yml/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep.yml)
 
