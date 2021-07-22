@@ -18,7 +18,6 @@ find_package(podio REQUIRED HINTS $ENV{PODIO})
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
-set(ROOT_genreflex_cmd ${ROOT_genreflex_CMD})
 
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
@@ -103,7 +102,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 add_subdirectory(edm4hep)
 add_subdirectory(test)
 add_subdirectory(dataframe)
-
+add_subdirectory(utils)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)
