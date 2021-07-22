@@ -1,23 +1,22 @@
-name: linux
+name: key4hep_linux
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  build-and-test-key4hep:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        LCG: ["LCG_99/x86_64-centos7-gcc8-opt",
-              "LCG_99/x86_64-centos7-gcc10-opt",
-              "LCG_99/x86_64-centos7-clang10-opt",
-              "LCG_99/x86_64-ubuntu2004-gcc9-opt"]
+        release: ["sw.hsf.org/key4hep",
+                  "sw-nightlies.hsf.org/key4hep"]
     steps:
     - uses: actions/checkout@v2
     - uses: cvmfs-contrib/github-action-cvmfs@v2
     - uses: aidasoft/run-lcg-view@v3
       with:
-        release-platform: ${{ matrix.LCG }}
+        container: centos7
+        view-path: /cvmfs/${{ matrix.release }}
         run: |
           mkdir build install
           cd build
