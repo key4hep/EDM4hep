@@ -23,6 +23,7 @@ jobs:
           cd build
           cmake .. -DCMAKE_CXX_STANDARD=17 \
             -DCMAKE_INSTALL_PREFIX=../install \
+            -DUSE_EXTERNAL_CATCH2=OFF \
             -G Ninja
           ninja -k0
           ctest --output-on-failure

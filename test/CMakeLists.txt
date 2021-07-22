@@ -83,3 +83,5 @@ if(HepMC_FOUND AND HepPDT_FOUND )
     ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
     )
 endif()
+
+add_subdirectory(utils)

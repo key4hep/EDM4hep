@@ -65,6 +65,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDROP_CGAL")
 
 option(BUILD_DOCS "Whether or not to create doxygen doc target.")
 
+option(USE_EXTERNAL_CATCH2 "Link against an external Catch2 v3 static
+library, otherwise build it locally" ON)
+
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
 
