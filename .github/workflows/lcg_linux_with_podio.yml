@@ -1,4 +1,4 @@
-name: linux_with_podio
+name: lcg_linux_with_podio
 
 on: [push, pull_request]
 
