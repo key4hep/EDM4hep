@@ -45,3 +45,10 @@ tricktrack/
 *.exe
 *.out
 *.app
+
+# spack related folders/files
+spack*
+
+# Tooling
+/.clangd/
+/compile_commands.json
