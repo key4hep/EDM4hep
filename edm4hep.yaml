@@ -12,7 +12,7 @@ components:
         - float x
         - float y
         - float z
-      ExtraCode :
+      ExtraCode:
         declaration: "
         Vector3f() : x(0),y(0),z(0) {}\n
         Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
@@ -27,7 +27,7 @@ components:
         - double x
         - double y
         - double z
-      ExtraCode :
+      ExtraCode:
         declaration: "
         Vector3d() : x(0),y(0),z(0) {}\n
         Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
@@ -56,7 +56,7 @@ components:
       Members:
         - float a
         - float b
-      ExtraCode :
+      ExtraCode:
         declaration: "
         Vector2f() : a(0),b(0) {}\n
         Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
@@ -76,7 +76,7 @@ components:
         - float tanLambda // lambda is the dip angle of the track in r-z
         - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
         - std::array<float, 15> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda). the array is a row-major flattening of the matrix.
-      ExtraCode :
+      ExtraCode:
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n   
         static const int AtIP = 1 ;\n
@@ -132,7 +132,7 @@ datatypes :
     OneToManyRelations:
       - edm4hep::MCParticle parents // The parents of this particle.
       - edm4hep::MCParticle daughters // The daughters this particle.
-    ExtraCode :
+    MutableExtraCode:
       includes: "#include <cmath>"
       declaration: "
       int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
@@ -146,7 +146,7 @@ datatypes :
       void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
       "
 
-    ConstExtraCode:
+    ExtraCode:
       declaration: "
       // define the bit positions for the simulation flag\n
       static const int BITEndpoint = 31;\n
@@ -195,14 +195,14 @@ datatypes :
       - edm4hep::Vector3f momentum     //the 3-momentum of the particle at the hits position in [GeV]
     OneToOneRelations:
       - edm4hep::MCParticle MCParticle //MCParticle that caused the hit.
-    ExtraCode :
+    MutableExtraCode:
       includes: "#include <cmath>"
       declaration: "
       int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
       void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
       "
-    ConstExtraCode:
+    ExtraCode:
       declaration: "
       static const int  BITOverlay = 31;\n
       static const int  BITProducedBySecondary = 30;\n
@@ -403,7 +403,7 @@ datatypes :
       - edm4hep::Track                 tracks       //tracks that have been used for this particle. 
       - edm4hep::ReconstructedParticle particles    //reconstructed particles that have been combined to this particle.
       - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood) 
-    ExtraCode:
+    MutableExtraCode:
       declaration: "
       bool isCompound() { return particles_size() > 0 ;}\n
       //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n 
@@ -481,4 +481,3 @@ datatypes :
     OneToOneRelations:
      - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
      - edm4hep::Vertex vertex             // reference to the vertex
-
