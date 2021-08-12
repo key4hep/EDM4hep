@@ -22,8 +22,8 @@
 
 using namespace HepMC3;
 
- edm4hep::MCParticle convert(std::shared_ptr<GenParticle> hepmcParticle) {
-    auto edm_particle = edm4hep::MCParticle();
+ edm4hep::MutableMCParticle convert(std::shared_ptr<GenParticle> hepmcParticle) {
+    auto edm_particle = edm4hep::MutableMCParticle();
     edm_particle.setPDG(hepmcParticle->pdg_id());
     edm_particle.setGeneratorStatus(hepmcParticle->status());
     // look up charge from pdg_id
@@ -127,8 +127,8 @@ int main() {
     auto writer = podio::ROOTWriter("edm4hep_testhepmc.root", &store);
     auto& edm_particle_collection = store.create<edm4hep::MCParticleCollection>("TestParticles2");
     writer.registerForWrite("TestParticles2");
-    std::unordered_map<unsigned int, edm4hep::MCParticle> hepmcToEdmMap;
-    unsigned int particle_counter;
+    std::unordered_map<unsigned int, edm4hep::MutableMCParticle> hepmcToEdmMap;
+    unsigned int particle_counter{0};
     for (auto particle_i: evt->particles()) {
       std::cout << "Converting particle with PDG ID: " << particle_i->pdg_id() << std::endl;
       std::cout << "\t and id: " << particle_i->id() << std::endl;

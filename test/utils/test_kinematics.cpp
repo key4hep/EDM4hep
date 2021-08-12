@@ -5,14 +5,14 @@
 
 #include "edm4hep/kinematics.h"
 
-#include "edm4hep/MCParticle.h"
-#include "edm4hep/ReconstructedParticle.h"
+#include "edm4hep/MutableMCParticle.h"
+#include "edm4hep/MutableReconstructedParticle.h"
 
 #include "Math/Vector4D.h"
 
 #include <tuple>
 
-using ParticleTypes = std::tuple<edm4hep::MCParticle, edm4hep::ReconstructedParticle>;
+using ParticleTypes = std::tuple<edm4hep::MutableMCParticle, edm4hep::MutableReconstructedParticle>;
 
 TEMPLATE_LIST_TEST_CASE( "pT: transverse momentum", "[pT][kinematics]", ParticleTypes)
 {
@@ -62,7 +62,7 @@ TEMPLATE_LIST_TEST_CASE( "p: momentum", "[p][kinematics]", ParticleTypes )
 TEST_CASE( "p4: four momentum - MCParticle", "[p4][kinematics][MCParticle]" )
 {
   using namespace edm4hep;
-  MCParticle particle;
+  MutableMCParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});
   particle.setMass(42);
   REQUIRE(utils::p4(particle) == LorentzVectorM{1, 2, 3, 42});
@@ -74,7 +74,7 @@ TEST_CASE( "p4: four momentum - MCParticle", "[p4][kinematics][MCParticle]" )
 TEST_CASE( "p4: four momentum - ReconstructedParticle", "[p4][kinematics][ReconstructedParticle]" )
 {
   using namespace edm4hep;
-  ReconstructedParticle particle;
+  MutableReconstructedParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});
   particle.setMass(125);
 
@@ -94,7 +94,7 @@ TEST_CASE( "p4: four momentum - ReconstructedParticle", "[p4][kinematics][Recons
 
 TEST_CASE( "p4 with user set values", "[p4][kinematics][user set values]" ) {
   using namespace edm4hep;
-  ReconstructedParticle particle;
+  MutableReconstructedParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});
   particle.setMass(125.0f);
   particle.setEnergy(42.0f);
@@ -110,7 +110,7 @@ TEST_CASE( "p4 with user set values", "[p4][kinematics][user set values]" ) {
   REQUIRE(particle.getEnergy() == 42.f);
 
   // Make sure everything still works with the MC particle
-  MCParticle mcPart;
+  MutableMCParticle mcPart;
   mcPart.setMomentum({-1.0f, -2.0f, -3.0f});
   mcPart.setMass(125.0f);
 

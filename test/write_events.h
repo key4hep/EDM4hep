@@ -158,7 +158,7 @@ void write(std::string outfilename) {
       sch1.setEnergy( j * 0.1 );
       sch1.setPosition( { j*100.f , j*200.f, j*50.f } ) ;
 
-      auto cont1 =  edm4hep::CaloHitContribution(11, j * 0.1f ,j*1e-9f, { j*100.01f , j*200.01f, j*50.01f } );
+      auto cont1 =  edm4hep::MutableCaloHitContribution(11, j * 0.1f ,j*1e-9f, { j*100.01f , j*200.01f, j*50.01f } );
       sccons.push_back( cont1 ) ;
       cont1.setParticle( mcp7 ) ;
       sch1.addToContributions( cont1 ) ;
@@ -168,7 +168,7 @@ void write(std::string outfilename) {
       sch2.setPosition( { -j*100.f , -j*200.f, -j*50.f } ) ;
       sch2.setEnergy( j * .2 );
 
-      auto cont2 =  edm4hep::CaloHitContribution(-11, j*0.2f , j*1e-9f, { -j*100.01f , -j*200.01f, -j*50.01f } );
+      auto cont2 =  edm4hep::MutableCaloHitContribution(-11, j*0.2f , j*1e-9f, { -j*100.01f , -j*200.01f, -j*50.01f } );
       sccons.push_back( cont2 ) ;
       cont2.setParticle( mcp8 ) ;
       sch2.addToContributions( cont2 ) ;
