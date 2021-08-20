@@ -50,6 +50,21 @@ components:
         bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
+
+    # Vector2D with floats
+    edm4hep::Vector2f :
+      Members:
+        - float a
+        - float b
+      ExtraCode :
+        declaration: "
+        Vector2f() : a(0),b(0) {}\n
+        Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
+        Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
+        bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
+        float operator[](unsigned i) const { return *( &a + i ) ; }\n
+        "
+
       # Parametrized description of a particle track
     edm4hep::TrackState:
       Members:
@@ -296,6 +311,28 @@ datatypes :
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
       - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type. 
+
+
+  #-------------  TrackerHitPlane
+  edm4hep::TrackerHitPlane:
+    Description : "Tracker hit plane"
+    Author : "Placido Fernandez Declara, CERN"
+    Members :
+      - unsigned long long cellID      //ID of the sensor that created this hit
+      - int type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int quality                    //quality bit flag of the hit.
+      - float time                     //time of the hit.
+      - float eDep                     //energy deposited on the hit [GeV].
+      - float eDepError                //error measured on EDep [GeV].
+      - float edx                      //dE/dx of the hit in [GeV/mm].
+      - edm4hep::Vector2f u            //measurement direction vector, u lies in the x-y plane
+      - edm4hep::Vector2f v            //measurement direction vector, v is along z
+      - float du                       //measurement error along the direction
+      - float dv                       //measurement error along the direction
+      - edm4hep::Vector3d position     //hit position in [mm].
+      - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+    VectorMembers:
+      - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
 
 
  #----------  TPCHit
