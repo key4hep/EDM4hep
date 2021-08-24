@@ -461,3 +461,12 @@ datatypes :
     OneToOneRelations:
      - edm4hep::CalorimeterHit rec  // reference to the reconstructed hit
      - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+
+  edm4hep::MCRecoClusterParticleAssociation:
+    Description: "Association between a Cluster and a MCParticle"
+    Author : "Placido Fernandez Declara"
+    Members:
+      - float weight                // weight of this association
+    OneToOneRelations:
+     - edm4hep::Cluster rec         // reference to the cluster
+     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
