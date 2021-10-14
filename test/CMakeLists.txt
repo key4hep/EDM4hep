@@ -54,6 +54,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   add_test(NAME test_rdf COMMAND test_rdf)
   set_tests_properties(test_rdf PROPERTIES
     ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    DEPENDS write_events
     )
 endif()
 
