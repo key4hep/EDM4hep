@@ -1,3 +1,29 @@
+# v00-04
+
+* 2021-09-06 Placido Fernandez Declara ([PR#122](https://github.com/key4hep/edm4hep/pull/122))
+  - Adds missing types to run clicReconstruction with EDM4hep input/output
+  - Adds Vector2f, TrackerHitPlane, MCRecoTrackerHitPlaneAssociation, MCRecoCaloParticleAssociation, MCRecoClusterParticleAssociation, MCRecoTrackParticleAssociation
+
+* 2021-09-03 Thomas Madlener ([PR#116](https://github.com/key4hep/edm4hep/pull/116))
+  - Remove the `RecoParticleRef` datatype again because podio supports subset collections natively now (see AIDASoft/podio#197)
+
+* 2021-07-28 Thomas Madlener ([PR#120](https://github.com/key4hep/edm4hep/pull/120))
+  - Add first utility functionality for kinematics living in namespace `edm4hep::utils`:
+    - `edm4hep::utils::p` returns the total momentum for the passed particle
+    - `edm4hep::utils::pt` and `edm4hep::utils::pT` returns the transverse momentum for the passed particle
+    - `edm4hep::utils::p4` returns the four momentum of the passed particle, depending on the (optional) second argument it uses the momentum of the passed particle and either
+      - the mass of the passed particle if the second argument is `edm4hep::utils::UseMass` (**default**)
+      - the energy of the passed particle if the second argument is `edm4hep::utils::UseEnergy`
+      - an arbitrary value for either the mass or the energy if the second argument is `edm4hep::utils::SetMass{value}` or `edm4hep::utils::SetEnergy{value}` respectively.
+
+* 2021-07-22 Valentin Volkl ([PR#119](https://github.com/key4hep/edm4hep/pull/119))
+  -  [ci] remove travis config (superseded by github actions)
+  -  [ci] rename workflows (`s/linux/lcg_linux/` as linux on its own is not very informative ) and fix badges.
+
+* 2021-07-22 Thomas Madlener ([PR#118](https://github.com/key4hep/edm4hep/pull/118))
+  - Add github actions CI workflows
+  - Fix issue with CI builds that build podio on the fly
+
 # v00-03-01
 
 * 2021-02-23 Valentin Volkl ([PR#110](https://github.com/key4hep/edm4hep/pull/110))
