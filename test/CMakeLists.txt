@@ -19,14 +19,16 @@ set_tests_properties(read_events PROPERTIES
   ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
   )
 
-add_executable(reco_particle_ref reco_particle_ref.cc)
-target_include_directories(reco_particle_ref PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep)
-target_link_libraries(reco_particle_ref edm4hep podio::podioRootIO)
-add_test(NAME reco_particle_ref COMMAND reco_particle_ref)
-set_tests_properties(reco_particle_ref PROPERTIES
-  ENVIRONMENT
-  LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+IF (podio_VERSION VERSION_GREATER "0.13")
+  add_executable(reco_particle_ref reco_particle_ref.cc)
+  target_include_directories(reco_particle_ref PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep)
+  target_link_libraries(reco_particle_ref edm4hep podio::podioRootIO)
+  add_test(NAME reco_particle_ref COMMAND reco_particle_ref)
+  set_tests_properties(reco_particle_ref PROPERTIES
+    ENVIRONMENT
+    LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
   )
+ENDIF()
 
 IF(TARGET edm4hepSioBlocks)
   add_executable(write_events_sio write_events_sio.cc)
