@@ -74,13 +74,13 @@ endif()
 
 
 
-find_package(HepMC)
+find_package(HepMC3)
 find_package(HepPDT)
 
-if(HepMC_FOUND AND HepPDT_FOUND )
+if(HepMC3_FOUND AND HepPDT_FOUND )
   add_executable(edm4hep_testhepmc hepmc/edm4hep_testhepmc.cc)
-  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
-  target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC_LIBRARIES})
+  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC3_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
+  target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC3_LIBRARIES})
   add_test(NAME edm4hep_testhepmc COMMAND edm4hep_testhepmc)
   set_tests_properties(edm4hep_testhepmc PROPERTIES
     ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
