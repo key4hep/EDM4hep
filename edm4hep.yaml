@@ -479,5 +479,5 @@ datatypes :
     Members:
       - float weight                      // weight of this association
     OneToOneRelations:
-     - edm4hep::ReconstructedParticle rec // reference to the track
-     - edm4hep::Vertex sim                // reference to the Monte-Carlo particle
+     - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
+     - edm4hep::Vertex sim                // reference to the vertex
