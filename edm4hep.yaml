@@ -480,4 +480,4 @@ datatypes :
       - float weight                      // weight of this association
     OneToOneRelations:
      - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
-     - edm4hep::Vertex sim                // reference to the vertex
+     - edm4hep::Vertex vertex             // reference to the vertex
