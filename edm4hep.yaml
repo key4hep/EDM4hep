@@ -40,13 +40,13 @@ components:
     # Vector2D with ints
     edm4hep::Vector2i :
       Members:
-        - int a
-        - int b
+        - int32_t a
+        - int32_t b
       ExtraCode :
         declaration: "
         Vector2i() : a(0),b(0) {}\n
-        Vector2i(int aa,int bb) : a(aa),b(bb) {}\n
-        Vector2i( const int* v) : a(v[0]), b(v[1]) {}\n
+        Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
+        Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
         bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
@@ -68,7 +68,7 @@ components:
       # Parametrized description of a particle track
     edm4hep::TrackState:
       Members:
-        - int location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
+        - int32_t location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
         - float D0 // transverse impact parameter
         - float phi // azimuthal angle
         - float omega // is the signed curvature of the track in [1/mm].
@@ -90,8 +90,8 @@ components:
     #------ ObjectID helper struct for references/relations
     edm4hep::ObjectID:
       Members:
-        - int index
-        - int collectionID
+        - int32_t index
+        - int32_t collectionID
       ExtraCode :
         includes: "#include <podio/ObjectID.h>\n"
         declaration: "
@@ -107,9 +107,9 @@ datatypes :
     Description: "Event Header. Additional parameters are assumed to go into the metadata tree."
     Author : "F.Gaede"
     Members:
-      - int eventNumber    //event number
-      - int runNumber      //run number
-      - unsigned long long timeStamp     //time stamp
+      - int32_t eventNumber    //event number
+      - int32_t runNumber      //run number
+      - uint64_t timeStamp     //time stamp
       - float weight       // event weight
 
 
@@ -117,9 +117,9 @@ datatypes :
     Description: "The Monte Carlo particle - based on the lcio::MCParticle."
     Author : "F.Gaede, DESY"
     Members:
-      - int PDG                         //PDG code of the particle
-      - int generatorStatus             //status of the particle as defined by the generator
-      - int simulatorStatus             //status of the particle from the simulation program - use BIT constants below
+      - int32_t PDG                         //PDG code of the particle
+      - int32_t generatorStatus             //status of the particle as defined by the generator
+      - int32_t simulatorStatus             //status of the particle from the simulation program - use BIT constants below
       - float charge                    //particle charge
       - float time                      //creation time of the particle in [ns] wrt. the event, e.g. for preassigned decays or decays in flight from the simulator.
       - double mass                     //mass of the particle in [GeV]
@@ -135,7 +135,7 @@ datatypes :
     ExtraCode :
       includes: "#include <cmath>"
       declaration: "
-      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
+      int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
       void setCreatedInSimulation(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
       void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
       void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
@@ -186,11 +186,11 @@ datatypes :
     Description: "Simulated tracker hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID      //ID of the sensor that created this hit
+      - uint64_t cellID      //ID of the sensor that created this hit
       - float EDep                     //energy deposited in the hit [GeV].
       - float time                     //proper time of the hit in the lab frame in [ns].
       - float pathLength               //path length of the particle in the sensitive material that resulted in this hit.
-      - int   quality                  //quality bit flag.
+      - int32_t   quality                  //quality bit flag.
       - edm4hep::Vector3d position     //the hit position in [mm].
       - edm4hep::Vector3f momentum     //the 3-momentum of the particle at the hits position in [GeV]
     OneToOneRelations:
@@ -198,7 +198,7 @@ datatypes :
     ExtraCode :
       includes: "#include <cmath>"
       declaration: "
-      int  set_bit(int val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
+      int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
       void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
       "
@@ -220,7 +220,7 @@ datatypes :
     Description: "Monte Carlo contribution to SimCalorimeterHit"
     Author : "F.Gaede, DESY"
     Members:
-      - int   PDG                        //PDG code of the shower particle that caused this contribution.
+      - int32_t   PDG                        //PDG code of the shower particle that caused this contribution.
       - float energy                     //energy in [GeV] of the this contribution
       - float time                       //time in [ns] of this contribution
       - edm4hep::Vector3f stepPosition   //position of this energy deposition (step)
@@ -232,7 +232,7 @@ datatypes :
     Description: "Simulated calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID       //ID of the sensor that created this hit
+      - uint64_t cellID       //ID of the sensor that created this hit
       - float energy                    //energy of the hit in [GeV].
       - edm4hep::Vector3f position      //position of the hit in world coordinates.
     OneToManyRelations:
@@ -244,30 +244,30 @@ datatypes :
     Description: "Raw calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID   //detector specific (geometrical) cell id.
-      - int amplitude               //amplitude of the hit in ADC counts.
-      - int timeStamp               //time stamp for the hit.
+      - uint64_t cellID   //detector specific (geometrical) cell id.
+      - int32_t amplitude               //amplitude of the hit in ADC counts.
+      - int32_t timeStamp               //time stamp for the hit.
 
   #-------------  CalorimeterHit
   edm4hep::CalorimeterHit:
     Description: "Calorimeter hit"
     Author : "F.Gaede, DESY"
     Members:
-      - unsigned long long cellID  //detector specific (geometrical) cell id.
+      - uint64_t cellID  //detector specific (geometrical) cell id.
       - float energy               //energy of the hit in [GeV].
       - float energyError          //error of the hit energy in [GeV].
       - float time                 //time of the hit in [ns].
       - edm4hep::Vector3f position //position of the hit in world coordinates.
-      - int type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues". 
+      - int32_t type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues". 
 
  #---------- ParticleID
   edm4hep::ParticleID:
     Description:  "ParticleID"
     Author : "F.Gaede, DESY"
     Members:
-      - int   type           //userdefined type 
-      - int   PDG            //PDG code of this id - ( 999999 ) if unknown. 
-      - int   algorithmType  //type of the algorithm/module that created this hypothesis
+      - int32_t   type           //userdefined type 
+      - int32_t   PDG            //PDG code of this id - ( 999999 ) if unknown. 
+      - int32_t   algorithmType  //type of the algorithm/module that created this hypothesis
       - float likelihood     //likelihood of this hypothesis - in a user defined normalization.
     VectorMembers:
       - float parameters     //parameters associated with this hypothesis. Check/set collection parameters ParameterNames_PIDAlgorithmTypeName for decoding the indices.
@@ -278,7 +278,7 @@ datatypes :
     Description: "Calorimeter Hit Cluster"
     Author : "F.Gaede, DESY"
     Members:
-      - int                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally. 
+      - int32_t                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally. 
       - float                energy          //energy of the cluster [GeV]
       - float                energyError     //error on the energy
       - edm4hep::Vector3f    position        //position of the cluster.
@@ -300,9 +300,9 @@ datatypes :
     Description : "Tracker hit"
     Author : "F.Gaede, DESY"
     Members :
-      - unsigned long long cellID      //ID of the sensor that created this hit
-      - int type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues". 
-      - int quality                    //quality bit flag of the hit.    
+      - uint64_t cellID      //ID of the sensor that created this hit
+      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues". 
+      - int32_t quality                    //quality bit flag of the hit.    
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV]. 
       - float eDepError                //error measured on EDep [GeV].
@@ -318,9 +318,9 @@ datatypes :
     Description : "Tracker hit plane"
     Author : "Placido Fernandez Declara, CERN"
     Members :
-      - unsigned long long cellID      //ID of the sensor that created this hit
-      - int type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
-      - int quality                    //quality bit flag of the hit.
+      - uint64_t cellID      //ID of the sensor that created this hit
+      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
@@ -340,26 +340,26 @@ datatypes :
     Description: "Time Projection Chamber Hit"
     Author : "F.Gaede, DESY"
     Members:
-       - unsigned long long cellID  //detector specific cell id. 
-       - int quality                //quality flag for the hit. 
+       - uint64_t cellID  //detector specific cell id.
+       - int32_t quality                //quality flag for the hit. 
        - float time                 //time of the hit. 
        - float charge               //integrated charge of the hit. 
     VectorMembers:
-       - int rawDataWords           //raw data (32-bit) word at i.
+       - int32_t rawDataWords           //raw data (32-bit) word at i.
 
  #-------- Track 
   edm4hep::Track:
     Description: "Reconstructed track"
     Author : "F.Gaede, DESY"
     Members:
-      - int type                         //flagword that defines the type of track.Bits 16-31 are used internally
+      - int32_t type                         //flagword that defines the type of track.Bits 16-31 are used internally
       - float chi2                       //Chi^2 of the track fit
-      - int ndf                          //number of degrees of freedom of the track fit
+      - int32_t ndf                          //number of degrees of freedom of the track fit
       - float dEdx                       //dEdx of the track.
       - float dEdxError                  //error of dEdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
-      - int subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
+      - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
       - edm4hep::TrackState trackStates  //track states
     OneToManyRelations:
       - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
@@ -370,12 +370,12 @@ datatypes :
     Description: "Vertex"
     Author : "F.Gaede, DESY"
     Members:
-      - int                 primary       //boolean flag, if vertex is the primary vertex of the event
+      - int32_t                 primary       //boolean flag, if vertex is the primary vertex of the event
       - float               chi2          //chi-squared of the vertex fit
       - float               probability   //probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex.
       - std::array<float,6> covMatrix     //covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
-      - int                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType. 
+      - int32_t                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType. 
     VectorMembers:
       - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning. 
     OneToOneRelations:
@@ -387,7 +387,7 @@ datatypes :
     Description: "Reconstructed Particle"
     Author : "F.Gaede, DESY"
     Members:
-      - int                    type           //type of reconstructed particle. Check/set collection parameters ReconstructedParticleTypeNames and ReconstructedParticleTypeValues.
+      - int32_t                    type           //type of reconstructed particle. Check/set collection parameters ReconstructedParticleTypeNames and ReconstructedParticleTypeValues.
       - float                  energy         // [GeV] energy of the reconstructed particle. Four momentum state is not kept consistent internally.
       - edm4hep::Vector3f      momentum       // [GeV] particle momentum. Four momentum state is not kept consistent internally.
       - edm4hep::Vector3f      referencePoint // [mm] reference, i.e. where the particle has been measured
@@ -481,3 +481,4 @@ datatypes :
     OneToOneRelations:
      - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
      - edm4hep::Vertex vertex             // reference to the vertex
+
