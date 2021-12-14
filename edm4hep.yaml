@@ -472,3 +472,13 @@ datatypes :
     OneToOneRelations:
      - edm4hep::Track   rec         // reference to the track
      - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+
+  edm4hep::RecoParticleVertexAssociation:
+    Description: "Association between a Reconstructed Particle and a Vertex"
+    Author : "Placido Fernandez Declara"
+    Members:
+      - float weight                      // weight of this association
+    OneToOneRelations:
+     - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
+     - edm4hep::Vertex vertex             // reference to the vertex
+
