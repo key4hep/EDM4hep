@@ -7,16 +7,23 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
-#include "HepMC/GenEvent.h"
+
+#include "HepMC3/Units.h"
+#include "HepMC3/GenEvent.h"
+#include "HepMC3/GenParticle.h"
+#include "HepMC3/GenVertex.h"
+#include "HepMC3/Print.h"
+
 #include "HepPDT/ParticleID.hh"
+
 #include "edm4hep/MCParticleCollection.h"
 #include "podio/EventStore.h"
 #include "podio/ROOTWriter.h"
 
-using namespace HepMC;
+using namespace HepMC3;
 
- edm4hep::MCParticle convert(GenParticle* hepmcParticle) {
-    auto edm_particle = edm4hep::MCParticle();
+ edm4hep::MutableMCParticle convert(std::shared_ptr<GenParticle> hepmcParticle) {
+    auto edm_particle = edm4hep::MutableMCParticle();
     edm_particle.setPDG(hepmcParticle->pdg_id());
     edm_particle.setGeneratorStatus(hepmcParticle->status());
     // look up charge from pdg_id
@@ -57,11 +64,10 @@ int main() {
       // p2                                               #
       //                                                  #
 
-      // First create the event container, with Signal Process 20, event number 1
-      //
-      std::unique_ptr<GenEvent> evt = std::make_unique<GenEvent>( 20, 1 );
+      // First create the event container
+      auto evt = new GenEvent( );
       // define the units
-      evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+      evt->set_units(HepMC3::Units::GEV, HepMC3::Units::MM);
       //
       // create vertex 1 and vertex 2, together with their inparticles
       GenVertex* v1 = new GenVertex();
@@ -104,10 +110,8 @@ int main() {
     new GenParticle( FourVector(3.962,-49.498,-26.687,56.373), -2,1 )
     );
       //    
-      // tell the event which vertex is the signal process vertex
-      evt->set_signal_process_vertex( v3 );
       // the event is complete, we now print it out to the screen
-      evt->print();
+      Print::content(*evt);
 
       // now clean-up by deleteing all objects from memory
       //
@@ -123,41 +127,41 @@ int main() {
     auto writer = podio::ROOTWriter("edm4hep_testhepmc.root", &store);
     auto& edm_particle_collection = store.create<edm4hep::MCParticleCollection>("TestParticles2");
     writer.registerForWrite("TestParticles2");
-    std::unordered_map<unsigned int, edm4hep::MCParticle> hepmcToEdmMap;
-    unsigned int particle_counter;
-    for (auto particle_i = evt->particles_begin(); particle_i != evt->particles_end(); ++particle_i) {
-      std::cout << "Converting particle with Pdg_ID" << (*particle_i)->pdg_id() << std::endl;
-      std::cout << "\t" << (*particle_i)->barcode() << std::endl;
+    std::unordered_map<unsigned int, edm4hep::MutableMCParticle> hepmcToEdmMap;
+    unsigned int particle_counter{0};
+    for (auto particle_i: evt->particles()) {
+      std::cout << "Converting particle with PDG ID: " << particle_i->pdg_id() << std::endl;
+      std::cout << "\t and id: " << particle_i->id() << std::endl;
       
-      if (hepmcToEdmMap.find((*particle_i)->barcode()) == hepmcToEdmMap.end()) {
-        auto edm_particle = convert(*particle_i);
-        hepmcToEdmMap.insert({(*particle_i)->barcode(), edm_particle});
+      if (hepmcToEdmMap.find(particle_i->id()) == hepmcToEdmMap.end()) {
+        auto edm_particle = convert(particle_i);
+        hepmcToEdmMap.insert({particle_i->id(), edm_particle});
       }
 
 
 
       // mother/daughter links
-      auto prodvertex = (*particle_i)->production_vertex();
+      auto prodvertex = particle_i->production_vertex();
       if (nullptr != prodvertex) {
 
-        for (auto particle_mother = prodvertex->particles_in_const_begin(); particle_mother != prodvertex->particles_in_const_end(); ++particle_mother) {
-          if (hepmcToEdmMap.find((*particle_mother)->barcode()) == hepmcToEdmMap.end()) {
-            auto edm_particle = convert(*particle_mother);
-            hepmcToEdmMap.insert({(*particle_mother)->barcode(), edm_particle});
+        for (auto particle_mother: prodvertex->particles_in()) {
+          if (hepmcToEdmMap.find(particle_mother->id()) == hepmcToEdmMap.end()) {
+            auto edm_particle = convert(particle_mother);
+            hepmcToEdmMap.insert({particle_mother->id(), edm_particle});
           }
-          hepmcToEdmMap[(*particle_i)->barcode()].addToParents(hepmcToEdmMap[(*particle_mother)->barcode()]);
+          hepmcToEdmMap[particle_i->id()].addToParents(hepmcToEdmMap[particle_mother->id()]);
         }
       }
 
-      auto endvertex = (*particle_i)->end_vertex();
+      auto endvertex = particle_i->end_vertex();
       if (nullptr != prodvertex) {
 
-        for (auto particle_daughter = prodvertex->particles_in_const_begin(); particle_daughter != prodvertex->particles_in_const_end(); ++particle_daughter) {
-          if (hepmcToEdmMap.find((*particle_daughter)->barcode()) == hepmcToEdmMap.end()) {
-            auto edm_particle = convert(*particle_daughter);
-            hepmcToEdmMap.insert({(*particle_daughter)->barcode(), edm_particle});
+        for (auto particle_daughter: prodvertex->particles_in()) {
+          if (hepmcToEdmMap.find(particle_daughter->id()) == hepmcToEdmMap.end()) {
+            auto edm_particle = convert(particle_daughter);
+            hepmcToEdmMap.insert({particle_daughter->id(), edm_particle});
           }
-          hepmcToEdmMap[(*particle_i)->barcode()].addToDaughters(hepmcToEdmMap[(*particle_daughter)->barcode()]);
+          hepmcToEdmMap[particle_i->id()].addToDaughters(hepmcToEdmMap[particle_daughter->id()]);
         }
       }
 

@@ -4,7 +4,7 @@ project(EDM4HEP)
 
 # project version
 SET( ${PROJECT_NAME}_VERSION_MAJOR 0 )
-SET( ${PROJECT_NAME}_VERSION_MINOR 2 )
+SET( ${PROJECT_NAME}_VERSION_MINOR 4 )
 SET( ${PROJECT_NAME}_VERSION_PATCH 0 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
@@ -18,7 +18,6 @@ find_package(podio REQUIRED HINTS $ENV{PODIO})
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
-set(ROOT_genreflex_cmd ${ROOT_genreflex_CMD})
 
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
@@ -48,23 +47,26 @@ endif()
 # - Define the C++ Standard to use (Simplest Possible)
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
 
-if(NOT CMAKE_CXX_STANDARD MATCHES "14|17")
+if(NOT CMAKE_CXX_STANDARD MATCHES "17|20")
   message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}")
 endif()
 
 message (STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
 
-if (${APPLE})
-    set(CPP_STANDARD_FLAGS "-std=c++${CMAKE_CXX_STANDARD}\ -stdlib=libc++")
-endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -DDROP_CGAL ${CPP_STANDARD_FLAGS} -Wall -Wextra -Wpedantic -Wno-unused-variable -Wno-unused-parameter")
+option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" OFF)
+include(cmake/EDM4HEPBuild.cmake)
+edm4hep_set_compiler_flags()
+edm4hep_set_rpath()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDROP_CGAL")
 
 
 #--- Declare options -----------------------------------------------------------
 
-option(BUILD_DDG4EDM4HEP "Build the EDM4hep plugin for DD4hep" ON)
-option(BUILD_DELPHESEDM4HEP "Build the DELPHES plugin for DD4hep" ON)
-option(EDM4HEP_DOCUMENTATION "Whether or not to create doxygen doc target.")
+option(BUILD_DOCS "Whether or not to create doxygen doc target.")
+
+option(USE_EXTERNAL_CATCH2 "Link against an external Catch2 v3 static
+library, otherwise build it locally" ON)
 
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
@@ -76,8 +78,13 @@ if(ENABLE_CPACK)
 endif()
 
 #--- target for Doxygen documentation ------------------------------------------
-if(EDM4HEP_DOCUMENTATION)
+if(BUILD_DOCS)
   include(cmake/EDM4HEPDoxygen.cmake)
+  # copy images needed for documentation to build folder and install them
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/edm4hep_diagram.svg
+                 ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg COPYONLY)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg
+          DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 #--- add version files ---------------------------------------------------------
@@ -98,13 +105,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 add_subdirectory(edm4hep)
 add_subdirectory(test)
 add_subdirectory(dataframe)
-if(BUILD_DDG4EDM4HEP)
-  add_subdirectory(plugins/DDG4EDM4hep)
-endif()
-if(BUILD_DELPHESEDM4HEP)
-  add_subdirectory(plugins/delphes)
-endif()
-
+add_subdirectory(utils)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)

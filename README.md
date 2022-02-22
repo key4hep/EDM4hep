@@ -1,12 +1,13 @@
 
-[![Build Status](https://travis-ci.com/key4hep/EDM4HEP.svg?branch=master)](https://travis-ci.com/key4hep/EDM4HEP)
+[![lcg_linux](https://github.com/key4hep/EDM4hep/workflows/lcg_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux.yml)
+[![key4hep_linux](https://github.com/key4hep/EDM4hep/workflows/key4hep_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep_linux.yml)
 
 # EDM4hep
 
 
 A generic event data model for future HEP collider experiments.
 
-![](https://key4hep.github.io/EDM4hep/doc/edm4hep_diagram.svg)
+![](doc/edm4hep_diagram.svg)
 
 
 

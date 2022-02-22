@@ -3,12 +3,6 @@
 #include <vector>
 #include <functional>
 
-
-// podio specific includes
-#include "podio/EventStore.h"
-#include "podio/ROOTReader.h"
-
-
 #include "tricktrack/HitChainMaker.h"
 #include "tricktrack/HitDoublets.h"
 #include "tricktrack/TripletFilter.h"

@@ -1,3 +1,5 @@
+
+
 # Prerequisites
 build*
 *.d
@@ -11,6 +13,7 @@ install
 # podio generated code files
 edm4hep/edm4hep
 edm4hep/src
+podio_generated_files.cmake
 
 # CI subfolders
 podio/
@@ -45,3 +48,10 @@ tricktrack/
 *.exe
 *.out
 *.app
+
+# spack related folders/files
+spack*
+
+# Tooling
+/.clangd/
+/compile_commands.json
