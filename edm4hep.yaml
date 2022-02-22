@@ -357,6 +357,8 @@ datatypes :
       - int32_t ndf                          //number of degrees of freedom of the track fit
       - float dEdx                       //dEdx of the track.
       - float dEdxError                  //error of dEdx.
+      - float dNdx                       //dNdx of the track.
+      - float dNdxError                  //error of dNdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
       - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
