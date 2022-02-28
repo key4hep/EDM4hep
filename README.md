@@ -46,6 +46,7 @@ Optional:
 This project follows the key4hep guidelines and can be build with CMake:
 
 ```
+source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
 git clone https://github.com/key4hep/EDM4hep
 cd EDM4hep; mkdir build; cd build
 cmake ..
