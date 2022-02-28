@@ -1,7 +1,6 @@
 
-[![lcg_linux](https://github.com/key4hep/EDM4hep/workflows/lcg_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux.yml)
-[![key4hep_linux](https://github.com/key4hep/EDM4hep/workflows/key4hep_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep_linux.yml)
-
+[![key4hep](https://github.com/key4hep/EDM4hep/workflows/key4hep_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep_linux.yml)
+[![linux](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml)
 # EDM4hep
 
 
