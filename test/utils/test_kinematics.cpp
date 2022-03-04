@@ -3,7 +3,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 
-#include "edm4hep/kinematics.h"
+#include "edm4hep/utils/kinematics.h"
 
 #include "edm4hep/MutableMCParticle.h"
 #include "edm4hep/MutableReconstructedParticle.h"
