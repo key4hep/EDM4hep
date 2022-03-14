@@ -99,6 +99,11 @@ components:
         ObjectID(const podio::ObjectID& id ): index(id.index), collectionID(id.collectionID) {}\n
       "
 
+    # quantity with an identifier, a value and an error
+    edm4hep::Quantity:
+      - int16_t type // flag identifying how to interpret the quantity
+      - float value  // value of the quantity
+      - float error  // error on the value of the quantity
 
 datatypes :
 
@@ -355,14 +360,11 @@ datatypes :
       - int32_t type                         //flagword that defines the type of track.Bits 16-31 are used internally
       - float chi2                       //Chi^2 of the track fit
       - int32_t ndf                          //number of degrees of freedom of the track fit
-      - float dEdx                       //dEdx of the track.
-      - float dEdxError                  //error of dEdx.
-      - float dNdx                       //dNdx of the track.
-      - float dNdxError                  //error of dNdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
       - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
       - edm4hep::TrackState trackStates  //track states
+      - edm4hep::Quantity dxQuantities // different measurements of dx quantities
     OneToManyRelations:
       - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
       - edm4hep::Track tracks            //tracks (segments) that have been combined to create this track
