@@ -416,8 +416,8 @@ datatypes :
     Members:
       - float weight                        // weight of this association
     OneToOneRelations :
-     - edm4hep::ReconstructedParticle  rec  // reference to the reconstructed particle
-     - edm4hep::MCParticle sim              // reference to the Monte-Carlo particle
+     - edm4hep::ReconstructedParticle from  // reference to the reconstructed particle
+     - edm4hep::MCParticle to               // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoCaloAssociation:
     Description: "Association between a CaloHit and the corresponding simulated CaloHit"
@@ -425,8 +425,8 @@ datatypes :
     Members:
       - float weight                    // weight of this association
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec     // reference to the reconstructed hit
-     - edm4hep::SimCalorimeterHit sim  // reference to the simulated hit
+     - edm4hep::CalorimeterHit from     // reference to the reconstructed hit
+     - edm4hep::SimCalorimeterHit to    // reference to the simulated hit
 
   edm4hep::MCRecoTrackerAssociation:
     Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
@@ -434,50 +434,50 @@ datatypes :
     Members:
       - float weight              // weight of this association
     OneToOneRelations:
-     - edm4hep::TrackerHit rec    // reference to the reconstructed hit
-     - edm4hep::SimTrackerHit sim // reference to the simulated hit
+     - edm4hep::TrackerHit from   // reference to the reconstructed hit
+     - edm4hep::SimTrackerHit to  // reference to the simulated hit
 
   edm4hep::MCRecoTrackerHitPlaneAssociation:
     Description: "Association between a TrackerHitPlane and the corresponding simulated TrackerHit"
     Author : "Placido Fernandez Declara"
     Members:
-      - float weight                // weight of this association
+      - float weight                 // weight of this association
     OneToOneRelations:
-     - edm4hep::TrackerHitPlane rec // reference to the reconstructed hit
-     - edm4hep::SimTrackerHit sim   // reference to the simulated hit
+     - edm4hep::TrackerHitPlane from // reference to the reconstructed hit
+     - edm4hep::SimTrackerHit to     // reference to the simulated hit
 
   edm4hep::MCRecoCaloParticleAssociation:
     Description: "Association between a CalorimeterHit and a MCParticle"
     Author : "Placido Fernandez Declara"
     Members:
-      - float weight                // weight of this association
+      - float weight                 // weight of this association
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec  // reference to the reconstructed hit
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::CalorimeterHit from  // reference to the reconstructed hit
+     - edm4hep::MCParticle to        // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoClusterParticleAssociation:
     Description: "Association between a Cluster and a MCParticle"
     Author : "Placido Fernandez Declara"
     Members:
-      - float weight                // weight of this association
+      - float weight                 // weight of this association
     OneToOneRelations:
-     - edm4hep::Cluster rec         // reference to the cluster
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::Cluster from         // reference to the cluster
+     - edm4hep::MCParticle to        // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoTrackParticleAssociation:
     Description: "Association between a Track and a MCParticle"
     Author : "Placido Fernandez Declara"
     Members:
-      - float weight                // weight of this association
+      - float weight                 // weight of this association
     OneToOneRelations:
-     - edm4hep::Track   rec         // reference to the track
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::Track from           // reference to the track
+     - edm4hep::MCParticle to        // reference to the Monte-Carlo particle
 
   edm4hep::RecoParticleVertexAssociation:
     Description: "Association between a Reconstructed Particle and a Vertex"
     Author : "Placido Fernandez Declara"
     Members:
-      - float weight                      // weight of this association
+      - float weight                       // weight of this association
     OneToOneRelations:
-     - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
-     - edm4hep::Vertex sim                // reference to the vertex
+     - edm4hep::ReconstructedParticle from // reference to the reconstructed particle
+     - edm4hep::Vertex to                  // reference to the vertex
