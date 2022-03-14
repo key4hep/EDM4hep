@@ -101,9 +101,10 @@ components:
 
     # quantity with an identifier, a value and an error
     edm4hep::Quantity:
-      - int16_t type // flag identifying how to interpret the quantity
-      - float value  // value of the quantity
-      - float error  // error on the value of the quantity
+      Members:
+        - int16_t type // flag identifying how to interpret the quantity
+        - float value  // value of the quantity
+        - float error  // error on the value of the quantity
 
 datatypes :
 
