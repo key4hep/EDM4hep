@@ -1,3 +1,38 @@
+# v00-04-01
+
+* 2022-03-11 Thomas Madlener ([PR#143](https://github.com/key4hep/edm4hep/pull/143))
+  - Move the install destination of the `kinematics.h` utility header to be in `<prefix>/include/edm4hep/utils` (previously was in `<prefix>/include/utils/edm4hep`. This makes it better aligned with how namespacing is done, which is `edm4hep::utils`.
+  - Add minimal documentation for the `utils` folder.
+
+* 2022-02-28 Thomas Madlener ([PR#142](https://github.com/key4hep/edm4hep/pull/142))
+  - Remove the LCG release workflows that do not build podio@master on the fly because
+  - Update status badges
+
+* 2022-02-28 Valentin Volkl ([PR#141](https://github.com/key4hep/edm4hep/pull/141))
+  - doc: add setup script to readme
+
+* 2022-01-26 Thomas Madlener ([PR#136](https://github.com/key4hep/edm4hep/pull/136))
+  - Update the supported c++ standards in the CMake configuration (17 and 20 at the moment).
+
+* 2022-01-17 Thomas Madlener ([PR#132](https://github.com/key4hep/edm4hep/pull/132))
+  - With AIDASoft/podio#205 the naming of the podio generated classes has changed and the immutable classes are now default, while mutable classes now have a `Mutable` prefix.
+
+* 2021-12-14 Placido Fernandez Declara ([PR#133](https://github.com/key4hep/edm4hep/pull/133))
+  - Add association between ReconstructedParticle and Vertex
+
+* 2021-12-14 Thomas Madlener ([PR#125](https://github.com/key4hep/edm4hep/pull/125))
+  - Use fixed width integer types throughout the whole datamodel.
+
+* 2021-11-26 Valentin Volkl ([PR#131](https://github.com/key4hep/edm4hep/pull/131))
+  - switch to hepmc3 in tests
+
+* 2021-11-23 Valentin Volkl ([PR#130](https://github.com/key4hep/edm4hep/pull/130))
+  - [doc] update diagram for v0.4
+
+* 2021-10-22 Thomas Madlener ([PR#126](https://github.com/key4hep/edm4hep/pull/126))
+  - Fix test dependencies to make it possible to run them in parallel via the `-j` flag.
+  - Run the tests requiring subset collection functionality only if podio already supports it.
+
 # v00-04
 
 * 2021-09-06 Placido Fernandez Declara ([PR#122](https://github.com/key4hep/edm4hep/pull/122))
