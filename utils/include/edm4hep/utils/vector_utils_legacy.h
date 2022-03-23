@@ -4,7 +4,7 @@
 // This is the legacy implementation of vector_utils. If possible, use
 // the better vector_utils.h instead (if concepts are available).
 #if __cpp_concepts
-#include <edm4hep/vector_utils.h>
+#include <edm4hep/utils/vector_utils.h>
 #else
 #include <cmath>
 

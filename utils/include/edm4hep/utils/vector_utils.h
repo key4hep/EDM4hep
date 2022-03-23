@@ -4,7 +4,7 @@
 // These ultilies require concepts. If not available, use the fallback
 // vector_utils_legacy.h instead to capture most functionality.
 #if !__cpp_concepts
-#include <edm4hep/vector_utils_legacy.h>
+#include <edm4hep/utils/vector_utils_legacy.h>
 #else
 #include <cmath>
 
