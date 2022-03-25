@@ -405,7 +405,7 @@ datatypes :
       - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood) 
     MutableExtraCode:
       declaration: "
-      bool isCompound() { return particles_size() > 0 ;}\n
+      bool isCompound() const { return particles_size() > 0 ;}\n
       //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n 
       //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n     
       "
