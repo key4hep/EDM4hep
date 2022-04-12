@@ -38,7 +38,6 @@ Optional:
 * Doxygen (to build code reference)
 * HepMC (integration test)
 * HepPDT (integration test)
-* TrickTrack (integration test)
 
 ## Build and Install
 
