@@ -361,6 +361,8 @@ datatypes :
       - int32_t type                         //flagword that defines the type of track.Bits 16-31 are used internally
       - float chi2                       //Chi^2 of the track fit
       - int32_t ndf                          //number of degrees of freedom of the track fit
+      - float dEdx                       //dEdx of the track.
+      - float dEdxError                  //error of dEdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
       - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
