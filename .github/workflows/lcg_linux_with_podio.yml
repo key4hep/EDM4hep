@@ -9,9 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         LCG: ["LCG_99/x86_64-centos7-gcc10-opt",
-              "dev3/x86_64-centos7-clang10-opt",
-              "dev4/x86_64-centos7-gcc10-opt",
-              "dev4/x86_64-centos7-clang10-opt"]
+              "dev3/x86_64-centos7-clang12-opt",
+              "dev4/x86_64-centos7-gcc11-opt",
+              "dev4/x86_64-centos7-clang12-opt"]
     steps:
     - uses: actions/checkout@v2
     - uses: cvmfs-contrib/github-action-cvmfs@v2

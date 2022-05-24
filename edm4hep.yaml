@@ -402,9 +402,12 @@ datatypes :
       - edm4hep::Track                 tracks       //tracks that have been used for this particle. 
       - edm4hep::ReconstructedParticle particles    //reconstructed particles that have been combined to this particle.
       - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood) 
+    ExtraCode:
+      declaration: "
+      bool isCompound() const { return particles_size() > 0 ;}\n
+      "
     MutableExtraCode:
       declaration: "
-      bool isCompound() { return particles_size() > 0 ;}\n
       //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n 
       //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n     
       "
