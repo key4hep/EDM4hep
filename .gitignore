@@ -17,7 +17,6 @@ podio_generated_files.cmake
 
 # CI subfolders
 podio/
-tricktrack/
 
 # Compiled Object files
 *.slo
