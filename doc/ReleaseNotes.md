@@ -1,3 +1,14 @@
+# v00-04-02
+
+* 2022-05-24 Laurent Forthomme ([PR#151](https://github.com/key4hep/EDM4hep/pull/151))
+  - const-qualified ReconstructedParticle::isCompound method
+
+* 2022-04-12 Valentin Volkl ([PR#153](https://github.com/key4hep/EDM4hep/pull/153))
+  - remove tricktrack dependency and tests ( to be moved downstream)
+
+* 2022-03-18 Thomas Madlener ([PR#148](https://github.com/key4hep/EDM4hep/pull/148))
+  - Update the compilers that are used for the `dev` based CI workflows
+
 # v00-04-01
 
 * 2022-03-11 Thomas Madlener ([PR#143](https://github.com/key4hep/edm4hep/pull/143))
