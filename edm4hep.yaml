@@ -294,8 +294,7 @@ datatypes :
       - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters)
     VectorMembers:
       - float   shapeParameters      //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
-      - float   hitContributions     //energy contribution of the hits Runs parallel to the CalorimeterHitVec from getCalorimeterHits(). 
-      - float   subdetectorEnergies  //energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array. 
+      - float   subdetectorEnergies  //energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array.
     OneToManyRelations:
       - edm4hep::Cluster        clusters     //clusters that have been combined to this cluster.
       - edm4hep::CalorimeterHit hits         //hits that have been combined to this cluster.
@@ -312,7 +311,6 @@ datatypes :
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV]. 
       - float eDepError                //error measured on EDep [GeV].
-      - float edx                      //dE/dx of the hit in [GeV/mm]. 
       - edm4hep::Vector3d position     //hit position in [mm].
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
@@ -330,7 +328,6 @@ datatypes :
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
-      - float edx                      //dE/dx of the hit in [GeV/mm].
       - edm4hep::Vector2f u            //measurement direction vector, u lies in the x-y plane
       - edm4hep::Vector2f v            //measurement direction vector, v is along z
       - float du                       //measurement error along the direction
