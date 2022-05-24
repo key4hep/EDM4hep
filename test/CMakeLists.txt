@@ -61,19 +61,6 @@ IF(TARGET ROOT::ROOTDataFrame)
 endif()
 
 
-find_package(tricktrack 1.0.9)
-if(tricktrack_FOUND)
-  add_executable(edm4hep_tricktrack edm4hep_tricktrack.cc)
-  target_link_libraries(edm4hep_tricktrack edm4hep ${tricktrack_LIBRARIES})
-  target_include_directories(edm4hep_tricktrack SYSTEM PUBLIC ${tricktrack_INCLUDE_DIR})
-  add_test(NAME edm4hep_tricktrack COMMAND edm4hep_tricktrack)
-  set_tests_properties(edm4hep_tricktrack PROPERTIES
-    ENVIRONMENT LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
-    )
-endif()
-
-
-
 find_package(HepMC3)
 find_package(HepPDT)
 
