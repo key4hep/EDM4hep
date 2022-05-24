@@ -3,7 +3,7 @@
 
 
 #include "edm4hep/MCParticle.h"
-#include "edm4hep/kinematics.h"
+#include "edm4hep/utils/kinematics.h"
 
 int main() {
 
