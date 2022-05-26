@@ -4,7 +4,7 @@ ENDIF()
 
 function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=/cvmfs/sw-nightlies.hsf.org/spackages5/root/6.26.02/x86_64-centos7-gcc11.2.0-opt/62nsk/lib:$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:$ENV{ROOT_INCLUDE_PATH}
   )
   set_tests_properties(${_testname} PROPERTIES
