@@ -4,7 +4,7 @@ ENDIF()
 
 function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH=/cvmfs/sw-nightlies.hsf.org/spackages5/root/6.26.02/x86_64-centos7-gcc11.2.0-opt/62nsk/lib:$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:$ENV{ROOT_INCLUDE_PATH}
   )
   set_tests_properties(${_testname} PROPERTIES
@@ -52,7 +52,7 @@ ENDIF()
 IF(TARGET ROOT::ROOTDataFrame)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep ${CMAKE_SOURCE_DIR}/dataframe )
-  target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame)
+  target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame podio::podioRootIO)
   add_test(NAME test_rdf COMMAND test_rdf)
   set_test_env(test_rdf)
   set_property(TEST test_rdf PROPERTY DEPENDS
