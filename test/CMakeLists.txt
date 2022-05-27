@@ -22,6 +22,9 @@ add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
 target_link_libraries(read_events edm4hep podio::podioRootIO)
 add_test(NAME read_events COMMAND read_events)
+  set_property(TEST read_events PROPERTY 
+    DEPENDS write_events
+    )
 set_test_env(read_events)
 
 IF (podio_VERSION VERSION_GREATER "0.13")
@@ -55,7 +58,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame podio::podioRootIO)
   add_test(NAME test_rdf COMMAND test_rdf)
   set_test_env(test_rdf)
-  set_property(TEST test_rdf PROPERTY DEPENDS
+  set_property(TEST test_rdf PROPERTY 
     DEPENDS write_events
     )
 endif()
@@ -70,6 +73,9 @@ if(HepMC3_FOUND AND HepPDT_FOUND )
   target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC3_LIBRARIES})
   add_test(NAME edm4hep_testhepmc COMMAND edm4hep_testhepmc)
   set_test_env(edm4hep_testhepmc)
+  set_property(TEST edm4hep_testhepmc APPEND PROPERTY ENVIRONMENT
+      ROOT_INCLUDE_PATH=${HEPMC3_INCLUDE_DIR}:$ENV{ROOT_INCLUDE_PATH}
+  )
 endif()
 
 add_subdirectory(utils)
