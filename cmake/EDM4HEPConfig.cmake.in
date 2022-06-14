@@ -1,8 +1,5 @@
 # - Config file for the EDM4HEP package
 
-# - Define exported version
-set(EDM4HEP_VERSION "@PROJECT_VERSION@")
-
 # - Init CMakePackageConfigHelpers
 @PACKAGE_INIT@
 
