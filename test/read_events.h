@@ -6,6 +6,8 @@
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/TPCHitCollection.h"
+#include "edm4hep/TrackerHitPlaneCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -21,6 +23,8 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sths   = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs   = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
+  auto& tpchs  = store.get<edm4hep::TPCHitCollection>("TPCHits");
+  auto& thps   = store.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 
 
   if( mcps.isValid() ){
@@ -152,6 +156,56 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   } else {
     throw std::runtime_error("Collection 'SimCalorimeterHits' should be present");
   }
+
+  //===============================================================================
+  if( tpchs.isValid() ){
+
+    std::cout <<"\n collection: " << "Time Projection Chamber Hit" << " of type " << tpchs.getValueTypeName() << "\n\n"
+ 	      << tpchs << std::endl ;
+    int ntpch = 5 ;
+    for(int j=0 ; j<ntpch ; ++j){
+     
+      
+      auto tpch1 = tpchs[2*j];
+      if ( tpch1.getCellID() != 0xabadcaffee ) throw std::runtime_error("cellID != 0xabadcaffee") ;
+      if ( tpch1.getTime() !=  j*0.3f )  throw std::runtime_error("time != j*0.3") ;
+      if ( tpch1.getCharge() != j*2.f ) throw std::runtime_error("charge != j*2") ;
+
+      auto tpch2 = tpchs[2*j+1] ;
+      if ( tpch2.getCellID() != 0xcaffeebabe ) throw std::runtime_error("cellID != 0xcaffeebabe ") ;
+      if ( tpch2.getTime() !=  j*0.3f )  throw std::runtime_error("time != j*0.3") ;
+      if ( tpch2.getCharge() != -j*2.f ) throw std::runtime_error("charge != -j*2") ;
+    }
+
+  }else {
+      throw std::runtime_error("Collection 'TCPHits' should be present");
+    }
+
+ //===============================================================================
+ if( thps.isValid() ){
+   std::cout <<"\n collection: " << "Tracker Hit Plane" << " of type " << thps.getValueTypeName() << "\n\n"
+ 	      << thps << std::endl ;
+   int nthp = 5 ;
+   for(int j=0 ; j<nthp ; ++j){
+     auto thp1 = thps[2*j];
+     
+     if ( thp1.getCellID() != 0xabadcaffee ) throw std::runtime_error("cellID != 0xabadcaffee") ;
+     if ( thp1.getTime() !=  j*0.3f )  throw std::runtime_error("time != j*0.3") ;
+     if ( thp1.getEDep() !=  j * 0.000001f )  throw std::runtime_error("eDep != j * 0.000001") ;
+     if( !( thp1.getPosition() == edm4hep::Vector3d( j*2. , j*3. , j*5.  )) )
+          throw std::runtime_error("position != ( j*2. , j*3. , j*5. )") ;
+
+     auto thp2 = thps[2*j+1];
+     
+     if ( thp2.getCellID() != 0xcaffeebabe ) throw std::runtime_error("cellID != 0xcaffeebabe") ;
+     if ( thp2.getTime() !=  j*0.3f )  throw std::runtime_error("time != j*0.3") ;
+     if ( thp2.getEDep() !=  j * 0.0000031f )  throw std::runtime_error("eDep != j * 0.0000031 ") ;
+     if( !( thp2.getPosition() == edm4hep::Vector3d( -j*2. , -j*3. , -j*5.  )) )
+          throw std::runtime_error("position != ( -j*2. , -j*3. , -j*5. )") ;
+   }
+ }else {
+      throw std::runtime_error("Collection 'TrackerHitPlanes' should be present");
+ }
 
  // //===============================================================================
  //  if( sccons.isValid() ){
