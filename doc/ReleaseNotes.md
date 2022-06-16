@@ -1,3 +1,21 @@
+# v00-05
+
+* 2022-06-14 clementhelsens ([PR#138](https://github.com/key4hep/EDM4hep/pull/138))
+  - TrackState: add time field (and adapt covariance matrix accordingly)
+
+* 2022-06-10 Thomas Madlener ([PR#156](https://github.com/key4hep/EDM4hep/pull/156))
+  - Make EDM4hep export its current version properly for usage in downstream CMake packages.
+    - Make sure downstream package test covers this.
+
+* 2022-05-26 clementhelsens ([PR#137](https://github.com/key4hep/EDM4hep/pull/137))
+  - Adding dNdX to edm4hep::Track as discussed https://indico.cern.ch/event/1126908/
+
+* 2022-05-24 Thomas Madlener ([PR#140](https://github.com/key4hep/EDM4hep/pull/140))
+  - Remove the `hitContributions` vector member from the `edm4hep::Cluster` as it was discovered to be unused in LCIO.
+
+* 2022-05-24 Thomas Madlener ([PR#139](https://github.com/key4hep/EDM4hep/pull/139))
+  - Remove the 'edx` member from the `edm4hep::TrackeHit` as it is there by accident and a hit has no dx.
+
 # v00-04-02
 
 * 2022-05-24 Laurent Forthomme ([PR#151](https://github.com/key4hep/EDM4hep/pull/151))
