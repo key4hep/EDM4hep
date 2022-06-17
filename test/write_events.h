@@ -66,7 +66,7 @@ void write(std::string outfilename) {
 
     auto mcp1 = mcps.create();
     mcp1.setPDG( 2212 ) ;
-    mcp1.setMass( 0.938d ) ;
+    mcp1.setMass( 0.938f ) ;
     mcp1.setMomentum( { 0.000, 0.000, 7000.000 }  ) ;
     mcp1.setGeneratorStatus( 3 ) ;
 
