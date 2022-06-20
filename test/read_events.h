@@ -213,6 +213,11 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
  //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
  //  }
 
+auto& evtMD = store.getEventMetaData() ;
+   std::string evtType = evtMD.getStringVal( "EventType" ) ;
+    std::cout<<"Event Type: "<<evtType<<std::endl;
+
+
 }
 
 template<typename ReaderT>

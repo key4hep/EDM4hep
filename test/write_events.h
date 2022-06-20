@@ -237,7 +237,15 @@ void write(std::string outfilename) {
 
     //===============================================================================
 
+    auto& evtMD = store.getEventMetaData() ;
+    evtMD.setValue( "EventType" , "test") ;   
+
     writer.writeEvent();
+
+
+
+
+
     store.clearCollections();
   }
 
