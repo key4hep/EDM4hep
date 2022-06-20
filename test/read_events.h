@@ -214,7 +214,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
  //  }
 
 auto& evtMD = store.getEventMetaData() ;
-   std::string evtType = evtMD.getStringVal( "EventType" ) ;
+   const auto& evtType = evtMD.getValue<std::string>( "EventType" ) ;
     std::cout<<"Event Type: "<<evtType<<std::endl;
 
 
