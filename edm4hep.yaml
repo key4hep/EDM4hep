@@ -329,8 +329,8 @@ datatypes :
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
-      - edm4hep::Vector2f u            //measurement direction vector, u lies in the x-y plane
-      - edm4hep::Vector2f v            //measurement direction vector, v is along z
+      - edm4hep::Vector2f u            //measurement direction vector for X in global spherical coordinates with R=1 -> (theta, phi)
+      - edm4hep::Vector2f v            //measurement direction vector for Y in global spherical coordinates with R=1 -> (theta, phi)
       - float du                       //measurement error along the direction
       - float dv                       //measurement error along the direction
       - edm4hep::Vector3d position     //hit position in [mm].
