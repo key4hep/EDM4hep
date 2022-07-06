@@ -105,6 +105,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
 add_subdirectory(edm4hep)
 add_subdirectory(utils)
 add_subdirectory(test)
+add_subdirectory(tools)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)
