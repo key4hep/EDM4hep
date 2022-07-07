@@ -2,7 +2,7 @@
 #define EDM4HEP_TO_JSON_H__
 
 // event data model
-#include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/ClusterCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -21,31 +21,25 @@
 nlohmann::json processEvent(podio::EventStore& store,
                             bool verboser,
                             unsigned eventNum) {
-  auto& clusterCollection = store.get<edm4hep::SimCalorimeterHitCollection>(
+  auto& clusterCollection = store.get<edm4hep::ClusterCollection>(
       "CorrectedCaloClusters");
 
   nlohmann::json eventDict;
   eventDict["event number"] = eventNum;
-  eventDict["run number"] = 666;
+  eventDict["run number"] = 0;
   nlohmann::json allClustersArray;
 
   if(clusterCollection.isValid()) {
 
-    /*
-    std::cout << "Collection: " << "CalorimeterHitCollection" <<  " of type "
-        <<  clusterCollection.getValueTypeName() << "\n\n"
-        << clusterCollection << std::endl;
-    */
-
-
     for (size_t i = 0;  i < clusterCollection.size(); ++i) {
       auto cluster = clusterCollection[i];
       auto clusterPosition = cluster.getPosition();
-      std::cout << "Event: " << eventNum <<  std::endl;
-      std::cout << "x: " << clusterPosition.x << std::endl;
-      std::cout << "y: " << clusterPosition.y << std::endl;
-      std::cout << "z: " << clusterPosition.z << std::endl;
-      std::cout << "e: " << cluster.getEnergy() << std::endl;
+      std::cout << "INFO: Event: " << eventNum <<  std::endl;
+      std::cout << "INFO: Cluster: " << i <<  std::endl;
+      std::cout << "        x: " << clusterPosition.x << std::endl;
+      std::cout << "        y: " << clusterPosition.y << std::endl;
+      std::cout << "        z: " << clusterPosition.z << std::endl;
+      std::cout << "        e: " << cluster.getEnergy() << std::endl;
 
       float pt = std::sqrt(std::pow(clusterPosition.x, 2) +
                            std::pow(clusterPosition.y, 2));
@@ -55,9 +49,9 @@ nlohmann::json processEvent(podio::EventStore& store,
       if (clusterPosition.y < 0.) {
         phi *= -1;
       }
-      float energy = cluster.getEnergy()*5000;
+      float energy = cluster.getEnergy()*50;
       if (energy < 0.) {
-        energy *= -1;
+        continue;
       }
 
       nlohmann::json clusterDict;
