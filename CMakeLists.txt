@@ -60,7 +60,7 @@ endif()
 
 message (STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
 
-option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" OFF)
+option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" ON)
 include(cmake/EDM4HEPBuild.cmake)
 edm4hep_set_compiler_flags()
 edm4hep_set_rpath()
