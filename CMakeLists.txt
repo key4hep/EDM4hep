@@ -9,13 +9,6 @@ SET( ${PROJECT_NAME}_VERSION_PATCH 0 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-#- RPATH settings ----------------------------------------------
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE CACHE BOOL "RPATH USE LINK PATH")
-option(USE_RUNPATH_INSTEAD_OF_RPATH "Use runpath instead of rpath (allow specifying liked libraries via LD_LIBRARY_PATH)" OFF)
-if(USE_RUNPATH_INSTEAD_OF_RPATH) 
-    set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--enable-new-dtags")
-endif()
-
 
 #--- Run the podio class generator and link library -------
 
@@ -60,7 +53,7 @@ endif()
 
 message (STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
 
-option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" OFF)
+option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" ON)
 include(cmake/EDM4HEPBuild.cmake)
 edm4hep_set_compiler_flags()
 edm4hep_set_rpath()
