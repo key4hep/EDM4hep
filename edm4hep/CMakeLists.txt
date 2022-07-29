@@ -27,6 +27,10 @@ install(FILES
   "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
+install(FILES
+  ../edm4hep.yaml
+  DESTINATION "${CMAKE_INSTALL_DATADIR}" COMPONENT dev)
+
 if (${ROOT_VERSION} GREATER 6)
   install(FILES
       "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
