@@ -29,7 +29,7 @@ install(FILES
 
 install(FILES
   ../edm4hep.yaml
-  DESTINATION "${CMAKE_INSTALL_DATADIR}" COMPONENT dev)
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
 
 if (${ROOT_VERSION} GREATER 6)
   install(FILES
