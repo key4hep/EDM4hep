@@ -54,7 +54,7 @@ void read_events(const std::string& filename, const std::string& jsonFile) {
 
   std::ofstream outFile(jsonFile);
   if (outFile.is_open()) {
-    outFile << allEventsDict << std::endl;
+    outFile << std::setw(4) << allEventsDict << std::endl;
     outFile.close();
   }
 }
