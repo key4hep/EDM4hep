@@ -25,9 +25,13 @@ else()
     IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS}
   )
 
-  PODIO_ADD_DATAMODEL_CORE_LIB(edm4dis "${headers}" "${sources}") 
-  
-  PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" src/selection.xml) 
+  PODIO_ADD_DATAMODEL_CORE_LIB(edm4dis "${headers}" "${sources}"
+    OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
+  PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" ${CMAKE_CURRENT_BINARY_DIR}/src/selection.xml
+    OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
+  )
 endif()
 
 add_executable(appUsingEDM4hep main.cxx)
