@@ -35,4 +35,4 @@ else()
 endif()
 
 add_executable(appUsingEDM4hep main.cxx)
-target_link_libraries(appUsingEDM4hep EDM4HEP::edm4hep EDM4HEP::utils)
+target_link_libraries(appUsingEDM4hep EDM4HEP::edm4hep EDM4HEP::utils edm4dis)
