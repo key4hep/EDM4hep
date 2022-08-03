@@ -8,6 +8,9 @@
 # the imported targets created later.
 set_and_check(EDM4HEP_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
+# - Create path to installed read-only data files (e.g. yaml files)
+set_and_check(EDM4HEP_DATA_DIR "@PACKAGE_CMAKE_INSTALL_DATADIR@/edm4hep")
+
 include(CMakeFindDependencyMacro)
 find_dependency(podio REQUIRED)
 
