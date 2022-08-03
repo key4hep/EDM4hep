@@ -16,7 +16,7 @@ endif()
 # Use the EDM4HEP_DATA_DIR to derive extended data model
 message(STATUS "${EDM4HEP_DATA_DIR}")
 if ("${EDM4HEP_DATA_DIR}" STREQUAL "")
-  message(WARNING "Unable to extend data model since no installed yaml file found.")
+  message(FATAL_ERROR "Unable to extend data model since no installed yaml file found.")
 else()
   message(STATUS "Current EDM4HEP data model is available at ${EDM4HEP_DATA_DIR}.")
   PODIO_GENERATE_DATAMODEL(edm4dis edm4dis.yaml headers sources
