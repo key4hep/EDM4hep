@@ -29,7 +29,7 @@ else()
     OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
   )
 
-  PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" ${CMAKE_CURRENT_BINARY_DIR}/src/selection.xml
+  PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" src/selection.xml
     OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
   )
 endif()
