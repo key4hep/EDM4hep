@@ -418,6 +418,50 @@ datatypes :
       //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n     
       "
 
+  edm4hep::Measurement2D:
+    Description: "Two dimensional measurement with covariance matrix"
+    Author: "T. Madlener, DESY"
+    Members:
+      - std::array<float, 2> vals    // The values of the measurement
+      - std::array<float, 3> covMatrix     // The (lower triangle) covariance matrix of the measurement
+      - std::array<uint16_t, 2> dims // The (encded) dimensions of the two values
+    ExtraCode:
+      includes: '#include "edm4hep/detail/enum_access.h"'
+      declaration: "
+      /// Get the value for the passed dimension\n
+      template<typename DimEnum>\n
+      float getValue(DimEnum e) const {\n
+        return detail::get_value(getVals(), e, getDims());\n
+      }\n
+      /// Get the value of the covariance matrix for the two passed dimensions\n
+      template<typename DimEnum>\n
+      float getCov(DimEnum ei, DimEnum ej) const {\n
+        return detail::get_cov(getCovMatrix(), ei, ej, getDims());\n
+      }\n
+      /// Get which dimensions are currently set for this measurement\n
+      template<typename DimEnum>\n
+      std::array<DimEnum, 2> getDimensions() const {\n
+        return {detail::to_enum<DimEnum>(getDims()[0]), detail::to_enum<DimEnum>(getDims()[1])};\n
+      }
+      "
+    MutableExtraCode:
+      includes: '#include "edm4hep/detail/enum_access.h"'
+      declaration: "
+      /// Set the value for the passed dimension\n
+      template<typename DimEnum>\n
+      void setValue(float val, DimEnum dim) {\n
+        detail::set_value(val, vals(), dim, getDims());\n
+      }\n
+      template<typename DimEnum>\n
+      void setCov(float val, DimEnum dimI, DimEnum dimJ) {\n
+        detail::set_cov(val, covMatrix(), dimI, dimJ, getDims());\n
+      }\n
+      template<typename DimEnum>\n
+      void setDimensions(DimEnum dim1, DimEnum dim2) {\n
+        setDims({detail::to_index(dim1), detail::to_index(dim2)});\n
+      }
+      "
+
   edm4hep::MCRecoParticleAssociation:
     Description: "Used to keep track of the correspondence between MC and reconstructed particles"
     Author: "C. Bernet, B. Hegner"

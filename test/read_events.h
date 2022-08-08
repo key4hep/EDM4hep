@@ -1,11 +1,14 @@
 #ifndef EDM4HEP_TEST_READ_EVENTS_H__
 #define EDM4HEP_TEST_READ_EVENTS_H__
 
+#include "dimensions.h"
+
 // test data model
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/Measurement2DCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -15,6 +18,56 @@
 #include <iostream>
 #include <exception>
 #include <cassert>
+
+
+bool checkMeasurements(const edm4hep::Measurement2DCollection& coll) {
+  const auto m1 = coll[0];
+  const auto [m1d1, m1d2] = m1.getDimensions<Cartesian>();
+  if (m1d1 != Cartesian::X) return false;
+  if (m1d2 != Cartesian::Z) return false;
+
+  if (m1.getValue(Cartesian::Z) != 3.14f) return false;
+  if (m1.getValue(Cartesian::X) != 1.234f) return false;
+  if (m1.getCov(Cartesian::X, Cartesian::X) != 42.0f) return false;
+  // Check that also transposition works
+  if (m1.getCov(Cartesian::Z, Cartesian::X) != 3.14f) return false;
+  if (m1.getCov(Cartesian::Z, Cartesian::Z) != 2.34f) return false;
+
+
+  const auto m2 = coll[1];
+  // We can also work with the array here directly
+  const auto& m2Dims = m2.getDimensions<Polar>();
+  if (m2Dims[0] != Polar::PHI) return false;
+  if (m2Dims[1] != Polar::THETA) return false;
+
+  if (m2.getValue(Polar::THETA) != 200.f) return false;
+  if (m2.getValue(Polar::PHI) != 100.f) return false;
+
+  if (m2.getCov(Polar::THETA, Polar::THETA) != 30.f) return false;
+  if (m2.getCov(Polar::THETA, Polar::PHI) != 20.f) return false;
+  if (m2.getCov(Polar::PHI, Polar::PHI) != 10.f) return false;
+
+
+  const auto m3 = coll[2];
+
+  // As is the case with all instances we can access this with arbitrary enums
+  const auto m3DimsPolar = m3.getDimensions<Polar>();
+  if (m3DimsPolar[0] != Polar::THETA) return false;
+  if (m3DimsPolar[1] != Polar::PHI) return false;
+
+  const auto m3DimsCart = m3.getDimensions<Cartesian>();
+  if (m3DimsCart[0] != Cartesian::Z) return false;
+  if (m3DimsCart[1] != Cartesian::Y) return false;
+
+  if (m3.getValue(Polar::THETA) != 1.234f) return false;
+  if (m3.getValue(Cartesian::Y) != 5.678f) return false;
+
+  if (m3.getCov(Polar::THETA, Polar::THETA) != 1.1f) return false;
+  if (m3.getCov(Cartesian::Y, Cartesian::Y) != 3.3f) return false;
+  if (m3.getCov(Polar::THETA, Polar::PHI) != m3.getCov(Cartesian::Z, Cartesian::Y)) return false;
+
+  return true;
+}
 
 void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& mcps   = store.get<edm4hep::MCParticleCollection>("MCParticles");
@@ -158,6 +211,11 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
  //  } else {
  //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
  //  }
+
+  auto& measurements = store.get<edm4hep::Measurement2DCollection>("measurement2D");
+  if (!checkMeasurements(measurements)) {
+    throw std::runtime_error("Measurement not as expected");
+  }
 
 }
 
