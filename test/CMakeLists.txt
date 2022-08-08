@@ -4,7 +4,7 @@ ENDIF()
 
 function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Tree>:$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:$ENV{ROOT_INCLUDE_PATH}
   )
   set_tests_properties(${_testname} PROPERTIES

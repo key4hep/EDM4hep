@@ -1,11 +1,14 @@
 #ifndef EDM4HEP_TEST_WRITE_EVENTS_H__
 #define EDM4HEP_TEST_WRITE_EVENTS_H__
 
+#include "dimensions.h"
+
 // Data model
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/Measurement2DCollection.h"
 
 // STL
 #include <iostream>
@@ -13,6 +16,32 @@
 
 // podio specific includes
 #include "podio/EventStore.h"
+
+void fillCollection(edm4hep::Measurement2DCollection& coll) {
+  auto m1 = coll.create();
+  // Set things via the tacked on interface
+  m1.setDimensions(Cartesian::X, Cartesian::Z);
+  m1.setValue(1.234f, Cartesian::X);
+  m1.setValue(3.14f, Cartesian::Z);
+  m1.setCov(42.0f, Cartesian::X, Cartesian::X);
+  m1.setCov(3.14f, Cartesian::X, Cartesian::Z);
+  m1.setCov(2.34f, Cartesian::Z, Cartesian::Z);
+
+  // Again but with enum class
+  auto m2 = coll.create();
+  m2.setDimensions(Polar::PHI, Polar::THETA);
+  m2.setValue(100.f, Polar::PHI);
+  m2.setValue(200.f, Polar::THETA);
+  m2.setCov(10.f, Polar::PHI, Polar::PHI);
+  m2.setCov(20.f, Polar::THETA, Polar::PHI);
+  m2.setCov(30.f, Polar::THETA, Polar::THETA);
+
+  // We can also go through the "native" interface
+  auto m3 = coll.create();
+  m3.setDims({2, 1});
+  m3.setVals({1.234f, 5.678f});
+  m3.setCovMatrix({1.1f, 2.2f, 3.3f});
+}
 
 template<class WriterT>
 void write(std::string outfilename) {
@@ -34,6 +63,8 @@ void write(std::string outfilename) {
   auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
   writer.registerForWrite("SimCalorimeterHitContributions");
 
+  auto& measurements = store.create<edm4hep::Measurement2DCollection>("measurement2D");
+  writer.registerForWrite("measurement2D");
 
   unsigned nevents = 10 ;
 
@@ -180,6 +211,8 @@ void write(std::string outfilename) {
 
     std::cout << "\n collection:  " << "SimCalorimeterHits" <<  " of type " <<  schs.getValueTypeName() << "\n\n"
         << schs << std::endl ;
+
+    fillCollection(measurements);
 
     //===============================================================================
 
