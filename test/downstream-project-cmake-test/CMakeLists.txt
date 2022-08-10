@@ -28,9 +28,9 @@ else()
   PODIO_ADD_DATAMODEL_CORE_LIB(edm4dis "${headers}" "${sources}"
     OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
   )
-target_link_libraries(edm4dis PUBLIC EDM4HEP::edm4hep)
+  target_link_libraries(edm4dis PUBLIC EDM4HEP::edm4hep)
 
-PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" src/selection.xml
+  PODIO_ADD_ROOT_IO_DICT(edm4disDict edm4dis "${headers}" src/selection.xml
     OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
   )
 endif()
