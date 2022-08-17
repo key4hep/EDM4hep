@@ -1,0 +1,24 @@
+---
+options :
+  # should getters / setters be prefixed with get / set?
+  getSyntax: True
+  # should POD members be exposed with getters/setters in classes that have them as members?
+  exposePODMembers: False
+  includeSubfolder: True
+
+datatypes:
+
+  ## ==========================================================================
+  ## Kinematic reconstruction
+  ## ==========================================================================
+  edm4dis::InclusiveKinematics:
+    Description: "Kinematic variables for DIS events"
+    Author: "S. Joosten, W. Deconinck"
+    Members:
+      - float             x                 // Bjorken x (Q2/2P.q)
+      - float             Q2                // Four-momentum transfer squared [GeV^2]
+      - float             W                 // Invariant mass of final state [GeV]
+      - float             y                 // Inelasticity (P.q/P.k)
+      - float             nu                // Energy transfer P.q/M [GeV]
+    OneToOneRelations:
+      - edm4hep::ReconstructedParticle scat // Associated scattered electron (if identified)

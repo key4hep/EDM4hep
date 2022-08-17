@@ -1,3 +1,25 @@
+# v00-06
+
+* 2022-08-11 Thomas Madlener ([PR#171](https://github.com/key4hep/EDM4hep/pull/171))
+  - Update the version string in the diagram
+
+* 2022-08-10 Andre Sailer ([PR#169](https://github.com/key4hep/EDM4hep/pull/169))
+  - RDF Test: add libedm4hepRDF.so directory to LD_LIBRARY_PATH, fixes #167
+
+* 2022-08-10 Wouter Deconinck ([PR#165](https://github.com/key4hep/EDM4hep/pull/165))
+  - Add a datamodel derived from EDM4hep to the downstream package tests
+
+* 2022-08-03 Wouter Deconinck ([PR#164](https://github.com/key4hep/EDM4hep/pull/164))
+  - Install edm4hep.yaml to CMAKE_INSTALL_DATADIR/edm4hep. The `EDM4HEP_DATA_DIR` cmake variable points to this directory when using edm4hep via `find_package(EDM4HEP)`.
+
+* 2022-07-18 Valentin Volkl ([PR#162](https://github.com/key4hep/EDM4hep/pull/162))
+  - [cmake] set EDM4HEP_SET_RPATH ON by default
+  - [cmake] deduplicate RPATH settings
+
+* 2022-06-17 Valentin Volkl ([PR#159](https://github.com/key4hep/EDM4hep/pull/159))
+  - Fix doxygen generation - update setup on gitlab
+  - Update version string in diagram
+
 # v00-05
 
 * 2022-06-14 clementhelsens ([PR#138](https://github.com/key4hep/EDM4hep/pull/138))

@@ -15,6 +15,7 @@ configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/EDM4HEPConfig.cmake.in
     CMAKE_INSTALL_BINDIR
     CMAKE_INSTALL_INCLUDEDIR
     CMAKE_INSTALL_LIBDIR
+    CMAKE_INSTALL_DATADIR
   )
 
 # - install and export

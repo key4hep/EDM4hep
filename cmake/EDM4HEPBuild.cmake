@@ -11,6 +11,11 @@ macro(edm4hep_set_rpath)
   set(CMAKE_MACOSX_RPATH TRUE)              # use RPATH for MacOSX
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE) # point to directories outside the build tree to the install RPATH
 
+  option(USE_RUNPATH_INSTEAD_OF_RPATH "Use runpath instead of rpath (allow specifying liked libraries via LD_LIBRARY_PATH)" OFF)
+  if(USE_RUNPATH_INSTEAD_OF_RPATH)
+    set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--enable-new-dtags")
+  endif()
+
   # Check whether to add RPATH to the installation (the build tree always has the RPATH enabled)
   if(APPLE)
     set(CMAKE_INSTALL_NAME_DIR "@rpath")
