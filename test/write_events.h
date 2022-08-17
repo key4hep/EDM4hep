@@ -208,8 +208,6 @@ void write(std::string outfilename) {
 
     std::cout <<"\n collection: " << "Time Projection Chamber Hits" << " of type " << tpchs.getValueTypeName() << "\n\n"
 	      << tpchs << std::endl ;
- 
-
 
      //===============================================================================
     // write some TrackerHitPlanes:
@@ -228,24 +226,15 @@ void write(std::string outfilename) {
       thp2.setPosition( { -j*2. , -j*3. , -j*5. } ) ;
     }
 
-
-
     std::cout <<"\n collection: " << "Tracker Hit Planes" << " of type " << thps.getValueTypeName() << "\n\n"
 	      << thps << std::endl ;
  
-
-
     //===============================================================================
 
     auto& evtMD = store.getEventMetaData() ;
     evtMD.setValue( "EventType" , "test") ;   
 
     writer.writeEvent();
-
-
-
-
-
     store.clearCollections();
   }
 
