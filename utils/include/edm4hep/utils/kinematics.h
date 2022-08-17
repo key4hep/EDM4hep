@@ -66,9 +66,11 @@ struct UseEnergyTag {
  */
 template<typename T, typename TagT>
 struct TaggedUserValue {
+  TaggedUserValue() = default;
+  TaggedUserValue(T v) : value(v) {}
   using type = typename TagT::type;
   static constexpr bool has_value = true;
-  T value;
+  T value{};
 };
 
 /**
@@ -119,18 +121,28 @@ using SetMass = detail::TaggedUserValue<float, UseMassTag>;
 using SetEnergy = detail::TaggedUserValue<float, UseEnergyTag>;
 
 /**
- * Get the 4 momentum vector from a Particle. By default using the momentum and
- * the mass, but can be switched to using the energy when using the UseEnergy as
- * second argument. Additionally it is possible to take the momentum from the
- * particle but set a specific mass or energy value by using SetMass or
- * SetEnergy as the second argument. The underlying particle will not be changed
- * in this case.
+ * Get the 4 momentum vector from a Particle using the momentum and the mass.
  */
-template<typename ParticleT, typename LorentzVectorTag=UseMassTag>
-inline typename LorentzVectorTag::type p4(ParticleT const& part, LorentzVectorTag tag=UseMass) {
-  return detail::p4(part, &tag);
+template<typename ParticleT>
+inline LorentzVectorM p4(ParticleT const& part) {
+  return detail::p4(part, &UseMass);
 }
 
+/**
+ * Get the 4 momentum vector from a Particle. Use the second argument to choose
+ * something other than the mass. E.g. the UseEnergy as second argument to get
+ * the energy stored within the particle. Additionally it is possible to take
+ * the momentum from the particle but set a specific mass or energy value by
+ * using SetMass or SetEnergy as the second argument. The underlying particle
+ * will not be changed in this case.
+ *
+ * NOTE: split into two overloads, in order to work around a short-coming of
+ * cppyy: See https://github.com/wlav/cppyy/issues/78
+ */
+template<typename ParticleT, typename LorentzVectorTag>
+inline typename LorentzVectorTag::type p4(ParticleT const& part, LorentzVectorTag tag) {
+  return detail::p4(part, &tag);
+}
 
 }} // namespace edm4hep::utils
 

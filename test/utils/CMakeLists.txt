@@ -19,3 +19,9 @@ add_executable(unittests
   test_kinematics.cpp)
 target_link_libraries(unittests edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
 catch_discover_tests(unittests)
+
+add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
+set_property(TEST pyunittests
+  PROPERTY ENVIRONMENT
+  LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$ENV{LD_LIBRARY_PATH}
+  )
