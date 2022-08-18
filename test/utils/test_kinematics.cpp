@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
+#include <catch2/catch_template_test_macros.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include "edm4hep/utils/kinematics.h"
 
@@ -14,8 +14,7 @@
 
 using ParticleTypes = std::tuple<edm4hep::MutableMCParticle, edm4hep::MutableReconstructedParticle>;
 
-TEMPLATE_LIST_TEST_CASE( "pT: transverse momentum", "[pT][kinematics]", ParticleTypes)
-{
+TEMPLATE_LIST_TEST_CASE("pT: transverse momentum", "[pT][kinematics]", ParticleTypes) {
   using namespace edm4hep;
   TestType particle;
 
@@ -35,8 +34,7 @@ TEMPLATE_LIST_TEST_CASE( "pT: transverse momentum", "[pT][kinematics]", Particle
   REQUIRE(std::isnan(utils::pt(particle)));
 }
 
-TEMPLATE_LIST_TEST_CASE( "p: momentum", "[p][kinematics]", ParticleTypes )
-{
+TEMPLATE_LIST_TEST_CASE("p: momentum", "[p][kinematics]", ParticleTypes) {
   using namespace edm4hep;
   TestType particle;
 
@@ -59,8 +57,7 @@ TEMPLATE_LIST_TEST_CASE( "p: momentum", "[p][kinematics]", ParticleTypes )
   REQUIRE(std::isnan(utils::p(particle)));
 }
 
-TEST_CASE( "p4: four momentum - MCParticle", "[p4][kinematics][MCParticle]" )
-{
+TEST_CASE("p4: four momentum - MCParticle", "[p4][kinematics][MCParticle]") {
   using namespace edm4hep;
   MutableMCParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});
@@ -68,11 +65,10 @@ TEST_CASE( "p4: four momentum - MCParticle", "[p4][kinematics][MCParticle]" )
   REQUIRE(utils::p4(particle) == LorentzVectorM{1, 2, 3, 42});
 
   // this basically just tests that the internal calculation of the energy works as expected
-  REQUIRE(utils::p4(particle, utils::UseEnergy) == LorentzVectorE{1, 2, 3, std::sqrt(14 + 42*42)});
+  REQUIRE(utils::p4(particle, utils::UseEnergy) == LorentzVectorE{1, 2, 3, std::sqrt(14 + 42 * 42)});
 }
 
-TEST_CASE( "p4: four momentum - ReconstructedParticle", "[p4][kinematics][ReconstructedParticle]" )
-{
+TEST_CASE("p4: four momentum - ReconstructedParticle", "[p4][kinematics][ReconstructedParticle]") {
   using namespace edm4hep;
   MutableReconstructedParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});
@@ -92,7 +88,7 @@ TEST_CASE( "p4: four momentum - ReconstructedParticle", "[p4][kinematics][Recons
   REQUIRE(utils::p4(particle, utils::UseEnergy) == LorentzVectorE{1, 2, 3, 42});
 }
 
-TEST_CASE( "p4 with user set values", "[p4][kinematics][user set values]" ) {
+TEST_CASE("p4 with user set values", "[p4][kinematics][user set values]") {
   using namespace edm4hep;
   MutableReconstructedParticle particle;
   particle.setMomentum({1.0f, 2.0f, 3.0f});

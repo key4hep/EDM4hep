@@ -10,6 +10,6 @@ repos:
       - id: clang-format
         name: clang-format
         entry: .github/scripts/clang-format-hook
-        exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$)
+        exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$|EDM4HEPVersion.h)
         types: [c++]
         language: system

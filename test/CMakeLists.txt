@@ -22,7 +22,7 @@ add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${CMAKE_SOURCE_DIR}/edm4hep )
 target_link_libraries(read_events edm4hep podio::podioRootIO)
 add_test(NAME read_events COMMAND read_events)
-  set_property(TEST read_events PROPERTY 
+  set_property(TEST read_events PROPERTY
     DEPENDS write_events
     )
 set_test_env(read_events)
@@ -58,7 +58,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame podio::podioRootIO)
   add_test(NAME test_rdf COMMAND test_rdf)
   set_test_env(test_rdf)
-  set_property(TEST test_rdf PROPERTY 
+  set_property(TEST test_rdf PROPERTY
     DEPENDS write_events
     )
 endif()

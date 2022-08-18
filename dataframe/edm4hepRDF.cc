@@ -3,7 +3,7 @@
 
 namespace edm4hep {
 
-std::vector<float> pt (std::vector<MCParticleData> const& in){
+std::vector<float> pt(std::vector<MCParticleData> const& in) {
   std::vector<float> result;
   for (size_t i = 0; i < in.size(); ++i) {
     result.push_back(std::sqrt(in[i].momentum.x * in[i].momentum.x + in[i].momentum.y * in[i].momentum.y));
@@ -11,7 +11,7 @@ std::vector<float> pt (std::vector<MCParticleData> const& in){
   return result;
 }
 
-std::vector<float> eta(std::vector<MCParticleData> const& in){
+std::vector<float> eta(std::vector<MCParticleData> const& in) {
   std::vector<float> result;
   ROOT::Math::PxPyPzMVector lv;
   for (size_t i = 0; i < in.size(); ++i) {
@@ -21,7 +21,7 @@ std::vector<float> eta(std::vector<MCParticleData> const& in){
   return result;
 }
 
-std::vector<float> cos_theta(std::vector<MCParticleData> const& in){
+std::vector<float> cos_theta(std::vector<MCParticleData> const& in) {
   std::vector<float> result;
   ROOT::Math::PxPyPzMVector lv;
   for (size_t i = 0; i < in.size(); ++i) {
@@ -31,12 +31,12 @@ std::vector<float> cos_theta(std::vector<MCParticleData> const& in){
   return result;
 }
 
-std::vector<double> r (std::vector<SimTrackerHitData> const& in) {
+std::vector<double> r(std::vector<SimTrackerHitData> const& in) {
   std::vector<double> result;
   for (size_t i = 0; i < in.size(); ++i) {
-    result.push_back(std::sqrt(in[i].position.x*in[i].position.x + in[i].position.y*in[i].position.y));
+    result.push_back(std::sqrt(in[i].position.x * in[i].position.x + in[i].position.y * in[i].position.y));
   }
-  return result; 
+  return result;
 }
 
-}
+} // namespace edm4hep

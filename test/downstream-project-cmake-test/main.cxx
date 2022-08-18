@@ -1,7 +1,5 @@
 ///  make sure that downstream projects can include and link edm4hep properly
 
-
-
 #include "edm4hep/MCParticle.h"
 #include "edm4hep/utils/kinematics.h"
 

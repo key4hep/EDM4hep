@@ -18,133 +18,133 @@ using LorentzVectorE = ROOT::Math::PxPyPzEVector;
 
 namespace utils {
 
-/**
- * Get the transverse momentum from a Particle
- */
-template<typename ParticleT>
-inline float pT(ParticleT const& p) {
-  return std::sqrt(p.getMomentum()[0] * p.getMomentum()[0] + p.getMomentum()[1] * p.getMomentum()[1]);
-}
-
-/**
- * Get the transverse momentum from a Particle
- */
-template<typename ParticleT>
-inline float pt(ParticleT const& p) {
-  return pT(p);
-}
-
-/**
- * Get the total momentum from a Particle
- */
-template<typename ParticleT>
-inline float p(ParticleT const& part) {
-  const auto mom = part.getMomentum();
-  return std::sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
-}
-
-namespace detail {
-/**
- * Tag struct for getting 4-momenta with momentum + mass
- */
-struct UseMassTag {
-  using type = ::edm4hep::LorentzVectorM;
-  static constexpr bool has_value = false;
-};
-
-/**
- * Tag struct for getting 4-momenta with momentum + energy
- */
-struct UseEnergyTag {
-  using type = ::edm4hep::LorentzVectorE;
-  static constexpr bool has_value = false;
-};
-
-/**
- * Tag struct holding an additional value for getting 4 momenta with arbitrary
- * values instead of the one from the Particle.
- */
-template<typename T, typename TagT>
-struct TaggedUserValue {
-  TaggedUserValue() = default;
-  TaggedUserValue(T v) : value(v) {}
-  using type = typename TagT::type;
-  static constexpr bool has_value = true;
-  T value{};
-};
-
-/**
- * Tag-dispatched implementation for getting the 4-momentum from a particle
- * according to the desired type.
- */
-template<typename ParticleT, typename LorentzVectorTypeTag>
-inline typename LorentzVectorTypeTag::type p4(ParticleT const& part,
-                                              [[maybe_unused]] LorentzVectorTypeTag* tag) {
-  const auto mom = part.getMomentum();
-  // Either the user wants to set a specific value
-  if constexpr(LorentzVectorTypeTag::has_value) {
-    return typename LorentzVectorTypeTag::type{mom[0], mom[1], mom[2], tag->value};
+  /**
+   * Get the transverse momentum from a Particle
+   */
+  template <typename ParticleT>
+  inline float pT(ParticleT const& p) {
+    return std::sqrt(p.getMomentum()[0] * p.getMomentum()[0] + p.getMomentum()[1] * p.getMomentum()[1]);
   }
 
-  // Or we take the one from the underying particle
-  if constexpr(std::is_same_v<typename LorentzVectorTypeTag::type, LorentzVectorM>) {
-    return LorentzVectorM{mom[0], mom[1], mom[2], part.getMass()};
+  /**
+   * Get the transverse momentum from a Particle
+   */
+  template <typename ParticleT>
+  inline float pt(ParticleT const& p) {
+    return pT(p);
   }
-  if constexpr(std::is_same_v<typename LorentzVectorTypeTag::type, LorentzVectorE>) {
-    return LorentzVectorE{mom[0], mom[1], mom[2], part.getEnergy()};
+
+  /**
+   * Get the total momentum from a Particle
+   */
+  template <typename ParticleT>
+  inline float p(ParticleT const& part) {
+    const auto mom = part.getMomentum();
+    return std::sqrt(mom[0] * mom[0] + mom[1] * mom[1] + mom[2] * mom[2]);
   }
-}
-} // namespace detail
 
-using UseMassTag = detail::UseMassTag;
-/**
- * Static tag to select the mass in 4 momentum vectors
- */
-constexpr static UseMassTag UseMass;
+  namespace detail {
+    /**
+     * Tag struct for getting 4-momenta with momentum + mass
+     */
+    struct UseMassTag {
+      using type = ::edm4hep::LorentzVectorM;
+      static constexpr bool has_value = false;
+    };
 
-using UseEnergyTag = detail::UseEnergyTag;
-/**
- * Static tag to select the energy in 4 momentum vectors
- */
-constexpr static UseEnergyTag UseEnergy;
+    /**
+     * Tag struct for getting 4-momenta with momentum + energy
+     */
+    struct UseEnergyTag {
+      using type = ::edm4hep::LorentzVectorE;
+      static constexpr bool has_value = false;
+    };
 
-/**
- * Class to inject a user-defined mass into 4 momentum vectors in the call to
- * p4
- */
-using SetMass = detail::TaggedUserValue<float, UseMassTag>;
+    /**
+     * Tag struct holding an additional value for getting 4 momenta with arbitrary
+     * values instead of the one from the Particle.
+     */
+    template <typename T, typename TagT>
+    struct TaggedUserValue {
+      TaggedUserValue() = default;
+      TaggedUserValue(T v) : value(v) {
+      }
+      using type = typename TagT::type;
+      static constexpr bool has_value = true;
+      T value{};
+    };
 
-/**
- * Class to inject a user-defined energy into 4 momentum vectors in the call to
- * p4
- */
-using SetEnergy = detail::TaggedUserValue<float, UseEnergyTag>;
+    /**
+     * Tag-dispatched implementation for getting the 4-momentum from a particle
+     * according to the desired type.
+     */
+    template <typename ParticleT, typename LorentzVectorTypeTag>
+    inline typename LorentzVectorTypeTag::type p4(ParticleT const& part, [[maybe_unused]] LorentzVectorTypeTag* tag) {
+      const auto mom = part.getMomentum();
+      // Either the user wants to set a specific value
+      if constexpr (LorentzVectorTypeTag::has_value) {
+        return typename LorentzVectorTypeTag::type{mom[0], mom[1], mom[2], tag->value};
+      }
 
-/**
- * Get the 4 momentum vector from a Particle using the momentum and the mass.
- */
-template<typename ParticleT>
-inline LorentzVectorM p4(ParticleT const& part) {
-  return detail::p4(part, &UseMass);
-}
+      // Or we take the one from the underying particle
+      if constexpr (std::is_same_v<typename LorentzVectorTypeTag::type, LorentzVectorM>) {
+        return LorentzVectorM{mom[0], mom[1], mom[2], part.getMass()};
+      }
+      if constexpr (std::is_same_v<typename LorentzVectorTypeTag::type, LorentzVectorE>) {
+        return LorentzVectorE{mom[0], mom[1], mom[2], part.getEnergy()};
+      }
+    }
+  } // namespace detail
 
-/**
- * Get the 4 momentum vector from a Particle. Use the second argument to choose
- * something other than the mass. E.g. the UseEnergy as second argument to get
- * the energy stored within the particle. Additionally it is possible to take
- * the momentum from the particle but set a specific mass or energy value by
- * using SetMass or SetEnergy as the second argument. The underlying particle
- * will not be changed in this case.
- *
- * NOTE: split into two overloads, in order to work around a short-coming of
- * cppyy: See https://github.com/wlav/cppyy/issues/78
- */
-template<typename ParticleT, typename LorentzVectorTag>
-inline typename LorentzVectorTag::type p4(ParticleT const& part, LorentzVectorTag tag) {
-  return detail::p4(part, &tag);
-}
+  using UseMassTag = detail::UseMassTag;
+  /**
+   * Static tag to select the mass in 4 momentum vectors
+   */
+  constexpr static UseMassTag UseMass;
 
-}} // namespace edm4hep::utils
+  using UseEnergyTag = detail::UseEnergyTag;
+  /**
+   * Static tag to select the energy in 4 momentum vectors
+   */
+  constexpr static UseEnergyTag UseEnergy;
 
+  /**
+   * Class to inject a user-defined mass into 4 momentum vectors in the call to
+   * p4
+   */
+  using SetMass = detail::TaggedUserValue<float, UseMassTag>;
+
+  /**
+   * Class to inject a user-defined energy into 4 momentum vectors in the call to
+   * p4
+   */
+  using SetEnergy = detail::TaggedUserValue<float, UseEnergyTag>;
+
+  /**
+   * Get the 4 momentum vector from a Particle using the momentum and the mass.
+   */
+  template <typename ParticleT>
+  inline LorentzVectorM p4(ParticleT const& part) {
+    return detail::p4(part, &UseMass);
+  }
+
+  /**
+   * Get the 4 momentum vector from a Particle. Use the second argument to choose
+   * something other than the mass. E.g. the UseEnergy as second argument to get
+   * the energy stored within the particle. Additionally it is possible to take
+   * the momentum from the particle but set a specific mass or energy value by
+   * using SetMass or SetEnergy as the second argument. The underlying particle
+   * will not be changed in this case.
+   *
+   * NOTE: split into two overloads, in order to work around a short-coming of
+   * cppyy: See https://github.com/wlav/cppyy/issues/78
+   */
+  template <typename ParticleT, typename LorentzVectorTag>
+  inline typename LorentzVectorTag::type p4(ParticleT const& part, LorentzVectorTag tag) {
+    return detail::p4(part, &tag);
+  }
+
+} // namespace utils
+} // namespace edm4hep
 
 #endif

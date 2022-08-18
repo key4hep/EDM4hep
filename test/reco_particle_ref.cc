@@ -1,35 +1,35 @@
 #include "edm4hep/ReconstructedParticleCollection.h"
 
 #include "podio/EventStore.h"
-#include "podio/ROOTWriter.h"
 #include "podio/ROOTReader.h"
+#include "podio/ROOTWriter.h"
 
-#include <stdexcept>
-#include <sstream>
-#include <string>
-#include <iostream>
-#include <vector>
-#include <random>
-#include <numeric>
 #include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
-#define LOCATION()                                                      \
-  std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + \
-  std::string(" in ") + std::string(__PRETTY_FUNCTION__)
+#define LOCATION()                                                                                                     \
+  std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(" in ") +                          \
+      std::string(__PRETTY_FUNCTION__)
 
-#define ASSERT_CONDITION( condition,  message )                              \
-{                                                                            \
-  if ( !(condition) ) {                                                      \
-    throw std::runtime_error( LOCATION() + std::string(": ") + message);     \
-  }                                                                          \
-}
+#define ASSERT_CONDITION(condition, message)                                                                           \
+  {                                                                                                                    \
+    if (!(condition)) {                                                                                                \
+      throw std::runtime_error(LOCATION() + std::string(": ") + message);                                              \
+    }                                                                                                                  \
+  }
 
-#define ASSERT_EQUAL( left, right, message )                              \
-{                                                                         \
-  std::stringstream msg;                                                  \
-  msg << message << " | expected: " << right << " - actual: " << left;    \
-  ASSERT_CONDITION(left == right, msg.str())                              \
-}
+#define ASSERT_EQUAL(left, right, message)                                                                             \
+  {                                                                                                                    \
+    std::stringstream msg;                                                                                             \
+    msg << message << " | expected: " << right << " - actual: " << left;                                               \
+    ASSERT_CONDITION(left == right, msg.str())                                                                         \
+  }
 
 constexpr int NEVENTS = 50;
 
@@ -48,21 +48,18 @@ constexpr int NEVENTS = 50;
  * ReconstructedParticle.
  */
 struct TestState {
-  TestState(int nEvents) :
-        nEntries(std::vector<int>(nEvents)), nRefs(std::vector<int>(nEvents)) {
+  TestState(int nEvents) : nEntries(std::vector<int>(nEvents)), nRefs(std::vector<int>(nEvents)) {
     std::default_random_engine eng{std::random_device{}()};
 
     // randomly generate the number of entries for each event to be between 0
     // and 20
     std::uniform_int_distribution<> nEntriesDist{0, 20};
-    std::generate(nEntries.begin(), nEntries.end(),
-                  [&eng, &nEntriesDist]() {return nEntriesDist(eng);});
+    std::generate(nEntries.begin(), nEntries.end(), [&eng, &nEntriesDist]() { return nEntriesDist(eng); });
 
     // randomly generate the number of references
     // NOTE: The range is deliberately chosen to be the same as above to have
     // cases where there are more references then entries
-    std::generate(nRefs.begin(), nRefs.end(),
-                  [&eng, &nEntriesDist]() {return nEntriesDist(eng);});
+    std::generate(nRefs.begin(), nRefs.end(), [&eng, &nEntriesDist]() { return nEntriesDist(eng); });
 
     // generate the indices for the references in the original array
     for (int i = 0; i < nEvents; ++i) {
@@ -123,7 +120,8 @@ void writeRecoParticleRef(const TestState& testState) {
       reco.setMomentum({iEntry * 100.f, iEntry * 150.f, iEntry * 200.f});
     }
 
-    ASSERT_EQUAL(testState.nRefs[iEvent], (int)testState.relationIndices[iEvent].size(), "Wrong number of relation indices");
+    ASSERT_EQUAL(testState.nRefs[iEvent], (int)testState.relationIndices[iEvent].size(),
+                 "Wrong number of relation indices");
 
     for (const int index : testState.relationIndices[iEvent]) {
       refColl.push_back(recoColl[index]);
@@ -161,12 +159,12 @@ void readRecoParticleRef(const TestState& testState) {
 
     auto& refColl = store.get<edm4hep::ReconstructedParticleCollection>("RecoRefs");
     ASSERT_CONDITION(refColl.isValid(), "'RecoRefs' collection is not present");
-    ASSERT_EQUAL(refColl.size(), testState.nRefs[iEvent],
-                 "'RecoRefs' collection has the wrong number of entries");
+    ASSERT_EQUAL(refColl.size(), testState.nRefs[iEvent], "'RecoRefs' collection has the wrong number of entries");
 
     int i = 0;
     for (const auto& reco : recoColl) {
-      ASSERT_EQUAL(reco.getMomentum(), edm4hep::Vector3f(i * 100.f, i * 150.f, i * 200.f), "ReconstructedParticle has the wrong momentum");
+      ASSERT_EQUAL(reco.getMomentum(), edm4hep::Vector3f(i * 100.f, i * 150.f, i * 200.f),
+                   "ReconstructedParticle has the wrong momentum");
       i++;
     }
 
@@ -181,7 +179,6 @@ void readRecoParticleRef(const TestState& testState) {
     reader.endOfEvent();
   }
 }
-
 
 int main(int, char**) {
   try {
