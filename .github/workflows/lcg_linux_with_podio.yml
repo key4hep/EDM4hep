@@ -20,6 +20,7 @@ jobs:
         release-platform: ${{ matrix.LCG }}
         run: |
           STARTDIR=$(pwd)
+          echo "::group::Build podio"
           echo "Building podio @"$(git log -1 --format=%H)
           git clone --depth 1 https://github.com/AIDASoft/podio
           cd podio
@@ -37,6 +38,8 @@ jobs:
           unset CPATH
           export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
           export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
+          echo "::endgroup::"
+          echo "::group::Build edm4hep"
           cd $STARTDIR
           echo "Building edm4hep"
           mkdir build install
@@ -49,7 +52,8 @@ jobs:
           ctest --output-on-failure
           ninja install
           cd -
-          echo "Test downstream usage"
+          echo "::endgroup::"
+          echo "::group::Test downstream usage"
           export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
           cd test/downstream-project-cmake-test
           mkdir build
@@ -58,3 +62,4 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=../install \
             -G Ninja
           ninja -k0
+          echo "::endgroup::"

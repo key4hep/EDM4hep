@@ -12,6 +12,28 @@ jobs:
       with:
         release-platform: LCG_99/x86_64-centos7-clang10-opt
         run: |
+          STARTDIR=$(pwd)
+          echo "::group::Build podio"
+          echo "Building podio @"$(git log -1 --format=%H)
+          git clone --depth 1 https://github.com/AIDASoft/podio
+          cd podio
+          mkdir build install
+          cd build
+          cmake .. -DCMAKE_CXX_STANDARD=17 \
+            -DENABLE_SIO=ON \
+            -DBUILD_TESTING=OFF \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/../install \
+            -G Ninja
+          ninja -k0
+          ninja install
+          cd ..
+          export ROOT_INCLUDE_PATH=$(pwd)/install/include:$ROOT_INCLUDE_PATH:$CPATH
+          unset CPATH
+          export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
+          export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
+          echo "::endgroup::"
+          echo "::group::Run pre-commit"
+          cd $STARTDIR
           export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=/root/.local/bin:$PATH
           pip install argparse --user
@@ -28,3 +50,4 @@ jobs:
           pre-commit run --show-diff-on-failure \
             --color=always \
             --all-files
+          echo "::endgroup::"
