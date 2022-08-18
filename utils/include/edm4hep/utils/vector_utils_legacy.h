@@ -22,29 +22,29 @@ inline double angleToEta(const double theta) {
 
 // Utility getters to accomodate different vector types
 template <class V>
-auto vector_x(const V& v) {
+constexpr auto vector_x(const V& v) {
   return v.x;
 }
 template <class V>
-auto vector_y(const V& v) {
+constexpr auto vector_y(const V& v) {
   return v.y;
 }
 template <class V>
-auto vector_z(const V& v) {
+constexpr auto vector_z(const V& v) {
   return v.z;
 }
 // Vector2f uses a,b instead of x,y
 template <>
-inline auto vector_x<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
+inline constexpr auto vector_x<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
   return v.a;
 }
 template <>
-inline auto vector_y<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
+inline constexpr auto vector_y<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
   return v.b;
 }
 // no z-component for 2D vectors
 template <>
-inline auto vector_z<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
+inline constexpr auto vector_z<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
   return 0;
 }
 
@@ -98,11 +98,11 @@ V normalizeVector(const V& v, double norm = 1.) {
   return (norm > 0) ? v * norm / old : v * 0;
 }
 template <class V>
-V vectorTransverse(const V& v) {
+constexpr V vectorTransverse(const V& v) {
   return {edm4hep::vector_x(v), edm4hep::vector_y(v), 0};
 }
 template <class V>
-V vectorLongitudinal(const V& v) {
+constexpr V vectorLongitudinal(const V& v) {
   return {0, 0, edm4hep::vector_z(v)};
 }
 // Two vector functions
@@ -126,56 +126,57 @@ double projection(const V& v, const V& v1) {
 
 } // namespace edm4hep
 
-inline edm4hep::Vector2f operator+(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
+inline constexpr edm4hep::Vector2f operator+(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector2f()));
   const ValueType x = edm4hep::vector_x(v1) + edm4hep::vector_x(v2);
   const ValueType y = edm4hep::vector_y(v1) + edm4hep::vector_y(v2);
   return {x, y};
 }
-inline edm4hep::Vector3f operator+(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
+inline constexpr edm4hep::Vector3f operator+(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector3f()));
   const ValueType x = edm4hep::vector_x(v1) + edm4hep::vector_x(v2);
   const ValueType y = edm4hep::vector_y(v1) + edm4hep::vector_y(v2);
   const ValueType z = edm4hep::vector_z(v1) + edm4hep::vector_z(v2);
   return {x, y, z};
 }
-inline double operator*(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
+inline constexpr double operator*(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2);
 }
-inline double operator*(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
+inline constexpr double operator*(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2) +
       edm4hep::vector_z(v1) * edm4hep::vector_z(v2);
 }
-inline edm4hep::Vector2f operator*(const double d, const edm4hep::Vector2f& v) {
+inline constexpr edm4hep::Vector2f operator*(const double d, const edm4hep::Vector2f& v) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector2f()));
   const ValueType x = d * edm4hep::vector_x(v);
   const ValueType y = d * edm4hep::vector_y(v);
   return {x, y};
 }
-inline edm4hep::Vector3f operator*(const double d, const edm4hep::Vector3f& v) {
+inline constexpr edm4hep::Vector3f operator*(const double d, const edm4hep::Vector3f& v) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector3f()));
   const ValueType x = d * edm4hep::vector_x(v);
   const ValueType y = d * edm4hep::vector_y(v);
   const ValueType z = d * edm4hep::vector_z(v);
   return {x, y, z};
 }
-inline edm4hep::Vector2f operator*(const edm4hep::Vector2f& v, const double d) {
+inline constexpr edm4hep::Vector2f operator*(const edm4hep::Vector2f& v, const double d) {
   return d * v;
 }
-inline edm4hep::Vector3f operator*(const edm4hep::Vector3f& v, const double d) {
+inline constexpr edm4hep::Vector3f operator*(const edm4hep::Vector3f& v, const double d) {
   return d * v;
 }
-inline edm4hep::Vector2f operator-(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
+inline constexpr edm4hep::Vector2f operator-(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
   return v1 + (-1. * v2);
 }
-inline edm4hep::Vector3f operator-(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
+inline constexpr edm4hep::Vector3f operator-(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   return v1 + (-1. * v2);
 }
-inline edm4hep::Vector2f operator/(const edm4hep::Vector2f& v, const double d) {
+inline constexpr edm4hep::Vector2f operator/(const edm4hep::Vector2f& v, const double d) {
   return (1. / d) * v;
 }
-inline edm4hep::Vector3f operator/(const edm4hep::Vector3f& v, const double d) {
+inline constexpr edm4hep::Vector3f operator/(const edm4hep::Vector3f& v, const double d) {
   return (1. / d) * v;
 }
+
 #endif
 #endif

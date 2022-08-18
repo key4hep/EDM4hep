@@ -58,23 +58,23 @@ inline double angleToEta(const double theta) {
 
 // Utility getters to accomodate different vector types
 template <VectorND_XYZ V>
-auto vector_x(const V& v) {
+constexpr auto vector_x(const V& v) {
   return v.x;
 }
 template <VectorND_XYZ V>
-auto vector_y(const V& v) {
+constexpr auto vector_y(const V& v) {
   return v.y;
 }
 template <Vector3D V>
-auto vector_z(const V& v) {
+constexpr auto vector_z(const V& v) {
   return v.z;
 }
 template <Vector2D_AB V>
-auto vector_x(const V& v) {
+constexpr auto vector_x(const V& v) {
   return v.a;
 }
 template <Vector2D_AB V>
-auto vector_y(const V& v) {
+constexpr auto vector_y(const V& v) {
   return v.b;
 }
 
@@ -132,11 +132,11 @@ V normalizeVector(const V& v, double norm = 1.) {
   return (norm > 0) ? v * norm / old : v * 0;
 }
 template <Vector3D V>
-V vectorTransverse(const V& v) {
+constexpr V vectorTransverse(const V& v) {
   return {vector_x(v), vector_y(v), 0};
 }
 template <Vector3D V>
-V vectorLongitudinal(const V& v) {
+constexpr V vectorLongitudinal(const V& v) {
   return {0, 0, vector_z(v)};
 }
 // Two vector functions
@@ -160,45 +160,45 @@ double projection(const V& v, const V& v1) {
 
 } // namespace edm4hep
 template <edm4hep::Vector2D V>
-V operator+(const V& v1, const V& v2) {
+constexpr V operator+(const V& v1, const V& v2) {
   return {edm4hep::vector_x(v1) + edm4hep::vector_x(v2), edm4hep::vector_y(v1) + edm4hep::vector_y(v2)};
 }
 template <edm4hep::Vector3D V>
-V operator+(const V& v1, const V& v2) {
+constexpr V operator+(const V& v1, const V& v2) {
   return {edm4hep::vector_x(v1) + edm4hep::vector_x(v2), edm4hep::vector_y(v1) + edm4hep::vector_y(v2),
           edm4hep::vector_z(v1) + edm4hep::vector_z(v2)};
 }
 template <edm4hep::Vector2D V>
-double operator*(const V& v1, const V& v2) {
+constexpr double operator*(const V& v1, const V& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2);
 }
 template <edm4hep::Vector3D V>
-double operator*(const V& v1, const V& v2) {
+constexpr double operator*(const V& v1, const V& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2) +
       edm4hep::vector_z(v1) * edm4hep::vector_z(v2);
 }
 template <edm4hep::Vector2D V>
-V operator*(const double d, const V& v) {
+constexpr V operator*(const double d, const V& v) {
   return {d * edm4hep::vector_x(v), d * edm4hep::vector_y(v)};
 }
 template <edm4hep::Vector3D V>
-V operator*(const double d, const V& v) {
+constexpr V operator*(const double d, const V& v) {
   return {d * edm4hep::vector_x(v), d * edm4hep::vector_y(v), d * edm4hep::vector_z(v)};
 }
 template <edm4hep::Vector2D V>
-V operator*(const V& v, const double d) {
+constexpr V operator*(const V& v, const double d) {
   return {d * edm4hep::vector_x(v), d * edm4hep::vector_y(v)};
 }
 template <edm4hep::Vector3D V>
-V operator*(const V& v, const double d) {
+constexpr V operator*(const V& v, const double d) {
   return {d * edm4hep::vector_x(v), d * edm4hep::vector_y(v), d * edm4hep::vector_z(v)};
 }
 template <edm4hep::VectorND V>
-V operator-(const V& v1, const V& v2) {
+constexpr V operator-(const V& v1, const V& v2) {
   return v1 + (-1. * v2);
 }
 template <edm4hep::VectorND V>
-V operator/(const V& v, const double d) {
+constexpr V operator/(const V& v, const double d) {
   return (1. / d) * v;
 }
 #endif
