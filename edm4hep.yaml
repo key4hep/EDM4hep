@@ -14,11 +14,11 @@ components:
         - float z
       ExtraCode:
         declaration: "
-        Vector3f() : x(0),y(0),z(0) {}\n
-        Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
-        Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
-        float operator[](unsigned i) const { return *( &x + i ) ; }\n
+        constexpr Vector3f() : x(0),y(0),z(0) {}\n
+        constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
+        constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
+        constexpr float operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
     # Vector3D with doubles
@@ -29,12 +29,12 @@ components:
         - double z
       ExtraCode:
         declaration: "
-        Vector3d() : x(0),y(0),z(0) {}\n
-        Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
-        Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
-        double operator[](unsigned i) const { return *( &x + i ) ; }\n
+        constexpr Vector3d() : x(0),y(0),z(0) {}\n
+        constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
+        constexpr Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
+        constexpr double operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
     # Vector2D with ints
@@ -44,11 +44,11 @@ components:
         - int32_t b
       ExtraCode :
         declaration: "
-        Vector2i() : a(0),b(0) {}\n
-        Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
-        Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
-        bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
-        int operator[](unsigned i) const { return *( &a + i ) ; }\n
+        constexpr Vector2i() : a(0),b(0) {}\n
+        constexpr Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
+        constexpr Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
+        constexpr bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
+        constexpr int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
     # Vector2D with floats
@@ -58,11 +58,11 @@ components:
         - float b
       ExtraCode:
         declaration: "
-        Vector2f() : a(0),b(0) {}\n
-        Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
-        Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
-        bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
-        float operator[](unsigned i) const { return *( &a + i ) ; }\n
+        constexpr Vector2f() : a(0),b(0) {}\n
+        constexpr Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
+        constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
+        constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
+        constexpr float operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
       # Parametrized description of a particle track
