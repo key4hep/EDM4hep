@@ -16,6 +16,7 @@ namespace edm4hep {
 inline double etaToAngle(const double eta) {
   return std::atan(std::exp(-eta)) * 2.;
 }
+
 inline double angleToEta(const double theta) {
   return -std::log(std::tan(0.5 * theta));
 }
@@ -25,23 +26,28 @@ template <class V>
 constexpr auto vector_x(const V& v) {
   return v.x;
 }
+
 template <class V>
 constexpr auto vector_y(const V& v) {
   return v.y;
 }
+
 template <class V>
 constexpr auto vector_z(const V& v) {
   return v.z;
 }
+
 // Vector2f uses a,b instead of x,y
 template <>
 inline constexpr auto vector_x<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
   return v.a;
 }
+
 template <>
 inline constexpr auto vector_y<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
   return v.b;
 }
+
 // no z-component for 2D vectors
 template <>
 inline constexpr auto vector_z<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
@@ -69,26 +75,32 @@ template <class V>
 double anglePolar(const V& v) {
   return std::atan2(std::hypot(edm4hep::vector_x(v), edm4hep::vector_y(v)), edm4hep::vector_z(v));
 }
+
 template <class V>
 double angleAzimuthal(const V& v) {
   return std::atan2(edm4hep::vector_y(v), edm4hep::vector_x(v));
 }
+
 template <class V>
 double eta(const V& v) {
   return angleToEta(anglePolar(v));
 }
+
 template <class V>
 double magnitude(const V& v) {
   return std::hypot(edm4hep::vector_x(v), edm4hep::vector_y(v), edm4hep::vector_z(v));
 }
+
 template <class V>
 double magnitudeTransverse(const V& v) {
   return std::hypot(edm4hep::vector_x(v), edm4hep::vector_y(v));
 }
+
 template <class V>
 double magnitudeLongitudinal(const V& v) {
   return edm4hep::vector_z(v);
 }
+
 template <class V>
 V normalizeVector(const V& v, double norm = 1.) {
   const double old = magnitude(v);
@@ -97,14 +109,17 @@ V normalizeVector(const V& v, double norm = 1.) {
   }
   return (norm > 0) ? v * norm / old : v * 0;
 }
+
 template <class V>
 constexpr V vectorTransverse(const V& v) {
   return {edm4hep::vector_x(v), edm4hep::vector_y(v), 0};
 }
+
 template <class V>
 constexpr V vectorLongitudinal(const V& v) {
   return {0, 0, edm4hep::vector_z(v)};
 }
+
 // Two vector functions
 template <class V>
 double angleBetween(const V& v1, const V& v2) {
@@ -114,6 +129,7 @@ double angleBetween(const V& v1, const V& v2) {
   }
   return acos(dot / (magnitude(v1) * magnitude(v2)));
 }
+
 // Project v onto v1
 template <class V>
 double projection(const V& v, const V& v1) {
@@ -132,6 +148,7 @@ inline constexpr edm4hep::Vector2f operator+(const edm4hep::Vector2f& v1, const 
   const ValueType y = edm4hep::vector_y(v1) + edm4hep::vector_y(v2);
   return {x, y};
 }
+
 inline constexpr edm4hep::Vector3f operator+(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector3f()));
   const ValueType x = edm4hep::vector_x(v1) + edm4hep::vector_x(v2);
@@ -139,19 +156,23 @@ inline constexpr edm4hep::Vector3f operator+(const edm4hep::Vector3f& v1, const 
   const ValueType z = edm4hep::vector_z(v1) + edm4hep::vector_z(v2);
   return {x, y, z};
 }
+
 inline constexpr double operator*(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2);
 }
+
 inline constexpr double operator*(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   return edm4hep::vector_x(v1) * edm4hep::vector_x(v2) + edm4hep::vector_y(v1) * edm4hep::vector_y(v2) +
       edm4hep::vector_z(v1) * edm4hep::vector_z(v2);
 }
+
 inline constexpr edm4hep::Vector2f operator*(const double d, const edm4hep::Vector2f& v) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector2f()));
   const ValueType x = d * edm4hep::vector_x(v);
   const ValueType y = d * edm4hep::vector_y(v);
   return {x, y};
 }
+
 inline constexpr edm4hep::Vector3f operator*(const double d, const edm4hep::Vector3f& v) {
   using ValueType = decltype(edm4hep::vector_x(edm4hep::Vector3f()));
   const ValueType x = d * edm4hep::vector_x(v);
@@ -159,24 +180,30 @@ inline constexpr edm4hep::Vector3f operator*(const double d, const edm4hep::Vect
   const ValueType z = d * edm4hep::vector_z(v);
   return {x, y, z};
 }
+
 inline constexpr edm4hep::Vector2f operator*(const edm4hep::Vector2f& v, const double d) {
   return d * v;
 }
+
 inline constexpr edm4hep::Vector3f operator*(const edm4hep::Vector3f& v, const double d) {
   return d * v;
 }
+
 inline constexpr edm4hep::Vector2f operator-(const edm4hep::Vector2f& v1, const edm4hep::Vector2f& v2) {
   return v1 + (-1. * v2);
 }
+
 inline constexpr edm4hep::Vector3f operator-(const edm4hep::Vector3f& v1, const edm4hep::Vector3f& v2) {
   return v1 + (-1. * v2);
 }
+
 inline constexpr edm4hep::Vector2f operator/(const edm4hep::Vector2f& v, const double d) {
   return (1. / d) * v;
 }
+
 inline constexpr edm4hep::Vector3f operator/(const edm4hep::Vector3f& v, const double d) {
   return (1. / d) * v;
 }
 
 #endif
-#endif
+#endif // EDM4HEP_UTILS_VECTOR_LEGACY_HH
