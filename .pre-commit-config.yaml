@@ -1,0 +1,15 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        exclude: (doc/ReleaseNotes.md)
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        entry: .github/scripts/clang-format-hook
+        exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$|EDM4HEPVersion.h)
+        types: [c++]
+        language: system

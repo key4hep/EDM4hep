@@ -79,12 +79,12 @@ components:
         - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix.
       ExtraCode:
         declaration: "
-        static const int AtOther = 0 ; // any location other than the ones defined below\n   
+        static const int AtOther = 0 ; // any location other than the ones defined below\n
         static const int AtIP = 1 ;\n
-        static const int AtFirstHit = 2 ;\n                   
-        static const int AtLastHit = 3 ;\n                  
-        static const int AtCalorimeter = 4 ;\n                
-        static const int AtVertex = 5 ;\n     
+        static const int AtFirstHit = 2 ;\n
+        static const int AtLastHit = 3 ;\n
+        static const int AtCalorimeter = 4 ;\n
+        static const int AtVertex = 5 ;\n
         static const int LastLocation = AtVertex  ;\n
         "
 
@@ -150,7 +150,7 @@ datatypes :
       void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  		     \n
       void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
       void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
-      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n 
+      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n
       "
 
     ExtraCode:
@@ -265,15 +265,15 @@ datatypes :
       - float energyError          //error of the hit energy in [GeV].
       - float time                 //time of the hit in [ns].
       - edm4hep::Vector3f position //position of the hit in world coordinates.
-      - int32_t type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues". 
+      - int32_t type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues".
 
  #---------- ParticleID
   edm4hep::ParticleID:
     Description:  "ParticleID"
     Author : "F.Gaede, DESY"
     Members:
-      - int32_t   type           //userdefined type 
-      - int32_t   PDG            //PDG code of this id - ( 999999 ) if unknown. 
+      - int32_t   type           //userdefined type
+      - int32_t   PDG            //PDG code of this id - ( 999999 ) if unknown.
       - int32_t   algorithmType  //type of the algorithm/module that created this hypothesis
       - float likelihood     //likelihood of this hypothesis - in a user defined normalization.
     VectorMembers:
@@ -285,13 +285,13 @@ datatypes :
     Description: "Calorimeter Hit Cluster"
     Author : "F.Gaede, DESY"
     Members:
-      - int32_t                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally. 
+      - int32_t                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally.
       - float                energy          //energy of the cluster [GeV]
       - float                energyError     //error on the energy
       - edm4hep::Vector3f    position        //position of the cluster.
       - std::array<float,6>  positionError   //covariance matrix of the position (6 Parameters)
-      - float                iTheta          //intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP. 
-      - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP. 
+      - float                iTheta          //intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP.
+      - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP.
       - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters)
     VectorMembers:
       - float   shapeParameters      //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
@@ -299,7 +299,7 @@ datatypes :
     OneToManyRelations:
       - edm4hep::Cluster        clusters     //clusters that have been combined to this cluster.
       - edm4hep::CalorimeterHit hits         //hits that have been combined to this cluster.
-      - edm4hep::ParticleID     particleIDs  //particle IDs (sorted by their likelihood) 
+      - edm4hep::ParticleID     particleIDs  //particle IDs (sorted by their likelihood)
 
   #-------------  TrackerHit
   edm4hep::TrackerHit:
@@ -307,15 +307,15 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members :
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues". 
-      - int32_t quality                    //quality bit flag of the hit.    
+      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
-      - float eDep                     //energy deposited on the hit [GeV]. 
+      - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
       - edm4hep::Vector3d position     //hit position in [mm].
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
-      - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type. 
+      - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
 
 
   #-------------  TrackerHitPlane
@@ -345,13 +345,13 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members:
        - uint64_t cellID  //detector specific cell id.
-       - int32_t quality                //quality flag for the hit. 
-       - float time                 //time of the hit. 
-       - float charge               //integrated charge of the hit. 
+       - int32_t quality                //quality flag for the hit.
+       - float time                 //time of the hit.
+       - float charge               //integrated charge of the hit.
     VectorMembers:
        - int32_t rawDataWords           //raw data (32-bit) word at i.
 
- #-------- Track 
+ #-------- Track
   edm4hep::Track:
     Description: "Reconstructed track"
     Author : "F.Gaede, DESY"
@@ -363,7 +363,7 @@ datatypes :
       - float dEdxError                  //error of dEdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
-      - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices 
+      - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices
       - edm4hep::TrackState trackStates  //track states
       - edm4hep::Quantity dxQuantities // different measurements of dx quantities
     OneToManyRelations:
@@ -380,9 +380,9 @@ datatypes :
       - float               probability   //probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex.
       - std::array<float,6> covMatrix     //covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
-      - int32_t                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType. 
+      - int32_t                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType.
     VectorMembers:
-      - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning. 
+      - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning.
     OneToOneRelations:
       - edm4hep::ReconstructedParticle associatedParticle //reconstructed particle associated to this vertex.
 
@@ -404,18 +404,18 @@ datatypes :
       - edm4hep::Vertex          startVertex    //start vertex associated to this particle
       - edm4hep::ParticleID      particleIDUsed //particle Id used for the kinematics of this particle
     OneToManyRelations:
-      - edm4hep::Cluster               clusters     //clusters that have been used for this particle. 
-      - edm4hep::Track                 tracks       //tracks that have been used for this particle. 
+      - edm4hep::Cluster               clusters     //clusters that have been used for this particle.
+      - edm4hep::Track                 tracks       //tracks that have been used for this particle.
       - edm4hep::ReconstructedParticle particles    //reconstructed particles that have been combined to this particle.
-      - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood) 
+      - edm4hep::ParticleID            particleIDs  //particle Ids (not sorted by their likelihood)
     ExtraCode:
       declaration: "
       bool isCompound() const { return particles_size() > 0 ;}\n
       "
     MutableExtraCode:
       declaration: "
-      //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n 
-      //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n     
+      //vertex where the particle decays This method actually returns the start vertex from the first daughter particle found.\n
+      //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n
       "
 
   edm4hep::MCRecoParticleAssociation:

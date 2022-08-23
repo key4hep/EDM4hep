@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Thin wrapper around clang-format for easier to parse output from the
+# pre-commit hook.
+#
+# Needs to work with multiple input files as pre-commit passes multiple files to
+# the "executables"
+
+# Make sure that diff is actually recent enough (diffutils >= 3.4) to support
+# colored output
+COLOR_OUTPUT=$(diff --color=always <(echo) <(echo) > /dev/null 2>&1 && echo "--color=always")
+
+success=0
+for file in ${@}; do
+    if ! $(clang-format --style=file --Werror --dry-run ${file} > /dev/null 2>&1); then
+        echo "Necessary changes for: '${file}' (run 'clang-format --style=file -i ${file}' to fix it)"
+        diff ${COLOR_OUTPUT} -u ${file} <(clang-format --style=file ${file}) | tail -n +3
+        success=1
+    fi
+done
+exit ${success}

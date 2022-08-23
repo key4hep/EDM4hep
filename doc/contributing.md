@@ -18,7 +18,7 @@ a PR, as we only allow *rebase merges* for PRs.
 
 	 git clone https://github.com/key4hep/EDM4HEP.git
 	 cd EDM4HEP
-	
+
 - create a fork of the repository on the Github web page
   - if you have not yet done so earlier
 
@@ -29,11 +29,11 @@ a PR, as we only allow *rebase merges* for PRs.
 - create a new feature branch; choose a meaningful name
 
       git checkout -b <myNewBranch>
-	
+
 - make the changes to existing files (or add new ones) and frequently keep up to date with the master:
 
       git fetch origin; git rebase origin/master
-	
+
 
 - after having committed everything to your new branch, push it to your fork of EDM4hep:
 
@@ -44,7 +44,7 @@ a PR, as we only allow *rebase merges* for PRs.
   - now you can create a pull request on the web site
 
 
-### Release Notes 
+### Release Notes
 
 Please make sure you fill in meaningful release notes in the comment field that is
 provided at the Github web page when creating the PR, e.g.

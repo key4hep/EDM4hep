@@ -1,19 +1,19 @@
 
 # -- Gitlab CI configuration for EDM4HEP -----------------------------
-# 
-# This file configures the deployment of the code reference generated 
+#
+# This file configures the deployment of the code reference generated
 # by doxygen to a web site. The site produced in the generate-docs
 # is static and relocatable, the html files can simply be hosted by any
 # server. Here, the CERN gitlab and eos infrastructure is used to publish
 # to https://edm4hep.web.cern.ch (shorter alias: cern.ch/edm4hep)
 
 
-# -- Run Doxygen ------------------------------ 
+# -- Run Doxygen ------------------------------
 # Doxygen is set up in CMake, so need to load all
 # dependencies to run it. This step requires a runner
 # that can build edm4hep and run doxygen. The easiest way to
 # ensure this is require cvmfs access on the runner and take the
-# software from there. 
+# software from there.
 generate-docs:
   # need a runner with cvmfs installed. On the CERN gitlab instance,
   # these are usually tagged with "cvmfs"
@@ -36,7 +36,7 @@ generate-docs:
 
 
 
-# -- Deploy to EOS ---------------------------- 
+# -- Deploy to EOS ----------------------------
 # Use the standard workflow to publish to eos
 # see https://gitlab.cern.ch/ci-tools/ci-web-deployer
 # The variables for this particular deployment:
@@ -49,7 +49,7 @@ generate-docs:
 # which mirrors https://github.com/key4hep/edm4hep
 # In particular, the service account key4hep is used to write
 # to the eos space /eos/project/k/key4hep/www/edm4hep
-# Other accounts which are part of the e-groups 
+# Other accounts which are part of the e-groups
 # cernbox-project-key4hep-{readers|writers} may be used.
 # The eos path and website are configured using https://webeos.cern.ch/
 deployment:

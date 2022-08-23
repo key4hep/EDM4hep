@@ -31,7 +31,7 @@ This project is in a beta stage -- feedback and use of it in production is encou
 Required:
 
 * [PODIO](https://github.com/AIDASoft/podio) >= v00-09-02
-* [ROOT](https://github.com/root-project/root) >= v6.18/04   
+* [ROOT](https://github.com/root-project/root) >= v6.18/04
 
 Optional:
 
@@ -50,7 +50,7 @@ cd EDM4hep; mkdir build; cd build
 cmake ..
 make
 make test
-``` 
+```
 
 The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere in `LD_LIBRARY_PATH`.
 

@@ -1,23 +1,16 @@
-name: lcg_linux_with_podio
+name: pre-commit
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test-with-podio:
+  pre-commit:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        LCG: ["LCG_99/x86_64-centos7-gcc10-opt",
-              "dev3/x86_64-centos7-clang12-opt",
-              "dev4/x86_64-centos7-gcc11-opt",
-              "dev4/x86_64-centos7-clang12-opt"]
     steps:
     - uses: actions/checkout@v2
     - uses: cvmfs-contrib/github-action-cvmfs@v2
     - uses: aidasoft/run-lcg-view@v3
       with:
-        release-platform: ${{ matrix.LCG }}
+        release-platform: LCG_99/x86_64-centos7-clang10-opt
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
@@ -39,27 +32,22 @@ jobs:
           export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
           export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
           echo "::endgroup::"
-          echo "::group::Build edm4hep"
+          echo "::group::Run pre-commit"
           cd $STARTDIR
-          echo "Building edm4hep"
-          mkdir build install
-          cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
-            -DCMAKE_INSTALL_PREFIX=../install \
-            -DUSE_EXTERNAL_CATCH2=OFF \
-            -G Ninja
-          ninja -k0
-          ctest --output-on-failure
-          ninja install
-          cd -
-          echo "::endgroup::"
-          echo "::group::Test downstream usage"
-          export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-          cd test/downstream-project-cmake-test
+          export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
+          export PATH=/root/.local/bin:$PATH
+          pip install argparse --user
+          pip install pre-commit --user
           mkdir build
           cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
-            -DCMAKE_INSTALL_PREFIX=../install \
-            -G Ninja
-          ninja -k0
+          cmake .. -DENABLE_SIO=ON \
+            -DCMAKE_CXX_STANDARD=17 \
+            -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DUSE_EXTERNAL_CATCH2=OFF
+          ln -s $(pwd)/compile_commands.json ../
+          cd ..
+          pre-commit run --show-diff-on-failure \
+            --color=always \
+            --all-files
           echo "::endgroup::"
