@@ -120,7 +120,7 @@ namespace utils {
 
   template <Vector3D V = edm4hep::Vector3f>
   V sphericalToVector(const double r, const double theta, const double phi) {
-    using FloatType = decltype(vector_x(V()));
+    using FloatType = ValueType<V>;
     const double sth = sin(theta);
     const double cth = cos(theta);
     const double sph = sin(phi);
