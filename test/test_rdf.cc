@@ -1,5 +1,5 @@
 
-#include "edm4hepRDF.h"
+#include "edm4hep/utils/dataframe.h"
 #include <ROOT/RDataFrame.hxx>
 #include <iostream>
 
