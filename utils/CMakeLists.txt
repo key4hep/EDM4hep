@@ -22,19 +22,9 @@ target_include_directories(edm4hepRDF PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 target_link_libraries(edm4hepRDF PUBLIC edm4hep ROOT::Physics ROOT::ROOTVecOps)
-PODIO_GENERATE_DICTIONARY(edm4hepRDF "${headers}" SELECTION src/selection.xml
-  OPTIONS --library ${CMAKE_SHARED_LIBRARY_PREFIX}edm4hepRDF${CMAKE_SHARED_LIBRARY_SUFFIX}
-  )
-set_target_properties(edm4hepRDF-dictgen PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   PATTERN "CMakeLists.txt" EXCLUDE)
-
-install(FILES
-  "${PROJECT_BINARY_DIR}/utils/edm4hepRDFDict.rootmap"
-  "${PROJECT_BINARY_DIR}/utils/libedm4hepRDF_rdict.pcm"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 install(TARGETS utils kinematics edm4hepRDF
   EXPORT EDM4HEPTargets
