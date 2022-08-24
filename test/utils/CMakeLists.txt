@@ -16,7 +16,7 @@ endif()
 include(Catch)
 
 add_executable(unittests
-  test_kinematics.cpp)
+  test_kinematics.cpp test_vector_utils.cpp)
 target_link_libraries(unittests edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
 catch_discover_tests(unittests)
 
