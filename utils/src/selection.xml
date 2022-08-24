@@ -1,10 +1,25 @@
 <lcgdict>
     <selection>
 
-            <function name="edm4hep::pt" />
-            <function name="edm4hep::eta" />
-            <function name="edm4hep::r" />
-            <function name="edm4hep::cos_theta" />
+            <function name="edm4hep::pt<edm4hep::MCParticleData>" />
+            <function name="edm4hep::eta<edm4hep::MCParticleData>" />
+            <function name="edm4hep::cos_theta<edm4hep::MCParticleData>" />
+
+            <function name="edm4hep::pt<edm4hep::ReconstructedParticleData>" />
+            <function name="edm4hep::eta<edm4hep::ReconstructedParticleData>" />
+            <function name="edm4hep::cos_theta<edm4hep::ReconstructedParticleData>" />
+
+            <function name="edm4hep::pt<edm4hep::SimTrackerHitData>" />
+            <function name="edm4hep::eta<edm4hep::SimTrackerHitData>" />
+            <function name="edm4hep::cos_theta<edm4hep::SimTrackerHitData>" />
+            <function name="edm4hep::r<edm4hep::SimTrackerHitData>" />
+
+            <function name="edm4hep::r<edm4hep::TrackerHitData>" />
+            <function name="edm4hep::r<edm4hep::TrackerHitPlaneData>" />
+            <function name="edm4hep::r<edm4hep::SimCalorimeterHitData>" />
+            <function name="edm4hep::r<edm4hep::CalorimeterHitData>" />
+            <function name="edm4hep::r<edm4hep::ClusterData>" />
+            <function name="edm4hep::r<edm4hep::VertexData>" />
 
     </selection>
 </lcgdict>

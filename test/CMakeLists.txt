@@ -4,8 +4,8 @@ ENDIF()
 
 function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$ENV{LD_LIBRARY_PATH}
-      ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:$ENV{ROOT_INCLUDE_PATH}
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+      ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )
   set_tests_properties(${_testname} PROPERTIES
     FAIL_REGULAR_EXPRESSION "[^a-z]Error;ERROR;error;Failed"
@@ -53,6 +53,10 @@ IF(TARGET ROOT::ROOTDataFrame)
   set_property(TEST test_rdf PROPERTY
     DEPENDS write_events
     )
+
+  add_test(NAME py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
+  set_test_env(py_test_rdf)
+  set_tests_properties(py_test_rdf PROPERTIES DEPENDS write_events)
 endif()
 
 

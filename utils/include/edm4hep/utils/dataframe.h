@@ -1,28 +1,22 @@
-#ifndef RDF_UTILITYLAMBDAS_H
-#define RDF_UTILITYLAMBDAS_H
+#ifndef EDM4HEP_UTILS_DATAFRAME_H
+#define EDM4HEP_UTILS_DATAFRAME_H
 
-#include <cmath>
-#include <vector>
+#include "ROOT/RVec.hxx"
 
-#include "edm4hep/MCParticleData.h"
-#include "edm4hep/SimTrackerHitData.h"
-#include "edm4hep/Vector3d.h"
-#include "edm4hep/Vector3f.h"
+namespace edm4hep::utils {
 
-namespace edm4hep {
+template <typename T>
+ROOT::VecOps::RVec<float> pt(ROOT::VecOps::RVec<T> const& in);
 
-/// get transverse momenta (GeV) of a MCParticle collection
-std::vector<float> pt(std::vector<MCParticleData> const& in);
+template <typename T>
+ROOT::VecOps::RVec<float> eta(ROOT::VecOps::RVec<T> const& in);
 
-/// get pseudorapidities of a MCParticle collection
-std::vector<float> eta(std::vector<MCParticleData> const& in);
+template <typename T>
+ROOT::VecOps::RVec<float> cos_theta(ROOT::VecOps::RVec<T> const& in);
 
-/// get cosines of theta of a MCParticle collection
-std::vector<float> cos_theta(std::vector<MCParticleData> const& in);
+template <typename T>
+ROOT::VecOps::RVec<float> r(ROOT::VecOps::RVec<T> const& in);
 
-/// get transverse radial distances of the coordinates of a SimTrackerHit Collection
-std::vector<double> r(std::vector<SimTrackerHitData> const& in);
+} // namespace edm4hep::utils
 
-} // namespace edm4hep
-
-#endif
+#endif // EDM4HEP_UTILS_DATAFRAME_H

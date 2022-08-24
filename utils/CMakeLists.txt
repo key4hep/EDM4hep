@@ -21,7 +21,7 @@ target_include_directories(edm4hepRDF PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
-target_link_libraries(edm4hepRDF edm4hep ROOT::Physics ROOT::ROOTVecOps)
+target_link_libraries(edm4hepRDF PUBLIC edm4hep ROOT::Physics ROOT::ROOTVecOps)
 PODIO_GENERATE_DICTIONARY(edm4hepRDF "${headers}" SELECTION src/selection.xml
   OPTIONS --library ${CMAKE_SHARED_LIBRARY_PREFIX}edm4hepRDF${CMAKE_SHARED_LIBRARY_SUFFIX}
   )
