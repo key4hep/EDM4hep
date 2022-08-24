@@ -77,6 +77,17 @@ ROOT::VecOps::RVec<edm4hep::LorentzVectorE> p4E(ROOT::VecOps::RVec<T> const& in)
   return fourMoms;
 }
 
+template <typename T>
+ROOT::VecOps::RVec<float> E(ROOT::VecOps::RVec<T> const& fourMom) {
+  ROOT::VecOps::RVec<float> energies;
+  energies.reserve(fourMom.size());
+  for (const auto& p : fourMom) {
+    energies.push_back(p.E());
+  }
+
+  return energies;
+}
+
 // Explicitly instantiate the template functions here to have them available in
 // the shared library and the dictionaries that will be compiled from this
 
@@ -108,6 +119,10 @@ INST_POSITION_FUNCS(edm4hep::ClusterData);
 INST_POSITION_FUNCS(edm4hep::VertexData);
 
 #undef INST_POSITION_FUNCS
+
+INST_DATA_TO_FLOAT_VEC_FUNC(E, edm4hep::LorentzVectorE);
+INST_DATA_TO_FLOAT_VEC_FUNC(E, edm4hep::LorentzVectorM);
+
 #undef INST_DATA_TO_FLOAT_VEC
 
 #define INST_4MOM_MASS_FUNCS(DATATYPE)                                                                                 \

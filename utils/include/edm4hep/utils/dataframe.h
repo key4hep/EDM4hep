@@ -31,6 +31,10 @@ ROOT::VecOps::RVec<edm4hep::LorentzVectorM> p4M(ROOT::VecOps::RVec<T> const& in)
 template <typename T>
 ROOT::VecOps::RVec<edm4hep::LorentzVectorE> p4E(ROOT::VecOps::RVec<T> const& in);
 
+/// Get the energy from a four momentum vector
+template <typename T>
+ROOT::VecOps::RVec<float> E(ROOT::VecOps::RVec<T> const& fourMom);
+
 } // namespace edm4hep::utils
 
 #endif // EDM4HEP_UTILS_DATAFRAME_H
