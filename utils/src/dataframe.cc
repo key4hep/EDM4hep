@@ -88,6 +88,17 @@ ROOT::VecOps::RVec<float> E(ROOT::VecOps::RVec<T> const& fourMom) {
   return energies;
 }
 
+template <typename T>
+ROOT::VecOps::RVec<float> M(ROOT::VecOps::RVec<T> const& fourMom) {
+  ROOT::VecOps::RVec<float> masses;
+  masses.reserve(fourMom.size());
+  for (const auto& p : fourMom) {
+    masses.push_back(p.M());
+  }
+
+  return masses;
+}
+
 // Explicitly instantiate the template functions here to have them available in
 // the shared library and the dictionaries that will be compiled from this
 
@@ -122,6 +133,8 @@ INST_POSITION_FUNCS(edm4hep::VertexData);
 
 INST_DATA_TO_FLOAT_VEC_FUNC(E, edm4hep::LorentzVectorE);
 INST_DATA_TO_FLOAT_VEC_FUNC(E, edm4hep::LorentzVectorM);
+INST_DATA_TO_FLOAT_VEC_FUNC(M, edm4hep::LorentzVectorE);
+INST_DATA_TO_FLOAT_VEC_FUNC(M, edm4hep::LorentzVectorM);
 
 #undef INST_DATA_TO_FLOAT_VEC
 
