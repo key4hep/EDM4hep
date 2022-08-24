@@ -202,7 +202,6 @@ namespace utils {
   }
 
 } // namespace utils
-} // namespace edm4hep
 
 template <typename V, edm4hep::utils::EnableIfEDM4hepVector2DType<V> = false>
 inline constexpr V operator+(const V& v1, const V& v2) {
@@ -263,6 +262,8 @@ template <typename V>
 inline constexpr V operator/(const V& v, const double d) {
   return (1. / d) * v;
 }
+
+} // namespace edm4hep
 
 #endif
 #endif // EDM4HEP_UTILS_VECTOR_LEGACY_HH

@@ -208,7 +208,6 @@ namespace utils {
   }
 
 } // namespace utils
-} // namespace edm4hep
 
 template <edm4hep::Vector2D V>
 inline constexpr V operator+(const V& v1, const V& v2) {
@@ -267,6 +266,8 @@ template <edm4hep::VectorND V>
 inline constexpr V operator/(const V& v, const double d) {
   return (1. / d) * v;
 }
+
+} // namespace edm4hep
 
 #endif
 #endif
