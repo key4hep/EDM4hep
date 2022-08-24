@@ -62,14 +62,6 @@ template <class V>
 concept VectorND_XYZ = Vector2D_XY<V> || Vector3D<V>;
 
 namespace utils {
-  inline double etaToAngle(const double eta) {
-    return std::atan(std::exp(-eta)) * 2.;
-  }
-
-  inline double angleToEta(const double theta) {
-    return -std::log(std::tan(0.5 * theta));
-  }
-
   // Utility getters to accomodate different vector types
   template <VectorND_XYZ V>
   constexpr auto vector_x(const V& v) {
@@ -118,6 +110,21 @@ namespace utils {
   //  return {r * sin(theta), r * cos(theta)};
   //}
 
+} // namespace utils
+
+/// A vector that uses floating point numbers to represent its members
+template <typename V>
+concept FloatVectorND = std::floating_point<utils::ValueType<V>> && (Vector2D<V> || Vector3D<V>);
+
+namespace utils {
+  inline double etaToAngle(const double eta) {
+    return std::atan(std::exp(-eta)) * 2.;
+  }
+
+  inline double angleToEta(const double theta) {
+    return -std::log(std::tan(0.5 * theta));
+  }
+
   template <Vector3D V = edm4hep::Vector3f>
   V sphericalToVector(const double r, const double theta, const double phi) {
     using FloatType = ValueType<V>;
@@ -146,12 +153,7 @@ namespace utils {
     return angleToEta(anglePolar(v));
   }
 
-  template <Vector2D V>
-  double magnitude(const V& v) {
-    return std::hypot(vector_x(v), vector_y(v));
-  }
-
-  template <Vector3D V>
+  template <VectorND V>
   double magnitude(const V& v) {
     return std::hypot(vector_x(v), vector_y(v), vector_z(v));
   }
@@ -166,7 +168,7 @@ namespace utils {
     return vector_z(v);
   }
 
-  template <VectorND V>
+  template <FloatVectorND V>
   V normalizeVector(const V& v, double norm = 1.) {
     const double old = magnitude(v);
     if (old == 0) {
@@ -196,7 +198,7 @@ namespace utils {
   }
 
   // Project v onto v1
-  template <Vector3D V>
+  template <VectorND V>
   double projection(const V& v, const V& v1) {
     const double norm = magnitude(v1);
     if (norm == 0) {

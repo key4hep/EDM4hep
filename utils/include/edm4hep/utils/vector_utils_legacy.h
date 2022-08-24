@@ -100,6 +100,7 @@ namespace utils {
   using EDM4hepVectorTypes = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2i, edm4hep::Vector2f>;
   using EDM4hepVector3DTypes = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d>;
   using EDM4hepVector2DTypes = std::tuple<edm4hep::Vector2f, edm4hep::Vector2i>;
+  using EDM4hepFloatVectorTypes = std::tuple<edm4hep::Vector2f, edm4hep::Vector3f, edm4hep::Vector3d>;
 
   template <typename V>
   using EnableIfEDM4hepVectorType = std::enable_if_t<detail::isInTuple<V, EDM4hepVectorTypes>, bool>;
@@ -109,6 +110,9 @@ namespace utils {
 
   template <typename V>
   using EnableIfEDM4hepVector3DType = std::enable_if_t<detail::isInTuple<V, EDM4hepVector3DTypes>, bool>;
+
+  template <typename V>
+  using EnableIfEDM4hepFloatVectorType = std::enable_if_t<detail::isInTuple<V, EDM4hepFloatVectorTypes>, bool>;
 
   // inline edm4hep::Vector2f VectorFromPolar(const double r, const double theta)
   // {
@@ -145,20 +149,20 @@ namespace utils {
 
   template <class V, typename = EnableIfEDM4hepVectorType<V>>
   double magnitude(const V& v) {
-    return std::hypot(vector_y(v), vector_z(v));
+    return std::hypot(vector_x(v), vector_y(v), vector_z(v));
   }
 
-  template <class V, typename = EnableIfEDM4hepVectorType<V>>
+  template <class V, typename = EnableIfEDM4hepVector3DType<V>>
   double magnitudeTransverse(const V& v) {
     return std::hypot(vector_x(v), vector_y(v));
   }
 
-  template <class V, typename = EnableIfEDM4hepVectorType<V>>
+  template <class V, typename = EnableIfEDM4hepVector3DType<V>>
   double magnitudeLongitudinal(const V& v) {
     return vector_z(v);
   }
 
-  template <class V, typename = EnableIfEDM4hepVectorType<V>>
+  template <class V, typename = EnableIfEDM4hepFloatVectorType<V>>
   V normalizeVector(const V& v, double norm = 1.) {
     const double old = magnitude(v);
     if (old == 0) {
@@ -167,12 +171,12 @@ namespace utils {
     return (norm > 0) ? v * norm / old : v * 0;
   }
 
-  template <class V, typename = EnableIfEDM4hepVectorType<V>>
+  template <class V, typename = EnableIfEDM4hepVector3DType<V>>
   constexpr V vectorTransverse(const V& v) {
     return {vector_x(v), vector_y(v), 0};
   }
 
-  template <class V, typename = EnableIfEDM4hepVectorType<V>>
+  template <class V, typename = EnableIfEDM4hepVector3DType<V>>
   constexpr V vectorLongitudinal(const V& v) {
     return {0, 0, vector_z(v)};
   }
@@ -196,8 +200,8 @@ namespace utils {
     }
     return v * v1 / norm;
   }
-} // namespace utils
 
+} // namespace utils
 } // namespace edm4hep
 
 template <typename V, edm4hep::utils::EnableIfEDM4hepVector2DType<V> = false>

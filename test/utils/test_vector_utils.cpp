@@ -1,3 +1,4 @@
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -79,5 +80,42 @@ TEMPLATE_LIST_TEST_CASE("Vector operators", "[vector_utils]", AllVectorTypes) {
     STATIC_REQUIRE(vector1 * vector2 == utils::ValueType<TestType>(5));
   } else {
     STATIC_REQUIRE(vector1 * vector2 == utils::ValueType<TestType>(14));
+  }
+}
+
+TEMPLATE_LIST_TEST_CASE("Vector utility functionality", "[vector_utils]", AllVectorTypes) {
+  const auto vector = create<TestType>();
+
+  using namespace edm4hep;
+
+  // Can only normalize vectors with floating point numbers
+  if constexpr (!std::is_same_v<TestType, Vector2i>) {
+    const auto normV = utils::normalizeVector(vector);
+    REQUIRE(utils::magnitude(normV) == Catch::Approx(1));
+    REQUIRE(utils::projection(normV, vector) == Catch::Approx(1));
+  }
+
+  // Small differences in expectations between 2D and 3D vectors for everything
+  // that involves the z component
+  if constexpr (std::is_same_v<TestType, Vector2i> || std::is_same_v<TestType, Vector2f>) {
+    REQUIRE(utils::magnitude(vector) == Catch::Approx(std::sqrt(5)));
+
+    const auto otherVec = TestType(3, 4);
+    REQUIRE(utils::angleBetween(otherVec, vector) == Catch::Approx(0.17985349)); // acos(11 / (5 * sqrt(5)))
+  } else {
+    REQUIRE(utils::magnitude(vector) == Catch::Approx(std::sqrt(14)));
+    REQUIRE(utils::magnitudeTransverse(vector) == Catch::Approx(std::sqrt(5)));
+    REQUIRE(utils::magnitudeLongitudinal(vector) == utils::ValueType<TestType>(3));
+    REQUIRE(utils::vectorTransverse(vector) == TestType(1.0, 2.0, 0.0));
+    REQUIRE(utils::vectorLongitudinal(vector) == TestType(0.0, 0.0, 3.0));
+
+    const auto spherVec = utils::sphericalToVector(1, 1, 1);
+    // expected: (0.4546487134, 0.7080734183, 0.5403023059)
+    REQUIRE(spherVec.x == Catch::Approx(0.4546487134));
+    REQUIRE(spherVec.y == Catch::Approx(0.7080734183));
+    REQUIRE(spherVec.z == Catch::Approx(0.5403023059));
+
+    const auto otherVec = TestType(3, 4, 5);
+    REQUIRE(utils::angleBetween(otherVec, vector) == Catch::Approx(0.1862387)); // acos(26 / (sqrt(14) * sqrt(50)))
   }
 }
