@@ -11,7 +11,7 @@ if ROOT.gSystem.Load('libedm4hepDict.so') < 0:
   print('Cannot load edm4hep dictionary for tests')
   sys.exit(1)
 
-ROOT.gInterpreter.LoadFile(os.path.dirname(__file__) + '/../../utils/include/edm4hep/utils/kinematics.h')
+ROOT.gInterpreter.LoadFile('edm4hep/utils/kinematics.h')
 
 from ROOT import edm4hep
 

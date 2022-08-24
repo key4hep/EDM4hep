@@ -1,4 +1,5 @@
 #include "edm4hep/utils/dataframe.h"
+#include "edm4hep/utils/common.h"
 
 #include "edm4hep/CalorimeterHitData.h"
 #include "edm4hep/ClusterData.h"
@@ -56,6 +57,26 @@ ROOT::VecOps::RVec<float> r(ROOT::VecOps::RVec<T> const& in) {
   return result;
 }
 
+template <typename T>
+ROOT::VecOps::RVec<edm4hep::LorentzVectorM> p4M(ROOT::VecOps::RVec<T> const& in) {
+  ROOT::VecOps::RVec<edm4hep::LorentzVectorM> fourMoms;
+  fourMoms.reserve(in.size());
+  for (const auto& p : in) {
+    fourMoms.emplace_back(p.momentum.x, p.momentum.y, p.momentum.z, p.mass);
+  }
+  return fourMoms;
+}
+
+template <typename T>
+ROOT::VecOps::RVec<edm4hep::LorentzVectorE> p4E(ROOT::VecOps::RVec<T> const& in) {
+  ROOT::VecOps::RVec<edm4hep::LorentzVectorM> fourMoms;
+  fourMoms.reserve(in.size());
+  for (const auto& p : in) {
+    fourMoms.emplace_back(p.momentum.x, p.momentum.y, p.momentum.z, p.energy);
+  }
+  return fourMoms;
+}
+
 // Explicitly instantiate the template functions here to have them available in
 // the shared library and the dictionaries that will be compiled from this
 
@@ -69,12 +90,14 @@ ROOT::VecOps::RVec<float> r(ROOT::VecOps::RVec<T> const& in) {
   INST_DATA_TO_FLOAT_VEC_FUNC(eta, DATATYPE);                                                                          \
   INST_DATA_TO_FLOAT_VEC_FUNC(cos_theta, DATATYPE)
 
-// Macro to instantiate all position related functions for a datatype
-#define INST_POSITION_FUNCS(DATATYPE) INST_DATA_TO_FLOAT_VEC_FUNC(r, DATATYPE)
-
 INST_MOMENTUM_FUNCS(edm4hep::MCParticleData);
 INST_MOMENTUM_FUNCS(edm4hep::ReconstructedParticleData);
 INST_MOMENTUM_FUNCS(edm4hep::SimTrackerHitData);
+
+#undef INST_MOMENTUM_FUNCS
+
+// Macro to instantiate all position related functions for a datatype
+#define INST_POSITION_FUNCS(DATATYPE) INST_DATA_TO_FLOAT_VEC_FUNC(r, DATATYPE)
 
 INST_POSITION_FUNCS(edm4hep::SimTrackerHitData);
 INST_POSITION_FUNCS(edm4hep::TrackerHitData);
@@ -84,8 +107,17 @@ INST_POSITION_FUNCS(edm4hep::CalorimeterHitData);
 INST_POSITION_FUNCS(edm4hep::ClusterData);
 INST_POSITION_FUNCS(edm4hep::VertexData);
 
-#undef INST_DATA_TO_FLOAT_VEC
 #undef INST_POSITION_FUNCS
-#undef INST_MOMENTUM_FUNCS
+#undef INST_DATA_TO_FLOAT_VEC
+
+#define INST_4MOM_MASS_FUNCS(DATATYPE)                                                                                 \
+  template ROOT::VecOps::RVec<edm4hep::LorentzVectorM> p4M(ROOT::VecOps::RVec<DATATYPE> const&)
+
+#define INST_4MOM_ENERGY_FUNCS(DATATYPE)                                                                               \
+  template ROOT::VecOps::RVec<edm4hep::LorentzVectorE> p4E(ROOT::VecOps::RVec<DATATYPE> const&)
+
+INST_4MOM_ENERGY_FUNCS(edm4hep::ReconstructedParticleData);
+INST_4MOM_MASS_FUNCS(edm4hep::ReconstructedParticleData);
+INST_4MOM_MASS_FUNCS(edm4hep::MCParticleData);
 
 } // namespace edm4hep::utils
