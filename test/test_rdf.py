@@ -19,7 +19,6 @@ df2 = (df.Define('MCParticles_pt', 'edm4hep::utils::pt(MCParticles)')
        .Define('MCParticles_cosTheta', 'edm4hep::utils::cos_theta(MCParticles)')
        .Define('SimTrackerHits_r', 'edm4hep::utils::r(SimTrackerHits)')
        .Define('SimTrackerHits_pt', 'edm4hep::utils::pt(SimTrackerHits)')
-
        .Define('TrackerHits_r', 'edm4hep::utils::r(TrackerHitPlanes)')
        )
 
