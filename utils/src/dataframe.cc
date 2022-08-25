@@ -17,86 +17,55 @@ namespace edm4hep::utils {
 
 template <typename T>
 ROOT::VecOps::RVec<float> pt(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<float> result;
-  result.reserve(in.size());
-  for (size_t i = 0; i < in.size(); ++i) {
-    result.push_back(std::sqrt(in[i].momentum.x * in[i].momentum.x + in[i].momentum.y * in[i].momentum.y));
-  }
-  return result;
+  return ROOT::VecOps::Map(
+      in, [](const auto& p) { return std::sqrt(p.momentum.x * p.momentum.x + p.momentum.y + p.momentum.y); });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<float> eta(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<float> result;
-  result.reserve(in.size());
-  for (size_t i = 0; i < in.size(); ++i) {
-    ROOT::Math::XYZVector lv{in[i].momentum.x, in[i].momentum.y, in[i].momentum.z};
-    result.push_back(lv.Eta());
-  }
-  return result;
+  return ROOT::VecOps::Map(in, [](const auto& p) {
+    ROOT::Math::XYZVector lv{p.momentum.x, p.momentum.y, p.momentum.z};
+    return lv.Eta();
+  });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<float> cos_theta(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<float> result;
-  result.reserve(in.size());
-  for (size_t i = 0; i < in.size(); ++i) {
-    ROOT::Math::XYZVector lv{in[i].momentum.x, in[i].momentum.y, in[i].momentum.z};
-    result.push_back(cos(lv.Theta()));
-  }
-  return result;
+  return ROOT::VecOps::Map(in, [](const auto& p) {
+    ROOT::Math::XYZVector lv{p.momentum.x, p.momentum.y, p.momentum.z};
+    return std::cos(lv.Theta());
+  });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<float> r(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<double> result;
-  result.reserve(in.size());
-  for (size_t i = 0; i < in.size(); ++i) {
-    result.push_back(std::sqrt(in[i].position.x * in[i].position.x + in[i].position.y * in[i].position.y));
-  }
-  return result;
+  return ROOT::VecOps::Map(in, [](const auto& p) {
+    return std::sqrt(p.position.x * p.position.x + p.position.y * p.position.y + p.position.z + p.position.z);
+  });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<edm4hep::LorentzVectorM> p4M(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<edm4hep::LorentzVectorM> fourMoms;
-  fourMoms.reserve(in.size());
-  for (const auto& p : in) {
-    fourMoms.emplace_back(p.momentum.x, p.momentum.y, p.momentum.z, p.mass);
-  }
-  return fourMoms;
+  return ROOT::VecOps::Map(in, [](const auto& p) {
+    return edm4hep::LorentzVectorM{p.momentum.x, p.momentum.y, p.momentum.z, p.mass};
+  });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<edm4hep::LorentzVectorE> p4E(ROOT::VecOps::RVec<T> const& in) {
-  ROOT::VecOps::RVec<edm4hep::LorentzVectorM> fourMoms;
-  fourMoms.reserve(in.size());
-  for (const auto& p : in) {
-    fourMoms.emplace_back(p.momentum.x, p.momentum.y, p.momentum.z, p.energy);
-  }
-  return fourMoms;
+  return ROOT::VecOps::Map(in, [](const auto& p) {
+    return edm4hep::LorentzVectorE{p.momentum.x, p.momentum.y, p.momentum.z, p.energy};
+  });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<float> E(ROOT::VecOps::RVec<T> const& fourMom) {
-  ROOT::VecOps::RVec<float> energies;
-  energies.reserve(fourMom.size());
-  for (const auto& p : fourMom) {
-    energies.push_back(p.E());
-  }
-
-  return energies;
+  return ROOT::VecOps::Map(fourMom, [](const auto& p) { return p.E(); });
 }
 
 template <typename T>
 ROOT::VecOps::RVec<float> M(ROOT::VecOps::RVec<T> const& fourMom) {
-  ROOT::VecOps::RVec<float> masses;
-  masses.reserve(fourMom.size());
-  for (const auto& p : fourMom) {
-    masses.push_back(p.M());
-  }
-
-  return masses;
+  return ROOT::VecOps::Map(fourMom, [](const auto& p) { return p.M(); });
 }
 
 // Explicitly instantiate the template functions here to have them available in
@@ -147,5 +116,8 @@ INST_DATA_TO_FLOAT_VEC_FUNC(M, edm4hep::LorentzVectorM);
 INST_4MOM_ENERGY_FUNCS(edm4hep::ReconstructedParticleData);
 INST_4MOM_MASS_FUNCS(edm4hep::ReconstructedParticleData);
 INST_4MOM_MASS_FUNCS(edm4hep::MCParticleData);
+
+#undef INST_4MOM_ENERGY_FUNCS
+#undef INST_4MOM_MASS_FUNCS
 
 } // namespace edm4hep::utils
