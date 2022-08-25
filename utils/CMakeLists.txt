@@ -8,14 +8,27 @@ target_include_directories(kinematics
 target_link_libraries(kinematics PUBLIC INTERFACE ROOT::Core)
 target_compile_features(kinematics INTERFACE cxx_std_17)
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  PATTERN "CMakeLists.txt" EXCLUDE)
-
-
 add_library(utils INTERFACE)
 add_library(EDM4HEP::utils ALIAS utils)
 target_link_libraries(utils INTERFACE kinematics)
 
-install(TARGETS utils kinematics
+
+set(sources src/dataframe.cc)
+set(headers include/edm4hep/utils/dataframe.h)
+
+add_library(edm4hepRDF SHARED ${sources})
+target_include_directories(edm4hepRDF PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  )
+target_link_libraries(edm4hepRDF PUBLIC edm4hep ROOT::Physics ROOT::ROOTVecOps)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  PATTERN "CMakeLists.txt" EXCLUDE)
+
+install(TARGETS utils kinematics edm4hepRDF
   EXPORT EDM4HEPTargets
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
+  RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
+  COMPONENT dev
   )
