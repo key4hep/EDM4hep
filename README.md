@@ -8,15 +8,18 @@ A generic event data model for future HEP collider experiments.
 
 ![](doc/edm4hep_diagram.svg)
 
+**Componets**
+| [Vector3f ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L9) | [Vector3d ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L24)   | [Vector2i](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L40)  |
+| [Vector2f](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L54) | [TrackState ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L68) | [ObjectID](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L91)  |
 
 
-|                                                                                           |                                                                                       |                                                                                          |                                                                                       |
-| -------------                                                                             | -------------                                                                         | -----                                                                                    | ---                                                                                   |
-| [Vector3f ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L9)                   | [Vector3d ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L23)              | [Vector2i ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L38)                 | [TrackState ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L50)            |
+**Datatypes**
 | [SimCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L201)         | [RawCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L212)     | [ CalorimeterHit ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L222)         | [Cluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L247)               |
 | [MCParticle](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L84)                 | [Vertex](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L318)                | [ParticleID ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L234)              | [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L335) |
 | [SimTrackerHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L156)             | [TPCHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L288)                | [TrackerHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L270)               | [Track](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L300)                 |
-| [MCRecoParticleAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L362) | [MCRecoCaloAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L370) | [MCRecoTrackerAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L370) | [ObjectID](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L71)               |
+| [MCRecoParticleAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L362) | [MCRecoCaloAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L370) | [MCRecoTrackerAssociation](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L370)
+
+[ObjectID](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L71)               |
 
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
@@ -43,7 +46,7 @@ Optional:
 
 This project follows the key4hep guidelines and can be build with CMake:
 
-```
+```sh
 source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
 git clone https://github.com/key4hep/EDM4hep
 cd EDM4hep; mkdir build; cd build
