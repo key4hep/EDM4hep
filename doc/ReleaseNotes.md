@@ -1,3 +1,37 @@
+# v00-07
+
+* 2022-09-27 Juraj Smiesko ([PR#178](https://github.com/key4hep/EDM4hep/pull/178))
+  - Updated line links to datatypes/components/associations in the README
+
+* 2022-09-27 Thomas Madlener ([PR#176](https://github.com/key4hep/EDM4hep/pull/176))
+  - Bump the minimum cmake version to 3.16. Fixes #166 
+  - Update minimally required versions of podio and ROOT in README
+
+* 2022-08-25 Thomas Madlener ([PR#175](https://github.com/key4hep/EDM4hep/pull/175))
+  - Move the dataframe utilities to the utils folder
+  - Make the existing functionality templated and explicitly instantiate all possible datatypes
+  - Add a python RDataFrame test
+
+* 2022-08-24 Wouter Deconinck ([PR#149](https://github.com/key4hep/EDM4hep/pull/149))
+  - Add utilities to work with `Vector` component classes including
+    - (`constexpr`) `operator` overloads for basic arithmetic with vectors
+    - utility functionality that is commonly used with vectors
+    - concepts to work with in generic vector related code.
+  - Include `edm4hep/utils/vector_utils.h` and work with functionality in `edm4hep::utils` namespace
+    - This include will automatically use the concept powered version if supported by the compiler and fall back to a legacy implementation if not.
+
+* 2022-08-23 Thomas Madlener ([PR#174](https://github.com/key4hep/EDM4hep/pull/174))
+  - Remove no longer necessary tests covering subset collection functionality
+
+* 2022-08-23 Thomas Madlener ([PR#173](https://github.com/key4hep/EDM4hep/pull/173))
+  - Add a `pre-commit` and a `clang-format` config file and run them in CI.
+
+* 2022-08-18 Thomas Madlener ([PR#172](https://github.com/key4hep/EDM4hep/pull/172))
+  - Fix the `kinematics.h` header only utility file such that it also works when used via PyROOT.
+
+* 2022-08-18 stoimenova ([PR#158](https://github.com/key4hep/EDM4hep/pull/158))
+  - Expanded write_events and read_events test with two new classes
+
 # v00-06
 
 * 2022-08-11 Thomas Madlener ([PR#171](https://github.com/key4hep/EDM4hep/pull/171))
