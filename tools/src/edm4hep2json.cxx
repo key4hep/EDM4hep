@@ -11,7 +11,7 @@ void printHelp() {
   std::cout << "Usage:\n"
             << "  -i/--in-file            input file path\n"
             << "  -o/--out-file           output file path\n"
-            << "                            default: events.json\n"
+            << "                            default: events.edm4hep.json\n"
             << "  -h/--help               show this help message"
             << std::endl;
 }
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   }
 
   if (outFile.empty()) {
-    outFile = "events.json";
+    outFile = "events.edm4hep.json";
     std::cout << "INFO: Using default output file path:\n"
               << "      " << outFile << std::endl;
   }
