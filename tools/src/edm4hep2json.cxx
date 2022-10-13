@@ -12,6 +12,9 @@ void printHelp() {
             << "  -i/--in-file            input file path\n"
             << "  -o/--out-file           output file path\n"
             << "                            default: events.edm4hep.json\n"
+            << "  -l/--coll-list          Comma separated list of collections "
+                                         "to be converted\n"
+            << "  -v/--verbose            be more verbose\n"
             << "  -h/--help               show this help message"
             << std::endl;
 }
@@ -19,11 +22,15 @@ void printHelp() {
 int main(int argc, char** argv) {
   std::string inFile;
   std::string outFile;
+  std::string requestedCollections;
+  bool verboser = false;
 
-  const char* const short_opts = "i:o:h";
+  const char* const short_opts = "i:o:l:vh";
   const option long_opts[] = {
     {"in-file", required_argument, nullptr, 'i'},
     {"out-file", required_argument, nullptr, 'o'},
+    {"coll-list", required_argument, nullptr, 'l'},
+    {"verbose", no_argument, nullptr, 'v'},
     {"help", no_argument, nullptr, 'h'},
     {nullptr, no_argument, nullptr, 0}
   };
@@ -42,6 +49,12 @@ int main(int argc, char** argv) {
       case 'o':
         outFile = std::string(optarg);
         break;
+      case 'l':
+        requestedCollections = std::string(optarg);
+        break;
+      case 'v':
+        verboser = true;
+        break;
       case 'h':
       case '?':
       default:
@@ -55,13 +68,23 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  if (outFile.empty()) {
-    outFile = "events.edm4hep.json";
-    std::cout << "INFO: Using default output file path:\n"
-              << "      " << outFile << std::endl;
+  if (requestedCollections.empty()) {
+    requestedCollections =
+        "GenParticles,BuildUpVertices,SiTracks,PandoraClusters,VertexJets";
+    std::cout << "WARNING: Using default collection to convert:\n"
+              << "         " << requestedCollections << std::endl;
   }
 
-  read_events<podio::ROOTReader>(inFile, outFile);
+  if (outFile.empty()) {
+    outFile = "events.edm4hep.json";
+    std::cout << "WARNING: Using default output file path:\n"
+              << "         " << outFile << std::endl;
+  }
+
+  read_events<podio::ROOTReader>(inFile,
+                                 outFile,
+                                 requestedCollections,
+                                 verboser);
 
   return EXIT_SUCCESS;
 }
