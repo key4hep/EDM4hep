@@ -14,6 +14,7 @@ void printHelp() {
             << "                            default: events.edm4hep.json\n"
             << "  -l/--coll-list          Comma separated list of collections "
                                          "to be converted\n"
+            << "  -n/--nevents            number of events to be precessed\n"
             << "  -v/--verbose            be more verbose\n"
             << "  -h/--help               show this help message"
             << std::endl;
@@ -24,12 +25,14 @@ int main(int argc, char** argv) {
   std::string outFile;
   std::string requestedCollections;
   bool verboser = false;
+  int nEventsMax = -1;
 
-  const char* const short_opts = "i:o:l:vh";
+  const char* const short_opts = "i:o:l:n:vh";
   const option long_opts[] = {
     {"in-file", required_argument, nullptr, 'i'},
     {"out-file", required_argument, nullptr, 'o'},
     {"coll-list", required_argument, nullptr, 'l'},
+    {"nevents", required_argument, nullptr, 'n'},
     {"verbose", no_argument, nullptr, 'v'},
     {"help", no_argument, nullptr, 'h'},
     {nullptr, no_argument, nullptr, 0}
@@ -51,6 +54,9 @@ int main(int argc, char** argv) {
         break;
       case 'l':
         requestedCollections = std::string(optarg);
+        break;
+      case 'n':
+        nEventsMax = std::stoi(optarg);
         break;
       case 'v':
         verboser = true;
@@ -84,6 +90,7 @@ int main(int argc, char** argv) {
   read_events<podio::ROOTReader>(inFile,
                                  outFile,
                                  requestedCollections,
+                                 nEventsMax,
                                  verboser);
 
   return EXIT_SUCCESS;

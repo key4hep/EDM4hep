@@ -127,6 +127,7 @@ template<typename ReaderT>
 void read_events(const std::string& filename,
                  const std::string& jsonFile,
                  const std::string& requestedCollections,
+                 int nEventsMax = -1,
                  bool verboser = false) {
   ReaderT reader;
   reader.openFile(filename);
@@ -143,6 +144,9 @@ void read_events(const std::string& filename,
   }
 
   unsigned nEvents = reader.getEntries();
+  if (nEventsMax > 0) {
+    nEvents = nEventsMax;
+  }
   for (unsigned i = 0; i < nEvents; ++i) {
     if (verboser && i % 1000 == 0) {
       std::cout << "INFO: Reading event " << i << std::endl;
