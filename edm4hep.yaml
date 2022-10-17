@@ -489,3 +489,75 @@ datatypes :
     OneToOneRelations:
      - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
      - edm4hep::Vertex vertex             // reference to the vertex
+
+
+  edm4hep::SimPrimaryIonizationCluster:
+    Description: "Simulated Primary Ionization"
+    Author : "Wenxing Fang, IHEP"
+    Members:
+      - unsigned long long cellID            //cell id.
+      - float time                           //the primary ionization's time in the lab frame in [ns].
+      - edm4hep::Vector3d position           //the primary ionization's position in [mm].
+      - int   type                           //type.
+    VectorMembers:
+       - unsigned long long electronCellID   //cell id.
+       - float electronTime                  //the time in the lab frame in [ns].
+       - edm4hep::Vector3d electronPosition  //the position in the lab frame [mm].
+       - float pulseTime                     //the pulse's time in the lab frame in [ns].
+       - float pulseAmplitude                //the pulse's amplitude.
+    OneToOneRelations:
+      - edm4hep::MCParticle MCParticle       //the particle that caused the ionizing collisions.
+
+  edm4hep::TrackerPulse:
+    Description: "Reconstructed Tracker Pulse"
+    Author : "Wenxing Fang, IHEP"
+    Members:
+       - unsigned long long cellID       //cell id. 
+       - float time                      //time.
+       - float charge                    //charge.
+       - int quality                     //quality.
+    VectorMembers:
+       - float covMatrix                 //covariance matrix of the charge(c) and time(t) measurements.
+    OneToOneRelations:
+      - edm4hep::TrackerData trackerData  //Optionaly, the TrackerData that has been used to create the pulse can be stored with the pulse.
+
+  edm4hep::RecIonizationCluster:
+    Description: "Reconstructed Ionization Cluster"
+    Author : "Wenxing Fang, IHEP"
+    Members:
+       - unsigned long long cellID  //cell id. 
+       - float significance         //significance.
+       - int type                   //type.
+    OneToManyRelations:
+       - edm4hep::TrackerPulse trackerPulse //the TrackerPulse used to create the ionization cluster.
+
+  edm4hep::TrackerData:
+    Description: "TrackerData"
+    Author : "Wenxing Fang, IHEP"
+    Members:
+       - unsigned long long cellID  //cell id. 
+       - float time                 //begin time.
+       - float interval             //interval of each sampling in [ns].
+    VectorMembers:
+       - float chargeValue          //charge value.
+
+
+  edm4hep::RecDndx:
+    Description : "dN/dx info of Track."
+    Author : "Wenxing Fang, IHEP"
+    Members :
+      - float dNdx                     //the reconstructed dNdx. 
+      - float dNdxError                //error on the dNdx.
+      - int particleType               //particle type, e(0),mu(1),pi(2),K(3),p(4).
+      - int type                       //type.
+    VectorMembers:
+      - unsigned long long  cellID     //cell id.
+      - float  N                       //number of reconstructed ionization cluster.
+      - float  edep                    //energy deposite.
+      - float  pathL                   //path length in [mm].
+      - float  chi                     //chi for e(0), mu(1), pi(2), K(3), p(4).
+      - float  dNdxExpect              //expected dNdx for e(0),mu(1), pi(2), K(3), p(4).
+      - float  dNdxSigma               //expected sigma of the dNdx for e(0),mu(1), pi(2), K(3), p(4).
+    OneToOneRelations:
+      - edm4hep::Track track           //the corresponding track.
+
