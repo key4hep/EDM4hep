@@ -1,3 +1,6 @@
+// std
+#include <filesystem>
+
 // EDM4hep
 #include "edm4hep2json.hxx"
 
@@ -8,8 +11,7 @@
 #include <getopt.h>
 
 void printHelp() {
-  std::cout << "Usage:\n"
-            << "  -i/--in-file            input file path\n"
+  std::cout << "Usage: [olnvh] FILEPATH\n"
             << "  -o/--out-file           output file path\n"
             << "                            default: events.edm4hep.json\n"
             << "  -l/--coll-list          Comma separated list of collections "
@@ -21,15 +23,14 @@ void printHelp() {
 }
 
 int main(int argc, char** argv) {
-  std::string inFile;
-  std::string outFile;
+  std::filesystem::path inFile;
+  std::filesystem::path outFile;
   std::string requestedCollections;
   bool verboser = false;
   int nEventsMax = -1;
 
-  const char* const short_opts = "i:o:l:n:vh";
+  const char* const short_opts = "o:l:n:vh";
   const option long_opts[] = {
-    {"in-file", required_argument, nullptr, 'i'},
     {"out-file", required_argument, nullptr, 'o'},
     {"coll-list", required_argument, nullptr, 'l'},
     {"nevents", required_argument, nullptr, 'n'},
@@ -47,10 +48,10 @@ int main(int argc, char** argv) {
 
     switch (opt) {
       case 'i':
-        inFile = std::string(optarg);
+        inFile = std::filesystem::path(optarg);
         break;
       case 'o':
-        outFile = std::string(optarg);
+        outFile = std::filesystem::path(optarg);
         break;
       case 'l':
         requestedCollections = std::string(optarg);
@@ -69,22 +70,31 @@ int main(int argc, char** argv) {
     }
   }
 
+  for (int i = optind; i < argc; ++i) {
+    inFile = std::string(argv[i]);
+  }
+
   if (inFile.empty()) {
     std::cout << "ERROR: Input .root file not provided!" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  if (!std::filesystem::exists(inFile)) {
+    std::cout << "ERROR: Input .root file can't be read!" << std::endl;
     return EXIT_FAILURE;
   }
 
   if (requestedCollections.empty()) {
     requestedCollections =
         "GenParticles,BuildUpVertices,SiTracks,PandoraClusters,VertexJets";
-    std::cout << "WARNING: Using default collection to convert:\n"
-              << "         " << requestedCollections << std::endl;
+    if (verboser) {
+      std::cout << "DEBUG: Using default collection to convert:\n"
+                << "       " << requestedCollections << std::endl;
+    }
   }
 
   if (outFile.empty()) {
-    outFile = "events.edm4hep.json";
-    std::cout << "WARNING: Using default output file path:\n"
-              << "         " << outFile << std::endl;
+    outFile = inFile.filename().replace_extension("edm4hep.json");
   }
 
   read_events<podio::ROOTReader>(inFile,
