@@ -323,7 +323,7 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members :
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::TrackerRawData, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
@@ -340,7 +340,7 @@ datatypes :
     Author : "Placido Fernandez Declara, CERN"
     Members :
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::TPCHIT, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::TrackerRawData, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
@@ -355,8 +355,8 @@ datatypes :
       - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
 
 
- #----------  TPCHit
-  edm4hep::TPCHit:
+ #---------- TrackerRawData 
+  edm4hep::TrackerRawData:
     Description: "Time Projection Chamber Hit"
     Author : "F.Gaede, DESY"
     Members:
