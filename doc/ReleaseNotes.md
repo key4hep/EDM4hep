@@ -3,6 +3,11 @@
 * 2022-10-18 Juraj Smiesko ([PR#163](https://github.com/key4hep/edm4hep/pull/163))
   - Adding  EDM4hep -> Phoenix json conversion executable
 
+# v00-07-01
+
+* 2022-10-18 Juraj Smiesko ([PR#163](https://github.com/key4hep/edm4hep/pull/163))
+  - Adding  EDM4hep -> Phoenix json conversion executable
+
 # v00-07
 
 * 2022-09-27 Juraj Smiesko ([PR#178](https://github.com/key4hep/EDM4hep/pull/178))
