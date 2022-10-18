@@ -111,29 +111,17 @@ components:
     # Hypothesis for 5 particle types 
     edm4hep::Hypothesis:
       Members:
-        - float chi_e      // chi for electron
-        - float chi_mu     // chi for muon
-        - float chi_pi     // chi for pion
-        - float chi_k      // chi for kaon
-        - float chi_p      // chi for proton
-        - float expect_e   // expect value for electron
-        - float expect_mu  // expect value for muon
-        - float expect_pi  // expect value for pion
-        - float expect_k   // expect value for kaon
-        - float expect_p   // expect value for proton
-        - float sigma_e    // sigma  value for electron
-        - float sigma_mu   // sigma  value for muon
-        - float sigma_pi   // sigma  value for pion
-        - float sigma_k    // sigma  value for kaon
-        - float sigma_p    // sigma  value for proton
+        - float chi2       // chi2
+        - float expected   // expected value
+        - float sigma      // sigma value
 
     # hit level data  
     edm4hep::HitLevelData:
       Members:
         - uint64_t cellID  // cell id 
         - uint32_t N       // number of reconstructed ionization cluster.
-        - float  edep      // energy deposite.
-        - float  pathL     // track path length in [mm].
+        - float  eDep        // energy deposit.
+        - float  pathLength  // track path length in [mm].
 
 datatypes :
 
@@ -546,8 +534,7 @@ datatypes :
        - float time                      //time.
        - float charge                    //charge.
        - int16_t quality                 //quality.
-    VectorMembers:
-       - float covMatrix                 //covariance matrix of the charge(c) and time(t) measurements.
+       - std::array<float,3> covMatrix   //lower triangle covariance matrix of the charge(c) and time(t) measurements.
     OneToOneRelations:
       - edm4hep::TrackerData trackerData  //Optionaly, the TrackerData that has been used to create the pulse can be stored with the pulse.
 
@@ -583,7 +570,7 @@ datatypes :
       - float dNdxError                //error on the dNdx.
       - int16_t particleType           //particle type, e(0),mu(1),pi(2),K(3),p(4).
       - int16_t type                   //type.
-      - edm4hep::Hypothesis hypothesis  //5 particle hypothesis
+      - std::array<edm4hep::Hypothesis, 5> hypotheses //5 particle hypothesis
     VectorMembers:
       - edm4hep::HitLevelData hitData   //hit level data
     OneToOneRelations:
