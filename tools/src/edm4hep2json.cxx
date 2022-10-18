@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
 
   if (requestedCollections.empty()) {
     requestedCollections =
-        "GenParticles,BuildUpVertices,SiTracks,PandoraClusters,VertexJets";
+        "GenParticles,BuildUpVertices,SiTracks,PandoraClusters,VertexJets,EventHeader";
     if (verboser) {
       std::cout << "DEBUG: Using default collection to convert:\n"
                 << "       " << requestedCollections << std::endl;

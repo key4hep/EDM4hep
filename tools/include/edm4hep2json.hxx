@@ -235,7 +235,9 @@ void read_events(const std::string& filename,
 
   unsigned nEvents = reader.getEntries();
   if (nEventsMax > 0) {
-    nEvents = nEventsMax;
+    if ((unsigned) nEventsMax < nEvents) {
+      nEvents = nEventsMax;
+    }
   }
   for (unsigned i = 0; i < nEvents; ++i) {
     if (verboser && i % 1000 == 0) {
