@@ -5,6 +5,12 @@ PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources IO_BACKEND_HAND
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 
+find_package(nlohmann_json 3.10)
+if (nlohmann_json_FOUND)
+  target_compile_definitions(edm4hep PUBLIC PODIO_JSON_OUTPUT)
+  target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
+endif()
+
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(edm4hep::edm4hepDict ALIAS edm4hepDict )
 
