@@ -217,6 +217,7 @@ template<typename ReaderT>
 void read_events(const std::string& filename,
                  const std::string& jsonFile,
                  const std::string& requestedCollections,
+                 const std::string& requestedEvents,
                  int nEventsMax = -1,
                  bool verboser = false) {
   ReaderT reader;
@@ -227,26 +228,83 @@ void read_events(const std::string& filename,
 
   nlohmann::json allEventsDict;
 
-  auto collList = splitString(requestedCollections);
-
-  if (verboser) {
-    printCollTypes(store, collList);
-  }
-
   unsigned nEvents = reader.getEntries();
   if (nEventsMax > 0) {
     if ((unsigned) nEventsMax < nEvents) {
       nEvents = nEventsMax;
     }
   }
-  for (unsigned i = 0; i < nEvents; ++i) {
-    if (verboser && i % 1000 == 0) {
-      std::cout << "INFO: Reading event " << i << std::endl;
+
+  auto collList = splitString(requestedCollections);
+
+  auto eventList = splitString(requestedEvents);
+  std::vector<int> eventVec;
+  for (auto& evnt: eventList) {
+    if (eventVec.size() >= (unsigned) nEvents) {
+      break;
     }
-    auto eventDict = processEvent(store, collList, verboser, i);
-    allEventsDict["Event " + std::to_string(i)] = eventDict;
-    store.clear();
-    reader.endOfEvent();
+
+    int evntNum = -1;
+    try {
+      evntNum = std::stoi(evnt);
+    } catch (...) {
+      if (verboser) {
+        std::cout << "WARNING: This is not a number:\n"
+                  << "         " << evnt << "\n";
+      }
+      continue;
+    }
+
+    if (evntNum < 0) {
+      if (verboser) {
+        std::cout << "WARNING: Event number lower than zero:\n"
+                  << "         " << evnt << "\n";
+      }
+      continue;
+    }
+
+    if (evntNum > (unsigned) nEvents) {
+      if (verboser) {
+        std::cout << "WARNING: Event number larger than number of events in the file or number of events to be processed:\n"
+                  << "         " << evnt << "\n";
+      }
+      continue;
+    }
+
+    eventVec.emplace_back(evntNum);
+  }
+  if (verboser) {
+    std::cout << "INFO: Converting the following events:\n";
+    for (auto& evnt: eventVec) {
+      std::cout << "      " << evnt << "\n";
+    }
+  }
+
+  if (verboser) {
+    printCollTypes(store, collList);
+  }
+
+  if (eventVec.empty()) {
+    for (unsigned i = 0; i < nEvents; ++i) {
+      if (verboser && i % 1000 == 0) {
+        std::cout << "INFO: Reading event " << i << std::endl;
+      }
+      auto eventDict = processEvent(store, collList, verboser, i);
+      allEventsDict["Event " + std::to_string(i)] = eventDict;
+      store.clear();
+      reader.endOfEvent();
+    }
+  } else {
+    for (auto& i: eventVec) {
+      if (verboser) {
+        std::cout << "INFO: Reading event " << i << std::endl;
+      }
+      reader.goToEvent(i);
+      auto eventDict = processEvent(store, collList, verboser, i);
+      allEventsDict["Event " + std::to_string(i)] = eventDict;
+      store.clear();
+      reader.endOfEvent();
+    }
   }
   reader.closeFile();
 

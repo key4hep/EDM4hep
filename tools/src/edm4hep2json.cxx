@@ -11,12 +11,13 @@
 #include <getopt.h>
 
 void printHelp() {
-  std::cout << "Usage: [olnvh] FILEPATH\n"
+  std::cout << "Usage: edm4hep2json [olenvh] FILEPATH\n"
             << "  -o/--out-file           output file path\n"
             << "                            default: events.edm4hep.json\n"
             << "  -l/--coll-list          Comma separated list of collections "
                                          "to be converted\n"
-            << "  -n/--nevents            number of events to be precessed\n"
+            << "  -e/--events             Comma separated list of events to be processed\n"
+            << "  -n/--nevents            maximal number of events to be precessed\n"
             << "  -v/--verbose            be more verbose\n"
             << "  -h/--help               show this help message"
             << std::endl;
@@ -26,13 +27,15 @@ int main(int argc, char** argv) {
   std::filesystem::path inFile;
   std::filesystem::path outFile;
   std::string requestedCollections;
+  std::string requestedEvents;
   bool verboser = false;
   int nEventsMax = -1;
 
-  const char* const short_opts = "o:l:n:vh";
+  const char* const short_opts = "o:l:e:n:vh";
   const option long_opts[] = {
     {"out-file", required_argument, nullptr, 'o'},
     {"coll-list", required_argument, nullptr, 'l'},
+    {"events", required_argument, nullptr, 'e'},
     {"nevents", required_argument, nullptr, 'n'},
     {"verbose", no_argument, nullptr, 'v'},
     {"help", no_argument, nullptr, 'h'},
@@ -55,6 +58,9 @@ int main(int argc, char** argv) {
         break;
       case 'l':
         requestedCollections = std::string(optarg);
+        break;
+      case 'e':
+        requestedEvents = std::string(optarg);
         break;
       case 'n':
         nEventsMax = std::stoi(optarg);
@@ -100,6 +106,7 @@ int main(int argc, char** argv) {
   read_events<podio::ROOTReader>(inFile,
                                  outFile,
                                  requestedCollections,
+                                 requestedEvents,
                                  nEventsMax,
                                  verboser);
 
