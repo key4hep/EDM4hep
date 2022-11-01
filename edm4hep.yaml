@@ -561,13 +561,12 @@ datatypes :
        - float chargeValue          //charge value.
 
 
-  #-------------  RecDndx
-  edm4hep::RecDndx:
-    Description : "dN/dx info of Track."
+  #-------------  RecDqdx
+  edm4hep::RecDqdx:
+    Description : "dN/dx or dEdx info of Track."
     Author : "Wenxing Fang, IHEP"
     Members :
-      - float dNdx                     //the reconstructed dNdx. 
-      - float dNdxError                //error on the dNdx.
+      - edm4hep::Quantity dQdx         //the reconstructed dEdx or dNdx and its error
       - int16_t particleType           //particle type, e(0),mu(1),pi(2),K(3),p(4).
       - int16_t type                   //type.
       - std::array<edm4hep::Hypothesis, 5> hypotheses //5 particle hypothesis
