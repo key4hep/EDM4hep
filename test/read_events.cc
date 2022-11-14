@@ -1,8 +1,8 @@
 #include "read_events.h"
-#include "podio/ROOTReader.h"
+#include "podio/ROOTFrameReader.h"
 
 int main() {
-  read_events<podio::ROOTReader>("edm4hep_events.root");
+  read_events<podio::ROOTFrameReader>("edm4hep_events.root");
 
   return 0;
 }
