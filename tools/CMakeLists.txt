@@ -1,6 +1,5 @@
 list( APPEND CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
 
-find_package(nlohmann_json 3.10)
 if (nlohmann_json_FOUND)
   add_executable(edm4hep2json src/edm4hep2json.cxx)
 
