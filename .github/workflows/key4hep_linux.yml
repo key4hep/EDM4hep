@@ -11,9 +11,9 @@ jobs:
         release: ["sw.hsf.org/key4hep",
                   "sw-nightlies.hsf.org/key4hep"]
     steps:
-    - uses: actions/checkout@v2
-    - uses: cvmfs-contrib/github-action-cvmfs@v2
-    - uses: aidasoft/run-lcg-view@v3
+    - uses: actions/checkout@v3
+    - uses: cvmfs-contrib/github-action-cvmfs@v3
+    - uses: aidasoft/run-lcg-view@v4
       with:
         container: centos7
         view-path: /cvmfs/${{ matrix.release }}
