@@ -19,6 +19,10 @@
 
 // podio specific includes
 #include "podio/EventStore.h"
+#include "podio/IReader.h"
+#include "podio/UserDataCollection.h"
+#include "podio/podioVersion.h"
+#include "podio/Frame.h"
 
 // JSON
 #include "nlohmann/json.hpp"
@@ -31,19 +35,18 @@
 #include <cassert>
 
 
-template<typename PodioStoreT>
-nlohmann::json processEvent(PodioStoreT& store,
+template <typename StoreT = podio::EventStore>
+nlohmann::json processEvent(StoreT& store,
                             std::vector<std::string>& collList,
                             bool verboser,
                             unsigned eventNum) {
-  const podio::CollectionBase* coll;
   nlohmann::json jsonDict = {
     {"edm4hepVersion", "0.7.0"}
   };
 
   for (unsigned i = 0; i < collList.size(); ++i) {
-    int err = store.template get<podio::CollectionBase>(collList[i], coll);
-    if (!err) {
+    auto coll = store.template get(collList[i]);
+    if (!coll->isValid()) {
       continue;
     }
 
@@ -122,8 +125,8 @@ nlohmann::json processEvent(PodioStoreT& store,
           store.template get<edm4hep::CalorimeterHitCollection>(collList[i]);
       nlohmann::json jsonColl {
         {collList[i], {{"collection", hitCollection},
-                       {"collID", coll->getID()},
-                       {"collType", coll->getTypeName()}}
+                       {"collID", hitCollection.getID()},
+                       {"collType", hitCollection.getTypeName()}}
         }
       };
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
@@ -177,18 +180,16 @@ nlohmann::json processEvent(PodioStoreT& store,
 }
 
 
-template<typename PodioStoreT>
-void printCollTypes(PodioStoreT& store,
+template <typename StoreT = podio::EventStore>
+void printCollTypes(StoreT& store,
                     std::vector<std::string>& collList) {
-  const podio::CollectionBase* coll;
-
-  std::cout << "INFO: Converting collections:\n";
+  std::cout << "INFO: Converted collections:\n";
 
   for (unsigned i = 0; i < collList.size(); ++i) {
-    int err = store.template get<podio::CollectionBase>(collList[i], coll);
-    if (!err) {
-        std::cout << "WARNING: Something went wrong, ignoring collection:\n"
-                  << "         " << collList[i] << "\n";
+    auto coll = store.template get(collList[i]);
+    if (!coll->isValid()) {
+      std::cout << "WARNING: Something went wrong, ignored collection:\n"
+                << "         " << collList[i] << "\n";
 
       continue;
     }
@@ -214,21 +215,30 @@ std::vector<std::string> splitString(const std::string& inString) {
 
 
 template<typename ReaderT>
-void read_events(const std::string& filename,
-                 const std::string& jsonFile,
-                 const std::string& requestedCollections,
-                 const std::string& requestedEvents,
-                 int nEventsMax = -1,
-                 bool verboser = false) {
+int read_frames(const std::string& filename,
+                const std::string& jsonFile,
+                const std::string& requestedCollections,
+                const std::string& requestedEvents,
+                const std::string& frameName,
+                int nEventsMax = -1,
+                bool verboser = false) {
   ReaderT reader;
   reader.openFile(filename);
 
-  auto store = podio::EventStore();
-  store.setReader(&reader);
+  /*
+  // if (reader.currentFileVersion() != podio::version::build_version) {
+  if (reader.currentFileVersion()) {
+    std::cerr << "ERROR: The podio build version could not be read back "
+        //       << "correctly. (expected:" << podio::version::build_version
+              << ", actual: " << reader.currentFileVersion() << ")"
+              << std::endl;
+    // return EXIT_FAILURE;
+  }
+  */
 
   nlohmann::json allEventsDict;
 
-  unsigned nEvents = reader.getEntries();
+  unsigned nEvents = reader.getEntries(frameName);
   if (nEventsMax > 0) {
     if ((unsigned) nEventsMax < nEvents) {
       nEvents = nEventsMax;
@@ -263,7 +273,7 @@ void read_events(const std::string& filename,
       continue;
     }
 
-    if (evntNum > (unsigned) nEvents) {
+    if ((unsigned) evntNum > nEvents) {
       if (verboser) {
         std::cout << "WARNING: Event number larger than number of events in the file or number of events to be processed:\n"
                   << "         " << evnt << "\n";
@@ -280,33 +290,36 @@ void read_events(const std::string& filename,
     }
   }
 
-  if (verboser) {
-    printCollTypes(store, collList);
-  }
-
   if (eventVec.empty()) {
     for (unsigned i = 0; i < nEvents; ++i) {
       if (verboser && i % 1000 == 0) {
         std::cout << "INFO: Reading event " << i << std::endl;
       }
-      auto eventDict = processEvent(store, collList, verboser, i);
+      auto frame = podio::Frame(reader.readNextEntry(frameName));
+      auto eventDict = processEvent(frame,
+                                    collList,
+                                    verboser,
+                                    i);
       allEventsDict["Event " + std::to_string(i)] = eventDict;
-      store.clear();
-      reader.endOfEvent();
     }
   } else {
     for (auto& i: eventVec) {
       if (verboser) {
         std::cout << "INFO: Reading event " << i << std::endl;
       }
-      reader.goToEvent(i);
-      auto eventDict = processEvent(store, collList, verboser, i);
+      auto frame = podio::Frame(reader.readEntry(frameName, i));
+      auto eventDict = processEvent(frame,
+                                    collList,
+                                    verboser,
+                                    i);
       allEventsDict["Event " + std::to_string(i)] = eventDict;
-      store.clear();
-      reader.endOfEvent();
     }
   }
-  reader.closeFile();
+
+  if (verboser) {
+    auto frame = podio::Frame(reader.readEntry(frameName, 0));
+    printCollTypes(frame, collList);
+  }
 
   std::ofstream outFile(jsonFile);
   if (outFile.is_open()) {
@@ -318,6 +331,8 @@ void read_events(const std::string& filename,
     std::cout << "INFO: Result of the conversion written to:\n"
               << "      " << jsonFile << std::endl;
   }
+
+  return EXIT_SUCCESS;
 }
 
 #endif /* EDM4HEP_TO_JSON_H__ */
