@@ -1,5 +1,6 @@
-#ifndef EDM4HEP_TO_JSON_H__
-#define EDM4HEP_TO_JSON_H__
+#ifndef EDM4HEP_TO_JSON_H
+#define EDM4HEP_TO_JSON_H
+
 
 // EDM4hep event data model
 #include "edm4hep/CalorimeterHitCollection.h"
@@ -95,10 +96,8 @@ nlohmann::json processEvent(StoreT& store, std::vector<std::string>& collList, b
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::CalorimeterHitCollection") {
       auto& hitCollection = store.template get<edm4hep::CalorimeterHitCollection>(collList[i]);
-      nlohmann::json jsonColl{{collList[i],
-                               {{"collection", hitCollection},
-                                {"collID", hitCollection.getID()},
-                                {"collType", hitCollection.getTypeName()}}}};
+      nlohmann::json jsonColl{
+          {collList[i], {{"collection", hitCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::SimCalorimeterHitCollection") {
       auto& hitCollection = store.template get<edm4hep::SimCalorimeterHitCollection>(collList[i]);
