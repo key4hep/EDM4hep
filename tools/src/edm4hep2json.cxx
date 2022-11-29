@@ -15,19 +15,18 @@ void printHelp() {
             << "  -o/--out-file           output file path\n"
             << "                            default: events.edm4hep.json\n"
             << "  -l/--coll-list          comma separated list of collections "
-                                         "to be converted\n"
+               "to be converted\n"
             << "  -e/--events             comma separated list of events to "
-                                         "be processed\n"
+               "be processed\n"
             << "  -n/--nevents            maximal number of events to be "
-                                         "processed\n"
+               "processed\n"
             << "  -f/--frame-name         input frame name\n"
             << "                            default: \"events\"\n"
             << "  -v/--verbose            be more verbose\n"
-            << "  -h/--help               show this help message"
-            << std::endl;
+            << "  -h/--help               show this help message" << std::endl;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   std::filesystem::path inFile;
   std::filesystem::path outFile;
   std::string requestedCollections;
@@ -36,16 +35,16 @@ int main(int argc, char** argv) {
   bool verboser = false;
   int nEventsMax = -1;
 
-  const char* const short_opts = "o:l:e:n:f:vh";
+  const char *const short_opts = "o:l:e:n:f:vh";
   const option long_opts[] = {
-    {"out-file", required_argument, nullptr, 'o'},
-    {"coll-list", required_argument, nullptr, 'l'},
-    {"events", required_argument, nullptr, 'e'},
-    {"nevents", required_argument, nullptr, 'n'},
-    {"frame-name", required_argument, nullptr, 'f'},
-    {"verbose", no_argument, nullptr, 'v'},
-    {"help", no_argument, nullptr, 'h'},
-    {nullptr, no_argument, nullptr, 0}
+    { "out-file", required_argument, nullptr, 'o' },
+    { "coll-list", required_argument, nullptr, 'l' },
+    { "events", required_argument, nullptr, 'e' },
+    { "nevents", required_argument, nullptr, 'n' },
+    { "frame-name", required_argument, nullptr, 'f' },
+    { "verbose", no_argument, nullptr, 'v' },
+    { "help", no_argument, nullptr, 'h' },
+    { nullptr, no_argument, nullptr, 0 }
   };
 
   while (true) {
@@ -56,41 +55,42 @@ int main(int argc, char** argv) {
     }
 
     switch (opt) {
-      case 'i':
-        inFile = std::filesystem::path(optarg);
-        break;
-      case 'o':
-        outFile = std::filesystem::path(optarg);
-        break;
-      case 'l':
-        requestedCollections = std::string(optarg);
-        break;
-      case 'e':
-        requestedEvents = std::string(optarg);
-        break;
-      case 'f':
-        frameName = std::string(optarg);
-        break;
-      case 'n':
-        try {
-          nEventsMax = std::stoi(optarg);
-        } catch (...) {
-          if (verboser) {
-            std::cout << "ERROR: Provided maximal number of events is "
-                         "not a number:\n"
-                      << "       " << optarg << "\n";
-          }
-          return EXIT_FAILURE;
+    case 'i':
+      inFile = std::filesystem::path(optarg);
+      break;
+    case 'o':
+      outFile = std::filesystem::path(optarg);
+      break;
+    case 'l':
+      requestedCollections = std::string(optarg);
+      break;
+    case 'e':
+      requestedEvents = std::string(optarg);
+      break;
+    case 'f':
+      frameName = std::string(optarg);
+      break;
+    case 'n':
+      try {
+        nEventsMax = std::stoi(optarg);
+      }
+      catch (...) {
+        if (verboser) {
+          std::cout << "ERROR: Provided maximal number of events is "
+                       "not a number:\n"
+                    << "       " << optarg << "\n";
         }
-        break;
-      case 'v':
-        verboser = true;
-        break;
-      case 'h':
-      case '?':
-      default:
-        printHelp();
-        return EXIT_SUCCESS;
+        return EXIT_FAILURE;
+      }
+      break;
+    case 'v':
+      verboser = true;
+      break;
+    case 'h':
+    case '?':
+    default:
+      printHelp();
+      return EXIT_SUCCESS;
     }
   }
 
@@ -109,9 +109,8 @@ int main(int argc, char** argv) {
   }
 
   if (requestedCollections.empty()) {
-    requestedCollections =
-        "GenParticles,BuildUpVertices,SiTracks,"
-        "PandoraClusters,VertexJets,EventHeader";
+    requestedCollections = "GenParticles,BuildUpVertices,SiTracks,"
+                           "PandoraClusters,VertexJets,EventHeader";
     if (verboser) {
       std::cout << "DEBUG: Using default collection to convert:\n"
                 << "       " << requestedCollections << std::endl;
@@ -129,11 +128,7 @@ int main(int argc, char** argv) {
     outFile = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
-  return read_frames<podio::ROOTFrameReader>(inFile,
-                                             outFile,
-                                             requestedCollections,
-                                             requestedEvents,
-                                             frameName,
-                                             nEventsMax,
-                                             verboser);
+  return read_frames<podio::ROOTFrameReader>(
+      inFile, outFile, requestedCollections, requestedEvents, frameName,
+      nEventsMax, verboser);
 }
