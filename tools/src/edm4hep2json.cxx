@@ -26,7 +26,7 @@ void printHelp() {
             << "  -h/--help               show this help message" << std::endl;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   std::filesystem::path inFile;
   std::filesystem::path outFile;
   std::string requestedCollections;
@@ -35,17 +35,15 @@ int main(int argc, char **argv) {
   bool verboser = false;
   int nEventsMax = -1;
 
-  const char *const short_opts = "o:l:e:n:f:vh";
-  const option long_opts[] = {
-    { "out-file", required_argument, nullptr, 'o' },
-    { "coll-list", required_argument, nullptr, 'l' },
-    { "events", required_argument, nullptr, 'e' },
-    { "nevents", required_argument, nullptr, 'n' },
-    { "frame-name", required_argument, nullptr, 'f' },
-    { "verbose", no_argument, nullptr, 'v' },
-    { "help", no_argument, nullptr, 'h' },
-    { nullptr, no_argument, nullptr, 0 }
-  };
+  const char* const short_opts = "o:l:e:n:f:vh";
+  const option long_opts[] = {{"out-file", required_argument, nullptr, 'o'},
+                              {"coll-list", required_argument, nullptr, 'l'},
+                              {"events", required_argument, nullptr, 'e'},
+                              {"nevents", required_argument, nullptr, 'n'},
+                              {"frame-name", required_argument, nullptr, 'f'},
+                              {"verbose", no_argument, nullptr, 'v'},
+                              {"help", no_argument, nullptr, 'h'},
+                              {nullptr, no_argument, nullptr, 0}};
 
   while (true) {
     const auto opt = getopt_long(argc, argv, short_opts, long_opts, 0);
@@ -73,8 +71,7 @@ int main(int argc, char **argv) {
     case 'n':
       try {
         nEventsMax = std::stoi(optarg);
-      }
-      catch (...) {
+      } catch (...) {
         if (verboser) {
           std::cout << "ERROR: Provided maximal number of events is "
                        "not a number:\n"
@@ -128,7 +125,6 @@ int main(int argc, char **argv) {
     outFile = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
-  return read_frames<podio::ROOTFrameReader>(
-      inFile, outFile, requestedCollections, requestedEvents, frameName,
-      nEventsMax, verboser);
+  return read_frames<podio::ROOTFrameReader>(inFile, outFile, requestedCollections, requestedEvents, frameName,
+                                             nEventsMax, verboser);
 }
