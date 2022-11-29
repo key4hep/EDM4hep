@@ -1,7 +1,6 @@
 #ifndef EDM4HEP_TO_JSON_H
 #define EDM4HEP_TO_JSON_H
 
-
 // EDM4hep event data model
 #include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/ClusterCollection.h"
