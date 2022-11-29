@@ -119,7 +119,14 @@ int main(int argc, char** argv) {
   }
 
   if (outFile.empty()) {
-    outFile = inFile.filename().replace_extension("edm4hep.json");
+    std::string outFileStr = inFile.stem().string();
+    if (outFileStr.find(".edm4hep") != std::string::npos) {
+      outFileStr = outFileStr.erase(outFileStr.find(".edm4hep"), 8);
+    }
+    if (outFileStr.find("_edm4hep") != std::string::npos) {
+      outFileStr = outFileStr.erase(outFileStr.find("_edm4hep"), 8);
+    }
+    outFile = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
   return read_frames<podio::ROOTFrameReader>(inFile,

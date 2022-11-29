@@ -1,7 +1,7 @@
 #ifndef EDM4HEP_TO_JSON_H__
 #define EDM4HEP_TO_JSON_H__
 
-// event data model
+// EDM4hep event data model
 #include "edm4hep/EventHeaderCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
@@ -39,14 +39,24 @@ template <typename StoreT = podio::EventStore>
 nlohmann::json processEvent(StoreT& store,
                             std::vector<std::string>& collList,
                             bool verboser,
-                            unsigned eventNum) {
+                            unsigned eventNum,
+                            podio::version::Version podioVersion) {
   nlohmann::json jsonDict = {
     {"edm4hepVersion", "0.7.0"}
   };
 
+  std::string podioVersionStr = std::to_string(podioVersion.major);
+  podioVersionStr += ".";
+  podioVersionStr += std::to_string(podioVersion.minor);
+  podioVersionStr += ".";
+  podioVersionStr += std::to_string(podioVersion.patch);
+  jsonDict.push_back(
+      {"podioVersion", podioVersionStr}
+  );
+
   for (unsigned i = 0; i < collList.size(); ++i) {
     auto coll = store.template get(collList[i]);
-    if (!coll->isValid()) {
+    if (!coll) {
       continue;
     }
 
@@ -187,7 +197,7 @@ void printCollTypes(StoreT& store,
 
   for (unsigned i = 0; i < collList.size(); ++i) {
     auto coll = store.template get(collList[i]);
-    if (!coll->isValid()) {
+    if (!coll) {
       std::cout << "WARNING: Something went wrong, ignored collection:\n"
                 << "         " << collList[i] << "\n";
 
@@ -225,17 +235,6 @@ int read_frames(const std::string& filename,
   ReaderT reader;
   reader.openFile(filename);
 
-  /*
-  // if (reader.currentFileVersion() != podio::version::build_version) {
-  if (reader.currentFileVersion()) {
-    std::cerr << "ERROR: The podio build version could not be read back "
-        //       << "correctly. (expected:" << podio::version::build_version
-              << ", actual: " << reader.currentFileVersion() << ")"
-              << std::endl;
-    // return EXIT_FAILURE;
-  }
-  */
-
   nlohmann::json allEventsDict;
 
   unsigned nEvents = reader.getEntries(frameName);
@@ -247,71 +246,83 @@ int read_frames(const std::string& filename,
 
   auto collList = splitString(requestedCollections);
 
-  auto eventList = splitString(requestedEvents);
   std::vector<int> eventVec;
-  for (auto& evnt: eventList) {
-    if (eventVec.size() >= (unsigned) nEvents) {
-      break;
-    }
-
-    int evntNum = -1;
-    try {
-      evntNum = std::stoi(evnt);
-    } catch (...) {
-      if (verboser) {
-        std::cout << "WARNING: This is not a number:\n"
-                  << "         " << evnt << "\n";
+  if (!requestedEvents.empty()) {
+    auto eventList = splitString(requestedEvents);
+    for (auto& evnt: eventList) {
+      if (eventVec.size() >= nEvents) {
+        break;
       }
-      continue;
-    }
 
-    if (evntNum < 0) {
-      if (verboser) {
-        std::cout << "WARNING: Event number lower than zero:\n"
-                  << "         " << evnt << "\n";
+      int evntNum = -1;
+      try {
+        evntNum = std::stoi(evnt);
+      } catch (...) {
+        if (verboser) {
+          std::cout << "WARNING: This is not a number:\n"
+                    << "         " << evnt << "\n";
+        }
+        continue;
       }
-      continue;
-    }
 
-    if ((unsigned) evntNum > nEvents) {
-      if (verboser) {
-        std::cout << "WARNING: Event number larger than number of events in the file or number of events to be processed:\n"
-                  << "         " << evnt << "\n";
+      if (evntNum < 0) {
+        if (verboser) {
+          std::cout << "WARNING: Event number lower than zero:\n"
+                    << "         " << evnt << "\n";
+        }
+        continue;
       }
-      continue;
+
+      if ((unsigned) evntNum > nEvents) {
+        if (verboser) {
+          std::cout << "WARNING: Event number larger than number of events in the file or maximal event number to be processed:\n"
+                    << "         " << evnt << "\n";
+        }
+        continue;
+      }
+
+      eventVec.emplace_back(evntNum);
     }
 
-    eventVec.emplace_back(evntNum);
-  }
-  if (verboser) {
-    std::cout << "INFO: Converting the following events:\n";
-    for (auto& evnt: eventVec) {
-      std::cout << "      " << evnt << "\n";
+    if (eventVec.empty()) {
+      return EXIT_SUCCESS;
+    }
+
+    if (verboser) {
+      std::cout << "INFO: Converting the following events:\n";
+      std::string evntStr;
+      for (auto& evnt: eventVec) {
+        evntStr += std::to_string(evnt);
+        evntStr += ",";
+      }
+      evntStr.pop_back();
+      std::cout << "      " << evntStr << std::endl;
     }
   }
 
   if (eventVec.empty()) {
+    unsigned modInfo = nEvents / 10;
     for (unsigned i = 0; i < nEvents; ++i) {
-      if (verboser && i % 1000 == 0) {
+      if (verboser && i % modInfo == 0) {
         std::cout << "INFO: Reading event " << i << std::endl;
       }
+
       auto frame = podio::Frame(reader.readNextEntry(frameName));
       auto eventDict = processEvent(frame,
                                     collList,
                                     verboser,
-                                    i);
+                                    i,
+                                    reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
     for (auto& i: eventVec) {
-      if (verboser) {
-        std::cout << "INFO: Reading event " << i << std::endl;
-      }
       auto frame = podio::Frame(reader.readEntry(frameName, i));
       auto eventDict = processEvent(frame,
                                     collList,
                                     verboser,
-                                    i);
+                                    i,
+                                    reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   }
