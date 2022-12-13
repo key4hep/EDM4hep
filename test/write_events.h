@@ -6,7 +6,7 @@
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/TPCHitCollection.h"
+#include "edm4hep/TrackerRawDataCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
 
 // STL
@@ -36,7 +36,7 @@ void write(std::string outfilename) {
   auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
   writer.registerForWrite("SimCalorimeterHitContributions");
 
-  auto& tpchs = store.create<edm4hep::TPCHitCollection>("TPCHits");
+  auto& tpchs = store.create<edm4hep::TrackerRawDataCollection>("TPCHits");
   writer.registerForWrite("TPCHits");
 
   auto& thps = store.create<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");

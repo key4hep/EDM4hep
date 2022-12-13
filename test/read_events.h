@@ -6,7 +6,7 @@
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/TPCHitCollection.h"
+#include "edm4hep/TrackerRawDataCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
 
 // podio specific includes
@@ -23,7 +23,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sths = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = store.get<edm4hep::TPCHitCollection>("TPCHits");
+  auto& tpchs = store.get<edm4hep::TrackerRawDataCollection>("TPCHits");
   auto& thps = store.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 
   if (mcps.isValid()) {
