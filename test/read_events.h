@@ -6,8 +6,8 @@
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/TrackerRawDataCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
+#include "edm4hep/TrackerRawDataCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
