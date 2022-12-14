@@ -108,17 +108,17 @@ components:
         - float error  // error on the value of the quantity
 
 
-    # Hypothesis for 5 particle types 
+    # Hypothesis for 5 particle types
     edm4hep::Hypothesis:
       Members:
         - float chi2       // chi2
         - float expected   // expected value
         - float sigma      // sigma value
 
-    # hit level data  
+    # hit level data
     edm4hep::HitLevelData:
       Members:
-        - uint64_t cellID  // cell id 
+        - uint64_t cellID  // cell id
         - uint32_t N       // number of reconstructed ionization cluster.
         - float  eDep        // energy deposit.
         - float  pathLength  // track path length in [mm].
@@ -355,7 +355,7 @@ datatypes :
       - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
 
 
- #---------- TrackerRawData 
+ #---------- TrackerRawData
   edm4hep::TrackerRawData:
     Description: "Time Projection Chamber Hit"
     Author : "F.Gaede, DESY"
@@ -525,12 +525,12 @@ datatypes :
     OneToOneRelations:
       - edm4hep::MCParticle MCParticle       //the particle that caused the ionizing collisions.
 
- #----------  TrackerPulse 
+ #----------  TrackerPulse
   edm4hep::TrackerPulse:
     Description: "Reconstructed Tracker Pulse"
     Author : "Wenxing Fang, IHEP"
     Members:
-       - uint64_t cellID                 //cell id. 
+       - uint64_t cellID                 //cell id.
        - float time                      //time.
        - float charge                    //charge.
        - int16_t quality                 //quality.
@@ -543,18 +543,18 @@ datatypes :
     Description: "Reconstructed Ionization Cluster"
     Author : "Wenxing Fang, IHEP"
     Members:
-       - uint64_t cellID            //cell id. 
+       - uint64_t cellID            //cell id.
        - float significance         //significance.
        - int16_t type               //type.
     OneToManyRelations:
        - edm4hep::TrackerPulse trackerPulse //the TrackerPulse used to create the ionization cluster.
 
- #----------  TrackerData 
+ #----------  TrackerData
   edm4hep::TrackerData:
     Description: "TrackerData"
     Author : "Wenxing Fang, IHEP"
     Members:
-       - uint64_t cellID            //cell id. 
+       - uint64_t cellID            //cell id.
        - float time                 //begin time.
        - float interval             //interval of each sampling in [ns].
     VectorMembers:
