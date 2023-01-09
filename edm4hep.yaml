@@ -381,7 +381,7 @@ datatypes :
       - float dEdxError                  //error of dEdx.
       - float radiusOfInnermostHit       //radius of the innermost hit that has been used in the track fit
     VectorMembers:
-      - int32_t subDetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices
+      - int32_t subdetectorHitNumbers        //number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices
       - edm4hep::TrackState trackStates  //track states
       - edm4hep::Quantity dxQuantities // different measurements of dx quantities
     OneToManyRelations:
