@@ -102,7 +102,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
               ${CMAKE_CURRENT_SOURCE_DIR}/NOTICE
               DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
-find_package(nlohmann_json 3.10)
+find_package(nlohmann_json 3.10.5)
 
 add_subdirectory(edm4hep)
 add_subdirectory(utils)
