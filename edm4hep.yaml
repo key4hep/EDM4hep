@@ -147,7 +147,7 @@ datatypes :
       void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
       void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
       void setDecayedInTracker(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
-      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  		     \n
+      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     \n
       void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
       void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
       void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n

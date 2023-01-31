@@ -1,3 +1,13 @@
+# v00-07-02
+
+* 2022-11-29 Thomas Madlener ([PR#186](https://github.com/key4hep/EDM4hep/pull/186))
+  - Use agreed upon spelling of lower case "hep" on doxygen ref page header.
+
+* 2022-11-15 Thomas Madlener ([PR#185](https://github.com/key4hep/EDM4hep/pull/185))
+  - Only build JSON support if a suitable version of nlohmann/json is found. This should fix a few issues in CI.
+  - Fix formatting of `edm4hep2json`.
+  - Update versions of github actions used in CI to latest available.
+
 # v00-07-01
 
 * 2022-10-18 Juraj Smiesko ([PR#163](https://github.com/key4hep/edm4hep/pull/163))
