@@ -115,13 +115,13 @@ components:
         - float expected   // expected value
         - float sigma      // sigma value
 
-    # hit level data
+    # Reconstructed hit information
     edm4hep::HitLevelData:
       Members:
         - uint64_t cellID  // cell id
         - uint32_t N       // number of reconstructed ionization cluster.
-        - float  eDep        // energy deposit.
-        - float  pathLength  // track path length in [mm].
+        - float eDep        // energy deposited [GeV].
+        - float pathLength  // track path length [mm].
 
 datatypes :
 
@@ -357,7 +357,7 @@ datatypes :
 
  #---------- TrackerRawData
   edm4hep::TrackerRawData:
-    Description: "Time Projection Chamber Hit"
+    Description: "Raw data of a tracker hit"
     Author : "F.Gaede, DESY"
     Members:
        - uint64_t cellID  //detector specific cell id.
@@ -513,15 +513,15 @@ datatypes :
     Author : "Wenxing Fang, IHEP"
     Members:
       - uint64_t cellID                      //cell id.
-      - float time                           //the primary ionization's time in the lab frame in [ns].
-      - edm4hep::Vector3d position           //the primary ionization's position in [mm].
+      - float time                           //the primary ionization's time in the lab frame [ns].
+      - edm4hep::Vector3d position           //the primary ionization's position [mm].
       - int16_t type                         //type.
     VectorMembers:
        - uint64_t electronCellID             //cell id.
-       - float electronTime                  //the time in the lab frame in [ns].
+       - float electronTime                  //the time in the lab frame [ns].
        - edm4hep::Vector3d electronPosition  //the position in the lab frame [mm].
-       - float pulseTime                     //the pulse's time in the lab frame in [ns].
-       - float pulseAmplitude                //the pulse's amplitude.
+       - float pulseTime                     //the pulse's time in the lab frame [ns].
+       - float pulseAmplitude                //the pulse's amplitude [fC].
     OneToOneRelations:
       - edm4hep::MCParticle MCParticle       //the particle that caused the ionizing collisions.
 
@@ -531,12 +531,12 @@ datatypes :
     Author : "Wenxing Fang, IHEP"
     Members:
        - uint64_t cellID                 //cell id.
-       - float time                      //time.
-       - float charge                    //charge.
+       - float time                      //time [ns].
+       - float charge                    //charge [fC].
        - int16_t quality                 //quality.
        - std::array<float,3> covMatrix   //lower triangle covariance matrix of the charge(c) and time(t) measurements.
     OneToOneRelations:
-      - edm4hep::TrackerData trackerData  //Optionaly, the TrackerData that has been used to create the pulse can be stored with the pulse.
+      - edm4hep::TrackerData trackerData  //Optionally, the TrackerData that has been used to create the pulse can be stored with the pulse.
 
  #----------  RecIonizationCluster
   edm4hep::RecIonizationCluster:
@@ -555,15 +555,15 @@ datatypes :
     Author : "Wenxing Fang, IHEP"
     Members:
        - uint64_t cellID            //cell id.
-       - float time                 //begin time.
-       - float interval             //interval of each sampling in [ns].
+       - float time                 //begin time [ns].
+       - float interval             //interval of each sampling [ns].
     VectorMembers:
-       - float chargeValue          //charge value.
+       - float chargeValue          //charge value [fC].
 
 
   #-------------  RecDqdx
   edm4hep::RecDqdx:
-    Description : "dN/dx or dEdx info of Track."
+    Description : "dN/dx or dE/dx info of Track."
     Author : "Wenxing Fang, IHEP"
     Members :
       - edm4hep::Quantity dQdx         //the reconstructed dEdx or dNdx and its error
