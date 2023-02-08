@@ -120,7 +120,7 @@ components:
       Members:
         - uint64_t cellID  // cell id
         - uint32_t N       // number of reconstructed ionization cluster.
-        - float eDep        // energy deposited [GeV].
+        - float eDep        // reconstructed energy deposit [GeV].
         - float pathLength  // track path length [mm].
 
 datatypes :
@@ -323,7 +323,7 @@ datatypes :
     Author : "F.Gaede, DESY"
     Members :
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::TrackerRawData, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
@@ -340,7 +340,7 @@ datatypes :
     Author : "Placido Fernandez Declara, CERN"
     Members :
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::TrackerRawData, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit.
       - float eDep                     //energy deposited on the hit [GeV].
@@ -355,17 +355,18 @@ datatypes :
       - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
 
 
- #---------- TrackerRawData
-  edm4hep::TrackerRawData:
-    Description: "Raw data of a tracker hit"
+ #---------- RawTimeSeries
+  edm4hep::RawTimeSeries:
+    Description: "Raw data of a detector readout"
     Author : "F.Gaede, DESY"
     Members:
        - uint64_t cellID  //detector specific cell id.
        - int32_t quality                //quality flag for the hit.
        - float time                 //time of the hit.
        - float charge               //integrated charge of the hit.
+       - float interval             //interval of each sampling [ns].
     VectorMembers:
-       - int32_t rawDataWords           //raw data (32-bit) word at i.
+       - int32_t adcCounts          //raw data (32-bit) word at i.
 
  #-------- Track
   edm4hep::Track:
@@ -536,7 +537,7 @@ datatypes :
        - int16_t quality                 //quality.
        - std::array<float,3> covMatrix   //lower triangle covariance matrix of the charge(c) and time(t) measurements.
     OneToOneRelations:
-      - edm4hep::TrackerData trackerData  //Optionally, the TrackerData that has been used to create the pulse can be stored with the pulse.
+      - edm4hep::TimeSeries timeSeries   //Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse.
 
  #----------  RecIonizationCluster
   edm4hep::RecIonizationCluster:
@@ -549,16 +550,16 @@ datatypes :
     OneToManyRelations:
        - edm4hep::TrackerPulse trackerPulse //the TrackerPulse used to create the ionization cluster.
 
- #----------  TrackerData
-  edm4hep::TrackerData:
-    Description: "TrackerData"
+ #----------  TimeSeries
+  edm4hep::TimeSeries:
+    Description: "Calibrated Detector Data"
     Author : "Wenxing Fang, IHEP"
     Members:
        - uint64_t cellID            //cell id.
        - float time                 //begin time [ns].
        - float interval             //interval of each sampling [ns].
     VectorMembers:
-       - float chargeValue          //charge value [fC].
+       - float amplitude            //calibrated detector data.
 
 
   #-------------  RecDqdx
