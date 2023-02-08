@@ -4,10 +4,10 @@
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
-#include "edm4hep/RawTimeSeriesCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
