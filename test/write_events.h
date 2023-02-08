@@ -7,7 +7,7 @@
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
-#include "edm4hep/TrackerRawDataCollection.h"
+#include "edm4hep/RawTimeSeriesCollection.h"
 
 // STL
 #include <iostream>
