@@ -75,7 +75,7 @@ components:
         - float Z0 // longitudinal impact parameter
         - float tanLambda // lambda is the dip angle of the track in r-z
         - float time // time of the track at this trackstate
-        - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter.
+        - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter. [mm]
         - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix.
       ExtraCode:
         declaration: "
@@ -230,7 +230,7 @@ datatypes :
       - int32_t   PDG                        //PDG code of the shower particle that caused this contribution.
       - float energy                     //energy in [GeV] of the this contribution
       - float time                       //time in [ns] of this contribution
-      - edm4hep::Vector3f stepPosition   //position of this energy deposition (step)
+      - edm4hep::Vector3f stepPosition   //position of this energy deposition (step) [mm]
     OneToOneRelations:
       - edm4hep::MCParticle particle     //primary MCParticle that caused the shower responsible for this contribution to the hit.
 
@@ -241,7 +241,7 @@ datatypes :
     Members:
       - uint64_t cellID       //ID of the sensor that created this hit
       - float energy                    //energy of the hit in [GeV].
-      - edm4hep::Vector3f position      //position of the hit in world coordinates.
+      - edm4hep::Vector3f position      //position of the hit in world coordinates in [mm].
     OneToManyRelations:
       - edm4hep::CaloHitContribution contributions  //Monte Carlo step contribution - parallel to particle
 
@@ -264,7 +264,7 @@ datatypes :
       - float energy               //energy of the hit in [GeV].
       - float energyError          //error of the hit energy in [GeV].
       - float time                 //time of the hit in [ns].
-      - edm4hep::Vector3f position //position of the hit in world coordinates.
+      - edm4hep::Vector3f position //position of the hit in world coordinates in [mm].
       - int32_t type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues".
 
  #---------- ParticleID
@@ -288,11 +288,11 @@ datatypes :
       - int32_t                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally.
       - float                energy          //energy of the cluster [GeV]
       - float                energyError     //error on the energy
-      - edm4hep::Vector3f    position        //position of the cluster.
+      - edm4hep::Vector3f    position        //position of the cluster [mm]
       - std::array<float,6>  positionError   //covariance matrix of the position (6 Parameters)
       - float                iTheta          //intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP.
       - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP.
-      - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters)
+      - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters) [mm^2]
     VectorMembers:
       - float   shapeParameters      //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
       - float   subdetectorEnergies  //energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array.

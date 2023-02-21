@@ -1,7 +1,7 @@
 #include "write_events.h"
-#include "podio/ROOTWriter.h"
+#include "podio/ROOTFrameWriter.h"
 
 int main(int argc, char* argv[]) {
 
-  write<podio::ROOTWriter>("edm4hep_events.root");
+  write<podio::ROOTFrameWriter>("edm4hep_events.root");
 }
