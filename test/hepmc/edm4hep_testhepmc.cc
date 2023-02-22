@@ -16,9 +16,10 @@
 
 #include "HepPDT/ParticleID.hh"
 
+#include "podio/Frame.h"
+#include "podio/ROOTFrameWriter.h"
+
 #include "edm4hep/MCParticleCollection.h"
-#include "podio/EventStore.h"
-#include "podio/ROOTWriter.h"
 
 using namespace HepMC3;
 
@@ -107,10 +108,6 @@ int main() {
   // contained in those vertices
 
   // Part2: Convert the particles and write to file
-  auto store = podio::EventStore();
-  auto writer = podio::ROOTWriter("edm4hep_testhepmc.root", &store);
-  auto& edm_particle_collection = store.create<edm4hep::MCParticleCollection>("TestParticles2");
-  writer.registerForWrite("TestParticles2");
   std::unordered_map<unsigned int, edm4hep::MutableMCParticle> hepmcToEdmMap;
   unsigned int particle_counter{0};
   for (auto particle_i : evt->particles()) {
@@ -150,12 +147,15 @@ int main() {
     particle_counter++;
   }
 
+  auto edm_particle_collection = edm4hep::MCParticleCollection();
   for (auto b_p : hepmcToEdmMap) {
     edm_particle_collection.push_back(b_p.second);
   }
+  auto event = podio::Frame();
+  event.put(std::move(edm_particle_collection), "TestParticles2");
 
-  writer.writeEvent();
-  store.clearCollections();
+  auto writer = podio::ROOTFrameWriter("edm4hep_testhepmc.root");
+  writer.writeFrame(event, "events");
 
   // after all events
   writer.finish();
