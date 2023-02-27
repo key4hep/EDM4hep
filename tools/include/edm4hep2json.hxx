@@ -123,7 +123,6 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
   return jsonDict;
 }
 
-
 std::vector<std::string> splitString(const std::string& inString) {
   std::vector<std::string> outString;
   std::stringstream sStream(inString);
@@ -136,7 +135,6 @@ std::vector<std::string> splitString(const std::string& inString) {
 
   return outString;
 }
-
 
 template <typename ReaderT>
 int read_frames(const std::string& filename, const std::string& jsonFile, const std::string& requestedCollections,
