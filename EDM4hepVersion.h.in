@@ -75,7 +75,7 @@ namespace edm4hep::version {
   /**
    * Decode a version from a 64 bit unsigned
    */
-  static constexpr Version decode_version(unsigned long version) noexcept {
+  static constexpr Version decode_version(uint64_t version) noexcept {
     return Version{
       (uint16_t) EDM4HEP_MAJOR_VERSION(version),
       (uint16_t) EDM4HEP_MINOR_VERSION(version),
