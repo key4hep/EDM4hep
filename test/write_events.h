@@ -20,27 +20,7 @@ template <class WriterT>
 void write(std::string outfilename) {
   std::cout << "start processing" << std::endl;
 
-  podio::EventStore store;
-  WriterT writer(outfilename, &store);
-
-  // create the collections to be written
-  auto& mcps = store.create<edm4hep::MCParticleCollection>("MCParticles");
-  writer.registerForWrite("MCParticles");
-
-  auto& sths = store.create<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
-  writer.registerForWrite("SimTrackerHits");
-
-  auto& schs = store.create<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
-  writer.registerForWrite("SimCalorimeterHits");
-
-  auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  writer.registerForWrite("SimCalorimeterHitContributions");
-
-  auto& tpchs = store.create<edm4hep::TPCHitCollection>("TPCHits");
-  writer.registerForWrite("TPCHits");
-
-  auto& thps = store.create<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
-  writer.registerForWrite("TrackerHitPlanes");
+  WriterT writer(outfilename);
 
   unsigned nevents = 10;
 
