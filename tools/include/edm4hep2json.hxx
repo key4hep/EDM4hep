@@ -31,18 +31,16 @@
 #include <iostream>
 #include <vector>
 
-nlohmann::json processEvent(const podio::Frame &frame,
-                            std::vector<std::string> &collList, bool verboser,
-                            unsigned eventNum,
-                            podio::version::Version podioVersion) {
-  nlohmann::json jsonDict = { { "edm4hepVersion", "0.7.0" } };
+nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList, bool verboser,
+                            unsigned eventNum, podio::version::Version podioVersion) {
+  nlohmann::json jsonDict = {{"edm4hepVersion", "0.7.0"}};
 
   std::string podioVersionStr = std::to_string(podioVersion.major);
   podioVersionStr += ".";
   podioVersionStr += std::to_string(podioVersion.minor);
   podioVersionStr += ".";
   podioVersionStr += std::to_string(podioVersion.patch);
-  jsonDict.push_back({ "podioVersion", podioVersionStr });
+  jsonDict.push_back({"podioVersion", podioVersionStr});
 
   for (unsigned i = 0; i < collList.size(); ++i) {
     auto coll = frame.get(collList[i]);
@@ -51,101 +49,75 @@ nlohmann::json processEvent(const podio::Frame &frame,
     }
 
     if (coll->getTypeName() == "edm4hep::EventHeaderCollection") {
-      auto &eventCollection =
-          frame.get<edm4hep::EventHeaderCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", eventCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } }, } };
+      auto& eventCollection = frame.get<edm4hep::EventHeaderCollection>(collList[i]);
+      nlohmann::json jsonColl{{
+          collList[i],
+          {{"collection", eventCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}},
+      }};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::MCParticleCollection") {
-      auto &particleCollection =
-          frame.get<edm4hep::MCParticleCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", particleCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } }, } };
+      auto& particleCollection = frame.get<edm4hep::MCParticleCollection>(collList[i]);
+      nlohmann::json jsonColl{{
+          collList[i],
+          {{"collection", particleCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}},
+      }};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
-    } else if (coll->getTypeName() ==
-               "edm4hep::MCRecoParticleAssociationCollection") {
-      auto &assocCollection =
-          frame.get<edm4hep::MCRecoParticleAssociationCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", assocCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } }, } };
+    } else if (coll->getTypeName() == "edm4hep::MCRecoParticleAssociationCollection") {
+      auto& assocCollection = frame.get<edm4hep::MCRecoParticleAssociationCollection>(collList[i]);
+      nlohmann::json jsonColl{{
+          collList[i],
+          {{"collection", assocCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}},
+      }};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::VertexCollection") {
-      auto &vertexCollection =
-          frame.get<edm4hep::VertexCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", vertexCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& vertexCollection = frame.get<edm4hep::VertexCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i],
+           {{"collection", vertexCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::TrackCollection") {
-      auto &trackCollection = frame.get<edm4hep::TrackCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", trackCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& trackCollection = frame.get<edm4hep::TrackCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i],
+           {{"collection", trackCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::TrackerHitCollection") {
-      auto &hitCollection =
-          frame.get<edm4hep::TrackerHitCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", hitCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& hitCollection = frame.get<edm4hep::TrackerHitCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i], {{"collection", hitCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::SimTrackerHitCollection") {
-      auto &hitCollection =
-          frame.get<edm4hep::SimTrackerHitCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", hitCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& hitCollection = frame.get<edm4hep::SimTrackerHitCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i], {{"collection", hitCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::CalorimeterHitCollection") {
-      auto &hitCollection =
-          frame.get<edm4hep::CalorimeterHitCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", hitCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& hitCollection = frame.get<edm4hep::CalorimeterHitCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i], {{"collection", hitCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::SimCalorimeterHitCollection") {
-      auto &hitCollection =
-          frame.get<edm4hep::SimCalorimeterHitCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", hitCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& hitCollection = frame.get<edm4hep::SimCalorimeterHitCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i], {{"collection", hitCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::ClusterCollection") {
-      auto &clusterCollection =
-          frame.get<edm4hep::ClusterCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", clusterCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& clusterCollection = frame.get<edm4hep::ClusterCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i],
+           {{"collection", clusterCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
-    } else if (coll->getTypeName() ==
-               "edm4hep::ReconstructedParticleCollection") {
-      auto &recoParticleCollection =
-          frame.get<edm4hep::ReconstructedParticleCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", recoParticleCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+    } else if (coll->getTypeName() == "edm4hep::ReconstructedParticleCollection") {
+      auto& recoParticleCollection = frame.get<edm4hep::ReconstructedParticleCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i],
+           {{"collection", recoParticleCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::ParticleIDCollection") {
-      auto &particleIDCollection =
-          frame.get<edm4hep::ParticleIDCollection>(collList[i]);
-      nlohmann::json jsonColl{ { collList[i],
-                                 { { "collection", particleIDCollection },
-                                   { "collID", coll->getID() },
-                                   { "collType", coll->getTypeName() } } } };
+      auto& particleIDCollection = frame.get<edm4hep::ParticleIDCollection>(collList[i]);
+      nlohmann::json jsonColl{
+          {collList[i],
+           {{"collection", particleIDCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else {
       std::cout << "WARNING: Collection type not recognized!\n"
@@ -156,8 +128,7 @@ nlohmann::json processEvent(const podio::Frame &frame,
   return jsonDict;
 }
 
-void printCollTypes(const podio::Frame &frame,
-                    std::vector<std::string> &collList) {
+void printCollTypes(const podio::Frame& frame, std::vector<std::string>& collList) {
   std::cout << "INFO: Converted collections:\n";
 
   for (unsigned i = 0; i < collList.size(); ++i) {
@@ -169,12 +140,11 @@ void printCollTypes(const podio::Frame &frame,
       continue;
     }
 
-    std::cout << "       - " << coll->getID() << " | " << collList[i] << " | "
-              << coll->getTypeName() << "\n";
+    std::cout << "       - " << coll->getID() << " | " << collList[i] << " | " << coll->getTypeName() << "\n";
   }
 }
 
-std::vector<std::string> splitString(const std::string &inString) {
+std::vector<std::string> splitString(const std::string& inString) {
   std::vector<std::string> outString;
   std::stringstream sStream(inString);
 
@@ -188,10 +158,8 @@ std::vector<std::string> splitString(const std::string &inString) {
 }
 
 template <typename ReaderT>
-int read_frames(const std::string &filename, const std::string &jsonFile,
-                const std::string &requestedCollections,
-                const std::string &requestedEvents,
-                const std::string &frameName, int nEventsMax = -1,
+int read_frames(const std::string& filename, const std::string& jsonFile, const std::string& requestedCollections,
+                const std::string& requestedEvents, const std::string& frameName, int nEventsMax = -1,
                 bool verboser = false) {
   ReaderT reader;
   reader.openFile(filename);
@@ -210,7 +178,7 @@ int read_frames(const std::string &filename, const std::string &jsonFile,
   std::vector<int> eventVec;
   if (!requestedEvents.empty()) {
     auto eventList = splitString(requestedEvents);
-    for (auto &evnt : eventList) {
+    for (auto& evnt : eventList) {
       if (eventVec.size() >= nEvents) {
         break;
       }
@@ -218,8 +186,7 @@ int read_frames(const std::string &filename, const std::string &jsonFile,
       int evntNum = -1;
       try {
         evntNum = std::stoi(evnt);
-      }
-      catch (...) {
+      } catch (...) {
         if (verboser) {
           std::cout << "WARNING: This is not a number:\n"
                     << "         " << evnt << "\n";
@@ -254,7 +221,7 @@ int read_frames(const std::string &filename, const std::string &jsonFile,
     if (verboser) {
       std::cout << "INFO: Converting the following events:\n";
       std::string evntStr;
-      for (auto &evnt : eventVec) {
+      for (auto& evnt : eventVec) {
         evntStr += std::to_string(evnt);
         evntStr += ",";
       }
@@ -271,15 +238,13 @@ int read_frames(const std::string &filename, const std::string &jsonFile,
       }
 
       auto frame = podio::Frame(reader.readNextEntry(frameName));
-      auto eventDict = processEvent(frame, collList, verboser, i,
-                                    reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, verboser, i, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
-    for (auto &i : eventVec) {
+    for (auto& i : eventVec) {
       auto frame = podio::Frame(reader.readEntry(frameName, i));
-      auto eventDict = processEvent(frame, collList, verboser, i,
-                                    reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, verboser, i, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   }
