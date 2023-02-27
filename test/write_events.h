@@ -1,5 +1,5 @@
-#ifndef EDM4HEP_TEST_WRITE_EVENTS_H__
-#define EDM4HEP_TEST_WRITE_EVENTS_H__
+#ifndef EDM4HEP_TEST_WRITE_EVENTS_H
+#define EDM4HEP_TEST_WRITE_EVENTS_H
 
 // Data model
 #include "edm4hep/CaloHitContributionCollection.h"
@@ -14,7 +14,7 @@
 #include <vector>
 
 // podio specific includes
-#include "podio/EventStore.h"
+#include "podio/Frame.h"
 
 template <class WriterT>
 void write(std::string outfilename) {
@@ -36,7 +36,7 @@ void write(std::string outfilename) {
   auto& sccons = store.create<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
   writer.registerForWrite("SimCalorimeterHitContributions");
 
-  auto& tpchs = store.create<edm4hep::RawTimeSeriesCollection>("TPCHits");
+  auto& tpchs = store.create<edm4hep::TPCHitCollection>("TPCHits");
   writer.registerForWrite("TPCHits");
 
   auto& thps = store.create<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
@@ -47,6 +47,7 @@ void write(std::string outfilename) {
   // =============== event loop ================================
   for (unsigned i = 0; i < nevents; ++i) {
     std::cout << " --- processing event " << i << std::endl;
+    auto event = podio::Frame();
 
     // place the following generator event to the MCParticle collection
     //
@@ -61,6 +62,7 @@ void write(std::string outfilename) {
     //  7  !d!     1      1    5,5   -2.445   28.816    6.082   29.552    0.010
     //  8  !u~!    1     -2    5,5    3.962  -49.498  -26.687   56.373    0.006
 
+    auto mcps = edm4hep::MCParticleCollection();
     auto mcp1 = mcps.create();
     mcp1.setPDG(2212);
     mcp1.setMass(0.938f);
@@ -125,6 +127,7 @@ void write(std::string outfilename) {
         pmom.addToDaughters(p);
       }
     }
+
     // fixme: should this become a utility function ?
     //-------------------------------------------------------------
 
@@ -134,8 +137,11 @@ void write(std::string outfilename) {
               << " of type " << mcps.getValueTypeName() << "\n\n"
               << mcps << std::endl;
 
+    event.put(std::move(mcps), "MCParticles");
+
     //===============================================================================
     // write some SimTrackerHits
+    auto sths = edm4hep::SimTrackerHitCollection();
     int nsh = 5;
     for (int j = 0; j < nsh; ++j) {
       auto sth1 = sths.create();
@@ -156,8 +162,12 @@ void write(std::string outfilename) {
               << " of type " << sths.getValueTypeName() << "\n\n"
               << sths << std::endl;
 
+    event.put(std::move(sths), "SimTrackerHits");
+
     //===============================================================================
     // write some SimCalorimeterHits
+    auto schs = edm4hep::SimCalorimeterHitCollection();
+    auto sccons = edm4hep::CaloHitContributionCollection();
     int nch = 5;
     for (int j = 0; j < nch; ++j) {
       auto sch1 = schs.create();
@@ -192,8 +202,12 @@ void write(std::string outfilename) {
               << " of type " << schs.getValueTypeName() << "\n\n"
               << schs << std::endl;
 
+    event.put(std::move(schs), "SimCalorimeterHits");
+    event.put(std::move(sccons), "SimCalorimeterHitContributions");
+
     //===============================================================================
     // write some TPCHits:
+    auto tpchs = edm4hep::TPCHitCollection();
     int ntpch = 5;
     for (int j = 0; j < ntpch; ++j) {
       auto tpch1 = tpchs.create();
@@ -211,9 +225,11 @@ void write(std::string outfilename) {
               << "Time Projection Chamber Hits"
               << " of type " << tpchs.getValueTypeName() << "\n\n"
               << tpchs << std::endl;
+    event.put(std::move(tpchs), "TPCHits");
 
     //===============================================================================
     // write some TrackerHitPlanes:
+    auto thps = edm4hep::TrackerHitPlaneCollection();
     int nthp = 5;
     for (int j = 0; j < nthp; ++j) {
       auto thp1 = thps.create();
@@ -234,13 +250,13 @@ void write(std::string outfilename) {
               << " of type " << thps.getValueTypeName() << "\n\n"
               << thps << std::endl;
 
+    event.put(std::move(thps), "TrackerHitPlanes");
+
     //===============================================================================
 
-    auto& evtMD = store.getEventMetaData();
-    evtMD.setValue("EventType", "test");
+    event.putParameter("EventType", "test");
 
-    writer.writeEvent();
-    store.clearCollections();
+    writer.writeFrame(event, "events");
   }
 
   writer.finish();

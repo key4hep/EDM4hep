@@ -1,7 +1,8 @@
-#include "podio/SIOWriter.h"
 #include "write_events.h"
 
+#include "podio/SIOFrameWriter.h"
+
 int main(int, char**) {
-  write<podio::SIOWriter>("edm4hep_events.sio");
+  write<podio::SIOFrameWriter>("edm4hep_events.sio");
   return 0;
 }

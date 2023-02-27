@@ -10,7 +10,7 @@
 #include "edm4hep/TrackerHitPlaneCollection.h"
 
 // podio specific includes
-#include "podio/EventStore.h"
+#include "podio/Frame.h"
 
 // STL
 #include <cassert>
@@ -23,7 +23,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sths = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = store.get<edm4hep::RawTimeSeriesCollection>("TPCHits");
+  auto& tpchs = store.get<edm4hep::TPCHitCollection>("TPCHits");
   auto& thps = store.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 
   if (mcps.isValid()) {
@@ -240,8 +240,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
   //  }
 
-  auto& evtMD = store.getEventMetaData();
-  const auto& evtType = evtMD.getValue<std::string>("EventType");
+  const auto& evtType = event.getParameter<std::string>("EventType");
   std::cout << "Event Type: " << evtType << std::endl;
 }
 
@@ -250,18 +249,12 @@ void read_events(const std::string& filename) {
   ReaderT reader;
   reader.openFile(filename);
 
-  auto store = podio::EventStore();
-  store.setReader(&reader);
-
-  unsigned nEvents = reader.getEntries();
+  unsigned nEvents = reader.getEntries("events");
   for (unsigned i = 0; i < nEvents; ++i) {
-    if (i % 1000 == 0)
-      std::cout << "reading event " << i << std::endl;
-    processEvent(store, true, i);
-    store.clear();
-    reader.endOfEvent();
+    std::cout << "reading event " << i << std::endl;
+    const auto event = podio::Frame(reader.readNextEntry("events"));
+    processEvent(event, true, i);
   }
-  reader.closeFile();
 }
 
 #endif
