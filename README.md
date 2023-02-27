@@ -14,6 +14,7 @@ A generic event data model for future HEP collider experiments.
 |-|-|-|
 | [Vector3f ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L9) | [Vector3d ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L24)   | [Vector2i](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L40)  |
 | [Vector2f](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L54) | [TrackState ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L68) | [ObjectID](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L91)  |
+| [Quantity](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L103) | [Hypothesis ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L111) | [HitLevelData](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L118)  |
 
 
 **Datatypes**
@@ -25,6 +26,8 @@ A generic event data model for future HEP collider experiments.
 | [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L274)      | [ParticleID](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L286)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L299)               |
 | [TrackerHit](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L320)          | [TrackerHitPlane](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L337)   | [RawTimeSeries](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L358)                |
 | [Track](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L371)               | [Vertex](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L390)            | [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L407) |
+| [SimPrimaryIonizationCluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L511) | [TrackerPulse](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L529) | [RecIonizationCluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L542) |
+| [TimeSeries](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L553) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L565) |                                                                                          |
 
 **Associations**
 
