@@ -18,23 +18,13 @@
 #include <iostream>
 #include <vector>
 
-<<<<<<< HEAD
 void processEvent(const podio::Frame& event, bool verboser, unsigned eventNum) {
   auto& mcps = event.get<edm4hep::MCParticleCollection>("MCParticles");
   auto& sths = event.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = event.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = event.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = event.get<edm4hep::RawTimeSeries>("RawTimeSeries");
+  auto& tpchs = event.get<edm4hep::RawTimeSeriesCollection>("TPCHits");
   auto& thps = event.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
-=======
-void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
-  auto& mcps = store.get<edm4hep::MCParticleCollection>("MCParticles");
-  auto& sths = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
-  auto& schs = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
-  auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = store.get<edm4hep::TPCHitCollection>("TPCHits");
-  auto& thps = store.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
->>>>>>> d14f948 (update TrackerRawData to RawTimeSeries)
 
   if (mcps.isValid()) {
 
