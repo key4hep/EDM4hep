@@ -32,7 +32,7 @@ void processEvent(podio::EventStore& store, bool verboser, unsigned eventNum) {
   auto& sths = store.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = store.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = store.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = store.get<edm4hep::RawTimeSeriesCollection>("TPCHits");
+  auto& tpchs = store.get<edm4hep::TPCHitCollection>("TPCHits");
   auto& thps = store.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 >>>>>>> d14f948 (update TrackerRawData to RawTimeSeries)
 
