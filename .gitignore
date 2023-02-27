@@ -9,6 +9,7 @@ install
 *.pdf
 *.log
 *.dat
+*edm4hep.json
 
 # podio generated code files
 edm4hep/edm4hep
@@ -54,3 +55,4 @@ spack*
 # Tooling
 /.clangd/
 /compile_commands.json
+*__pycache__*
