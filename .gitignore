@@ -55,3 +55,4 @@ spack*
 # Tooling
 /.clangd/
 /compile_commands.json
+*__pycache__*
