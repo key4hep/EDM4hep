@@ -17,7 +17,6 @@
 
 // podio specific includes
 #include "podio/Frame.h"
-#include "podio/IReader.h"
 #include "podio/UserDataCollection.h"
 #include "podio/podioVersion.h"
 
@@ -194,7 +193,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
     }
 
     if (eventVec.empty()) {
-      return EXIT_SUCCESS;
+      return EXIT_FAILURE;
     }
 
     if (verboser) {
