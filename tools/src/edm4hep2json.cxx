@@ -13,7 +13,7 @@
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"
             << "  -o/--out-file           output file path\n"
-            << "                            default: events.edm4hep.json\n"
+            << "                            default: \"?edm4hep.root\" --> \".edm4hep.json\"\n"
             << "  -l/--coll-list          comma separated list of collections "
                "to be converted\n"
             << "  -e/--events             comma separated list of events to "

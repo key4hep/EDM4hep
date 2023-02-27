@@ -32,15 +32,10 @@
 #include <vector>
 
 nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList, bool verboser,
-                            unsigned eventNum, podio::version::Version podioVersion) {
-  nlohmann::json jsonDict = {{"edm4hepVersion", "0.7.0"}};
-
-  std::string podioVersionStr = std::to_string(podioVersion.major);
-  podioVersionStr += ".";
-  podioVersionStr += std::to_string(podioVersion.minor);
-  podioVersionStr += ".";
-  podioVersionStr += std::to_string(podioVersion.patch);
-  jsonDict.push_back({"podioVersion", podioVersionStr});
+                            podio::version::Version podioVersion) {
+  std::stringstream podioVersionStr;
+  podioVersionStr << podioVersion;
+  nlohmann::json jsonDict = {{"podioVersion", podioVersionStr.str()}};
 
   for (unsigned i = 0; i < collList.size(); ++i) {
     auto coll = frame.get(collList[i]);
@@ -128,21 +123,6 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
   return jsonDict;
 }
 
-void printCollTypes(const podio::Frame& frame, std::vector<std::string>& collList) {
-  std::cout << "INFO: Converted collections:\n";
-
-  for (unsigned i = 0; i < collList.size(); ++i) {
-    auto coll = frame.get(collList[i]);
-    if (!coll) {
-      std::cout << "WARNING: Something went wrong, ignored collection:\n"
-                << "         " << collList[i] << "\n";
-
-      continue;
-    }
-
-    std::cout << "       - " << coll->getID() << " | " << collList[i] << " | " << coll->getTypeName() << "\n";
-  }
-}
 
 std::vector<std::string> splitString(const std::string& inString) {
   std::vector<std::string> outString;
@@ -156,6 +136,7 @@ std::vector<std::string> splitString(const std::string& inString) {
 
   return outString;
 }
+
 
 template <typename ReaderT>
 int read_frames(const std::string& filename, const std::string& jsonFile, const std::string& requestedCollections,
@@ -238,20 +219,15 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
       }
 
       auto frame = podio::Frame(reader.readNextEntry(frameName));
-      auto eventDict = processEvent(frame, collList, verboser, i, reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, verboser, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
     for (auto& i : eventVec) {
       auto frame = podio::Frame(reader.readEntry(frameName, i));
-      auto eventDict = processEvent(frame, collList, verboser, i, reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, verboser, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
-  }
-
-  if (verboser) {
-    auto frame = podio::Frame(reader.readEntry(frameName, 0));
-    printCollTypes(frame, collList);
   }
 
   std::ofstream outFile(jsonFile);
