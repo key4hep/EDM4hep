@@ -4,7 +4,7 @@ on:
       - closed
 
 jobs:
-  main:
+  pre-commit-ci-lite:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
