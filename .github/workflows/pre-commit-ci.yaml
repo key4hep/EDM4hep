@@ -1,11 +1,10 @@
 on:
-  pull_request:
-    types:
-      - closed
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   pre-commit-ci-lite:
-    if: github.event.pull_request.merged == true
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
