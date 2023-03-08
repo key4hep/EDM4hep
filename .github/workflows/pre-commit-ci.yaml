@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  pre-commit-ci-lite:
+  main:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -12,3 +12,4 @@ jobs:
         python-version: 3.x
     - uses: pre-commit/action@v3.0.0
     - uses: pre-commit-ci/lite-action@v1.0.1
+      if: always()
