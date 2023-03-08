@@ -17,7 +17,7 @@ A generic event data model for future HEP collider experiments.
 | [Quantity](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L103) | [Hypothesis ](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L111) | [HitLevelData](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L118)  |
 
 
-**Datatypes**
+**Datatypes**                    
 
 | | | |
 |-|-|-|
