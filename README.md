@@ -29,7 +29,7 @@ A generic event data model for future HEP collider experiments.
 | [SimPrimaryIonizationCluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L511) | [TrackerPulse](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L529) | [RecIonizationCluster](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L542) |
 | [TimeSeries](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L553) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L565) |                                                                                          |
 
-**Associations**
+**Associations**                        
 
 | | | |
 |-|-|-|
