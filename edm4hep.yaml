@@ -3,6 +3,7 @@ options:
   getSyntax: True
   exposePODMembers: False
   includeSubfolder: True
+  schema_version: 1
 
 components:
 
