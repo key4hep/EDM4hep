@@ -28,6 +28,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList, bool verboser,
