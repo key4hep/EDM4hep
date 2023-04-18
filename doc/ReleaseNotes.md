@@ -1,3 +1,32 @@
+# v00-08
+
+* 2023-04-03 Paul Gessinger ([PR#201](https://github.com/key4hep/EDM4hep/pull/201))
+  - Added string stream include in `edm4hep2json.hxx`
+
+* 2023-03-02 wenxingfang ([PR#179](https://github.com/key4hep/EDM4hep/pull/179))
+  - Extend for drift chamber and TPC study
+  - The extended EDMs are tested within CEPCSW, and it works well
+  - The extended edm4hep::TrackerPulse and edm4hep::TrackerData are similar to what they are in ILC TPC
+
+* 2023-02-27 Juraj Smiesko ([PR#182](https://github.com/key4hep/EDM4hep/pull/182))
+  - JSON Exporter: Adding the possibility to provide list of events
+  - Update JSON Exporter to use Frame based I/O
+
+* 2023-02-22 Thomas Madlener ([PR#194](https://github.com/key4hep/EDM4hep/pull/194))
+  - Make the HepMC example use Frame based I/O
+
+* 2023-02-21 Thomas Madlener ([PR#184](https://github.com/key4hep/EDM4hep/pull/184))
+  - Make the I/O tests use `podio::Frame` functionality
+
+* 2023-02-01 Dmitry Kalinkin ([PR#190](https://github.com/key4hep/EDM4hep/pull/190))
+  - Document some units for edm4hep::Vector3f fields
+
+* 2023-01-23 Thomas Madlener ([PR#189](https://github.com/key4hep/EDM4hep/pull/189))
+  - Make the minimum nlohmann json version 3.10.5, as other patch releases of the 3.10 series, seem to not compile. Fixes #181
+
+* 2023-01-06 lintao ([PR#187](https://github.com/key4hep/EDM4hep/pull/187))
+  - Fix a typo in setDecayedInCalorimeter.
+
 # v00-07-02
 
 * 2022-11-29 Thomas Madlener ([PR#186](https://github.com/key4hep/EDM4hep/pull/186))
