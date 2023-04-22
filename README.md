@@ -72,10 +72,24 @@ make test
 
 The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere in `LD_LIBRARY_PATH`.
 
+## Python bindings
+There are python bindings for all the classes in the datamodel. Make sure that
+`install/lib` is in `LD_LIBRARY_PATH` and `install/python` is in `PYTHONPATH`:
+```python
+from edm4hep import Datamodel
+model = Datamodel() # factory class to provide dynamically loaded classes
+particle = model.MCParticle() # default initialized particle
+particle.getCharge() # 0.0
 
+series = model.TimeSeries(1, 2, 3) # classes can be constructed with non-default parameters
+series.getCellID() # 1
+series.getTime() # 2.0
+series.getInterval() # 3.0
 
-
-
+mc = model.MutableMCParticle() # mutable classes can also be modified
+mc.setPDG(2212)
+mc.getPDG() # 2212
+```
 
 ## Contributing
 

@@ -108,6 +108,7 @@ add_subdirectory(edm4hep)
 add_subdirectory(utils)
 add_subdirectory(test)
 add_subdirectory(tools)
+add_subdirectory(python)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)
