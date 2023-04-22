@@ -8,7 +8,7 @@ A generic event data model for future HEP collider experiments.
 
 ![](doc/edm4hep_diagram.svg)
 
-**Componets**
+**Components**
 
 | | | |
 |-|-|-|
@@ -42,7 +42,7 @@ The tests and examples in the `tests` directory show how to read, write, and use
 
 ## Status
 
-This project is in a beta stage -- feedback and use of it in production is encouraged, but expect changes until a stable version is released in some weeks.
+This project is in a beta stage -- feedback and use of it in production is encouraged, but expect changes until a stable version is released.
 
 ## Dependencies
 
