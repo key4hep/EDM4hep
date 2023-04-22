@@ -36,8 +36,6 @@ install(FILES
   ../edm4hep.yaml
   DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
 
-if (${ROOT_VERSION} GREATER 6)
-  install(FILES
-      "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
-endif()
+install(FILES
+  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
