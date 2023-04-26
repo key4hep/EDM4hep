@@ -326,7 +326,7 @@ datatypes :
       - uint64_t cellID      //ID of the sensor that created this hit
       - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
-      - float time                     //time of the hit.
+      - float time                     //time of the hit [ns].
       - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
       - edm4hep::Vector3d position     //hit position in [mm].
@@ -343,7 +343,7 @@ datatypes :
       - uint64_t cellID      //ID of the sensor that created this hit
       - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
       - int32_t quality                    //quality bit flag of the hit.
-      - float time                     //time of the hit.
+      - float time                     //time of the hit [ns].
       - float eDep                     //energy deposited on the hit [GeV].
       - float eDepError                //error measured on EDep [GeV].
       - edm4hep::Vector2f u            //measurement direction vector, u lies in the x-y plane
@@ -363,8 +363,8 @@ datatypes :
     Members:
        - uint64_t cellID  //detector specific cell id.
        - int32_t quality                //quality flag for the hit.
-       - float time                 //time of the hit.
-       - float charge               //integrated charge of the hit.
+       - float time                 //time of the hit [ns].
+       - float charge               //integrated charge of the hit [fC].
        - float interval             //interval of each sampling [ns].
     VectorMembers:
        - int32_t adcCounts          //raw data (32-bit) word at i.
