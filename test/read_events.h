@@ -4,9 +4,9 @@
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/TPCHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
 
 // podio specific includes
@@ -23,7 +23,7 @@ void processEvent(const podio::Frame& event, bool verboser, unsigned eventNum) {
   auto& sths = event.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = event.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
   auto& sccons = event.get<edm4hep::CaloHitContributionCollection>("SimCalorimeterHitContributions");
-  auto& tpchs = event.get<edm4hep::TPCHitCollection>("TPCHits");
+  auto& tpchs = event.get<edm4hep::RawTimeSeriesCollection>("TPCHits");
   auto& thps = event.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 
   if (mcps.isValid()) {

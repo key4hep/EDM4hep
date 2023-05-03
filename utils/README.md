@@ -11,3 +11,8 @@ The `p4` function can be used to get the 4 momentum vector from a given particle
 Since EDM4hep does not guarantee any internal consistency of the 4 momentum state it is possible to use either the mass or the energy of a particle to get the 4 momentum. Additionally it is also possible pass in user defined values for the mass or the energy.
 
 For some example usages see the [unit tests](/test/utils/test_kinematics.cpp)
+
+## `graph-conf.yaml`
+
+This is a configuration file to be used with the podio visualization tool for
+clustering data types into categories and a better looking graph.

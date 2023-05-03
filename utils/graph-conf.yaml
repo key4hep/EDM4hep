@@ -1,0 +1,18 @@
+Reconstruction & Analysis:
+  - edm4hep::Cluster
+  - edm4hep::ParticleID
+  - edm4hep::Track
+  - edm4hep::Vertex
+  - edm4hep::ReconstructedParticle
+Digitization:
+  - edm4hep::CalorimeterHit
+  - edm4hep::TrackerHit
+  - edm4hep::TrackerHitPlane
+Raw Data:
+  - edm4hep::RawCalorimeterHit
+  - edm4hep::TPCHit
+Monte Carlo:
+  - edm4hep::SimCalorimeterHit
+  - edm4hep::CaloHitContribution
+  - edm4hep::MCParticle
+  - edm4hep::SimTrackerHit

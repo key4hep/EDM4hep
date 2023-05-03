@@ -4,9 +4,9 @@
 // Data model
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/TPCHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
 
 // STL
@@ -186,8 +186,8 @@ void write(std::string outfilename) {
     event.put(std::move(sccons), "SimCalorimeterHitContributions");
 
     //===============================================================================
-    // write some TPCHits:
-    auto tpchs = edm4hep::TPCHitCollection();
+    // write some RawTimeSeries:
+    auto tpchs = edm4hep::RawTimeSeriesCollection();
     int ntpch = 5;
     for (int j = 0; j < ntpch; ++j) {
       auto tpch1 = tpchs.create();
