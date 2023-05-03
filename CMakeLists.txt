@@ -89,9 +89,9 @@ endif()
 
 #--- add version files ---------------------------------------------------------
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EDM4HEPVersion.h
-               ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h )
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EDM4HEPVersion.h
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EDM4hepVersion.h.in
+               ${CMAKE_CURRENT_SOURCE_DIR}/edm4hep/edm4hep/EDM4hepVersion.h )
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/edm4hep/edm4hep/EDM4hepVersion.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep )
 
 #--- add CMake infrastructure --------------------------------------------------

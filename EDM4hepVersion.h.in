@@ -1,0 +1,88 @@
+#ifndef EDM4HEP_VERSION_H
+#define EDM4HEP_VERSION_H
+
+#include <cstdint>
+#include <tuple>
+#include <ostream>
+#if __cplusplus >= 202002L
+#include <compare>
+#endif
+
+// Some preprocessor constants and macros for the use cases where they might be
+// necessary
+
+/// Define a version to be used in edm4hep.
+#define EDM4HEP_VERSION(major, minor, patch) ((UINT64_C(major) << 32) | (UINT64_C(minor) << 16) | (UINT64_C(patch)))
+/// Get the major version from a preprocessor defined version
+#define EDM4HEP_MAJOR_VERSION(v) (((v) & (-1UL >> 16)) >> 32)
+/// Get the minor version from a preprocessor defined version
+#define EDM4HEP_MINOR_VERSION(v) (((v) & (-1UL >> 32)) >> 16)
+/// Get the patch version from a preprocessor defined version
+#define EDM4HEP_PATCH_VERSION(v) ((v) & (-1UL >> 48))
+
+// Some helper constants that are populated by the cmake configure step
+#define EDM4HEP_VERSION_MAJOR @EDM4HEP_VERSION_MAJOR@
+#define EDM4HEP_VERSION_MINOR @EDM4HEP_VERSION_MINOR@
+#define EDM4HEP_VERSION_PATCH @EDM4HEP_VERSION_PATCH@
+#define edm4hep_VERSION EDM4HEP_VERSION(EDM4HEP_VERSION_MAJOR, EDM4HEP_VERSION_MINOR, EDM4HEP_VERSION_PATCH)
+
+/// The encoded version with which edm4hep has been built
+#define EDM4HEP_BUILD_VERSION EDM4HEP_VERSION(EDM4HEP_VERSION_MAJOR, EDM4HEP_VERSION_MINOR, EDM4HEP_VERSION_PATCH)
+
+namespace edm4hep::version {
+
+  /**
+   * Version class consisting of 3 16 bit unsigned integers to hold the major,
+   * minor and patch version. Provides constexpr comparison operators that allow
+   * to use this class in constexpr-if clauses.
+   */
+  struct Version {
+    uint16_t major{0};
+    uint16_t minor{0};
+    uint16_t patch{0};
+
+#if __cplusplus >= 202002L
+    auto operator<=>(const Version&) const = default;
+#else
+// No spaceship yet in c++17
+#define DEFINE_COMP_OPERATOR(OP)                                                   \
+    constexpr bool operator OP(const Version& o) const noexcept {                  \
+      return std::tie(major, minor, patch) OP std::tie(o.major, o.minor, o.patch); \
+    }
+
+    DEFINE_COMP_OPERATOR(<)
+    DEFINE_COMP_OPERATOR(<=)
+    DEFINE_COMP_OPERATOR(>)
+    DEFINE_COMP_OPERATOR(>=)
+    DEFINE_COMP_OPERATOR(==)
+    DEFINE_COMP_OPERATOR(!=)
+
+#undef DEFINE_COMP_OPERATOR
+#endif
+
+    friend std::ostream& operator<<(std::ostream&, const Version& v);
+  };
+
+  inline std::ostream& operator<<(std::ostream& os, const Version& v) {
+    return os << v.major << "." << v.minor << "." << v.patch;
+  }
+
+  /**
+   * The current build version
+   */
+  static constexpr Version build_version{EDM4HEP_VERSION_MAJOR, EDM4HEP_VERSION_MINOR, EDM4HEP_VERSION_PATCH};
+
+  /**
+   * Decode a version from a 64 bit unsigned
+   */
+  static constexpr Version decode_version(uint64_t version) noexcept {
+    return Version{
+      (uint16_t) EDM4HEP_MAJOR_VERSION(version),
+      (uint16_t) EDM4HEP_MINOR_VERSION(version),
+      (uint16_t) EDM4HEP_PATCH_VERSION(version)
+    };
+  }
+}
+
+
+#endif
