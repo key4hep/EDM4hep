@@ -73,8 +73,10 @@ make test
 The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere in `LD_LIBRARY_PATH`.
 
 ## Python bindings
-There are python bindings for all the classes in the datamodel. Make sure that
-`install/lib` is in `LD_LIBRARY_PATH` and `install/python` is in `PYTHONPATH`:
+There are python bindings for all the classes in the datamodel for working with
+the clases individually (for working with collections podio has its own
+bindings). Make sure that `install/lib` is in `LD_LIBRARY_PATH` and
+`install/python` is in `PYTHONPATH`:
 ```python
 from edm4hep import edm4hep
 particle = edm4hep.MCParticle() # default initialized particle
@@ -92,5 +94,5 @@ mc.getPDG() # 2212
 
 ## Contributing
 
-Contributions and bug reports are welcome!
-See our [contributing guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
+Contributions and bug reports are welcome! See our [contributing
+guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
