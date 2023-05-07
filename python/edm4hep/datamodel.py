@@ -1,9 +1,14 @@
 import importlib
 import ROOT
-ROOT.gSystem.Load('libedm4hepDict.so')
+res = ROOT.gSystem.Load('libedm4hepDict.so')
+if res < 0:
+    raise RuntimeError('Failed to load libedm4hepDict.so')
 
 
 class Datamodel:
+    """
+    Factory class to dynamically serve EDM4hep classes
+    """
     def __init__(self):
         self.edm4hep = importlib.import_module('ROOT').edm4hep
 
