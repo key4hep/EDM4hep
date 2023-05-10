@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 
 import ROOT
-
-# Load the implementations of the utility functions
-ROOT.gSystem.Load('libedm4hepRDF.so')
-# Load the declarations of the utility functions to make them available for JIT
-# compilation
-ROOT.gInterpreter.LoadFile('edm4hep/utils/dataframe.h')
+from edm4hep import edm4hep
 
 ROOT.EnableImplicitMT()
 
-print('Cerate RDataFrame ...')
+print('Create RDataFrame ...')
 df = ROOT.RDataFrame('events', 'edm4hep_events.root')
 
 print('Apply selectors and define new branches ...')

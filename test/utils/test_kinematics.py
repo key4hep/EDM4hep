@@ -7,13 +7,7 @@ import unittest
 import ROOT
 import cppyy
 
-if ROOT.gSystem.Load('libedm4hepDict.so') < 0:
-  print('Cannot load edm4hep dictionary for tests')
-  sys.exit(1)
-
-ROOT.gInterpreter.LoadFile(os.path.dirname(__file__) + '/../../utils/include/edm4hep/utils/kinematics.h')
-
-from ROOT import edm4hep
+from edm4hep import edm4hep
 
 # A few shorthands for slightly easier to read tests below
 p4 = edm4hep.utils.p4
