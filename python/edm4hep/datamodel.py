@@ -3,13 +3,15 @@ res = ROOT.gSystem.Load('libedm4hepDict.so')
 if res < 0:
     raise RuntimeError('Failed to load libedm4hepDict.so')
 
-kinematics_path = 'edm4hep/utils/kinematics.h'
-res = ROOT.gInterpreter.LoadFile(kinematics_path)
+res = ROOT.gSystem.Load('libedm4hepRDF.so')
+if res < 0:
+    raise RuntimeError('Failed to load libedm4hepRDF.so')
+
+res = ROOT.gInterpreter.LoadFile('edm4hep/utils/kinematics.h')
 if res != 0:
     raise RuntimeError('Failed to load kinematics.h')
 
-dataframe_path = 'edm4hep/utils/dataframe.h'
-res = ROOT.gInterpreter.LoadFile(dataframe_path)
+res = ROOT.gInterpreter.LoadFile('edm4hep/utils/dataframe.h')
 if res != 0:
     raise RuntimeError('Failed to load dataframe.h')
 
