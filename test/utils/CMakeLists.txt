@@ -23,5 +23,6 @@ catch_discover_tests(unittests)
 add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
 set_property(TEST pyunittests
   PROPERTY ENVIRONMENT
-  LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$ENV{LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+      ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )
