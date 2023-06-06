@@ -1,3 +1,20 @@
+# v00-09
+
+* 2023-05-03 Thomas Madlener ([PR#152](https://github.com/key4hep/EDM4hep/pull/152))
+  - Add a `EDM4hepVersion.h` file that has the same basic structure and functionality as other Key4hep packages.
+
+* 2023-05-02 jmcarcell ([PR#193](https://github.com/key4hep/EDM4hep/pull/193))
+  - Add a configuration file for the new podio visualization tool
+
+* 2023-04-28 jmcarcell ([PR#203](https://github.com/key4hep/EDM4hep/pull/203))
+  - Remove root version check inside CMakeLists.txt
+
+* 2023-04-26 jmcarcell ([PR#205](https://github.com/key4hep/EDM4hep/pull/205))
+  - Add missing units to the comments
+
+* 2023-04-23 Thomas Madlener ([PR#200](https://github.com/key4hep/EDM4hep/pull/200))
+  - Add `schema_version` to YAML definition now that podio has limited support (see AIDASoft/podio#341)
+
 # v00-08
 
 * 2023-04-03 Paul Gessinger ([PR#201](https://github.com/key4hep/EDM4hep/pull/201))
