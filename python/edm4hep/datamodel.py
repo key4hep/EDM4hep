@@ -18,7 +18,6 @@ if res != 0:
 from ROOT import edm4hep
 
 
-
 class Datamodel:
     """
     Factory class to dynamically serve EDM4hep classes
@@ -28,3 +27,17 @@ class Datamodel:
             return getattr(edm4hep, name)
         except AttributeError:
             raise AttributeError(f'EDM4hep has no class named {name}')
+
+
+class Utils:
+    """
+    Factory class to dynamically serve EDM4hep::utils classes
+    """
+    def __init__(self):
+        self.utils = edm4hep.utils
+
+    def __getattr__(self, name):
+        try:
+            return getattr(self.utils, name)
+        except AttributeError:
+            raise AttributeError(f'ROOT has no class named {name}')
