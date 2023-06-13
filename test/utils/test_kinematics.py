@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-import sys
 import unittest
-
-import ROOT
 import cppyy
 
 from edm4hep import edm4hep
