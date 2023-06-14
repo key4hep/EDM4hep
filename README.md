@@ -59,7 +59,7 @@ Optional:
 
 ## Build and Install
 
-This project follows the key4hep guidelines and can be build with CMake:
+This project follows the key4hep guidelines and can be built with CMake:
 
 ```sh
 source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
@@ -72,12 +72,27 @@ make test
 
 The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere in `LD_LIBRARY_PATH`.
 
+## Python bindings
+There are python bindings for all the classes in the datamodel for working with
+the clases individually (for working with collections podio has its own
+bindings). Make sure that `<CMAKE_INSTALL_PREFIX>/lib` is in `LD_LIBRARY_PATH`,
+`<CMAKE_PREFIX_PATH>/python` is in `PYTHONPATH` and `EDM4hep/utils/include` is in `ROOT_INCLUDE_PATH`:
+```python
+from edm4hep import edm4hep
+particle = edm4hep.MCParticle() # default initialized particle
+particle.getCharge() # 0.0
 
+series = edm4hep.TimeSeries(1, 2, 3) # classes can be constructed with non-default parameters
+series.getCellID() # 1
+series.getTime() # 2.0
+series.getInterval() # 3.0
 
-
-
+mc = edm4hep.MutableMCParticle() # mutable classes can also be modified
+mc.setPDG(2212)
+mc.getPDG() # 2212
+```
 
 ## Contributing
 
-Contributions and bug reports are welcome!
-See our [contributing guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
+Contributions and bug reports are welcome! See our [contributing
+guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
