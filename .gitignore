@@ -19,6 +19,9 @@ podio_generated_files.cmake
 # CI subfolders
 podio/
 
+# Files configured during build
+/python/edm4hep/__version__.py
+
 # Compiled Object files
 *.slo
 *.lo
