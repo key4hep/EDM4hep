@@ -76,7 +76,7 @@ The library files and dictionaries (`libedm4hep.so`, ...) must be put somewhere 
 There are python bindings for all the classes in the datamodel for working with
 the clases individually (for working with collections podio has its own
 bindings). Make sure that `<CMAKE_INSTALL_PREFIX>/lib` is in `LD_LIBRARY_PATH`,
-`<CMAKE_PREFIX_PATH>/python` is in `PYTHONPATH` and `EDM4hep/utils/include` is in `ROOT_INCLUDE_PATH`:
+`<CMAKE_PREFIX_PATH>/python` is in `PYTHONPATH` and `<CMAKE_INSTALL_PREFIX>/include` is in `ROOT_INCLUDE_PATH`:
 ```python
 from edm4hep import edm4hep
 particle = edm4hep.MCParticle() # default initialized particle
