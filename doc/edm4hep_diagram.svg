@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 286.02133 145.79602"
    height="145.79602mm"
    width="286.02133mm"
    sodipodi:docname="edm4hep_diagram.svg"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -24,16 +24,18 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1136"
+     inkscape:window-height="1163"
      id="namedview332"
      showgrid="false"
-     inkscape:zoom="1.2210628"
-     inkscape:cx="738.32834"
-     inkscape:cy="195.78083"
-     inkscape:window-x="1440"
-     inkscape:window-y="670"
+     inkscape:zoom="0.86342179"
+     inkscape:cx="649.74038"
+     inkscape:cy="259.43288"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="svg8"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm" />
   <defs
      id="defs2">
     <marker
@@ -1053,10 +1055,10 @@
        inkscape:label="Cutout Glow"
        style="color-interpolation-filters:sRGB;"
        id="filter6544"
-       height="1.3999999999999999"
-       width="1.1000000000000001"
-       x="-0.050000000000000003"
-       y="-0.20000000000000001">
+       height="1.0132398"
+       width="1.0031585"
+       x="-0.0015792455"
+       y="-0.0066198852">
       <feOffset
          dy="0"
          dx="0"
@@ -1083,10 +1085,10 @@
          id="feBlend6542" />
     </filter>
     <filter
-       y="-0.20000000000000001"
-       x="-0.050000000000000003"
-       width="1.1000000000000001"
-       height="1.3999999999999999"
+       y="-0.0054374558"
+       x="-0.00061764439"
+       width="1.0012353"
+       height="1.0108749"
        id="filter6596"
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Cutout Glow"
@@ -1118,10 +1120,10 @@
          in="blur" />
     </filter>
     <filter
-       y="-0.20000000000000001"
-       x="-0.050000000000000003"
-       width="1.1000000000000001"
-       height="1.3999999999999999"
+       y="-0.0051414006"
+       x="-0.00066752601"
+       width="1.0013351"
+       height="1.0102828"
        id="filter6620"
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Cutout Glow"
@@ -1158,10 +1160,10 @@
        inkscape:label="Cutout Glow"
        style="color-interpolation-filters:sRGB"
        id="filter6544-3"
-       height="1.4"
-       width="1.1"
-       x="-0.050000001"
-       y="-0.2">
+       height="1.0105024"
+       width="1.0010917"
+       x="-0.00054584329"
+       y="-0.0052512013">
       <feOffset
          dy="0"
          dx="0"
@@ -1317,6 +1319,41 @@
          style="fill:#00007e;fill-opacity:1;fill-rule:evenodd;stroke:#00007e;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="matrix(-0.4,0,0,-0.4,-4,0)" />
     </marker>
+    <filter
+       inkscape:menu-tooltip="In and out glow with a possible offset and colorizable flood"
+       inkscape:menu="Shadows and Glows"
+       inkscape:label="Cutout Glow"
+       style="color-interpolation-filters:sRGB"
+       id="filter6544-36"
+       height="1.0105024"
+       width="1.0010699"
+       x="-0.00053497302"
+       y="-0.0052512013">
+      <feOffset
+         dy="0"
+         dx="0"
+         id="feOffset6534-75" />
+      <feGaussianBlur
+         stdDeviation="0.01"
+         result="blur"
+         id="feGaussianBlur6536-3" />
+      <feFlood
+         flood-color="rgb(174,153,0)"
+         flood-opacity="0.31"
+         result="flood"
+         id="feFlood6538-5" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="over"
+         result="composite"
+         id="feComposite6540-6" />
+      <feBlend
+         in="blur"
+         in2="composite"
+         mode="normal"
+         id="feBlend6542-2" />
+    </filter>
   </defs>
   <metadata
      id="metadata5">
@@ -1326,7 +1363,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1386,7 +1422,8 @@
          x="46.467018"
          y="142.67172"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans'" /></flowRegion><flowPara
-       id="flowPara16" /></flowRoot>  <flowRoot
+       id="flowPara16" /></flowRoot>
+  <flowRoot
      xml:space="preserve"
      id="flowRoot26"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -1399,7 +1436,8 @@
          x="81.071426"
          y="236.09111"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans'" /></flowRegion><flowPara
-       id="flowPara32" /></flowRoot>  <flowRoot
+       id="flowPara32" /></flowRoot>
+  <flowRoot
      transform="matrix(0.26458333,0,0,0.26458333,-370.88173,-9.594636)"
      xml:space="preserve"
      id="flowRoot18-1"
@@ -1413,48 +1451,49 @@
          y="121.45851"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans'" /></flowRegion><flowPara
        id="flowPara24-3"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans'">Vector3dVec</flowPara></flowRoot>  <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans'">Vector3dVec</flowPara></flowRoot>
+  <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.54824162px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18870604;filter:url(#filter6620)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.54824px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.188706;filter:url(#filter6620)"
      x="22.544609"
      y="76.013016"
      id="text2656"><tspan
        x="22.544609"
        y="76.013016"
        id="tspan2654"
-       style="stroke-width:0.18870604"><tspan
+       style="stroke-width:0.188706"><tspan
          x="22.544609"
          y="76.013016"
          id="tspan2652"
-         style="stroke-width:0.18870604">MCParticle</tspan></tspan></text>
+         style="stroke-width:0.188706">MCParticle</tspan></tspan></text>
   <text
      id="text2731"
      y="118.54272"
      x="33.3162"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349453px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558736;filter:url(#filter6596)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6596)"
      xml:space="preserve"><tspan
-       style="stroke-width:0.15558736"
+       style="stroke-width:0.155587"
        id="tspan2729"
        y="118.54272"
        x="33.3162"><tspan
-         style="stroke-width:0.15558736"
+         style="stroke-width:0.155587"
          id="tspan2727"
          y="118.54272"
          x="33.3162">SimTrackerHit</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.0103159px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1502579;filter:url(#filter6596)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01032px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.150258;filter:url(#filter6596)"
      x="16.163933"
      y="51.611065"
      id="text2638"><tspan
        x="16.163933"
        y="51.611065"
        id="tspan2636"
-       style="stroke-width:0.1502579"><tspan
+       style="stroke-width:0.150258"><tspan
          x="16.163933"
          y="51.611065"
          id="tspan2634"
-         style="stroke-width:0.1502579">CaloHitContribution</tspan></tspan></text>
+         style="stroke-width:0.150258">CaloHitContribution</tspan></tspan></text>
   <path
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:0.18520833;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-9)"
@@ -1462,18 +1501,18 @@
      id="path6614-2" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.0103159px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1502579;filter:url(#filter6596)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.01032px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.150258;filter:url(#filter6596)"
      x="37.162712"
      y="36.758083"
      id="text2632"><tspan
        x="37.162712"
        y="36.758083"
        id="tspan2630"
-       style="stroke-width:0.1502579"><tspan
+       style="stroke-width:0.150258"><tspan
          x="37.162712"
          y="36.758083"
          id="tspan2628"
-         style="stroke-width:0.1502579">SimCalorimeterHit</tspan></tspan></text>
+         style="stroke-width:0.150258">SimCalorimeterHit</tspan></tspan></text>
   <path
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:0.1502579px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Lend-9-9-9)"
@@ -1481,91 +1520,91 @@
      id="path6614-2-5-0" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
      x="130.28593"
      y="7.5458164"
      id="text2614"><tspan
        x="130.28593"
        y="7.5458164"
        id="tspan2612"
-       style="font-size:7.76111126px;stroke-width:0.26458332"><tspan
+       style="font-size:7.76111px;stroke-width:0.264583"><tspan
          x="130.28593"
          y="7.5458164"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111126px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Italic';text-align:center;text-anchor:middle;stroke-width:0.26458332"
-         id="tspan2610">EDM4hep DataModel Overview (v0.6)</tspan></tspan></text>
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Italic';text-align:center;text-anchor:middle;stroke-width:0.264583"
+         id="tspan2610">EDM4hep DataModel Overview (v0.9)</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
      x="23.94622"
      y="134.78065"
      id="text2725"><tspan
        x="23.94622"
        y="134.78065"
        id="tspan2723"
-       style="stroke-width:0.26458332"><tspan
+       style="stroke-width:0.264583"><tspan
          x="23.94622"
          y="134.78065"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';fill:#666666;stroke-width:0.264583"
          id="tspan2721">Monte Carlo</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
      x="176.26543"
      y="137.21851"
      id="text2674"><tspan
        x="176.26543"
        y="137.21851"
        id="tspan2672"
-       style="stroke-width:0.26458332"><tspan
+       style="stroke-width:0.264583"><tspan
          x="176.26543"
          y="137.21851"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2670">Digitization</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
      x="121.10015"
      y="138.56828"
      id="text2662"><tspan
        x="121.10015"
        y="138.56828"
        id="tspan2660"
-       style="stroke-width:0.26458332"><tspan
+       style="stroke-width:0.264583"><tspan
          x="121.10015"
          y="138.56828"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2658">Raw Data</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:0.80000001;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:0.8;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
      x="244.76524"
      y="130.34537"
      id="text2688"><tspan
        x="244.76524"
        y="130.34537"
        id="tspan2680"
-       style="stroke-width:0.26458332"><tspan
+       style="stroke-width:0.264583"><tspan
          x="244.76524"
          y="130.34537"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:0.80000001;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;line-height:0.8;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2676">Reconstruction &amp;</tspan><tspan
          dx="0"
          x="309.27393"
          y="130.34537"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:0.80000001;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;line-height:0.8;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2678" /></tspan><tspan
        x="261.24384"
        y="138.81203"
        id="tspan2686"
-       style="stroke-width:0.26458332"><tspan
+       style="stroke-width:0.264583"><tspan
          x="261.24384"
          y="138.81203"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:0.80000001;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;line-height:0.8;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2682">Analysis</tspan><tspan
          dx="0"
          x="292.79535"
          y="138.81203"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:0.80000001;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;line-height:0.8;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#666666;stroke-width:0.264583"
          id="tspan2684" /></tspan></text>
   <path
      inkscape:connector-curvature="0"
@@ -1585,61 +1624,70 @@
      sodipodi:nodetypes="cc" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:5.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
-     x="117.12322"
-     y="124.50725"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:5.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
+     x="101.46507"
+     y="124.54556"
      id="text2694"><tspan
-       x="117.12322"
-       y="124.50725"
+       x="101.46507"
+       y="124.54556"
        id="tspan2692"
-       style="line-height:5.25;word-spacing:0.00529167px;stroke-width:0.15558738"><tspan
-         x="117.12322"
-         y="124.50725"
+       style="line-height:5.25;word-spacing:0.00529167px;stroke-width:0.155587"><tspan
+         x="101.46507"
+         y="124.54556"
          id="tspan2690"
-         style="line-height:5.25;word-spacing:0.00529167px;stroke-width:0.15558738"
-         dy="0.050000001">TPCHit</tspan></tspan></text>
+         style="line-height:5.25;word-spacing:0.00529167px;stroke-width:0.155587">RawTimeSeries</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.9367671px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12341918;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:5.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544-36)"
+     x="156.65733"
+     y="129.46828"
+     id="text2694-9"><tspan
+       x="156.65733"
+       y="129.46828"
+       id="tspan2692-1"
+       style="line-height:5.25;word-spacing:0.00529167px;stroke-width:0.155587">TrackerPulse</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93677px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.123419;filter:url(#filter6544)"
      x="98.707939"
      y="26.880672"
      id="text2620"><tspan
        x="98.707939"
        y="26.880672"
        id="tspan2618"
-       style="stroke-width:0.12341918"><tspan
+       style="stroke-width:0.123419"><tspan
          x="98.707939"
          y="26.880672"
          id="tspan2616"
-         style="stroke-width:0.12341918">RawCalorimeterHit</tspan></tspan></text>
+         style="stroke-width:0.123419">RawCalorimeterHit</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.9367671px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12341918;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93677px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.123419;filter:url(#filter6544)"
      x="157.73842"
      y="41.836357"
      id="text2626"><tspan
        x="157.73842"
        y="41.836357"
        id="tspan2624"
-       style="stroke-width:0.12341918"><tspan
+       style="stroke-width:0.123419"><tspan
          x="157.73842"
          y="41.836357"
          id="tspan2622"
-         style="stroke-width:0.12341918">CalorimeterHit</tspan></tspan></text>
+         style="stroke-width:0.123419">CalorimeterHit</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
      x="157.25157"
      y="111.67899"
      id="text2700"><tspan
        x="157.25157"
        y="111.67899"
        id="tspan2698"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="157.25157"
          y="111.67899"
          id="tspan2696"
-         style="stroke-width:0.15558738">TrackerHit</tspan></tspan></text>
+         style="stroke-width:0.155587">TrackerHit</tspan></tspan></text>
   <flowRoot
      xml:space="preserve"
      id="flowRoot19295"
@@ -1651,7 +1699,8 @@
          height="70"
          x="2200"
          y="372.51968" /></flowRegion><flowPara
-       id="flowPara19301" /></flowRoot>  <flowRoot
+       id="flowPara19301" /></flowRoot>
+  <flowRoot
      xml:space="preserve"
      id="flowRoot19303"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -1662,62 +1711,63 @@
          height="70"
          x="2200"
          y="422.51968" /></flowRegion><flowPara
-       id="flowPara19309" /></flowRoot>  <text
+       id="flowPara19309" /></flowRoot>
+  <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
      x="219.42863"
      y="105.06441"
      id="text2588"><tspan
        x="219.42863"
        y="105.06441"
        id="tspan2586"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="219.42863"
          y="105.06441"
          id="tspan2584"
-         style="stroke-width:0.15558738">Track</tspan></tspan></text>
+         style="stroke-width:0.155587">Track</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
      x="218.1057"
      y="46.856091"
      id="text2582"><tspan
        x="218.1057"
        y="46.856091"
        id="tspan2580"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="218.1057"
          y="46.856091"
          id="tspan2578"
-         style="stroke-width:0.15558738">Cluster</tspan></tspan></text>
+         style="stroke-width:0.155587">Cluster</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35641098px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15891027;filter:url(#filter6620)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35641px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15891;filter:url(#filter6620)"
      x="216.32317"
      y="75.903931"
      id="text2576"><tspan
        x="216.32317"
        y="75.903931"
        id="tspan2574"
-       style="stroke-width:0.15891027"><tspan
+       style="stroke-width:0.15891"><tspan
          x="216.32317"
          y="75.903931"
          id="tspan2572"
-         style="stroke-width:0.15891027">ReconstructedParticle</tspan></tspan></text>
+         style="stroke-width:0.15891">ReconstructedParticle</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
      x="243.2412"
      y="107.71024"
      id="text2570"><tspan
        x="243.2412"
        y="107.71024"
        id="tspan2568"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="243.2412"
          y="107.71024"
          id="tspan2566"
-         style="stroke-width:0.15558738">Vertex</tspan></tspan></text>
+         style="stroke-width:0.155587">Vertex</tspan></tspan></text>
   <g
      id="g34855"
      transform="translate(-380.72936,-22.995833)">
@@ -1895,18 +1945,18 @@
   </g>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544)"
      x="240.59526"
      y="30.716194"
      id="text2564"><tspan
        x="240.59526"
        y="30.716194"
        id="tspan2562"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="240.59526"
          y="30.716194"
          id="tspan2560"
-         style="stroke-width:0.15558738">ParticleID</tspan></tspan></text>
+         style="stroke-width:0.155587">ParticleID</tspan></tspan></text>
   <g
      id="g4079"
      transform="matrix(0.57501552,0,0,0.70151281,-114.52136,-3.043978)">
@@ -1988,17 +2038,17 @@
      id="path7862" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.54824162px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.47400004;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.18870604"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.54824px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.474;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.188706"
      x="115.43224"
      y="72.894707"
      id="text2558"><tspan
        x="115.43224"
        y="72.894707"
        id="tspan2556"
-       style="stroke-width:0.18870604"><tspan
+       style="stroke-width:0.188706"><tspan
          x="115.43224"
          y="72.894707"
-         style="font-size:4.93888903px;fill:#0000ff;stroke-width:0.18870604"
+         style="font-size:4.93889px;fill:#0000ff;stroke-width:0.188706"
          id="tspan2554">MCRecoParticleAssociation</tspan></tspan></text>
   <path
      inkscape:connector-curvature="0"
@@ -2018,7 +2068,7 @@
      id="text2552" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44370794px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.47400004;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1610927"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44371px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.474;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.161093"
      x="87.323647"
      y="118.45793"
      id="text2558-5"
@@ -2026,14 +2076,14 @@
        x="87.323647"
        y="118.45793"
        id="tspan2556-5"
-       style="stroke-width:0.1610927"><tspan
+       style="stroke-width:0.161093"><tspan
          x="87.323647"
          y="118.45793"
-         style="font-size:4.21618176px;fill:#0000ff;stroke-width:0.1610927"
+         style="font-size:4.21618px;fill:#0000ff;stroke-width:0.161093"
          id="tspan2554-1">MCRecoTrackerAssociation</tspan></tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44370794px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.47400004;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1610927"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44371px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.474;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.161093"
      x="98.873039"
      y="32.237076"
      id="text2558-5-6"
@@ -2041,10 +2091,10 @@
        x="98.873039"
        y="32.237076"
        id="tspan2556-5-3"
-       style="stroke-width:0.1610927"><tspan
+       style="stroke-width:0.161093"><tspan
          x="98.873039"
          y="32.237076"
-         style="font-size:4.21618176px;fill:#0000ff;stroke-width:0.1610927"
+         style="font-size:4.21618px;fill:#0000ff;stroke-width:0.161093"
          id="tspan2554-1-9">MCRecoCaloAssociation</tspan></tspan></text>
   <g
      id="g31242-2"
@@ -2070,18 +2120,18 @@
   </g>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.22349501px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15558738;filter:url(#filter6544-3)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.2235px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.155587;filter:url(#filter6544-3)"
      x="156.34314"
      y="121.26011"
      id="text2700-2"><tspan
        x="156.34314"
        y="121.26011"
        id="tspan2698-4"
-       style="stroke-width:0.15558738"><tspan
+       style="stroke-width:0.155587"><tspan
          x="156.34314"
          y="121.26011"
          id="tspan2696-5"
-         style="stroke-width:0.15558738">TrackerHitPlane</tspan></tspan></text>
+         style="stroke-width:0.155587">TrackerHitPlane</tspan></tspan></text>
   <path
      inkscape:connector-curvature="0"
      style="opacity:0.59600004;fill:none;stroke:#00007e;stroke-width:0.43807417;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker13910-8);marker-end:url(#marker3596-2)"
@@ -2090,7 +2140,7 @@
      sodipodi:nodetypes="cc" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44370794px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.47400004;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.1610927"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.44371px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:0.474;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.161093"
      x="59.388889"
      y="81.125305"
      id="text2558-5-6-7"
@@ -2098,7 +2148,7 @@
        x="59.388889"
        y="81.125305"
        id="tspan2556-5-3-0"
-       style="font-size:3.88055539px;stroke-width:0.1610927">MCRecoCaloParticleAssociation</tspan></text>
+       style="font-size:3.88056px;stroke-width:0.161093">MCRecoCaloParticleAssociation</tspan></text>
   <path
      inkscape:connector-curvature="0"
      style="opacity:0.59600004;fill:none;stroke:#00007e;stroke-width:0.43807417;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker13910-8-8);marker-end:url(#marker3596-2-9)"
