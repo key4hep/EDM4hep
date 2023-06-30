@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import ROOT
-from edm4hep import edm4hep
+import edm4hep
 
 ROOT.EnableImplicitMT()
 

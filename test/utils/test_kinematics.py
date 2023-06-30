@@ -3,7 +3,7 @@
 import unittest
 import cppyy
 
-from edm4hep import edm4hep
+import edm4hep
 
 # A few shorthands for slightly easier to read tests below
 p4 = edm4hep.utils.p4

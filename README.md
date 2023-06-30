@@ -78,7 +78,7 @@ the clases individually (for working with collections podio has its own
 bindings). Make sure that `<CMAKE_INSTALL_PREFIX>/lib` is in `LD_LIBRARY_PATH`,
 `<CMAKE_PREFIX_PATH>/python` is in `PYTHONPATH` and `<CMAKE_INSTALL_PREFIX>/include` is in `ROOT_INCLUDE_PATH`:
 ```python
-from edm4hep import edm4hep
+import edm4hep
 particle = edm4hep.MCParticle() # default initialized particle
 particle.getCharge() # 0.0
 
@@ -91,6 +91,9 @@ mc = edm4hep.MutableMCParticle() # mutable classes can also be modified
 mc.setPDG(2212)
 mc.getPDG() # 2212
 ```
+
+In an interactive session (with `python` or `ipython`, for example) it's
+possible to see all the classes by typing `edm4hep.` and then pressing TAB.
 
 ## Contributing
 
