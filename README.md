@@ -95,6 +95,38 @@ mc.getPDG() # 2212
 In an interactive session (with `python` or `ipython`, for example) it's
 possible to see all the classes by typing `edm4hep.` and then pressing TAB.
 
+## Dumping to JSON
+The `edm4hep2json` tool can be used to dump the contents of an EMD4hep file in
+JSON format. E.g.
+
+```bash
+edm4hep2json some_events.edm4hep.root
+```
+
+This will produce an output file `some_events.edm4hep.json`. That has the following structure
+```json
+{
+  "Event <N>": {
+     "<CollectionName>": {
+       "collID": <ID>,
+       "collType": <collectionType>,
+       "collection": [
+         <elements>
+       ]
+    },
+  }
+}
+```
+
+As also stated in the [podio
+documentation](https://github.com/AIDASoft/podio/blob/master/doc/advanced_topics.md#dumping-json)
+there is **no plan to support reading JSON back in once it is dumped, so this
+should not be seen as a way to persistify data**, but rather to interface it
+with tools that consume JSON.
+
+Use `edm4hep2json --help` to see the available options for selecting which parts
+of the input file should be part of the output.
+
 ## Contributing
 
 Contributions and bug reports are welcome! See our [contributing
