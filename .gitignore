@@ -59,3 +59,4 @@ spack*
 /.clangd/
 /compile_commands.json
 *__pycache__*
+/.cache/
