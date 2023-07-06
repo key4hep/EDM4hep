@@ -333,6 +333,8 @@ datatypes:
       - std::array<float,6> covMatrix  //covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
     VectorMembers:
       - edm4hep::ObjectID  rawHits     //raw data hits. Check getType to get actual data type.
+    OneToManyRelations:
+      - edm4hep::RecIonizationCluster clusters //ionization clusters that were reconstructed in the cell
 
 
   #-------------  TrackerHitPlane
