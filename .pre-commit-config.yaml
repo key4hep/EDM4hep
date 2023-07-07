@@ -13,3 +13,8 @@ repos:
         exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$|EDM4HEPVersion.h)
         types: [c++]
         language: system
+      - id: readme-links-check
+        name: README links check
+        entry: python ./scripts/updateReadmeLinks.py --check
+        files: (^README.md$)
+        language: system
