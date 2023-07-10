@@ -1,3 +1,25 @@
+# v00-10
+
+* 2023-07-07 BrieucF ([PR#212](https://github.com/key4hep/EDM4hep/pull/212))
+  - Add a script to automatically update the README.md links
+
+* 2023-07-04 tmadlener ([PR#209](https://github.com/key4hep/EDM4hep/pull/209))
+  - Add brief documentation of the `edm4hep2json` tool with minimal documentation of the output JSON schema.
+
+* 2023-06-30 jmcarcell ([PR#207](https://github.com/key4hep/EDM4hep/pull/207))
+  - Improve python API, use `import edm4hep` instead of `from edm4hep import edm4hep`
+
+* 2023-06-29 tmadlener ([PR#206](https://github.com/key4hep/EDM4hep/pull/206))
+  - Replace TPCHit with RawTimeSeries
+  - Update version to 0.9
+  - Add TrackerPulse
+
+* 2023-06-14 jmcarcell ([PR#204](https://github.com/key4hep/EDM4hep/pull/204))
+  - Add python bindings for the datamodel classes and some documentation on how to use the bindings
+
+* 2023-06-07 FinnJohannsen ([PR#188](https://github.com/key4hep/EDM4hep/pull/188))
+  - Changed the name of one VectorMember of edm4hep::track from subDetectorHitNumbers to subdetectorHitNumbers to be consistent with other spellings of the word subdetector in the yaml file and in LCIO.
+
 # v00-09
 
 * 2023-05-03 Thomas Madlener ([PR#152](https://github.com/key4hep/EDM4hep/pull/152))
