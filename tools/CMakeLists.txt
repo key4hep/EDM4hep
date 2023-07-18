@@ -16,6 +16,6 @@ if (nlohmann_json_FOUND)
                                             edm4hep
                                             nlohmann_json::nlohmann_json)
 
-  install(TARGETS edm4hep2json DESTINATION bin)
+  install(TARGETS edm4hep2json DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 endif()
