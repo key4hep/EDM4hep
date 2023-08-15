@@ -1,3 +1,6 @@
+### File copied from https://github.com/key4hep/key4hep-dev-utils
+### DO NOT EDIT, CHANGES WILL BE OVERWRITTEN
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -238,6 +241,8 @@ podio_generated_files.cmake
 /python/edm4hep/__version__.py
 edm4hep/edm4hep/
 edm4hep/src/
+## k4FWCore
+test/k4FWCoreTest/**/*.root
 ## k4MarlinWrapper
 test/inputFiles/*.slcio
 test/gaudi_opts/testConverterConstants.py
