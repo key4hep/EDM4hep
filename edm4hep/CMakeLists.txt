@@ -12,7 +12,7 @@ if (nlohmann_json_FOUND)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
 endif()
 
-PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
+PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" edm4hep/LinkDef.h)
 add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
 set_target_properties(edm4hep PROPERTIES ALIAS_GLOBAL true)
 
@@ -32,7 +32,7 @@ install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   COMPONENT dev)
 
 install(FILES
-  "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
+  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hep.rootmap"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 install(FILES
@@ -40,5 +40,5 @@ install(FILES
   DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
 
 install(FILES
-  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
+  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hep_rdict.pcm"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
