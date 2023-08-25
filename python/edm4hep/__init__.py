@@ -5,7 +5,7 @@ from .__version__ import __version__
 import ROOT
 res = ROOT.gSystem.Load('libedm4hep.so')
 if res < 0:
-    raise RuntimeError('Failed to load libedm4hepDict.so')
+    raise RuntimeError('Failed to load libedm4hep.so')
 
 res = ROOT.gSystem.Load('libedm4hepRDF.so')
 if res < 0:
