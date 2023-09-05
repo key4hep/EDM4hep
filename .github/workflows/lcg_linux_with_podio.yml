@@ -8,10 +8,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        LCG: ["LCG_99/x86_64-centos7-gcc10-opt",
-              "dev3/x86_64-centos7-clang12-opt",
-              "dev4/x86_64-centos7-gcc11-opt",
-              "dev4/x86_64-centos7-clang12-opt"]
+        LCG: ["dev3/x86_64-el9-clang16-opt",
+              "dev4/x86_64-el9-clang16-opt"]
+        CXX_STANDARD: [20]
+        include:
+          - LCG: "dev4/x86_64-centos7-gcc11-opt"
+            CXX_STANDARD: 17
+          - LCG: "LCG_102/x86_64-centos7-clang12-opt"
+            CXX_STANDARD: 17
+          - LCG: "LCG_102/x86_64-centos8-gcc11-opt"
+            CXX_STANDARD: 17
     steps:
     - uses: actions/checkout@v3
     - uses: cvmfs-contrib/github-action-cvmfs@v3
@@ -26,7 +32,7 @@ jobs:
           cd podio
           mkdir build install
           cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
+          cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DENABLE_SIO=ON \
             -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/../install \
@@ -44,7 +50,7 @@ jobs:
           echo "Building edm4hep"
           mkdir build install
           cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
+          cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DCMAKE_INSTALL_PREFIX=../install \
             -DUSE_EXTERNAL_CATCH2=OFF \
             -G Ninja
@@ -58,7 +64,7 @@ jobs:
           cd test/downstream-project-cmake-test
           mkdir build
           cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
+          cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DCMAKE_INSTALL_PREFIX=../install \
             -G Ninja
           ninja -k0
