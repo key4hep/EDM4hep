@@ -15,9 +15,9 @@ endif()
 
 include(Catch)
 
-add_executable(unittests
+add_executable(unittests_edm4hep
   test_kinematics.cpp test_vector_utils.cpp)
-target_link_libraries(unittests edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
+target_link_libraries(unittests_edm4hep edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
 
 option(SKIP_CATCH_DISCOVERY "Skip the Catch2 test discovery" OFF)
 
@@ -33,7 +33,7 @@ if (SKIP_CATCH_DISCOVERY)
   # Unfortunately Memory sanitizer seems to be really unhappy with Catch2 and
   # it fails to succesfully launch the executable and execute any test. Here
   # we just include them in order to have them show up as failing
-  add_test(NAME unittests COMMAND unittests)
+  add_test(NAME unittests COMMAND unittests_edm4hep)
   set_property(TEST unittests
     PROPERTY ENVIRONMENT
     LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
@@ -41,7 +41,7 @@ if (SKIP_CATCH_DISCOVERY)
     ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )
 else()
-  catch_discover_tests(unittests)
+  catch_discover_tests(unittests_edm4hep)
 endif()
 
 add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
