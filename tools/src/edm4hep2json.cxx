@@ -2,7 +2,11 @@
 #include "edm4hep2json.hxx"
 
 // ROOT
+#include "TFile.h"
+
+// podio
 #include "podio/ROOTFrameReader.h"
+#include "podio/ROOTLegacyReader.h"
 
 // std
 #include <filesystem>
@@ -27,8 +31,8 @@ void printHelp() {
 }
 
 int main(int argc, char** argv) {
-  std::filesystem::path inFile;
-  std::filesystem::path outFile;
+  std::filesystem::path inFilePath;
+  std::filesystem::path outFilePath;
   std::string requestedCollections;
   std::string requestedEvents;
   std::string frameName = "events";
@@ -54,10 +58,10 @@ int main(int argc, char** argv) {
 
     switch (opt) {
     case 'i':
-      inFile = std::filesystem::path(optarg);
+      inFilePath = std::filesystem::path(optarg);
       break;
     case 'o':
-      outFile = std::filesystem::path(optarg);
+      outFilePath = std::filesystem::path(optarg);
       break;
     case 'l':
       requestedCollections = std::string(optarg);
@@ -92,39 +96,49 @@ int main(int argc, char** argv) {
   }
 
   for (int i = optind; i < argc; ++i) {
-    inFile = std::string(argv[i]);
+    inFilePath = std::string(argv[i]);
   }
 
-  if (inFile.empty()) {
-    std::cout << "ERROR: Input .root file not provided!" << std::endl;
+  if (inFilePath.empty()) {
+    std::cerr << "ERROR: Input .root file not provided!" << std::endl;
     return EXIT_FAILURE;
   }
 
-  if (!std::filesystem::exists(inFile)) {
-    std::cout << "ERROR: Input .root file can't be read!" << std::endl;
+  if (!std::filesystem::exists(inFilePath)) {
+    std::cerr << "ERROR: Input .root file can't be read!" << std::endl;
     return EXIT_FAILURE;
   }
 
-  if (requestedCollections.empty()) {
-    requestedCollections = "GenParticles,BuildUpVertices,SiTracks,"
-                           "PandoraClusters,VertexJets,EventHeader";
-    if (verboser) {
-      std::cout << "DEBUG: Using default collection to convert:\n"
-                << "       " << requestedCollections << std::endl;
-    }
-  }
-
-  if (outFile.empty()) {
-    std::string outFileStr = inFile.stem().string();
+  if (outFilePath.empty()) {
+    std::string outFileStr = inFilePath.stem().string();
     if (outFileStr.find(".edm4hep") != std::string::npos) {
       outFileStr = outFileStr.erase(outFileStr.find(".edm4hep"), 8);
     }
     if (outFileStr.find("_edm4hep") != std::string::npos) {
       outFileStr = outFileStr.erase(outFileStr.find("_edm4hep"), 8);
     }
-    outFile = std::filesystem::path(outFileStr + ".edm4hep.json");
+    outFilePath = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
-  return read_frames<podio::ROOTFrameReader>(inFile, outFile, requestedCollections, requestedEvents, frameName,
-                                             nEventsMax, verboser);
+  bool legacyReader = false;
+  {
+    std::unique_ptr<TFile> inFile(TFile::Open(inFilePath.c_str(), "READ"));
+    legacyReader = !inFile->GetListOfKeys()->FindObject("podio_metadata");
+  }
+
+  if (legacyReader) {
+    std::cout << "WARNING: Reading legacy file, some collections might not be recognized!" << std::endl;
+    return read_frames<podio::ROOTLegacyReader>(inFilePath,
+                                                outFilePath,
+                                                requestedCollections,
+                                                requestedEvents,
+                                                frameName,
+                                                nEventsMax,
+                                                verboser);
+  } else {
+    return read_frames<podio::ROOTFrameReader>(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName,
+                                               nEventsMax, verboser);
+  }
+
+  return EXIT_SUCCESS;
 }
