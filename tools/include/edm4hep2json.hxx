@@ -2,34 +2,34 @@
 #define EDM4HEP_TO_JSON_H
 
 // EDM4hep event data model
+#include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/CalorimeterHitCollection.h"
+#include "edm4hep/ClusterCollection.h"
 #include "edm4hep/EventHeaderCollection.h"
 #include "edm4hep/MCParticleCollection.h"
-#include "edm4hep/SimTrackerHitCollection.h"
-#include "edm4hep/CaloHitContributionCollection.h"
-#include "edm4hep/SimCalorimeterHitCollection.h"
-#include "edm4hep/RawCalorimeterHitCollection.h"
-#include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/ParticleIDCollection.h"
-#include "edm4hep/ClusterCollection.h"
+#include "edm4hep/RawCalorimeterHitCollection.h"
+#include "edm4hep/RawTimeSeriesCollection.h"
+#include "edm4hep/RecDqdxCollection.h"
+#include "edm4hep/RecIonizationClusterCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
+#include "edm4hep/SimCalorimeterHitCollection.h"
+#include "edm4hep/SimPrimaryIonizationClusterCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
+#include "edm4hep/TimeSeriesCollection.h"
+#include "edm4hep/TrackCollection.h"
 #include "edm4hep/TrackerHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
-#include "edm4hep/RawTimeSeriesCollection.h"
-#include "edm4hep/TrackCollection.h"
-#include "edm4hep/VertexCollection.h"
-#include "edm4hep/ReconstructedParticleCollection.h"
-#include "edm4hep/SimPrimaryIonizationClusterCollection.h"
 #include "edm4hep/TrackerPulseCollection.h"
-#include "edm4hep/RecIonizationClusterCollection.h"
-#include "edm4hep/TimeSeriesCollection.h"
-#include "edm4hep/RecDqdxCollection.h"
+#include "edm4hep/VertexCollection.h"
 
-#include "edm4hep/MCRecoParticleAssociationCollection.h"
 #include "edm4hep/MCRecoCaloAssociationCollection.h"
-#include "edm4hep/MCRecoTrackerAssociationCollection.h"
-#include "edm4hep/MCRecoTrackerHitPlaneAssociationCollection.h"
 #include "edm4hep/MCRecoCaloParticleAssociationCollection.h"
 #include "edm4hep/MCRecoClusterParticleAssociationCollection.h"
+#include "edm4hep/MCRecoParticleAssociationCollection.h"
 #include "edm4hep/MCRecoTrackParticleAssociationCollection.h"
+#include "edm4hep/MCRecoTrackerAssociationCollection.h"
+#include "edm4hep/MCRecoTrackerHitPlaneAssociationCollection.h"
 #include "edm4hep/RecoParticleVertexAssociationCollection.h"
 
 // podio specific includes
@@ -83,7 +83,8 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "edm4hep::CaloHitContributionCollection") {
       auto& hitContribCollection = frame.get<edm4hep::CaloHitContributionCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i], {{"collection", hitContribCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i],
+           {{"collection", hitContribCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::SimCalorimeterHitCollection") {
       auto& hitCollection = frame.get<edm4hep::SimCalorimeterHitCollection>(collList[i]);
@@ -120,7 +121,8 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "edm4hep::TrackerHitPlaneCollection") {
       auto& hitPlaneCollection = frame.get<edm4hep::TrackerHitPlaneCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i], {{"collection", hitPlaneCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i],
+           {{"collection", hitPlaneCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::RawTimeSeries") {
       auto& rtsCollection = frame.get<edm4hep::RawTimeSeriesCollection>(collList[i]);
@@ -154,26 +156,22 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "edm4hep::TrackerPulseCollection") {
       auto& tpCollection = frame.get<edm4hep::TrackerPulseCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i],
-           {{"collection", tpCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i], {{"collection", tpCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::RecIonizationClusterCollection") {
       auto& ricCollection = frame.get<edm4hep::RecIonizationClusterCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i],
-           {{"collection", ricCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i], {{"collection", ricCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::TimeSeriesCollection") {
       auto& tsCollection = frame.get<edm4hep::TimeSeriesCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i],
-           {{"collection", tsCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i], {{"collection", tsCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     } else if (coll->getTypeName() == "edm4hep::RecDqdxCollection") {
       auto& recCollection = frame.get<edm4hep::RecDqdxCollection>(collList[i]);
       nlohmann::json jsonColl{
-          {collList[i],
-           {{"collection", recCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+          {collList[i], {{"collection", recCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
     }
     // Associations
@@ -360,7 +358,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
   }
   if (verboser) {
     std::cout << "INFO: Following collections will be converted:" << std::endl;
-    for (const auto& collName: collList) {
+    for (const auto& collName : collList) {
       std::cout << "      * " << collName << std::endl;
     }
   }

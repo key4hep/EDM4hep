@@ -128,16 +128,11 @@ int main(int argc, char** argv) {
 
   if (legacyReader) {
     std::cout << "WARNING: Reading legacy file, some collections might not be recognized!" << std::endl;
-    return read_frames<podio::ROOTLegacyReader>(inFilePath,
-                                                outFilePath,
-                                                requestedCollections,
-                                                requestedEvents,
-                                                frameName,
-                                                nEventsMax,
-                                                verboser);
+    return read_frames<podio::ROOTLegacyReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
+                                                frameName, nEventsMax, verboser);
   } else {
-    return read_frames<podio::ROOTFrameReader>(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName,
-                                               nEventsMax, verboser);
+    return read_frames<podio::ROOTFrameReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
+                                               frameName, nEventsMax, verboser);
   }
 
   return EXIT_SUCCESS;
