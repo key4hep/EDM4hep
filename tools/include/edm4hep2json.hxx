@@ -124,7 +124,7 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
           {collList[i],
            {{"collection", hitPlaneCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
       jsonDict.insert(jsonColl.begin(), jsonColl.end());
-    } else if (coll->getTypeName() == "edm4hep::RawTimeSeries") {
+    } else if (coll->getTypeName() == "edm4hep::RawTimeSeriesCollection") {
       auto& rtsCollection = frame.get<edm4hep::RawTimeSeriesCollection>(collList[i]);
       nlohmann::json jsonColl{
           {collList[i], {{"collection", rtsCollection}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
@@ -425,7 +425,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
         std::cout << "INFO: Reading event " << i << std::endl;
       }
 
-      auto frame = podio::Frame(reader.readNextEntry(frameName));
+      auto frame = podio::Frame(reader.readEntry(frameName, i));
       auto eventDict = processEvent(frame, collList, verboser, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
