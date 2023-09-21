@@ -32,6 +32,8 @@
 #include "edm4hep/MCRecoTrackerHitPlaneAssociationCollection.h"
 #include "edm4hep/RecoParticleVertexAssociationCollection.h"
 
+#include "edm4hep/EDM4hepVersion.h"
+
 // podio specific includes
 #include "podio/Frame.h"
 #include "podio/UserDataCollection.h"
@@ -48,11 +50,13 @@
 #include <sstream>
 #include <vector>
 
-nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList, bool verboser,
+nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList,
                             podio::version::Version podioVersion) {
   std::stringstream podioVersionStr;
   podioVersionStr << podioVersion;
-  nlohmann::json jsonDict = {{"podioVersion", podioVersionStr.str()}};
+  std::stringstream e4hVersionStr;
+  e4hVersionStr << edm4hep::version::build_version;
+  nlohmann::json jsonDict = {{"podioVersion", podioVersionStr.str()}, {"edm4hepVersion", e4hVersionStr.str()}};
 
   for (unsigned i = 0; i < collList.size(); ++i) {
     auto coll = frame.get(collList[i]);
@@ -426,13 +430,13 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
       }
 
       auto frame = podio::Frame(reader.readEntry(frameName, i));
-      auto eventDict = processEvent(frame, collList, verboser, reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
     for (auto& i : eventVec) {
       auto frame = podio::Frame(reader.readEntry(frameName, i));
-      auto eventDict = processEvent(frame, collList, verboser, reader.currentFileVersion());
+      auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   }
