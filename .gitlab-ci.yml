@@ -56,7 +56,7 @@ deployment:
   # make sure that changes are deployed only when they are merged to master
   only:
     refs:
-      - master
+      - main
   # need the doxygen artifacts for this step
   dependencies:
     - generate-docs
