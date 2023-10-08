@@ -18,7 +18,7 @@ generate-docs:
   # need a runner with cvmfs installed. On the CERN gitlab instance,
   # these are usually tagged with "cvmfs"
   tags:
-   - cvmfs
+    - k8s-cvmfs
   script:
     # use a setup that provides all dependencies - if the dependencies change,
     # this needs to be updated
