@@ -18,7 +18,8 @@ generate-docs:
   # need a runner with cvmfs installed. On the CERN gitlab instance,
   # these are usually tagged with "cvmfs"
   tags:
-   - cvmfs
+    - k8s-cvmfs
+  image: registry.cern.ch/ghcr.io/key4hep/key4hep-images/centos7:latest
   script:
     # use a setup that provides all dependencies - if the dependencies change,
     # this needs to be updated
@@ -56,7 +57,7 @@ deployment:
   # make sure that changes are deployed only when they are merged to master
   only:
     refs:
-      - master
+      - main
   # need the doxygen artifacts for this step
   dependencies:
     - generate-docs
