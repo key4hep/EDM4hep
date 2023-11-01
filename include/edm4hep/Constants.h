@@ -19,10 +19,9 @@
 #ifndef EDM4HEP_CONSTANTS_H
 #define EDM4HEP_CONSTANTS_H
 
-#include <string>
 
 namespace edm4hep {
-inline constexpr std::string_view CellIDEncoding = "CellIDEncoding";
+static constexpr const char* CellIDEncoding = "CellIDEncoding";
 }
 
 #endif // EDM4HEP_CONSTANTS_H
