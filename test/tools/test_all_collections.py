@@ -1,8 +1,9 @@
 '''
-Tests if all collection header files are included in the cxx file.
+Tests if all datatypes are used in the cxx file.
 '''
 
 import sys
+import re
 import argparse
 import yaml
 
@@ -16,23 +17,27 @@ def test(yamlfile_path, cxxfile_path):
     with open(yamlfile_path, mode='r', encoding="utf-8") as yamlfile:
         datamodel = yaml.safe_load(yamlfile)
 
+    # List stores lines of cxx code on which `insertToJson<CollType>` is used
+    datatypes_found = []
+
     with open(cxxfile_path, mode='r', encoding="utf-8") as cxxfile:
-        cxxfile_lines = cxxfile.readlines()
+        for cxxline in cxxfile:
+            cxxline = cxxfile.readline()
+            result = re.search('insertIntoJson<edm4hep::(.+?)Collection>',
+                               cxxline)
+            if result:
+                datatypes_found += ['edm4hep::' + result.group(1)]
 
-    datatypes = datamodel['datatypes']
+    datatypes_found = set(datatypes_found)
 
-    for collname in datatypes:
-        include_string = '#include "' + collname.replace('::', '/') + \
-                         'Collection.h"'
-        include_found = False
-        for line in cxxfile_lines:
-            if include_string in line:
-                include_found = True
+    datatypes = set(datamodel['datatypes'])
 
-        if not include_found:
-            print('ERROR: Following collection not included in the cxx file.')
-            print('       ' + collname)
-            sys.exit(2)
+    if not datatypes.issubset(datatypes_found):
+        missing_datatypes = datatypes - datatypes_found
+        print('ERROR: One or more datatypes are not being converted:')
+        for datatype in missing_datatypes:
+            print('       ' + datatype)
+        sys.exit(2)
 
 
 if __name__ == "__main__":
