@@ -104,6 +104,11 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
               ${CMAKE_CURRENT_SOURCE_DIR}/NOTICE
               DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep
+        FILES_MATCHING PATTERN "*.h")
+
 find_package(nlohmann_json 3.10.5)
 
 add_subdirectory(edm4hep)
