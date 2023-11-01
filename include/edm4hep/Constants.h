@@ -22,7 +22,7 @@
 #include <string>
 
 namespace edm4hep {
-  inline constexpr std::string_view CellIDEncoding = "CellIDEncoding";
+inline constexpr std::string_view CellIDEncoding = "CellIDEncoding";
 }
 
-#endif  // EDM4HEP_CONSTANTS_H
+#endif // EDM4HEP_CONSTANTS_H
