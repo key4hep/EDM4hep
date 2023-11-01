@@ -19,7 +19,6 @@
 #ifndef EDM4HEP_CONSTANTS_H
 #define EDM4HEP_CONSTANTS_H
 
-
 namespace edm4hep {
 static constexpr const char* CellIDEncoding = "CellIDEncoding";
 }
