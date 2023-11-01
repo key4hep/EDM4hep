@@ -105,8 +105,7 @@ int main(int argc, char** argv) {
   }
 
   if (!std::filesystem::exists(inFilePath)) {
-    std::cerr << "ERROR: Input .root file can't be read!\n       "
-              << inFilePath << std::endl;
+    std::cerr << "ERROR: Input .root file can't be read!\n       " << inFilePath << std::endl;
     return EXIT_FAILURE;
   }
 
