@@ -1,3 +1,34 @@
+# v00-10-01
+
+* 2023-11-01 jmcarcell ([PR#234](https://github.com/key4hep/EDM4hep/pull/234))
+  - Add a constant for CellIDEncoding. Usage:
+  
+  ``` cpp
+  #include "edm4hep/Constants.h"
+  
+  std::cout << edm4hep::CellIDEncoding << std::endl;
+  ```
+
+* 2023-11-01 Juraj Smiesko ([PR#227](https://github.com/key4hep/EDM4hep/pull/227))
+  - edm4hep2json now converts all EDM4hep collections, associations and Podio user data
+  - added ROOT legacy support for edm4hep2json
+
+* 2023-09-13 jmcarcell ([PR#226](https://github.com/key4hep/EDM4hep/pull/226))
+  - Rename the cmake executable or target `unittests` to `unittests_edm4hep`, to avoid possible collisions since the `unittests` name is relatively common
+
+* 2023-09-11 Wouter Deconinck ([PR#225](https://github.com/key4hep/EDM4hep/pull/225))
+  - Define schema_version at top level in yaml file
+
+* 2023-09-11 tmadlener ([PR#224](https://github.com/key4hep/EDM4hep/pull/224))
+  - Add `SKIP_CATCH_DISCOVERY` option to turn of `catch_discover_tests` which may not run in the right environment in older cmake versions.
+
+* 2023-09-05 Andre Sailer ([PR#223](https://github.com/key4hep/EDM4hep/pull/223))
+  - CI: use same lcg stacks as podio
+  - Test: update to Catch2 3.4.0, same as in podio, and c++20 compatible
+
+* 2023-09-05 jmcarcell ([PR#222](https://github.com/key4hep/EDM4hep/pull/222))
+  - Remove init.sh
+
 # v00-10
 
 * 2023-07-07 BrieucF ([PR#212](https://github.com/key4hep/EDM4hep/pull/212))
