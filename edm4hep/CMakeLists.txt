@@ -7,6 +7,12 @@ PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 add_library(EDM4HEP::edm4hep ALIAS edm4hep)
 set_target_properties(edm4hep PROPERTIES ALIAS_GLOBAL true)
 
+file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
+target_sources(edm4hep PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
+target_include_directories(edm4hep PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
 if (nlohmann_json_FOUND)
   target_compile_definitions(edm4hep PUBLIC PODIO_JSON_OUTPUT)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
@@ -29,6 +35,7 @@ install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
   PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/edm4hep"
+  FILE_SET headers DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   COMPONENT dev)
 
 install(FILES
