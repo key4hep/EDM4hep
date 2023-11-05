@@ -40,12 +40,9 @@ install(TARGETS ${EDM4HEP_INSTALL_LIBS}
 
 install(FILES
   "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
+  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 install(FILES
   ../edm4hep.yaml
   DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
-
-install(FILES
-  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)

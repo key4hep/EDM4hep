@@ -9,14 +9,7 @@ SET( ${PROJECT_NAME}_VERSION_PATCH 1 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-
-#--- Run the podio class generator and link library -------
-
 find_package(podio REQUIRED HINTS $ENV{PODIO})
-
-#--- Declare ROOT dependency ---------------------------------------------------
-list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 #--- Define basic build settings -----------------------------------------------
