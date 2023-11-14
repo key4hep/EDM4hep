@@ -66,12 +66,12 @@ namespace utils {
   }
   // no z-component for 2D vectors
   template <>
-  inline constexpr auto vector_z<edm4hep::Vector2f>(const edm4hep::Vector2f& v) {
+  inline constexpr auto vector_z<edm4hep::Vector2f>(const edm4hep::Vector2f&) {
     return 0;
   }
 
   template <>
-  inline constexpr auto vector_z<edm4hep::Vector2i>(const edm4hep::Vector2i& v) {
+  inline constexpr auto vector_z<edm4hep::Vector2i>(const edm4hep::Vector2i&) {
     return 0;
   }
 

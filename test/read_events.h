@@ -18,7 +18,7 @@
 #include <iostream>
 #include <vector>
 
-void processEvent(const podio::Frame& event, bool verboser, unsigned eventNum) {
+void processEvent(const podio::Frame& event) {
   auto& mcps = event.get<edm4hep::MCParticleCollection>("MCParticles");
   auto& sths = event.get<edm4hep::SimTrackerHitCollection>("SimTrackerHits");
   auto& schs = event.get<edm4hep::SimCalorimeterHitCollection>("SimCalorimeterHits");
@@ -253,7 +253,7 @@ void read_events(const std::string& filename) {
   for (unsigned i = 0; i < nEvents; ++i) {
     std::cout << "reading event " << i << std::endl;
     const auto event = podio::Frame(reader.readNextEntry("events"));
-    processEvent(event, true, i);
+    processEvent(event);
   }
 }
 
