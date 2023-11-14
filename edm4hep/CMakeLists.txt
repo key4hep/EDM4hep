@@ -9,9 +9,6 @@ set_target_properties(edm4hep PROPERTIES ALIAS_GLOBAL true)
 
 file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
 target_sources(edm4hep PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
-target_include_directories(edm4hep PUBLIC
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 if (nlohmann_json_FOUND)
   target_compile_definitions(edm4hep PUBLIC PODIO_JSON_OUTPUT)
