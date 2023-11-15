@@ -37,7 +37,6 @@ jobs:
           export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=/root/.local/bin:$PATH
           pip install argparse --user
-          pip install pre-commit --user
           mkdir build
           cd build
           cmake .. -DENABLE_SIO=ON \
