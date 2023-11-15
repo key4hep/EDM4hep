@@ -10,7 +10,7 @@ jobs:
     - uses: cvmfs-contrib/github-action-cvmfs@v3
     - uses: aidasoft/run-lcg-view@v4
       with:
-        release-platform: LCG_103/x86_64-centos7-clang12-opt
+        release-platform: LCG_104/x86_64-centos7-gcc12-opt
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
