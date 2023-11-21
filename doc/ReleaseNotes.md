@@ -1,3 +1,11 @@
+# v00-10-02
+
+* 2023-11-14 jmcarcell ([PR#240](https://github.com/key4hep/EDM4hep/pull/240))
+  - Change EventHeader to EventHeaderName; we already have an EventHeaderCollection and its elements are called EventHeader (`edm4hep::EventHeader` more precisely)
+
+* 2023-11-14 Leonhard Reichenbach ([PR#239](https://github.com/key4hep/EDM4hep/pull/239))
+  - Add a constant for the default expected EventHeader name to be used by the converters and PodioInput
+
 # v00-10-01
 
 * 2023-11-01 jmcarcell ([PR#234](https://github.com/key4hep/EDM4hep/pull/234))
