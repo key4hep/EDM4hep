@@ -342,7 +342,7 @@ datatypes:
       - edm4hep::ParticleID     particleIDs  //particle IDs (sorted by their likelihood)
 
   #-------------  TrackerHit
-  edm4hep::TrackerHit:
+  edm4hep::TrackerHit3D:
     Description: "Tracker hit"
     Author: "F.Gaede, DESY"
     Members:
@@ -408,7 +408,7 @@ datatypes:
       - edm4hep::TrackState trackStates  //track states
       - edm4hep::Quantity dxQuantities // different measurements of dx quantities
     OneToManyRelations:
-      - edm4hep::TrackerHit trackerHits  //hits that have been used to create this track
+      - edm4hep::TrackerHit3D trackerHits  //hits that have been used to create this track
       - edm4hep::Track tracks            //tracks (segments) that have been combined to create this track
 
  #---------- Vertex
@@ -483,7 +483,7 @@ datatypes:
     Members:
       - float weight              // weight of this association
     OneToOneRelations:
-     - edm4hep::TrackerHit rec    // reference to the reconstructed hit
+     - edm4hep::TrackerHit3D rec    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit sim // reference to the simulated hit
 
   edm4hep::MCRecoTrackerHitPlaneAssociation:
