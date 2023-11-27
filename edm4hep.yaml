@@ -396,7 +396,7 @@ datatypes:
       - edm4hep::TrackState trackStates  // track states
       - edm4hep::Quantity dxQuantities // different measurements of dx quantities
     OneToManyRelations:
-      - edm4hep::TrackerHit3D trackerHits  // hits that have been used to create this track
+      - edm4hep::TrackerHit trackerHits  // hits that have been used to create this track
       - edm4hep::Track tracks            // tracks (segments) that have been combined to create this track
 
  #---------- Vertex
@@ -475,7 +475,7 @@ datatypes:
     Members:
       - float weight              // weight of this association
     OneToOneRelations:
-     - edm4hep::TrackerHit3D rec    // reference to the reconstructed hit
+     - edm4hep::TrackerHit rec    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit sim // reference to the simulated hit
 
   edm4hep::MCRecoTrackerHitPlaneAssociation:
@@ -607,3 +607,20 @@ datatypes:
       - edm4hep::HitLevelData hitData   // hit level data
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
+
+interfaces:
+  edm4hep::TrackerHit:
+    Description: "Tracker hit interface class"
+    Author: "Thomas Madlener, DESY"
+    Members:
+      - uint64_t cellID // ID of the sensor that created this hit
+      - int32_t type // type of the raw data hit
+      - int32_t quality // quality bit flag of the hit
+      - float time [ns] // time of the hit
+      - float eDep [GeV] // energy deposited on the hit
+      - float eDepError [GeV] // error measured on eDep
+      - edm4hep::Vector3d position [mm] // hit position
+      - std::array<float, 6> covMatrix // covariance of the position (x,y,z) stored as lower triangle matrix, i.e. cov(x,x), cov(y, x), cov(y, y), cov(z, x), cov(z, y), cov(z, z)
+    Types:
+      - edm4hep::TrackerHit3D
+      - edm4hep::TrackerHitPlane
