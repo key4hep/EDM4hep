@@ -18,7 +18,7 @@
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TimeSeriesCollection.h"
 #include "edm4hep/TrackCollection.h"
-#include "edm4hep/TrackerHitCollection.h"
+#include "edm4hep/TrackerHit3DCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
 #include "edm4hep/TrackerPulseCollection.h"
 #include "edm4hep/VertexCollection.h"
@@ -92,8 +92,8 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::ParticleIDCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::ClusterCollection") {
       insertIntoJson<edm4hep::ClusterCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::TrackerHitCollection") {
-      insertIntoJson<edm4hep::TrackerHitCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::TrackerHit3DCollection") {
+      insertIntoJson<edm4hep::TrackerHit3DCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::TrackerHitPlaneCollection") {
       insertIntoJson<edm4hep::TrackerHitPlaneCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::RawTimeSeriesCollection") {
