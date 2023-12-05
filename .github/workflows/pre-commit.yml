@@ -10,7 +10,7 @@ jobs:
     - uses: cvmfs-contrib/github-action-cvmfs@v3
     - uses: aidasoft/run-lcg-view@v4
       with:
-        release-platform: LCG_99/x86_64-centos7-clang10-opt
+        release-platform: LCG_104/x86_64-el9-clang16-opt
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
@@ -37,7 +37,6 @@ jobs:
           export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=/root/.local/bin:$PATH
           pip install argparse --user
-          pip install pre-commit --user
           mkdir build
           cd build
           cmake .. -DENABLE_SIO=ON \
@@ -47,6 +46,7 @@ jobs:
             -DUSE_EXTERNAL_CATCH2=OFF
           ln -s $(pwd)/compile_commands.json ../
           cd ..
+          pip install pre-commit --user
           pre-commit run --show-diff-on-failure \
             --color=always \
             --all-files

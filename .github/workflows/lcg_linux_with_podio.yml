@@ -14,9 +14,7 @@ jobs:
         include:
           - LCG: "dev4/x86_64-centos7-gcc11-opt"
             CXX_STANDARD: 17
-          - LCG: "LCG_102/x86_64-centos7-clang12-opt"
-            CXX_STANDARD: 17
-          - LCG: "LCG_102/x86_64-centos8-gcc11-opt"
+          - LCG: "LCG_104/x86_64-centos8-gcc11-opt"
             CXX_STANDARD: 17
     steps:
     - uses: actions/checkout@v3

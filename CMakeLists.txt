@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.23)
 
 project(EDM4HEP LANGUAGES CXX)
 
@@ -9,14 +9,7 @@ SET( ${PROJECT_NAME}_VERSION_PATCH 2 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-
-#--- Run the podio class generator and link library -------
-
 find_package(podio REQUIRED HINTS $ENV{PODIO})
-
-#--- Declare ROOT dependency ---------------------------------------------------
-list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 #--- Define basic build settings -----------------------------------------------
@@ -103,11 +96,6 @@ include(cmake/EDM4HEPCreateConfig.cmake)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
               ${CMAKE_CURRENT_SOURCE_DIR}/NOTICE
               DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/edm4hep/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep
-        FILES_MATCHING PATTERN "*.h")
 
 find_package(nlohmann_json 3.10.5)
 
