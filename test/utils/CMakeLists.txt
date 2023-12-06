@@ -41,7 +41,10 @@ if (SKIP_CATCH_DISCOVERY)
     ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )
 else()
-  catch_discover_tests(unittests_edm4hep)
+  catch_discover_tests(unittests_edm4hep
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DL_PATHS $<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+  )
 endif()
 
 add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
