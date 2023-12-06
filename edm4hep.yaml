@@ -44,11 +44,14 @@ components:
         - double y
         - double z
       ExtraCode:
+        includes: "#include <edm4hep/Vector3f.h>"
         declaration: "
         constexpr Vector3d() : x(0),y(0),z(0) {}\n
         constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
         constexpr Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
+        [[ deprecated("This constructor will be removed again it is mainly here for an easier transition") ]]\n
+        constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}\n
         constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
         constexpr double operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
