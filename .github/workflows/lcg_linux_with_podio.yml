@@ -16,6 +16,8 @@ jobs:
             CXX_STANDARD: 17
           - LCG: "LCG_104/x86_64-centos8-gcc11-opt"
             CXX_STANDARD: 17
+          - LCG: "dev4/x86_64-ubuntu2004-gcc9-opt"
+            CXX_STANDARD: 17
     steps:
     - uses: actions/checkout@v3
     - uses: cvmfs-contrib/github-action-cvmfs@v3
