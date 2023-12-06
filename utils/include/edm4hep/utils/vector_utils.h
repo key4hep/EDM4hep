@@ -44,16 +44,16 @@ concept ClassVector = requires(V v) {
 };
 
 template <class V>
-concept Vector2D_XY = VectorHasX<V>&& VectorHasY<V> && !VectorHasZ<V> && !ClassVector<V>;
+concept Vector2D_XY = VectorHasX<V> && VectorHasY<V> && !VectorHasZ<V> && !ClassVector<V>;
 
 template <class V>
-concept Vector2D_AB = VectorHasA<V>&& VectorHasB<V> && !VectorHasZ<V> && !ClassVector<V>;
+concept Vector2D_AB = VectorHasA<V> && VectorHasB<V> && !VectorHasZ<V> && !ClassVector<V>;
 
 template <class V>
 concept Vector2D = Vector2D_XY<V> || Vector2D_AB<V>;
 
 template <class V>
-concept Vector3D = VectorHasX<V>&& VectorHasY<V>&& VectorHasZ<V> && !ClassVector<V>;
+concept Vector3D = VectorHasX<V> && VectorHasY<V> && VectorHasZ<V> && !ClassVector<V>;
 
 template <class V>
 concept VectorND = Vector2D<V> || Vector3D<V>;
