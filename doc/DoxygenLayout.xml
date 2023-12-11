@@ -5,7 +5,7 @@
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="user" visible="yes" title="Key4HEP Home Page" url="https://cern.ch/key4hep"/>
     <tab type="pages" visible="no" title="" intro=""/>
-    <tab type="user" visible="yes" title="Contribution Guide" url="md_doc_contributing.html"/>
+    <tab type="user" visible="yes" title="Contribution Guide" url="@ref md_doc_2contributing"/>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>

@@ -129,5 +129,4 @@ of the input file should be part of the output.
 
 ## Contributing
 
-Contributions and bug reports are welcome! See our [contributing
-guidelines](./doc/contributing.md) if you want to contribute code to EDM4hep.
+Contributions and bug reports are welcome! See our [contributing guidelines](doc/contributing.md) if you want to contribute code to EDM4hep.
