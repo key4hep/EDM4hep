@@ -39,7 +39,7 @@ a PR, as we only allow *rebase merges* for PRs.
 
       git push downstream <myNewBranch>
 
-- reload your own github website (https://github.com/<yourUserName>/EDM4HEP)
+- reload your own Github website (https://github.com/<yourUserName>/EDM4HEP)
   - you should see your commit
   - now you can create a pull request on the web site
 
