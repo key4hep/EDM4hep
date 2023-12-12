@@ -21,7 +21,7 @@ def check_readme_links():
 
   links_are_ok = True
   for readme_line in readme_content:
-    edm4hep_objects = re.findall("\[(.*?)\]\(https:\/\/github.com\/key4hep\/EDM4hep\/blob\/master\/edm4hep\.yaml#L(\d+?)\)", readme_line)
+    edm4hep_objects = re.findall("\[(.*?)\]\(https:\/\/github.com\/key4hep\/EDM4hep\/blob\/main\/edm4hep\.yaml#L(\d+?)\)", readme_line)
     if edm4hep_objects:
       for edm4hep_object, original_line_number in edm4hep_objects:
         regex = f".*edm4hep::{edm4hep_object} *: *"
@@ -32,7 +32,7 @@ def check_readme_links():
           sys.exit(1)
         if edm4hep_yaml_line_numbers_with_match[0] != original_line_number:
           links_are_ok = False
-          readme_line = readme_line.replace(f"[{edm4hep_object}](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L{original_line_number})", f"[{edm4hep_object}](https://github.com/key4hep/EDM4hep/blob/master/edm4hep.yaml#L{edm4hep_yaml_line_numbers_with_match[0]})")
+          readme_line = readme_line.replace(f"[{edm4hep_object}](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L{original_line_number})", f"[{edm4hep_object}](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L{edm4hep_yaml_line_numbers_with_match[0]})")
           print(f"{edm4hep_object} is wrongly linked (line {original_line_number} --> {edm4hep_yaml_line_numbers_with_match[0]})")
     new_readme_content += readme_line
   return links_are_ok, new_readme_content
