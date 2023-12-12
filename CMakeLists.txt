@@ -73,11 +73,6 @@ endif()
 #--- target for Doxygen documentation ------------------------------------------
 if(BUILD_DOCS)
   include(cmake/EDM4HEPDoxygen.cmake)
-  # copy images needed for documentation to build folder and install them
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/edm4hep_diagram.svg
-                 ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg COPYONLY)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/doxygen/html/doc/edm4hep_diagram.svg
-          DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 #--- add version files ---------------------------------------------------------
