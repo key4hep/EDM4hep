@@ -64,10 +64,10 @@ template <class V>
 concept Vector4D = VectorHasX<V> && VectorHasY<V> && VectorHasZ<V> && VectorHasT<V> && !ClassVector<V>;
 
 template <class V>
-concept VectorND = Vector2D<V> || Vector3D<V>;
+concept Vector2or3D = Vector2D<V> || Vector3D<V>;
 
 template <class V>
-concept VectorAD = Vector2D<V> || Vector3D<V> || Vector4D<V>;
+concept VectorND = Vector2D<V> || Vector3D<V> || Vector4D<V>;
 
 template <class V>
 concept VectorND_XYZ = Vector2D_XY<V> || Vector3D<V> || Vector4D<V>;
@@ -82,6 +82,11 @@ namespace utils {
   template <VectorND_XYZ V>
   constexpr auto vector_y(const V& v) {
     return v.y;
+  }
+  
+  template <Vector2D V>
+  constexpr auto vector_z(const V&) {
+    return 0;
   }
 
   template <Vector3D V>
@@ -99,6 +104,11 @@ namespace utils {
     return v.t;
   }
 
+  template <Vector2or3D V>
+  constexpr auto vector_t(const V&) {
+    return 0;
+  }
+
   template <Vector2D_AB V>
   constexpr auto vector_x(const V& v) {
     return v.a;
@@ -107,21 +117,6 @@ namespace utils {
   template <Vector2D_AB V>
   constexpr auto vector_y(const V& v) {
     return v.b;
-  }
-
-  template <Vector2D V>
-  constexpr auto vector_z(const V&) {
-    return 0;
-  }
-
-  template<Vector3D V>
-  constexpr auto vector_t(const V&) {
-    return 0;
-  }
-
-  template <Vector2D V>
-  constexpr auto vector_t(const V&) {
-    return 0;
   }
 
   namespace detail {
@@ -184,7 +179,7 @@ namespace utils {
     return angleToEta(anglePolar(v));
   }
 
-  template <VectorND V>
+  template <Vector2or3D V>
   double magnitude(const V& v) {
     return std::hypot(vector_x(v), vector_y(v), vector_z(v));
   }
@@ -224,7 +219,7 @@ namespace utils {
   }
 
   // Two vector functions
-  template <VectorND V>
+  template <Vector2or3D V>
   double angleBetween(const V& v1, const V& v2) {
     const double dot = v1 * v2;
     if (dot == 0) {
@@ -234,7 +229,7 @@ namespace utils {
   }
 
   // Project v onto v1
-  template <VectorND V>
+  template <Vector2or3D V>
   double projection(const V& v, const V& v1) {
     const double norm = magnitude(v1);
     if (norm == 0) {
@@ -314,17 +309,17 @@ inline constexpr V operator*(const double d, const V& v) {
   return {x, y, z, t};
 }
 
-template <edm4hep::VectorAD V>
+template <edm4hep::VectorND V>
 inline constexpr V operator*(const V& v, const double d) {
   return d * v;
 }
 
-template <edm4hep::VectorAD V>
+template <edm4hep::VectorND V>
 inline constexpr V operator-(const V& v1, const V& v2) {
   return v1 + (-1. * v2);
 }
 
-template <edm4hep::VectorAD V>
+template <edm4hep::VectorND V>
 inline constexpr V operator/(const V& v, const double d) {
   return (1. / d) * v;
 }
