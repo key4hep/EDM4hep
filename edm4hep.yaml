@@ -9,7 +9,7 @@ components:
     
     #Vector4f with floats
     edm4hep::Vector4f:
-      Description: "Generic 4 vector for storing classical 4D coordinates in memory. 4 vector helper functions are in edm4hep::utils"
+      Description: "Generic vector for storing classical 4D coordinates in memory. Four momentum helper functions are in edm4hep::utils"
       Members:
         - float x
         - float y
