@@ -6,7 +6,6 @@ options:
   includeSubfolder: True
 
 components:
-    
     edm4hep::Vector4f:
       Description: "Generic vector for storing classical 4D coordinates in memory. Four momentum helper functions are in edm4hep::utils"
       Members:
