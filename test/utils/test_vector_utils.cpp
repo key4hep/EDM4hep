@@ -13,7 +13,8 @@
 #include <tuple>
 #include <type_traits>
 using Vector2And3Types = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2i, edm4hep::Vector2f>;
-using AllVectorTypes = std::tuple<edm4hep::Vector4f, edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2i, edm4hep::Vector2f>;
+using AllVectorTypes =
+    std::tuple<edm4hep::Vector4f, edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2i, edm4hep::Vector2f>;
 
 template <typename V>
 constexpr V create();

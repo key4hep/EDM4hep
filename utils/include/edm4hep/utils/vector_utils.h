@@ -83,7 +83,7 @@ namespace utils {
   constexpr auto vector_y(const V& v) {
     return v.y;
   }
-  
+
   template <Vector2D V>
   constexpr auto vector_z(const V&) {
     return 0;
