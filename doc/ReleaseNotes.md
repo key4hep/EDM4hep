@@ -1,3 +1,19 @@
+# v00-10-03
+
+* 2024-01-08 Joe Osborn ([PR#248](https://github.com/key4hep/EDM4hep/pull/248))
+  - Added a Vector4f object for use as a general 4 dimensional vector with members `x`, `y`, `z` and `t`. Fixes https://github.com/key4hep/EDM4hep/issues/245
+
+* 2023-12-12 Mateusz Jakub Fila ([PR#244](https://github.com/key4hep/EDM4hep/pull/244))
+  - Fixed typos and links in documentation and doxygen
+
+* 2023-12-06 tmadlener ([PR#243](https://github.com/key4hep/EDM4hep/pull/243))
+  - Make sure that tests also work in Ubuntu 20.04 environments by running catch test discovery in correct environment.
+
+* 2023-12-05 jmcarcell ([PR#235](https://github.com/key4hep/EDM4hep/pull/235))
+  - Use `FILE_SET` to install the headers in the top folder together with the library. This also adds them in the `BUILD_INTERFACE`, something that a simple `INSTALL` doesn't do.
+  - Bump the CMake version of the LCG stacks
+  - Simplify finding ROOT, don't do environment variable manipulation in CMake
+
 # v00-10-02
 
 * 2023-11-14 jmcarcell ([PR#240](https://github.com/key4hep/EDM4hep/pull/240))
