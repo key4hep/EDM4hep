@@ -11,6 +11,7 @@
 #include <edm4hep/Vector2i.h>
 #include <edm4hep/Vector3d.h>
 #include <edm4hep/Vector3f.h>
+#include <edm4hep/Vector4f.h>
 
 #include <cmath>
 #include <tuple>
@@ -42,6 +43,11 @@ namespace utils {
   template <class V>
   constexpr auto vector_z(const V& v) {
     return v.z;
+  }
+
+  template <class V>
+  constexpr auto vector_t(const V& v) {
+    return v.t;
   }
 
   // 2D vector uses a,b instead of x,y
@@ -98,6 +104,7 @@ namespace utils {
   using ValueType = typename detail::ValueTypeHelper<V>::type;
 
   using EDM4hepVectorTypes = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2i, edm4hep::Vector2f>;
+  using EDM4hepVector4DTypes = std::tuple<edm4hep::Vector4f>;
   using EDM4hepVector3DTypes = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d>;
   using EDM4hepVector2DTypes = std::tuple<edm4hep::Vector2f, edm4hep::Vector2i>;
   using EDM4hepFloatVectorTypes = std::tuple<edm4hep::Vector2f, edm4hep::Vector3f, edm4hep::Vector3d>;
@@ -111,6 +118,8 @@ namespace utils {
   template <typename V>
   using EnableIfEDM4hepVector3DType = std::enable_if_t<detail::isInTuple<V, EDM4hepVector3DTypes>, bool>;
 
+  template <typename V>
+  using EnableIfEdm4hepVector4DType = std::enable_if_t<detail::isInTuple<V, EDM4hepVector4DTypes>, bool>;
   template <typename V>
   using EnableIfEDM4hepFloatVectorType = std::enable_if_t<detail::isInTuple<V, EDM4hepFloatVectorTypes>, bool>;
 
@@ -218,6 +227,15 @@ inline constexpr V operator+(const V& v1, const V& v2) {
   return {x, y, z};
 }
 
+template <typename V, edm4hep::utils::EnableIfEdm4hepVector4DType<V> = false>
+inline constexpr V operator+(const V& v1, const V& v2) {
+  const auto x = edm4hep::utils::vector_x(v1) + edm4hep::utils::vector_x(v2);
+  const auto y = edm4hep::utils::vector_y(v1) + edm4hep::utils::vector_y(v2);
+  const auto z = edm4hep::utils::vector_z(v1) + edm4hep::utils::vector_z(v2);
+  const auto t = edm4hep::utils::vector_t(v1) + edm4hep::utils::vector_t(v2);
+  return {x, y, z, t};
+}
+
 template <typename V, edm4hep::utils::EnableIfEDM4hepVector2DType<V> = false>
 inline constexpr double operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
@@ -229,6 +247,14 @@ inline constexpr double operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
       edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
       edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2);
+}
+
+template <typename V, edm4hep::utils::EnableIfEdm4hepVector4DType<V> = false>
+inline constexpr double operator*(const V& v1, const V& v2) {
+  return (edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
+          edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
+          edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2)) -
+      edm4hep::utils::vector_t(v1) * edm4hep::utils::vector_t(v2);
 }
 
 template <typename V, edm4hep::utils::EnableIfEDM4hepVector2DType<V> = false>
@@ -246,6 +272,16 @@ inline constexpr V operator*(const double d, const V& v) {
   const VT y = d * edm4hep::utils::vector_y(v);
   const VT z = d * edm4hep::utils::vector_z(v);
   return {x, y, z};
+}
+
+template <typename V, edm4hep::utils::EnableIfEdm4hepVector4DType<V> = false>
+inline constexpr V operator*(const double d, const V& v) {
+  using VT = edm4hep::utils::ValueType<V>;
+  const VT x = d * edm4hep::utils::vector_x(v);
+  const VT y = d * edm4hep::utils::vector_y(v);
+  const VT z = d * edm4hep::utils::vector_z(v);
+  const VT t = d * edm4hep::utils::vector_t(v);
+  return {x, y, z, t};
 }
 
 template <typename V>
