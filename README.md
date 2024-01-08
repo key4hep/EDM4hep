@@ -12,9 +12,10 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [Vector4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L9) | [Vector3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L26) | [Vector3d](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L41)   | [Vector2i](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L57)  |
-| [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L71) | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L85) | [ObjectID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L108)  |
-| [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L120) | [Hypothesis](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L128) | [HitLevelData](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L135)  |
+| [Vector4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L9)       | [Vector3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L26)  | [Vector3d](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L41)    |
+| [Vector2i](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L57)      | [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L71)  | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L85)  |
+| [ObjectID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L108)     | [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L120) | [Hypothesis](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L128) |
+| [HitLevelData](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L135) | | |
 
 
 **Datatypes**
