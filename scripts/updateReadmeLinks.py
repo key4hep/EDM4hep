@@ -1,4 +1,4 @@
-#Usage: python3 scripts/updateReadmeLinks.py
+#!/usr/bin/env python3
 import re
 import sys
 import argparse
