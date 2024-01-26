@@ -11,7 +11,7 @@ find_program(BLACK_EXECUTABLE black)
 if(BLACK_EXECUTABLE)
     add_custom_target(
             black
-            COMMAND black
+            COMMAND ${BLACK_EXECUTABLE}
             ${ALL_PYTHON_FILES}
     )
     set_target_properties(black PROPERTIES EXCLUDE_FROM_ALL TRUE)
@@ -23,7 +23,7 @@ find_program(FLAKE8_EXECUTABLE flake8)
 if(FLAKE8_EXECUTABLE)
     add_custom_target(
         flake8
-        COMMAND flake8
+        COMMAND ${FLAKE8_EXECUTABLE}
         --config=${CMAKE_CURRENT_SOURCE_DIR}/.flake8
         ${ALL_PYTHON_FILES}
     )
