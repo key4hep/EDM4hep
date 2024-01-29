@@ -1,0 +1,20 @@
+name: Key4hep build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        build_type: ["release", "nightly"]
+        image: ["alma9", "ubuntu22", "centos7"]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: key4hep/key4hep-actions/key4hep-build@main
+      with:
+        build_type: ${{ matrix.build_type }}
+        image: ${{ matrix.image }}
