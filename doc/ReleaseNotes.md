@@ -1,3 +1,21 @@
+# v00-10-04
+
+* 2024-01-30 tmadlener ([PR#258](https://github.com/key4hep/EDM4hep/pull/258))
+  - Bump the version in the schema diagram to v0.10
+
+* 2024-01-23 tmadlener ([PR#237](https://github.com/key4hep/EDM4hep/pull/237))
+  - Switch the `momentum` and `momentumAtEndpoint` of the `MCParticle` from `Vector3f` to `Vector3d`. 
+  - Add a (deprecated from the beginning) constructor from `Vector3f` to `Vector3d` to ease the transition.
+
+* 2024-01-22 tmadlener ([PR#253](https://github.com/key4hep/EDM4hep/pull/253))
+  - Fix she-bang in README links update script.
+
+* 2024-01-12 Mateusz Jakub Fila ([PR#250](https://github.com/key4hep/EDM4hep/pull/250))
+  - Fixed doxygen excluded files and path stripping
+
+* 2024-01-08 Mateusz Jakub Fila ([PR#249](https://github.com/key4hep/EDM4hep/pull/249))
+  - Fixed formatting of components table in readme
+
 # v00-10-03
 
 * 2024-01-08 Joe Osborn ([PR#248](https://github.com/key4hep/EDM4hep/pull/248))
