@@ -136,8 +136,8 @@ int main(int argc, char** argv) {
                                                 frameName, nEventsMax, verboser);
   } else {
 #if PODIO_VERSION_MAJOR > 0 || (PODIO_VERSION_MAJOR == 0 && PODIO_VERSION_MINOR >= 99)
-    return read_frames<podio::ROOTReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
-                                               frameName, nEventsMax, verboser);
+    return read_frames<podio::ROOTReader>(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName,
+                                          nEventsMax, verboser);
 #else
     return read_frames<podio::ROOTFrameReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
                                                frameName, nEventsMax, verboser);
