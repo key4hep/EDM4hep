@@ -4,7 +4,8 @@
 
 
 # Get all our Python files
-file(GLOB_RECURSE ALL_PYTHON_FILES ${PROJECT_SOURCE_DIR}/*.py)
+file(GLOB_RECURSE ALL_PYTHON_FILES ${PROJECT_SOURCE_DIR}/python/*.py 
+  ${PROJECT_SOURCE_DIR}/scripts/*.py ${PROJECT_SOURCE_DIR}/test/*.py)
 
 # Black is rather simple because there are no options...
 find_program(BLACK_EXECUTABLE black)
@@ -24,7 +25,7 @@ if(FLAKE8_EXECUTABLE)
     add_custom_target(
         flake8
         COMMAND ${FLAKE8_EXECUTABLE}
-        --config=${CMAKE_CURRENT_SOURCE_DIR}/.flake8
+        --config=${PROJECT_SOURCE_DIR}/.flake8
         ${ALL_PYTHON_FILES}
     )
     set_target_properties(flake8 PROPERTIES EXCLUDE_FROM_ALL TRUE)
