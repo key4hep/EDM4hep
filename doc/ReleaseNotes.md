@@ -1,3 +1,15 @@
+# v00-10-05
+
+* 2024-02-07 Thomas Madlener ([PR#266](https://github.com/key4hep/EDM4hep/pull/266))
+  - Revert making MCParticle momenta double precision, since this breaks without schema evolution. (Reverts key4hep/EDM4hep#237)
+    - All particle momenta are effectively zeroed out at the moment.
+
+* 2024-02-07 jmcarcell ([PR#264](https://github.com/key4hep/EDM4hep/pull/264))
+  - Delete build workflow since we have another one for key4hep that covers builds for nightlies, releases and all the operating systems we support
+
+* 2024-02-06 jmcarcell ([PR#263](https://github.com/key4hep/EDM4hep/pull/263))
+  - Change ROOTFrame{Writer,Reader} to ROOT{Writer,Reader} following https://github.com/AIDASoft/podio/pull/549
+
 # v00-10-04
 
 * 2024-01-30 tmadlener ([PR#258](https://github.com/key4hep/EDM4hep/pull/258))
