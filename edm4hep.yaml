@@ -467,7 +467,6 @@ datatypes:
       - std::array<float,10>   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
-      - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
     OneToManyRelations:
       - edm4hep::Cluster               clusters     // clusters that have been used for this particle
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
