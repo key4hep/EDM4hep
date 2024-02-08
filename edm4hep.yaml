@@ -346,6 +346,8 @@ datatypes:
       - float likelihood     // likelihood of this hypothesis - in a user defined normalization
     VectorMembers:
       - float parameters     // parameters associated with this hypothesis
+    OneToOneRelations:
+      - edm4hep::ReconstructedParticle particle // the particle from which this PID has been computed
 
 
  #------ Cluster
