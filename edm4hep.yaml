@@ -471,7 +471,6 @@ datatypes:
       - edm4hep::Cluster               clusters     // clusters that have been used for this particle
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
       - edm4hep::ReconstructedParticle particles    // reconstructed particles that have been combined to this particle
-      - edm4hep::ParticleID            particleIDs  // particle Ids (not sorted by their likelihood)
     ExtraCode:
       declaration: "
       bool isCompound() const { return particles_size() > 0 ;}\n
