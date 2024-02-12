@@ -1,11 +1,12 @@
 ---
+schema_version: 2
+
 options :
   # should getters / setters be prefixed with get / set?
   getSyntax: True
   # should POD members be exposed with getters/setters in classes that have them as members?
   exposePODMembers: False
   includeSubfolder: True
-  schema_version: 2
 
 datatypes:
 
