@@ -243,6 +243,7 @@ datatypes:
       int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
       void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
+      [[deprecated("use setParticle instead")]]
       void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
       "
     ExtraCode:
@@ -256,6 +257,7 @@ datatypes:
       double y() const {return getPosition()[1];}\n
       double z() const {return getPosition()[2];}\n
       double rho() const {return sqrt(x()*x() + y()*y());}\n
+      [[deprecated("use getParticle instead")]]
       edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
       "
 
@@ -552,11 +554,17 @@ datatypes:
       #include <cmath>\n
       #include <edm4hep/MCParticle.h>\n
       "
-      declaration: "void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n"
+      declaration: "
+      [[deprecated("use setParticle instead")]]
+      void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
+      "
 
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>\n"
-      declaration: "edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n"
+      declaration: "
+      [[deprecated("use getParticle instead")]]
+      edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
+      "
 
  #----------  TrackerPulse
   edm4hep::TrackerPulse:
