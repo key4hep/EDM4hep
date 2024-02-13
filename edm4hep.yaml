@@ -140,7 +140,7 @@ datatypes:
       - int32_t eventNumber    //event number
       - int32_t runNumber      //run number
       - uint64_t timeStamp     //time stamp
-      - float weight       // event weight
+      - double weight       // event weight
     VectorMembers:
       - double weights       // event weights in case there are multiple. **NOTE that weights[0] might not be the same as weight!** Event weight names should be stored using the edm4hep::EventWeights name in the file level metadata.
 
