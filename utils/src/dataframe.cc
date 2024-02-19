@@ -6,7 +6,7 @@
 #include "edm4hep/ReconstructedParticleData.h"
 #include "edm4hep/SimCalorimeterHitData.h"
 #include "edm4hep/SimTrackerHitData.h"
-#include "edm4hep/TrackerHitData.h"
+#include "edm4hep/TrackerHit3DData.h"
 #include "edm4hep/TrackerHitPlaneData.h"
 #include "edm4hep/VertexData.h"
 
@@ -77,7 +77,7 @@ INST_MOMENTUM_FUNCS(edm4hep::ReconstructedParticleData);
 INST_MOMENTUM_FUNCS(edm4hep::SimTrackerHitData);
 
 INST_POSITION_FUNCS(edm4hep::SimTrackerHitData);
-INST_POSITION_FUNCS(edm4hep::TrackerHitData);
+INST_POSITION_FUNCS(edm4hep::TrackerHit3DData);
 INST_POSITION_FUNCS(edm4hep::TrackerHitPlaneData);
 INST_POSITION_FUNCS(edm4hep::SimCalorimeterHitData);
 INST_POSITION_FUNCS(edm4hep::CalorimeterHitData);
