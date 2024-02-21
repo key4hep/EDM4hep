@@ -1,18 +1,23 @@
+# Description: Create a file with EDM4hep data using the EDM4hep python bindings
+# The purpose of the script is to use all the classes of the EDM4hep library
+# to create a file with dummy data.
 import podio
 import edm4hep
 import cppyy.ll
 from itertools import count
 import argparse
 
-frames = 10
-vectorsize = 5
+frames = 10 # How many frames or events will be written
+vectorsize = 5 # For vector members, each vector member will have this size
 counter = count() # next(counter) will return 0, 1, 2, ...
+                  # used to generate the dummy data
+output_file = "output.root"
 
 parser = argparse.ArgumentParser(description='Create a file with EDM4hep data')
 parser.add_argument('--use-pre1', action='store_true', help='Use a pre 1.0 version of EDM4hep')
 args = parser.parse_args()
 
-writer = podio.root_io.Writer("output.root")
+writer = podio.root_io.Writer(output_file)
 
 for i in range(frames):
     print(f'Writing frame {i}')
@@ -39,8 +44,12 @@ for i in range(frames):
     parent_particle.setMass(next(counter))
     parent_particle.setVertex(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     parent_particle.setEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    parent_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    parent_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    if not args.use_pre1:
+        parent_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        parent_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    else:
+        parent_particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+        parent_particle.setMomentumAtEndpoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     parent_particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     parent_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
@@ -53,8 +62,12 @@ for i in range(frames):
     daughter_particle.setMass(next(counter))
     daughter_particle.setVertex(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     daughter_particle.setEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    daughter_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    daughter_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    if not args.use_pre1:
+        daughter_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        daughter_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    else:
+        daughter_particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+        daughter_particle.setMomentumAtEndpoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     daughter_particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     daughter_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
     
@@ -320,12 +333,12 @@ for i in range(frames):
     cluster = simiocluster.create()
     cluster.setCellID(next(counter))
     cluster.setTime(next(counter))
-    cluster.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    cluster.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     cluster.setType(next(counter))
     for j in range(vectorsize):
         cluster.addToElectronCellID(next(counter))
         cluster.addToElectronTime(next(counter))
-        cluster.addToElectronPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+        cluster.addToElectronPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
         cluster.addToPulseTime(next(counter))
         cluster.addToPulseAmplitude(next(counter))
     cluster.setParticle(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
