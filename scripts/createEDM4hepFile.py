@@ -6,6 +6,7 @@ import edm4hep
 import cppyy.ll
 from itertools import count
 import argparse
+import sys
 
 frames = 10 # How many frames or events will be written
 vectorsize = 5 # For vector members, each vector member will have this size
@@ -15,7 +16,18 @@ output_file = "output.root"
 
 parser = argparse.ArgumentParser(description='Create a file with EDM4hep data')
 parser.add_argument('--use-pre1', action='store_true', help='Use a pre 1.0 version of EDM4hep')
+parser.add_argument('--rntuple', action='store_true', help='Use a ROOT ntuple instead of EDM4hep')
 args = parser.parse_args()
+
+if args.rntuple:
+    try:
+        writer = podio.root_io.ROOTNTupleWriter(output_file)
+    except AttributeError:
+        writer = podio.root_io.ROOTRNTupleWriter(output_file)
+    except AttributeError:
+        print('The RNTuple writer from podio is not available but was requested')
+        sys.exit(1)
+
 
 writer = podio.root_io.Writer(output_file)
 
