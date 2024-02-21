@@ -6,7 +6,7 @@ import argparse
 
 frames = 10
 vectorsize = 5
-counter = count()
+counter = count() # next(counter) will return 0, 1, 2, ...
 
 parser = argparse.ArgumentParser(description='Create a file with EDM4hep data')
 parser.add_argument('--use-pre1', action='store_true', help='Use a pre 1.0 version of EDM4hep')
@@ -238,6 +238,7 @@ for i in range(frames):
     v.setAlgorithmType(next(counter))
     for j in range(vectorsize):
         v.addToParameters(next(counter))
+    frame.put(vertex, "VertexCollection")
 
     particles = edm4hep.ReconstructedParticleCollection()
     particle = particles.create()
@@ -259,11 +260,9 @@ for i in range(frames):
     if args.use_pre1:
         particle.addToParticleIDs(cppyy.ll.static_cast['edm4hep::ParticleID'](pid))
     reco_particle = particle
-
-    # Vertex needs particles and particles needs vertex
-    v.setAssociatedParticle(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
-    frame.put(vertex, "VertexCollection")
     frame.put(particles, "ReconstructedParticleCollection")
+
+    v.setAssociatedParticle(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
 
     if not args.use_pre1:
         pid.setParticle(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
