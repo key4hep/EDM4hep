@@ -21,9 +21,7 @@ args = parser.parse_args()
 
 if args.rntuple:
     try:
-        writer = podio.root_io.ROOTNTupleWriter(output_file)
-    except AttributeError:
-        writer = podio.root_io.ROOTRNTupleWriter(output_file)
+        writer = podio.root_io.RNTupleWriter(output_file)
     except AttributeError:
         print('The RNTuple writer from podio is not available but was requested')
         sys.exit(1)
