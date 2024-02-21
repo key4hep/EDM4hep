@@ -8,29 +8,33 @@ from itertools import count
 import argparse
 import sys
 
-frames = 10 # How many frames or events will be written
-vectorsize = 5 # For vector members, each vector member will have this size
-counter = count() # next(counter) will return 0, 1, 2, ...
-                  # used to generate the dummy data
+frames = 10  # How many frames or events will be written
+vectorsize = 5  # For vector members, each vector member will have this size
+counter = count()  # next(counter) will return 0, 1, 2, ...
+# used to generate the dummy data
 output_file = "output.root"
 
-parser = argparse.ArgumentParser(description='Create a file with EDM4hep data')
-parser.add_argument('--use-pre1', action='store_true', help='Use a pre 1.0 version of EDM4hep')
-parser.add_argument('--rntuple', action='store_true', help='Use a ROOT ntuple instead of EDM4hep')
+parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
+parser.add_argument(
+    "--use-pre1", action="store_true", help="Use a pre 1.0 version of EDM4hep"
+)
+parser.add_argument(
+    "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
+)
 args = parser.parse_args()
 
 if args.rntuple:
     try:
         writer = podio.root_io.RNTupleWriter(output_file)
     except AttributeError:
-        print('The RNTuple writer from podio is not available but was requested')
+        print("The RNTuple writer from podio is not available but was requested")
         sys.exit(1)
 
 
 writer = podio.root_io.Writer(output_file)
 
 for i in range(frames):
-    print(f'Writing frame {i}')
+    print(f"Writing frame {i}")
     frame = podio.Frame()
 
     header = edm4hep.EventHeaderCollection()
@@ -52,15 +56,29 @@ for i in range(frames):
     parent_particle.setCharge(next(counter))
     parent_particle.setTime(next(counter))
     parent_particle.setMass(next(counter))
-    parent_particle.setVertex(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    parent_particle.setEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    parent_particle.setVertex(
+        edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    )
+    parent_particle.setEndpoint(
+        edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    )
     if not args.use_pre1:
-        parent_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-        parent_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        parent_particle.setMomentum(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
+        parent_particle.setMomentumAtEndpoint(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
     else:
-        parent_particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-        parent_particle.setMomentumAtEndpoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    parent_particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+        parent_particle.setMomentum(
+            edm4hep.Vector3f(next(counter), next(counter), next(counter))
+        )
+        parent_particle.setMomentumAtEndpoint(
+            edm4hep.Vector3f(next(counter), next(counter), next(counter))
+        )
+    parent_particle.setSpin(
+        edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    )
     parent_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
     daughter_particle = particles.create()
@@ -70,19 +88,37 @@ for i in range(frames):
     daughter_particle.setCharge(next(counter))
     daughter_particle.setTime(next(counter))
     daughter_particle.setMass(next(counter))
-    daughter_particle.setVertex(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    daughter_particle.setEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    daughter_particle.setVertex(
+        edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    )
+    daughter_particle.setEndpoint(
+        edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    )
     if not args.use_pre1:
-        daughter_particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-        daughter_particle.setMomentumAtEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        daughter_particle.setMomentum(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
+        daughter_particle.setMomentumAtEndpoint(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
     else:
-        daughter_particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-        daughter_particle.setMomentumAtEndpoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    daughter_particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+        daughter_particle.setMomentum(
+            edm4hep.Vector3f(next(counter), next(counter), next(counter))
+        )
+        daughter_particle.setMomentumAtEndpoint(
+            edm4hep.Vector3f(next(counter), next(counter), next(counter))
+        )
+    daughter_particle.setSpin(
+        edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    )
     daughter_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
-    
-    parent_particle.addToDaughters(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
-    daughter_particle.addToParents(cppyy.ll.static_cast['edm4hep::MCParticle'](parent_particle))
+
+    parent_particle.addToDaughters(
+        cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle)
+    )
+    daughter_particle.addToParents(
+        cppyy.ll.static_cast["edm4hep::MCParticle"](parent_particle)
+    )
     frame.put(particles, "MCParticleCollection")
 
     hits = edm4hep.SimTrackerHitCollection()
@@ -94,7 +130,7 @@ for i in range(frames):
     hit.setQuality(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    hit.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     simtracker_hit = hit
     frame.put(hits, "SimTrackerHitCollection")
 
@@ -104,7 +140,7 @@ for i in range(frames):
     hit.setEnergy(next(counter))
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    hit.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     calohit = hit
     frame.put(hits, "CaloHitContributionCollection")
 
@@ -113,7 +149,9 @@ for i in range(frames):
     hit.setCellID(next(counter))
     hit.setEnergy(next(counter))
     hit.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.addToContributions(cppyy.ll.static_cast['edm4hep::CaloHitContribution'](calohit))
+    hit.addToContributions(
+        cppyy.ll.static_cast["edm4hep::CaloHitContribution"](calohit)
+    )
     simcalo_hit = hit
     frame.put(hits, "SimCalorimeterHitCollection")
 
@@ -155,15 +193,17 @@ for i in range(frames):
         cluster.setPositionError(j, next(counter))
     cluster.setITheta(next(counter))
     cluster.setPhi(next(counter))
-    cluster.setDirectionError(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    cluster.setDirectionError(
+        edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    )
     for j in range(vectorsize):
         cluster.addToShapeParameters(next(counter))
     for j in range(vectorsize):
         cluster.addToSubdetectorEnergies(next(counter))
-    cluster.addToClusters(cppyy.ll.static_cast['edm4hep::Cluster'](cluster))
-    cluster.addToHits(cppyy.ll.static_cast['edm4hep::CalorimeterHit'](calo_hit))
+    cluster.addToClusters(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
+    cluster.addToHits(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
     if args.use_pre1:
-        cluster.addToParticleIDs(cppyy.ll.static_cast['edm4hep::ParticleID'](pid))
+        cluster.addToParticleIDs(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
     frame.put(clusters, "ClusterCollection")
 
     if args.use_pre1:
@@ -241,13 +281,15 @@ for i in range(frames):
         state.z0 = next(counter)
         state.tanLambda = next(counter)
         state.time = next(counter)
-        state.referencePoint = edm4hep.Vector3f(next(counter), next(counter), next(counter))
+        state.referencePoint = edm4hep.Vector3f(
+            next(counter), next(counter), next(counter)
+        )
         # TODO
         # for k in range(21):
         #     state.setCovMatrix(k, next(counter))
         track.addToTrackStates(state)
-    track.addToTrackerHits(cppyy.ll.static_cast['edm4hep::TrackerHit3D'](tracker_hit))
-    track.addToTracks(cppyy.ll.static_cast['edm4hep::Track'](track))
+    track.addToTrackerHits(cppyy.ll.static_cast["edm4hep::TrackerHit3D"](tracker_hit))
+    track.addToTracks(cppyy.ll.static_cast["edm4hep::Track"](track))
     frame.put(tracks, "TrackCollection")
 
     vertex = edm4hep.VertexCollection()
@@ -268,75 +310,83 @@ for i in range(frames):
     particle.setType(next(counter))
     particle.setEnergy(next(counter))
     particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    particle.setReferencePoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    particle.setReferencePoint(
+        edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    )
     particle.setCharge(next(counter))
     particle.setMass(next(counter))
     particle.setGoodnessOfPID(next(counter))
     for j in range(10):
         particle.setCovMatrix(j, next(counter))
-    particle.setStartVertex(cppyy.ll.static_cast['edm4hep::Vertex'](v))
+    particle.setStartVertex(cppyy.ll.static_cast["edm4hep::Vertex"](v))
     if args.use_pre1:
-        particle.setParticleIDUsed(cppyy.ll.static_cast['edm4hep::ParticleID'](pid))
-    particle.addToClusters(cppyy.ll.static_cast['edm4hep::Cluster'](cluster))
-    particle.addToTracks(cppyy.ll.static_cast['edm4hep::Track'](track))
-    particle.addToParticles(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](particle))
+        particle.setParticleIDUsed(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
+    particle.addToClusters(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
+    particle.addToTracks(cppyy.ll.static_cast["edm4hep::Track"](track))
+    particle.addToParticles(
+        cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](particle)
+    )
     if args.use_pre1:
-        particle.addToParticleIDs(cppyy.ll.static_cast['edm4hep::ParticleID'](pid))
+        particle.addToParticleIDs(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
     reco_particle = particle
     frame.put(particles, "ReconstructedParticleCollection")
 
-    v.setAssociatedParticle(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
+    v.setAssociatedParticle(
+        cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle)
+    )
 
     if not args.use_pre1:
-        pid.setParticle(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
+        pid.setParticle(
+            cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle)
+        )
 
     assocs = edm4hep.MCRecoParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     frame.put(assocs, "MCRecoParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoCaloAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::CalorimeterHit'](calo_hit))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::SimCalorimeterHit'](simcalo_hit))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::SimCalorimeterHit"](simcalo_hit))
     frame.put(assocs, "MCRecoCaloAssociationCollection")
 
     assocs = edm4hep.MCRecoTrackerAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::TrackerHit3D'](tracker_hit))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::SimTrackerHit'](simtracker_hit))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::TrackerHit3D"](tracker_hit))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::SimTrackerHit"](simtracker_hit))
     frame.put(assocs, "MCRecoTrackerAssociationCollection")
-    
+
     assocs = edm4hep.MCRecoCaloParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::CalorimeterHit'](calo_hit))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     frame.put(assocs, "MCRecoCaloParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoClusterParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::Cluster'](cluster))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     frame.put(assocs, "MCRecoClusterParticleAssociationCollection")
-    
+
     assocs = edm4hep.MCRecoTrackParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::Track'](track))
-    assoc.setSim(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::Track"](track))
+    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     frame.put(assocs, "MCRecoTrackParticleAssociationCollection")
 
     assocs = edm4hep.RecoParticleVertexAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast['edm4hep::ReconstructedParticle'](reco_particle))
-    assoc.setVertex(cppyy.ll.static_cast['edm4hep::Vertex'](v))
+    assoc.setRec(cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle))
+    assoc.setVertex(cppyy.ll.static_cast["edm4hep::Vertex"](v))
     frame.put(assocs, "MCRecoParticleVertexAssociationCollection")
 
     simiocluster = edm4hep.SimPrimaryIonizationClusterCollection()
@@ -348,10 +398,12 @@ for i in range(frames):
     for j in range(vectorsize):
         cluster.addToElectronCellID(next(counter))
         cluster.addToElectronTime(next(counter))
-        cluster.addToElectronPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        cluster.addToElectronPosition(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
         cluster.addToPulseTime(next(counter))
         cluster.addToPulseAmplitude(next(counter))
-    cluster.setParticle(cppyy.ll.static_cast['edm4hep::MCParticle'](daughter_particle))
+    cluster.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
     frame.put(simiocluster, "SimPrimaryIonizationClusterCollection")
 
     timeseries = edm4hep.TimeSeriesCollection()
@@ -371,7 +423,7 @@ for i in range(frames):
     pulse.setQuality(next(counter))
     for j in range(3):
         pulse.setCovMatrix(j, next(counter))
-    pulse.setTimeSeries(cppyy.ll.static_cast['edm4hep::TimeSeries'](serie))
+    pulse.setTimeSeries(cppyy.ll.static_cast["edm4hep::TimeSeries"](serie))
     frame.put(trackerpulse, "TrackerPulseCollection")
 
     recioncluster = edm4hep.RecIonizationClusterCollection()
@@ -379,7 +431,7 @@ for i in range(frames):
     cluster.setCellID(next(counter))
     cluster.setSignificance(next(counter))
     cluster.setType(next(counter))
-    cluster.addToTrackerPulse(cppyy.ll.static_cast['edm4hep::TrackerPulse'](pulse))
+    cluster.addToTrackerPulse(cppyy.ll.static_cast["edm4hep::TrackerPulse"](pulse))
     frame.put(recioncluster, "RecIonizationClusterCollection")
 
     recdqdx = edm4hep.RecDqdxCollection()
@@ -399,7 +451,7 @@ for i in range(frames):
         hd.eDep = next(counter)
         hd.pathLength = next(counter)
         dqdx.addToHitData(hd)
-    dqdx.setTrack(cppyy.ll.static_cast['edm4hep::Track'](track))
+    dqdx.setTrack(cppyy.ll.static_cast["edm4hep::Track"](track))
     frame.put(recdqdx, "RecDqdxCollection")
 
     writer.write_frame(frame, "events")
