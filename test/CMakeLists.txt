@@ -56,11 +56,15 @@ IF(TARGET ROOT::ROOTDataFrame)
 
   add_test(NAME py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
   set_test_env(py_test_rdf)
-  get_property(ENVIRONMENT TEST py_test_rdf PROPERTY ENVIRONMENT)
-  set_property(TEST py_test_rdf PROPERTY ENVIRONMENT
+  set_property(TEST py_test_rdf APPEND PROPERTY ENVIRONMENT
       ${ENVIRONMENT}
       PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
   )
+  get_property(ENVIRONMENT TEST py_test_rdf PROPERTY ENVIRONMENT)
+  # Remove fccanalyses to prevent ROOT from loading their dictionaries
+  # for RDataFrame
+  string(REGEX REPLACE "[^:]*\\/fccanalyses\\/[^:]*(:?|$)" "" ENVIRONMENT "${ENVIRONMENT}")
+  set_property(TEST py_test_rdf PROPERTY ENVIRONMENT ${ENVIRONMENT})
   set_tests_properties(py_test_rdf PROPERTIES DEPENDS write_events)
 endif()
 
