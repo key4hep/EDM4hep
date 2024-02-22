@@ -620,7 +620,6 @@ interfaces:
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
       - edm4hep::Vector3d position [mm] // hit position
-      - std::array<float, 6> covMatrix // covariance of the position (x,y,z) stored as lower triangle matrix, i.e. cov(x,x), cov(y, x), cov(y, y), cov(z, x), cov(z, y), cov(z, z)
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
