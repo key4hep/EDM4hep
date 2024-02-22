@@ -231,7 +231,7 @@ datatypes:
     Author: "F.Gaede, DESY"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
-      - float EDep                     //energy deposited in the hit [GeV].
+      - float eDep                     //energy deposited in the hit [GeV].
       - float time                     //proper time of the hit in the lab frame in [ns].
       - float pathLength               //path length of the particle in the sensitive material that resulted in this hit.
       - int32_t   quality                  //quality bit flag.
