@@ -107,18 +107,6 @@ components:
         static const int LastLocation = AtVertex  ;\n
         "
 
-    #------ ObjectID helper struct for references/relations
-    edm4hep::ObjectID:
-      Members:
-        - int32_t index
-        - int32_t collectionID
-      ExtraCode:
-        includes: "#include <podio/ObjectID.h>\n"
-        declaration: "
-        ObjectID() = default;\n
-        ObjectID(const podio::ObjectID& id ): index(id.index), collectionID(id.collectionID) {}\n
-      "
-
     # quantity with an identifier, a value and an error
     edm4hep::Quantity:
       Members:
@@ -358,8 +346,6 @@ datatypes:
       - float eDepError                // error measured on EDep [GeV]
       - edm4hep::Vector3d position     // hit position in [mm]
       - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
-    VectorMembers:
-      - edm4hep::ObjectID  rawHits     // raw data hits. Check getType to get actual data type
 
 
   #-------------  TrackerHitPlane
@@ -379,8 +365,6 @@ datatypes:
       - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position     // hit position in [mm]
       - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
-    VectorMembers:
-      - edm4hep::ObjectID  rawHits     // raw data hits. Check getType to get actual data type
 
 
  #---------- RawTimeSeries
