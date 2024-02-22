@@ -147,7 +147,7 @@ datatypes:
 
   edm4hep::EventHeader:
     Description: "Event Header. Additional parameters are assumed to go into the metadata tree."
-    Author: "F.Gaede"
+    Author: "EDM4hep authors"
     Members:
       - int32_t eventNumber    //event number
       - int32_t runNumber      //run number
@@ -159,7 +159,7 @@ datatypes:
 
   edm4hep::MCParticle:
     Description: "The Monte Carlo particle - based on the lcio::MCParticle."
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t PDG                         //PDG code of the particle
       - int32_t generatorStatus             //status of the particle as defined by the generator
@@ -227,7 +227,7 @@ datatypes:
   #----------- SimTrackerHit
   edm4hep::SimTrackerHit:
     Description: "Simulated tracker hit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
       - float eDep                     //energy deposited in the hit [GeV].
@@ -269,7 +269,7 @@ datatypes:
   #------------- CaloHitContribution
   edm4hep::CaloHitContribution:
     Description: "Monte Carlo contribution to SimCalorimeterHit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t   PDG                        //PDG code of the shower particle that caused this contribution.
       - float energy                     //energy in [GeV] of the this contribution
@@ -281,7 +281,7 @@ datatypes:
   #------------- SimCalorimeterHit
   edm4hep::SimCalorimeterHit:
     Description: "Simulated calorimeter hit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       //ID of the sensor that created this hit
       - float energy                    //energy of the hit in [GeV].
@@ -293,7 +293,7 @@ datatypes:
   #-------------  RawCalorimeterHit
   edm4hep::RawCalorimeterHit:
     Description: "Raw calorimeter hit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID   //detector specific (geometrical) cell id.
       - int32_t amplitude               //amplitude of the hit in ADC counts.
@@ -302,7 +302,7 @@ datatypes:
   #-------------  CalorimeterHit
   edm4hep::CalorimeterHit:
     Description: "Calorimeter hit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID  //detector specific (geometrical) cell id.
       - float energy               //energy of the hit in [GeV].
@@ -314,7 +314,7 @@ datatypes:
  #---------- ParticleID
   edm4hep::ParticleID:
     Description:  "ParticleID"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t   type           //userdefined type
       - int32_t   PDG            //PDG code of this id - ( 999999 ) if unknown.
@@ -327,7 +327,7 @@ datatypes:
  #------ Cluster
   edm4hep::Cluster:
     Description: "Calorimeter Hit Cluster"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t                  type            //flagword that defines the type of cluster. Bits 16-31 are used internally.
       - float                energy          //energy of the cluster [GeV]
@@ -348,7 +348,7 @@ datatypes:
   #-------------  TrackerHit
   edm4hep::TrackerHit:
     Description: "Tracker hit"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
       - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
@@ -365,7 +365,7 @@ datatypes:
   #-------------  TrackerHitPlane
   edm4hep::TrackerHitPlane:
     Description: "Tracker hit plane"
-    Author: "Placido Fernandez Declara, CERN"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
       - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
@@ -386,7 +386,7 @@ datatypes:
  #---------- RawTimeSeries
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
        - uint64_t cellID  //detector specific cell id.
        - int32_t quality                //quality flag for the hit.
@@ -399,7 +399,7 @@ datatypes:
  #-------- Track
   edm4hep::Track:
     Description: "Reconstructed track"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t type                         //flagword that defines the type of track.Bits 16-31 are used internally
       - float chi2                       //Chi^2 of the track fit
@@ -418,7 +418,7 @@ datatypes:
  #---------- Vertex
   edm4hep::Vertex:
     Description: "Vertex"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t                 primary       //boolean flag, if vertex is the primary vertex of the event
       - float               chi2          //chi-squared of the vertex fit
@@ -435,7 +435,7 @@ datatypes:
   #------- ReconstructedParticle
   edm4hep::ReconstructedParticle:
     Description: "Reconstructed Particle"
-    Author: "F.Gaede, DESY"
+    Author: "EDM4hep authors"
     Members:
       - int32_t                PDG            // PDG of the reconstructed particle.
       - float                  energy         // [GeV] energy of the reconstructed particle. Four momentum state is not kept consistent internally.
@@ -469,7 +469,7 @@ datatypes:
 
   edm4hep::MCRecoParticleAssociation:
     Description: "Used to keep track of the correspondence between MC and reconstructed particles"
-    Author: "C. Bernet, B. Hegner"
+    Author: "EDM4hep authors"
     Members:
       - float weight                        // weight of this association
     OneToOneRelations:
@@ -478,7 +478,7 @@ datatypes:
 
   edm4hep::MCRecoCaloAssociation:
     Description: "Association between a CaloHit and the corresponding simulated CaloHit"
-    Author: "C. Bernet, B. Hegner"
+    Author: "EDM4hep authors"
     Members:
       - float weight                    // weight of this association
     OneToOneRelations:
@@ -487,7 +487,7 @@ datatypes:
 
   edm4hep::MCRecoTrackerAssociation:
     Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
-    Author: "C. Bernet, B. Hegner"
+    Author: "EDM4hep authors"
     Members:
       - float weight              // weight of this association
     OneToOneRelations:
@@ -496,7 +496,7 @@ datatypes:
 
   edm4hep::MCRecoTrackerHitPlaneAssociation:
     Description: "Association between a TrackerHitPlane and the corresponding simulated TrackerHit"
-    Author: "Placido Fernandez Declara"
+    Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
     OneToOneRelations:
@@ -505,7 +505,7 @@ datatypes:
 
   edm4hep::MCRecoCaloParticleAssociation:
     Description: "Association between a CalorimeterHit and a MCParticle"
-    Author: "Placido Fernandez Declara"
+    Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
     OneToOneRelations:
@@ -514,7 +514,7 @@ datatypes:
 
   edm4hep::MCRecoClusterParticleAssociation:
     Description: "Association between a Cluster and a MCParticle"
-    Author: "Placido Fernandez Declara"
+    Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
     OneToOneRelations:
@@ -523,7 +523,7 @@ datatypes:
 
   edm4hep::MCRecoTrackParticleAssociation:
     Description: "Association between a Track and a MCParticle"
-    Author: "Placido Fernandez Declara"
+    Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
     OneToOneRelations:
@@ -532,7 +532,7 @@ datatypes:
 
   edm4hep::RecoParticleVertexAssociation:
     Description: "Association between a Reconstructed Particle and a Vertex"
-    Author: "Placido Fernandez Declara"
+    Author: "EDM4hep authors"
     Members:
       - float weight                      // weight of this association
     OneToOneRelations:
@@ -543,7 +543,7 @@ datatypes:
   #----------- SimPrimaryIonizationCluster
   edm4hep::SimPrimaryIonizationCluster:
     Description: "Simulated Primary Ionization"
-    Author: "Wenxing Fang, IHEP"
+    Author: "EDM4hep authors"
     Members:
       - uint64_t cellID                      //cell id.
       - float time                           //the primary ionization's time in the lab frame [ns].
@@ -577,7 +577,7 @@ datatypes:
  #----------  TrackerPulse
   edm4hep::TrackerPulse:
     Description: "Reconstructed Tracker Pulse"
-    Author: "Wenxing Fang, IHEP"
+    Author: "EDM4hep authors"
     Members:
        - uint64_t cellID                 //cell id.
        - float time                      //time [ns].
@@ -590,7 +590,7 @@ datatypes:
  #----------  RecIonizationCluster
   edm4hep::RecIonizationCluster:
     Description: "Reconstructed Ionization Cluster"
-    Author: "Wenxing Fang, IHEP"
+    Author: "EDM4hep authors"
     Members:
        - uint64_t cellID            //cell id.
        - float significance         //significance.
@@ -601,7 +601,7 @@ datatypes:
  #----------  TimeSeries
   edm4hep::TimeSeries:
     Description: "Calibrated Detector Data"
-    Author: "Wenxing Fang, IHEP"
+    Author: "EDM4hep authors"
     Members:
        - uint64_t cellID            //cell id.
        - float time                 //begin time [ns].
@@ -613,7 +613,7 @@ datatypes:
   #-------------  RecDqdx
   edm4hep::RecDqdx:
     Description: "dN/dx or dE/dx info of Track."
-    Author: "Wenxing Fang, IHEP"
+    Author: "EDM4hep authors"
     Members:
       - edm4hep::Quantity dQdx         //the reconstructed dEdx or dNdx and its error
       - int16_t particleType           //particle type, e(0),mu(1),pi(2),K(3),p(4).
