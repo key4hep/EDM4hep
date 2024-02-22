@@ -128,13 +128,13 @@ void write(std::string outfilename) {
       sth1.setCellID(0xabadcaffee);
       sth1.setEDep(j * 0.000001f);
       sth1.setPosition({j * 10., j * 20., j * 5.});
-      sth1.setMCParticle(mcp7);
+      sth1.setParticle(mcp7);
 
       auto sth2 = sths.create();
       sth2.setCellID(0xcaffeebabe);
       sth2.setPosition({-j * 10., -j * 20., -j * 5.});
       sth2.setEDep(j * .001f);
-      sth2.setMCParticle(mcp8);
+      sth2.setParticle(mcp8);
     }
 
     std::cout << "\n collection:  "
