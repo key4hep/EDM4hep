@@ -309,7 +309,7 @@ datatypes:
       - float energyError          //error of the hit energy in [GeV].
       - float time                 //time of the hit in [ns].
       - edm4hep::Vector3f position //position of the hit in world coordinates in [mm].
-      - int32_t type                   //type of hit. Mapping of integer types to names via collection parameters "CalorimeterHitTypeNames" and "CalorimeterHitTypeValues".
+      - int32_t type                   //type of hit.
 
  #---------- ParticleID
   edm4hep::ParticleID:
@@ -321,7 +321,7 @@ datatypes:
       - int32_t   algorithmType  //type of the algorithm/module that created this hypothesis
       - float likelihood     //likelihood of this hypothesis - in a user defined normalization.
     VectorMembers:
-      - float parameters     //parameters associated with this hypothesis. Check/set collection parameters ParameterNames_PIDAlgorithmTypeName for decoding the indices.
+      - float parameters     //parameters associated with this hypothesis.
 
 
  #------ Cluster
@@ -338,7 +338,7 @@ datatypes:
       - float                phi             //intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP.
       - edm4hep::Vector3f    directionError  //covariance matrix of the direction (3 Parameters) [mm^2]
     VectorMembers:
-      - float   shapeParameters      //shape parameters - check/set collection parameter ClusterShapeParameters for size and names of parameters.
+      - float   shapeParameters      //shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering.
       - float   subdetectorEnergies  //energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array.
     OneToManyRelations:
       - edm4hep::Cluster        clusters     //clusters that have been combined to this cluster.
@@ -351,7 +351,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT.
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit [ns].
       - float eDep                     //energy deposited on the hit [GeV].
@@ -368,7 +368,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      //ID of the sensor that created this hit
-      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT - see collection parameters "TrackerHitTypeNames" and "TrackerHitTypeValues".
+      - int32_t type                       //type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT.
       - int32_t quality                    //quality bit flag of the hit.
       - float time                     //time of the hit [ns].
       - float eDep                     //energy deposited on the hit [GeV].
@@ -425,9 +425,9 @@ datatypes:
       - float               probability   //probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex.
       - std::array<float,6> covMatrix     //covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
-      - int32_t                 algorithmType //type code for the algorithm that has been used to create the vertex - check/set the collection parameters AlgorithmName and AlgorithmType.
+      - int32_t                 algorithmType //type code for the algorithm that has been used to create the vertex.
     VectorMembers:
-      - float               parameters    //additional parameters related to this vertex - check/set the collection parameter "VertexParameterNames" for the parameters meaning.
+      - float               parameters    //additional parameters related to this vertex.
     OneToOneRelations:
       - edm4hep::ReconstructedParticle associatedParticle //reconstructed particle associated to this vertex.
 
