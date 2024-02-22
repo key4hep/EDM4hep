@@ -193,7 +193,6 @@ datatypes:
     ExtraCode:
       declaration: "
       // define the bit positions for the simulation flag\n
-      static const int BITEndpoint = 31;\n
       static const int BITCreatedInSimulation = 30;\n
       static const int BITBackscatter = 29 ;\n
       static const int BITVertexIsNotEndpointOfParent = 28 ;  \n
