@@ -307,7 +307,10 @@ for i in range(frames):
 
     particles = edm4hep.ReconstructedParticleCollection()
     particle = particles.create()
-    particle.setType(next(counter))
+    if args.use_pre1:
+        particle.setType(next(counter))
+    else:
+        particle.setPDG(next(counter))
     particle.setEnergy(next(counter))
     particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     particle.setReferencePoint(
