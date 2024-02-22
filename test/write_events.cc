@@ -5,7 +5,7 @@
 #else
 #include "podio/ROOTFrameWriter.h"
 namespace podio {
-  using ROOTWriter = podio::ROOTFrameWriter;
+using ROOTWriter = podio::ROOTFrameWriter;
 }
 #endif
 

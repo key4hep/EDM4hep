@@ -5,7 +5,7 @@
 #else
 #include "podio/ROOTFrameReader.h"
 namespace podio {
-  using ROOTReader = podio::ROOTFrameReader;
+using ROOTReader = podio::ROOTFrameReader;
 }
 #endif
 
