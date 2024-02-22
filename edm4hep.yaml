@@ -233,15 +233,21 @@ datatypes:
       - edm4hep::Vector3d position     //the hit position in [mm].
       - edm4hep::Vector3f momentum     //the 3-momentum of the particle at the hits position in [GeV]
     OneToOneRelations:
-      - edm4hep::MCParticle MCParticle //MCParticle that caused the hit.
+      - edm4hep::MCParticle particle //MCParticle that caused the hit.
     MutableExtraCode:
-      includes: "#include <cmath>"
+      includes: "
+      #include <cmath>\n
+      #include <edm4hep/MCParticle.h>\n
+      "
       declaration: "
       int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
       void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
       void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
+      [[deprecated(\"use setParticle instead\")]]
+      void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
       "
     ExtraCode:
+      includes: "#include <edm4hep/MCParticle.h>\n"
       declaration: "
       static const int  BITOverlay = 31;\n
       static const int  BITProducedBySecondary = 30;\n
@@ -251,6 +257,8 @@ datatypes:
       double y() const {return getPosition()[1];}\n
       double z() const {return getPosition()[2];}\n
       double rho() const {return sqrt(x()*x() + y()*y());}\n
+      [[deprecated(\"use getParticle instead\")]]
+      edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
       "
 
 
@@ -540,7 +548,23 @@ datatypes:
        - float pulseTime                     //the pulse's time in the lab frame [ns].
        - float pulseAmplitude                //the pulse's amplitude [fC].
     OneToOneRelations:
-      - edm4hep::MCParticle MCParticle       //the particle that caused the ionizing collisions.
+      - edm4hep::MCParticle particle       //the particle that caused the ionizing collisions.
+    MutableExtraCode:
+      includes: "
+      #include <cmath>\n
+      #include <edm4hep/MCParticle.h>\n
+      "
+      declaration: "
+      [[deprecated(\"use setParticle instead\")]]\n
+      void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
+      "
+
+    ExtraCode:
+      includes: "#include <edm4hep/MCParticle.h>\n"
+      declaration: "
+      [[deprecated(\"use getParticle instead\")]]
+      edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
+      "
 
  #----------  TrackerPulse
   edm4hep::TrackerPulse:
