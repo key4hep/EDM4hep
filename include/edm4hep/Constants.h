@@ -23,6 +23,7 @@ namespace edm4hep {
 static constexpr const char* CellIDEncoding = "CellIDEncoding";
 static constexpr const char* EventHeaderName = "EventHeader";
 static constexpr const char* EventWeights = "EventWeightNames";
+static constexpr const char* shapeParameterNames = "shapeParameterNames";
 } // namespace edm4hep
 
 #endif // EDM4HEP_CONSTANTS_H
