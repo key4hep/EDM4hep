@@ -144,6 +144,7 @@ datatypes:
     VectorMembers:
       - double weights       // event weights in case there are multiple. **NOTE that weights[0] might not be the same as weight!** Event weight names should be stored using the edm4hep::EventWeights name in the file level metadata
 
+
   edm4hep::MCParticle:
     Description: "The Monte Carlo particle - based on the lcio::MCParticle."
     Author: "EDM4hep authors"
