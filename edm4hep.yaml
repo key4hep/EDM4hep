@@ -438,7 +438,7 @@ datatypes:
     Description: "Reconstructed Particle"
     Author: "F.Gaede, DESY"
     Members:
-      - int32_t                    type           //type of reconstructed particle. Check/set collection parameters ReconstructedParticleTypeNames and ReconstructedParticleTypeValues.
+      - int32_t                PDG            // PDG of the reconstructed particle.
       - float                  energy         // [GeV] energy of the reconstructed particle. Four momentum state is not kept consistent internally.
       - edm4hep::Vector3f      momentum       // [GeV] particle momentum. Four momentum state is not kept consistent internally.
       - edm4hep::Vector3f      referencePoint // [mm] reference, i.e. where the particle has been measured
