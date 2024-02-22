@@ -339,7 +339,7 @@ datatypes:
       - edm4hep::Vector3f    directionError  // covariance matrix of the direction (3 Parameters) [mm^2].
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering.
-      - float   subdetectorEnergies  // energy observed in a particular subdetector. Check/set collection parameter ClusterSubdetectorNames for decoding the indices of the array.
+      - float   subdetectorEnergies  // energy observed in a particular subdetector.
     OneToManyRelations:
       - edm4hep::Cluster        clusters     // clusters that have been combined to this cluster.
       - edm4hep::CalorimeterHit hits         // hits that have been combined to this cluster.
@@ -351,7 +351,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      // ID of the sensor that created this hit.
-      - int32_t type                       // type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT.
+      - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit.
       - float time                     // time of the hit [ns].
       - float eDep                     // energy deposited on the hit [GeV].
@@ -368,7 +368,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      // ID of the sensor that created this hit.
-      - int32_t type                       // type of raw data hit, either one of edm4hep::RawTimeSeries, edm4hep::SIMTRACKERHIT.
+      - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit.
       - float time                     // time of the hit [ns].
       - float eDep                     // energy deposited on the hit [GeV].
@@ -408,7 +408,7 @@ datatypes:
       - float dEdxError                  // error of dEdx.
       - float radiusOfInnermostHit       // radius of the innermost hit that has been used in the track fit.
     VectorMembers:
-      - int32_t subdetectorHitNumbers        // number of hits in particular subdetectors.Check/set collection variable TrackSubdetectorNames for decoding the indices.
+      - int32_t subdetectorHitNumbers        // number of hits in particular subdetectors.
       - edm4hep::TrackState trackStates  // track states.
       - edm4hep::Quantity dxQuantities // different measurements of dx quantities.
     OneToManyRelations:
