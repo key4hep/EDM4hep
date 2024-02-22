@@ -90,11 +90,11 @@ components:
         - int32_t location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
         - float D0 // transverse impact parameter
         - float phi // azimuthal angle
-        - float omega // is the signed curvature of the track in [1/mm]
+        - float omega [1/mm] // is the signed curvature of the track
         - float Z0 // longitudinal impact parameter
         - float tanLambda // lambda is the dip angle of the track in r-z
-        - float time // time of the track at this trackstate
-        - edm4hep::Vector3f referencePoint // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter [mm]
+        - float time [ns] // time of the track at this trackstate
+        - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
         - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
       ExtraCode:
         declaration: "
@@ -127,8 +127,8 @@ components:
       Members:
         - uint64_t cellID  // cell id
         - uint32_t N       // number of reconstructed ionization cluster
-        - float eDep        // reconstructed energy deposit [GeV]
-        - float pathLength  // track path length [mm]
+        - float eDep [GeV]      // reconstructed energy deposit
+        - float pathLength [mm] // track path length
 
 datatypes:
 
@@ -153,12 +153,12 @@ datatypes:
       - int32_t generatorStatus             // status of the particle as defined by the generator
       - int32_t simulatorStatus             // status of the particle from the simulation program - use BIT constants below
       - float charge                    // particle charge
-      - float time                      // creation time of the particle in [ns] wrt. the event, e.g. for preassigned decays or decays in flight from the simulator
-      - double mass                     // mass of the particle in [GeV]
-      - edm4hep::Vector3d vertex              // production vertex of the particle in [mm]
-      - edm4hep::Vector3d endpoint            // endpoint of the particle in [mm]
-      - edm4hep::Vector3d momentum             // particle 3-momentum at the production vertex in [GeV]
-      - edm4hep::Vector3d momentumAtEndpoint   // particle 3-momentum at the endpoint in [GeV]
+      - float time [ns]                     // creation time of the particle in wrt. the event, e.g. for preassigned decays or decays in flight from the simulator
+      - double mass [GeV]                    // mass of the particle
+      - edm4hep::Vector3d vertex [mm]             // production vertex of the particle
+      - edm4hep::Vector3d endpoint [mm]           // endpoint of the particle
+      - edm4hep::Vector3d momentum [GeV]            // particle 3-momentum at the production vertex
+      - edm4hep::Vector3d momentumAtEndpoint [GeV]  // particle 3-momentum at the endpoint
       - edm4hep::Vector3f spin                 // spin (helicity) vector of the particle
       - edm4hep::Vector2i colorFlow                // color flow as defined by the generator
     OneToManyRelations:
@@ -218,12 +218,12 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID      // ID of the sensor that created this hit
-      - float eDep                     // energy deposited in the hit [GeV]
-      - float time                     // proper time of the hit in the lab frame in [ns]
+      - float eDep [GeV]               // energy deposited in the hit
+      - float time [ns]                // proper time of the hit in the lab frame
       - float pathLength               // path length of the particle in the sensitive material that resulted in this hit
       - int32_t   quality                  // quality bit flag
-      - edm4hep::Vector3d position     // the hit position in [mm]
-      - edm4hep::Vector3f momentum     // the 3-momentum of the particle at the hits position in [GeV]
+      - edm4hep::Vector3d position [mm] // the hit position
+      - edm4hep::Vector3f momentum [GeV] // the 3-momentum of the particle at the hits position
     OneToOneRelations:
       - edm4hep::MCParticle particle // MCParticle that caused the hit
     MutableExtraCode:
@@ -260,9 +260,9 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - int32_t   PDG                        // PDG code of the shower particle that caused this contribution
-      - float energy                     // energy in [GeV] of the this contribution
-      - float time                       // time in [ns] of this contribution
-      - edm4hep::Vector3f stepPosition   // position of this energy deposition (step) [mm]
+      - float energy [G]                    // energy of the this contribution
+      - float time [ns]                     // time of this contribution
+      - edm4hep::Vector3f stepPosition [mm] // position of this energy deposition (step)
     OneToOneRelations:
       - edm4hep::MCParticle particle     // primary MCParticle that caused the shower responsible for this contribution to the hit
 
@@ -272,10 +272,10 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
-      - float energy                    // energy of the hit in [GeV]
-      - edm4hep::Vector3f position      // position of the hit in world coordinates in [mm]
+      - float energy [GeV]                   // energy of the hit
+      - edm4hep::Vector3f position [mm]      // position of the hit in world coordinates
     OneToManyRelations:
-      - edm4hep::CaloHitContribution contributions  // Monte Carlo step contribution - parallel to particle
+      - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
 
 
   #-------------  RawCalorimeterHit
@@ -293,10 +293,10 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID  // detector specific (geometrical) cell id
-      - float energy               // energy of the hit in [GeV]
-      - float energyError          // error of the hit energy in [GeV]
-      - float time                 // time of the hit in [ns]
-      - edm4hep::Vector3f position // position of the hit in world coordinates in [mm]
+      - float energy [GeV]              // energy of the hit
+      - float energyError [GeV]         // error of the hit energy
+      - float time [ns]                // time of the hit
+      - edm4hep::Vector3f position [mm] // position of the hit in world coordinates
       - int32_t type                   // type of hit
 
  #---------- ParticleID
@@ -318,13 +318,13 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - int32_t                  type            // flagword that defines the type of cluster. Bits 16-31 are used internally
-      - float                energy          // energy of the cluster [GeV]
-      - float                energyError     // error on the energy
-      - edm4hep::Vector3f    position        // position of the cluster [mm]
+      - float                energy [GeV]        // energy of the cluster
+      - float                energyError [GeV]   // error on the energy
+      - edm4hep::Vector3f    position [mm]       // position of the cluster
       - std::array<float,6>  positionError   // covariance matrix of the position (6 Parameters)
       - float                iTheta          // intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP
       - float                phi             // intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP
-      - edm4hep::Vector3f    directionError  // covariance matrix of the direction (3 Parameters) [mm^2]
+      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction (3 Parameters)
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
       - float   subdetectorEnergies  // energy observed in a particular subdetector
@@ -341,10 +341,10 @@ datatypes:
       - uint64_t cellID      // ID of the sensor that created this hit
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
-      - float time                     // time of the hit [ns]
-      - float eDep                     // energy deposited on the hit [GeV]
-      - float eDepError                // error measured on EDep [GeV]
-      - edm4hep::Vector3d position     // hit position in [mm]
+      - float time [ns]                    // time of the hit
+      - float eDep [GeV]                   // energy deposited on the hit
+      - float eDepError [GeV]              // error measured on EDep
+      - edm4hep::Vector3d position [mm]    // hit position
       - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
 
 
@@ -356,14 +356,14 @@ datatypes:
       - uint64_t cellID      // ID of the sensor that created this hit
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
-      - float time                     // time of the hit [ns]
-      - float eDep                     // energy deposited on the hit [GeV]
-      - float eDepError                // error measured on EDep [GeV]
+      - float time [ns]                    // time of the hit
+      - float eDep [GeV]                   // energy deposited on the hit
+      - float eDepError [GeV]              // error measured on EDep
       - edm4hep::Vector2f u            // measurement direction vector, u lies in the x-y plane
       - edm4hep::Vector2f v            // measurement direction vector, v is along z
       - float du                       // measurement error along the direction
       - float dv                       // measurement error along the direction
-      - edm4hep::Vector3d position     // hit position in [mm]
+      - edm4hep::Vector3d position [mm]   // hit position
       - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
 
 
@@ -373,10 +373,10 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
        - uint64_t cellID  // detector specific cell id
-       - int32_t quality                // quality flag for the hit
-       - float time                 // time of the hit [ns]
-       - float charge               // integrated charge of the hit [fC]
-       - float interval             // interval of each sampling [ns]
+       - int32_t quality               // quality flag for the hit
+       - float time [ns]               // time of the hit
+       - float charge [fC]             // integrated charge of the hit
+       - float interval [ns]           // interval of each sampling
     VectorMembers:
        - int32_t adcCounts          // raw data (32-bit) word at i
 
@@ -422,11 +422,11 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - int32_t                PDG            // PDG of the reconstructed particle.
-      - float                  energy         // [GeV] energy of the reconstructed particle. Four momentum state is not kept consistent internally
-      - edm4hep::Vector3f      momentum       // [GeV] particle momentum. Four momentum state is not kept consistent internally
-      - edm4hep::Vector3f      referencePoint // [mm] reference, i.e. where the particle has been measured
+      - float                  energy [GeV]    // energy of the reconstructed particle. Four momentum state is not kept consistent internally
+      - edm4hep::Vector3f      momentum [GeV]  //  particle momentum. Four momentum state is not kept consistent internally
+      - edm4hep::Vector3f      referencePoint [mm] // reference, i.e. where the particle has been measured
       - float                  charge         // charge of the reconstructed particle
-      - float                  mass           // [GeV] mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
+      - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
       - std::array<float,10>   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
     OneToOneRelations:
@@ -530,15 +530,15 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID                      // cell id
-      - float time                           // the primary ionization's time in the lab frame [ns]
-      - edm4hep::Vector3d position           // the primary ionization's position [mm]
+      - float time [ns]                      // the primary ionization's time in the lab frame
+      - edm4hep::Vector3d position [mm]      // the primary ionization's position
       - int16_t type                         // type
     VectorMembers:
        - uint64_t electronCellID             // cell id
-       - float electronTime                  // the time in the lab frame [ns]
-       - edm4hep::Vector3d electronPosition  // the position in the lab frame [mm]
-       - float pulseTime                     // the pulse's time in the lab frame [ns]
-       - float pulseAmplitude                // the pulse's amplitude [fC]
+       - float electronTime [ns]             // the time in the lab frame
+       - edm4hep::Vector3d electronPosition [mm]  // the position in the lab frame
+       - float pulseTime [ns]                // the pulse's time in the lab frame
+       - float pulseAmplitude [fC]           // the pulse's amplitude
     OneToOneRelations:
       - edm4hep::MCParticle particle       // the particle that caused the ionizing collisions
     MutableExtraCode:
@@ -564,8 +564,8 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
        - uint64_t cellID                 // cell id
-       - float time                      // time [ns]
-       - float charge                    // charge [fC]
+       - float time [ns]                 // time
+       - float charge [fC]               // charge
        - int16_t quality                 // quality
        - std::array<float,3> covMatrix   // lower triangle covariance matrix of the charge(c) and time(t) measurements
     OneToOneRelations:
@@ -588,8 +588,8 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
        - uint64_t cellID            // cell id
-       - float time                 // begin time [ns]
-       - float interval             // interval of each sampling [ns]
+       - float time [ns]            // begin time
+       - float interval [ns]        // interval of each sampling
     VectorMembers:
        - float amplitude            // calibrated detector data
 
