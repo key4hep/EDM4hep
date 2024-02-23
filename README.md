@@ -19,6 +19,8 @@ A generic event data model for future HEP collider experiments.
 
 **Datatypes**
 
+| | | |
+|-|-|-|
 | [EventHeader](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L136)         | [MCParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L148)        | [SimTrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L216)         |
 | [CaloHitContribution](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L258) | [SimCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L270) | [RawCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L282)     |
 | [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L291)      | [ParticleID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L303)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L316)               |
@@ -39,7 +41,7 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#625) | | |
+| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L612) | | |
 
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
