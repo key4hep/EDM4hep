@@ -58,11 +58,11 @@ void processEvent(const podio::Frame& event) {
     auto d1 = mcp1.getDaughters(1);
     auto d2 = mcp1.getDaughters(2);
 
-    if (!(d0 == mcps[2]))
+    if (d0 != mcps[2])
       throw std::runtime_error(" error: 1. daughter of particle 0 is not particle 2 ");
-    if (!(d1 == mcps[4]))
+    if (d1 != mcps[4])
       throw std::runtime_error(" error: 2. daughter of particle 0 is not particle 4 ");
-    if (!(d2 == mcps[5]))
+    if (d2 != mcps[5])
       throw std::runtime_error(" error: 3. daughter of particle 0 is not particle 5 ");
 
     auto mcp2 = mcps[1];
@@ -90,9 +90,9 @@ void processEvent(const podio::Frame& event) {
         throw std::runtime_error("cellID != 0xabadcaffee");
       if (sth1.getEDep() != j * 0.000001f)
         throw std::runtime_error("e_dep != j * 0.000001");
-      if (!(sth1.getPosition() == edm4hep::Vector3d(j * 10., j * 20., j * 5.)))
+      if (sth1.getPosition() != edm4hep::Vector3d(j * 10., j * 20., j * 5.))
         throw std::runtime_error("position != ( j*10. , j*20., j*5. )");
-      if (!(sth1.getMCParticle() == mcps[6]))
+      if (sth1.getParticle() != mcps[6])
         throw std::runtime_error("mcp != mcps[6]");
 
       auto sth2 = sths[2 * j + 1];
@@ -100,9 +100,9 @@ void processEvent(const podio::Frame& event) {
         throw std::runtime_error("cellID != 0xcaffeebabe");
       if (sth2.getEDep() != j * 0.001f)
         throw std::runtime_error("e_dep != j * 0.001");
-      if (!(sth2.getPosition() == edm4hep::Vector3d(-j * 10., -j * 20., -j * 5.)))
+      if (sth2.getPosition() != edm4hep::Vector3d(-j * 10., -j * 20., -j * 5.))
         throw std::runtime_error("position != ( -j*10. , -j*20., -j*5. )");
-      if (!(sth2.getMCParticle() == mcps[7]))
+      if (sth2.getParticle() != mcps[7])
         throw std::runtime_error("mcp != mcps[7]");
     }
 
@@ -137,14 +137,14 @@ void processEvent(const podio::Frame& event) {
         throw std::runtime_error("cellID != 0xabadcaffee");
       if (sch1.getEnergy() != j * 0.1f)
         throw std::runtime_error("energy != j*0.1f");
-      if (!(sch1.getPosition() == edm4hep::Vector3f(j * 100.f, j * 200.f, j * 50.f)))
+      if (sch1.getPosition() != edm4hep::Vector3f(j * 100.f, j * 200.f, j * 50.f))
         throw std::runtime_error("position != ( j*100. , j*200., j*50. )");
 
       auto cont1 = sch1.getContributions(0);
 
-      if (!(cont1.getPDG() == 11) || !(cont1.getEnergy() == j * 0.1f) || !(cont1.getTime() == j * 1e-9f) ||
+      if (cont1.getPDG() != 11 || cont1.getEnergy() != j * 0.1f || cont1.getTime() != j * 1e-9f ||
           !(cont1.getStepPosition() == edm4hep::Vector3f(j * 100.01f, j * 200.01f, j * 50.01f)) ||
-          !(cont1.getParticle() == mcps[6])) {
+          cont1.getParticle() != mcps[6]) {
         throw std::runtime_error("contribution1 does not match ");
       }
 
@@ -153,14 +153,14 @@ void processEvent(const podio::Frame& event) {
         throw std::runtime_error("cellID != 0xcaffeebabe");
       if (sch2.getEnergy() != j * 0.2f)
         throw std::runtime_error("energy != j*0.2");
-      if (!(sch2.getPosition() == edm4hep::Vector3f(-j * 100.f, -j * 200.f, -j * 50.f)))
+      if (sch2.getPosition() != edm4hep::Vector3f(-j * 100.f, -j * 200.f, -j * 50.f))
         throw std::runtime_error("position != ( -j*100.f , -j*200.f, -j*50.f )");
 
       auto cont2 = sch2.getContributions(0);
 
-      if (!(cont2.getPDG() == -11) || !(cont2.getEnergy() == j * 0.2f) || !(cont2.getTime() == j * 1e-9f) ||
+      if (cont2.getPDG() != -11 || cont2.getEnergy() != j * 0.2f || cont2.getTime() != j * 1e-9f ||
           !(cont2.getStepPosition() == edm4hep::Vector3f(-j * 100.01f, -j * 200.01f, -j * 50.01f)) ||
-          !(cont2.getParticle() == mcps[7])) {
+          cont2.getParticle() != mcps[7]) {
         throw std::runtime_error("contribution2 does not match ");
       }
     }
