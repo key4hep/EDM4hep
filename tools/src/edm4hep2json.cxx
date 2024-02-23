@@ -5,10 +5,14 @@
 #include "TFile.h"
 
 // podio
-#if PODIO_VERSION_MAJOR > 0 || (PODIO_VERSION_MAJOR == 0 && PODIO_VERSION_MINOR >= 99)
+#include "podio/podioVersion.h"
+#if PODIO_BUILD_VERSION >= PODIO_VERSION(0, 99, 0)
 #include "podio/ROOTReader.h"
 #else
 #include "podio/ROOTFrameReader.h"
+namespace podio {
+using ROOTReader = podio::ROOTFrameReader;
+}
 #endif
 #include "podio/ROOTLegacyReader.h"
 
@@ -135,13 +139,8 @@ int main(int argc, char** argv) {
     return read_frames<podio::ROOTLegacyReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
                                                 frameName, nEventsMax, verboser);
   } else {
-#if PODIO_VERSION_MAJOR > 0 || (PODIO_VERSION_MAJOR == 0 && PODIO_VERSION_MINOR >= 99)
     return read_frames<podio::ROOTReader>(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName,
                                           nEventsMax, verboser);
-#else
-    return read_frames<podio::ROOTFrameReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
-                                               frameName, nEventsMax, verboser);
-#endif
   }
 
   return EXIT_SUCCESS;
