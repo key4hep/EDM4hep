@@ -334,7 +334,7 @@ datatypes:
       - edm4hep::ParticleID     particleIDs  // particle IDs (sorted by their likelihood)
 
   #-------------  TrackerHit
-  edm4hep::TrackerHit:
+  edm4hep::TrackerHit3D:
     Description: "Tracker hit"
     Author: "EDM4hep authors"
     Members:
@@ -607,3 +607,19 @@ datatypes:
       - edm4hep::HitLevelData hitData   // hit level data
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
+
+interfaces:
+  edm4hep::TrackerHit:
+    Description: "Tracker hit interface class"
+    Author: "Thomas Madlener, DESY"
+    Members:
+      - uint64_t cellID // ID of the sensor that created this hit
+      - int32_t type // type of the raw data hit
+      - int32_t quality // quality bit flag of the hit
+      - float time [ns] // time of the hit
+      - float eDep [GeV] // energy deposited on the hit
+      - float eDepError [GeV] // error measured on eDep
+      - edm4hep::Vector3d position [mm] // hit position
+    Types:
+      - edm4hep::TrackerHit3D
+      - edm4hep::TrackerHitPlane
