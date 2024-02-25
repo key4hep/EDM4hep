@@ -113,12 +113,8 @@ for i in range(frames):
     )
     daughter_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
-    parent_particle.addToDaughters(
-        cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle)
-    )
-    daughter_particle.addToParents(
-        cppyy.ll.static_cast["edm4hep::MCParticle"](parent_particle)
-    )
+    parent_particle.addToDaughters(daughter_particle)
+    daughter_particle.addToParents(parent_particle)
     frame.put(particles, "MCParticleCollection")
 
     hits = edm4hep.SimTrackerHitCollection()
@@ -130,7 +126,7 @@ for i in range(frames):
     hit.setQuality(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    hit.setParticle(daughter_particle)
     simtracker_hit = hit
     frame.put(hits, "SimTrackerHitCollection")
 
@@ -140,7 +136,7 @@ for i in range(frames):
     hit.setEnergy(next(counter))
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    hit.setParticle(daughter_particle)
     calohit = hit
     frame.put(hits, "CaloHitContributionCollection")
 
@@ -149,9 +145,7 @@ for i in range(frames):
     hit.setCellID(next(counter))
     hit.setEnergy(next(counter))
     hit.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.addToContributions(
-        cppyy.ll.static_cast["edm4hep::CaloHitContribution"](calohit)
-    )
+    hit.addToContributions(calohit)
     simcalo_hit = hit
     frame.put(hits, "SimCalorimeterHitCollection")
 
@@ -200,10 +194,10 @@ for i in range(frames):
         cluster.addToShapeParameters(next(counter))
     for j in range(vectorsize):
         cluster.addToSubdetectorEnergies(next(counter))
-    cluster.addToClusters(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
-    cluster.addToHits(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
+    cluster.addToClusters(cluster)
+    cluster.addToHits(calo_hit)
     if args.use_pre1:
-        cluster.addToParticleIDs(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
+        cluster.addToParticleIDs(pid)
     frame.put(clusters, "ClusterCollection")
 
     if args.use_pre1:
@@ -288,8 +282,8 @@ for i in range(frames):
         # for k in range(21):
         #     state.setCovMatrix(k, next(counter))
         track.addToTrackStates(state)
-    track.addToTrackerHits(cppyy.ll.static_cast["edm4hep::TrackerHit3D"](tracker_hit))
-    track.addToTracks(cppyy.ll.static_cast["edm4hep::Track"](track))
+    track.addToTrackerHits(tracker_hit)
+    track.addToTracks(track)
     frame.put(tracks, "TrackCollection")
 
     vertex = edm4hep.VertexCollection()
@@ -321,75 +315,70 @@ for i in range(frames):
     particle.setGoodnessOfPID(next(counter))
     for j in range(10):
         particle.setCovMatrix(j, next(counter))
-    particle.setStartVertex(cppyy.ll.static_cast["edm4hep::Vertex"](v))
+    particle.setStartVertex(v)
     if args.use_pre1:
-        particle.setParticleIDUsed(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
-    particle.addToClusters(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
-    particle.addToTracks(cppyy.ll.static_cast["edm4hep::Track"](track))
-    particle.addToParticles(
-        cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](particle)
-    )
+        particle.setParticleIDUsed(pid)
+    particle.addToClusters(cluster)
+    particle.addToTracks(track)
+    particle.addToParticles(particle)
     if args.use_pre1:
-        particle.addToParticleIDs(cppyy.ll.static_cast["edm4hep::ParticleID"](pid))
+        particle.addToParticleIDs(pid)
     reco_particle = particle
     frame.put(particles, "ReconstructedParticleCollection")
 
-    v.setAssociatedParticle(
-        cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle)
-    )
+    v.setAssociatedParticle(reco_particle)
 
-    if not args.use_pre1:
-        pid.setParticle(
-            cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle)
-        )
+    # TODO: Add when the PID PR is merged
+    # if not args.use_pre1:
+    #     pid.setParticle(reco_particle)
 
     assocs = edm4hep.MCRecoParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    assoc.setRec(reco_particle)
+    assoc.setSim(daughter_particle)
     frame.put(assocs, "MCRecoParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoCaloAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::SimCalorimeterHit"](simcalo_hit))
+    assoc.setRec(calo_hit)
+    assoc.setSim(simcalo_hit)
     frame.put(assocs, "MCRecoCaloAssociationCollection")
 
     assocs = edm4hep.MCRecoTrackerAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::TrackerHit3D"](tracker_hit))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::SimTrackerHit"](simtracker_hit))
+    assoc.setRec(tracker_hit)
+    assoc.setSim(simtracker_hit)
     frame.put(assocs, "MCRecoTrackerAssociationCollection")
 
     assocs = edm4hep.MCRecoCaloParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::CalorimeterHit"](calo_hit))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    assoc.setRec(calo_hit)
+    assoc.setSim(daughter_particle)
     frame.put(assocs, "MCRecoCaloParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoClusterParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::Cluster"](cluster))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    assoc.setRec(cluster)
+    assoc.setSim(daughter_particle)
     frame.put(assocs, "MCRecoClusterParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoTrackParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::Track"](track))
-    assoc.setSim(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    assoc.setRec(track)
+    assoc.setSim(daughter_particle)
     frame.put(assocs, "MCRecoTrackParticleAssociationCollection")
 
     assocs = edm4hep.RecoParticleVertexAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
-    assoc.setRec(cppyy.ll.static_cast["edm4hep::ReconstructedParticle"](reco_particle))
-    assoc.setVertex(cppyy.ll.static_cast["edm4hep::Vertex"](v))
+    assoc.setRec(reco_particle)
+    assoc.setVertex(v)
     frame.put(assocs, "MCRecoParticleVertexAssociationCollection")
 
     simiocluster = edm4hep.SimPrimaryIonizationClusterCollection()
@@ -406,7 +395,7 @@ for i in range(frames):
         )
         cluster.addToPulseTime(next(counter))
         cluster.addToPulseAmplitude(next(counter))
-    cluster.setParticle(cppyy.ll.static_cast["edm4hep::MCParticle"](daughter_particle))
+    cluster.setParticle(daughter_particle)
     frame.put(simiocluster, "SimPrimaryIonizationClusterCollection")
 
     timeseries = edm4hep.TimeSeriesCollection()
@@ -426,7 +415,7 @@ for i in range(frames):
     pulse.setQuality(next(counter))
     for j in range(3):
         pulse.setCovMatrix(j, next(counter))
-    pulse.setTimeSeries(cppyy.ll.static_cast["edm4hep::TimeSeries"](serie))
+    pulse.setTimeSeries(serie)
     frame.put(trackerpulse, "TrackerPulseCollection")
 
     recioncluster = edm4hep.RecIonizationClusterCollection()
@@ -434,7 +423,7 @@ for i in range(frames):
     cluster.setCellID(next(counter))
     cluster.setSignificance(next(counter))
     cluster.setType(next(counter))
-    cluster.addToTrackerPulse(cppyy.ll.static_cast["edm4hep::TrackerPulse"](pulse))
+    cluster.addToTrackerPulse(pulse)
     frame.put(recioncluster, "RecIonizationClusterCollection")
 
     recdqdx = edm4hep.RecDqdxCollection()
@@ -454,7 +443,7 @@ for i in range(frames):
         hd.eDep = next(counter)
         hd.pathLength = next(counter)
         dqdx.addToHitData(hd)
-    dqdx.setTrack(cppyy.ll.static_cast["edm4hep::Track"](track))
+    dqdx.setTrack(track)
     frame.put(recdqdx, "RecDqdxCollection")
 
     writer.write_frame(frame, "events")
