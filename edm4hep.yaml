@@ -19,6 +19,7 @@ components:
         constexpr Vector4f(float xx, float yy, float zz, float tt) : x(xx),y(yy),z(zz),t(tt) {}\n
         constexpr Vector4f(const float* v) : x(v[0]),y(v[1]),z(v[2]),t(v[3]) {}\n
         constexpr bool operator==(const Vector4f& v) const { return (x==v.x&&y==v.y&&z==v.z&&t==v.t) ; }\n
+        constexpr bool operator!=(const Vector4f& v) const { return !(*this == v) ; }\n
         constexpr float operator[](unsigned i) const { return *( &x + i ) ; }\n
       "
 
@@ -34,6 +35,7 @@ components:
         constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
         constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
+        constexpr bool operator!=(const Vector3f& v) const { return !(*this == v) ; }\n
         constexpr float operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
@@ -53,6 +55,7 @@ components:
         [[ deprecated(\"This constructor will be removed again it is mainly here for an easier transition\") ]]\n
         constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}\n
         constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
+        constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }\n
         constexpr double operator[](unsigned i) const { return *( &x + i ) ; }\n
         "
 
@@ -67,6 +70,7 @@ components:
         constexpr Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
         constexpr Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
         constexpr bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
+        constexpr bool operator!=(const Vector2i& v) const { return !(*this == v) ; }\n
         constexpr int operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
@@ -81,6 +85,7 @@ components:
         constexpr Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
         constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
         constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
+        constexpr bool operator!=(const Vector2f& v) const { return !(*this == v) ; }\n
         constexpr float operator[](unsigned i) const { return *( &a + i ) ; }\n
         "
 
