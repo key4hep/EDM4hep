@@ -24,6 +24,8 @@ static constexpr const char* CellIDEncoding = "CellIDEncoding";
 static constexpr const char* EventHeaderName = "EventHeader";
 static constexpr const char* EventWeights = "EventWeightNames";
 static constexpr const char* shapeParameterNames = "shapeParameterNames";
+/// Event filter stats vector of three values with number of events seen,
+/// accepted, targeted.
 static constexpr const char* EventFilterStats = "EventFilterStats";
 } // namespace edm4hep
 
