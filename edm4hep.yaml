@@ -14,13 +14,20 @@ components:
         - float z
         - float t
       ExtraCode:
+        includes: "#include <cstddef>"
         declaration: "
         constexpr Vector4f() : x(0),y(0),z(0),t(0) {}\n
         constexpr Vector4f(float xx, float yy, float zz, float tt) : x(xx),y(yy),z(zz),t(tt) {}\n
         constexpr Vector4f(const float* v) : x(v[0]),y(v[1]),z(v[2]),t(v[3]) {}\n
         constexpr bool operator==(const Vector4f& v) const { return (x==v.x&&y==v.y&&z==v.z&&t==v.t) ; }\n
         constexpr bool operator!=(const Vector4f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const { return *( &x + i ) ; }\n
+        constexpr float operator[](unsigned i) const {\n
+          static_assert(\n
+            (offsetof(Vector4f,x)+sizeof(Vector4f::x) == offsetof(Vector4f,y)) &&\n
+            (offsetof(Vector4f,y)+sizeof(Vector4f::y) == offsetof(Vector4f,z)) &&\n
+            (offsetof(Vector4f,z)+sizeof(Vector4f::z) == offsetof(Vector4f,t)),\n
+            \"operator[] requires no padding\");\n
+          return *( &x + i ) ; }\n
       "
 
     # Vector3D with floats
@@ -30,13 +37,19 @@ components:
         - float y
         - float z
       ExtraCode:
+        includes: "#include <cstddef>"
         declaration: "
         constexpr Vector3f() : x(0),y(0),z(0) {}\n
         constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
         constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
         constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
         constexpr bool operator!=(const Vector3f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const { return *( &x + i ) ; }\n
+        constexpr float operator[](unsigned i) const {\n
+          static_assert(\n
+            (offsetof(Vector3f,x)+sizeof(Vector3f::x) == offsetof(Vector3f,y)) &&\n
+            (offsetof(Vector3f,y)+sizeof(Vector3f::y) == offsetof(Vector3f,z)),\n
+            \"operator[] requires no padding\");\n
+          return *( &x + i ) ; }\n
         "
 
     # Vector3D with doubles
@@ -46,7 +59,10 @@ components:
         - double y
         - double z
       ExtraCode:
-        includes: "#include <edm4hep/Vector3f.h>"
+        includes: "
+        #include <edm4hep/Vector3f.h>\n
+        #include <cstddef>\n
+        "
         declaration: "
         constexpr Vector3d() : x(0),y(0),z(0) {}\n
         constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
@@ -56,7 +72,12 @@ components:
         constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}\n
         constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
         constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }\n
-        constexpr double operator[](unsigned i) const { return *( &x + i ) ; }\n
+        constexpr float operator[](unsigned i) const {\n
+          static_assert(\n
+            (offsetof(Vector3d,x)+sizeof(Vector3d::x) == offsetof(Vector3d,y)) &&\n
+            (offsetof(Vector3d,y)+sizeof(Vector3d::y) == offsetof(Vector3d,z)),\n
+            \"operator[] requires no padding\");\n
+          return *( &x + i ) ; }\n
         "
 
     # Vector2D with ints
@@ -65,13 +86,18 @@ components:
         - int32_t a
         - int32_t b
       ExtraCode:
+        includes: "#include <cstddef>"
         declaration: "
         constexpr Vector2i() : a(0),b(0) {}\n
         constexpr Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
         constexpr Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
         constexpr bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         constexpr bool operator!=(const Vector2i& v) const { return !(*this == v) ; }\n
-        constexpr int operator[](unsigned i) const { return *( &a + i ) ; }\n
+        constexpr float operator[](unsigned i) const {\n
+          static_assert(\n
+            offsetof(Vector2i,a)+sizeof(Vector2i::a) == offsetof(Vector2i,b),\n
+            \"operator[] requires no padding\");\n
+          return *( &a + i ) ; }\n
         "
 
     # Vector2D with floats
@@ -80,13 +106,18 @@ components:
         - float a
         - float b
       ExtraCode:
+        includes: "#include <cstddef>"
         declaration: "
         constexpr Vector2f() : a(0),b(0) {}\n
         constexpr Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
         constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
         constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
         constexpr bool operator!=(const Vector2f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const { return *( &a + i ) ; }\n
+        constexpr float operator[](unsigned i) const {\n
+          static_assert(\n
+            offsetof(Vector2f,a)+sizeof(Vector2f::a) == offsetof(Vector2f,b),\n
+            \"operator[] requires no padding\");\n
+          return *( &a + i ) ; }\n
         "
 
       # Parametrized description of a particle track
