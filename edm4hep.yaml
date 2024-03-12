@@ -148,8 +148,6 @@ components:
         float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c; default:throw std::out_of_range(\"Index out of range\");}}\n
         const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c; default:throw std::out_of_range(\"Index out of range\");}}\n
         bool operator==(const Cov2f& v) const {return a == v.a && b == v.b && c == v.c;}\n
-        bool operator!=(const Cov2f& v) const {return a != v.a || b != v.b || c != v.c;}\n
-        const float* data() const {return &a;} //temporary\n
       "
 
 
@@ -168,8 +166,6 @@ components:
         float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f; default:throw std::out_of_range(\"Index out of range\");}}\n
         const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f; default:throw std::out_of_range(\"Index out of range\");}}\n
         bool operator==(const Cov3f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f;}\n
-        bool operator!=(const Cov3f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f;}\n
-        const float* data() const {return &a;} //temporary\n
       "
 
 
@@ -192,8 +188,6 @@ components:
         float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j; default:throw std::out_of_range(\"Index out of range\");}}\n
         const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j; default:throw std::out_of_range(\"Index out of range\");}}\n
         bool operator==(const Cov4f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f && g == v.g && h == v.h && i == v.i && j == v.j;}\n
-        bool operator!=(const Cov4f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f || g != v.g || h != v.h || i != v.i || j != v.j;}\n
-        const float* data() const {return &a;} //temporary\n
       "
 
 
@@ -227,8 +221,6 @@ components:
         float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j;case 10: return k;case 11: return l;case 12: return m;case 13: return n;case 14: return o;case 15: return p;case 16: return q;case 17: return r;case 18: return s;case 19: return t;case 20: return u; default:throw std::out_of_range(\"Index out of range\");}}\n
         const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j;case 10: return k;case 11: return l;case 12: return m;case 13: return n;case 14: return o;case 15: return p;case 16: return q;case 17: return r;case 18: return s;case 19: return t;case 20: return u; default:throw std::out_of_range(\"Index out of range\");}}\n
         bool operator==(const Cov6f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f && g == v.g && h == v.h && i == v.i && j == v.j && k == v.k && l == v.l && m == v.m && n == v.n && o == v.o && p == v.p && q == v.q && r == v.r && s == v.s && t == v.t && u == v.u;}\n
-        bool operator!=(const Cov6f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f || g != v.g || h != v.h || i != v.i || j != v.j || k != v.k || l != v.l || m != v.m || n != v.n || o != v.o || p != v.p || q != v.q || r != v.r || s != v.s || t != v.t || u != v.u;}\n
-        const float* data() const {return &a;} //temporary\n
       "
 
 datatypes:
