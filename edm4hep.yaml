@@ -72,7 +72,7 @@ components:
         constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}\n
         constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
         constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const {\n
+        constexpr double operator[](unsigned i) const {\n
           static_assert(\n
             (offsetof(Vector3d,x)+sizeof(Vector3d::x) == offsetof(Vector3d,y)) &&\n
             (offsetof(Vector3d,y)+sizeof(Vector3d::y) == offsetof(Vector3d,z)),\n
@@ -93,7 +93,7 @@ components:
         constexpr Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
         constexpr bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
         constexpr bool operator!=(const Vector2i& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const {\n
+        constexpr int operator[](unsigned i) const {\n
           static_assert(\n
             offsetof(Vector2i,a)+sizeof(Vector2i::a) == offsetof(Vector2i,b),\n
             \"operator[] requires no padding\");\n
