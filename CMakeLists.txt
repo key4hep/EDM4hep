@@ -102,3 +102,6 @@ add_subdirectory(python)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)
+
+#--- code format targets -------------------------------------------------------
+include(cmake/pythonFormat.cmake)
