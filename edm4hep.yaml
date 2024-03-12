@@ -100,7 +100,7 @@ components:
         - float tanLambda // lambda is the dip angle of the track in r-z
         - float time [ns] // time of the track at this trackstate
         - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
-        - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
+        - edm4hep::Cov6f covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
       ExtraCode:
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n
@@ -134,6 +134,102 @@ components:
         - uint32_t N       // number of reconstructed ionization cluster
         - float eDep [GeV]      // reconstructed energy deposit
         - float pathLength [mm] // track path length
+
+
+    edm4hep::Cov2f:
+      Members:
+        - float a
+        - float b
+        - float c
+      ExtraCode:
+        declaration: "
+        constexpr Cov2f() : a(0),b(0),c(0) {}\n
+        constexpr Cov2f(double aa,double bb,double cc) : a(aa),b(bb),c(cc) {}\n
+        float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c; default:throw std::out_of_range(\"Index out of range\");}}\n
+        const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c; default:throw std::out_of_range(\"Index out of range\");}}\n
+        bool operator==(const Cov2f& v) const {return a == v.a && b == v.b && c == v.c;}\n
+        bool operator!=(const Cov2f& v) const {return a != v.a || b != v.b || c != v.c;}\n
+        const float* data() const {return &a;} //temporary\n
+      "
+
+
+    edm4hep::Cov3f:
+      Members:
+        - float a
+        - float b
+        - float c
+        - float d
+        - float e
+        - float f
+      ExtraCode:
+        declaration: "
+        constexpr Cov3f() : a(0),b(0),c(0),d(0),e(0),f(0) {}\n
+        constexpr Cov3f(double aa,double bb,double cc,double dd,double ee,double ff) : a(aa),b(bb),c(cc),d(dd),e(ee),f(ff) {}\n
+        float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f; default:throw std::out_of_range(\"Index out of range\");}}\n
+        const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f; default:throw std::out_of_range(\"Index out of range\");}}\n
+        bool operator==(const Cov3f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f;}\n
+        bool operator!=(const Cov3f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f;}\n
+        const float* data() const {return &a;} //temporary\n
+      "
+
+
+    edm4hep::Cov4f:
+      Members:
+        - float a
+        - float b
+        - float c
+        - float d
+        - float e
+        - float f
+        - float g
+        - float h
+        - float i
+        - float j
+      ExtraCode:
+        declaration: "
+        constexpr Cov4f() : a(0),b(0),c(0),d(0),e(0),f(0),g(0),h(0),i(0),j(0) {}\n
+        constexpr Cov4f(double aa,double bb,double cc,double dd,double ee,double ff,double gg,double hh,double ii,double jj) : a(aa),b(bb),c(cc),d(dd),e(ee),f(ff),g(gg),h(hh),i(ii),j(jj) {}\n
+        float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j; default:throw std::out_of_range(\"Index out of range\");}}\n
+        const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j; default:throw std::out_of_range(\"Index out of range\");}}\n
+        bool operator==(const Cov4f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f && g == v.g && h == v.h && i == v.i && j == v.j;}\n
+        bool operator!=(const Cov4f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f || g != v.g || h != v.h || i != v.i || j != v.j;}\n
+        const float* data() const {return &a;} //temporary\n
+      "
+
+
+    edm4hep::Cov6f:
+      Members:
+        - float a
+        - float b
+        - float c
+        - float d
+        - float e
+        - float f
+        - float g
+        - float h
+        - float i
+        - float j
+        - float k
+        - float l
+        - float m
+        - float n
+        - float o
+        - float p
+        - float q
+        - float r
+        - float s
+        - float t
+        - float u
+      ExtraCode:
+        declaration: "
+        constexpr Cov6f() : a(0),b(0),c(0),d(0),e(0),f(0),g(0),h(0),i(0),j(0),k(0),l(0),m(0),n(0),o(0),p(0),q(0),r(0),s(0),t(0),u(0) {}\n
+        constexpr Cov6f(double aa,double bb,double cc,double dd,double ee,double ff,double gg,double hh,double ii,double jj,double kk,double ll,double mm,double nn,double oo,double pp,double qq,double rr,double ss,double tt,double uu) : a(aa),b(bb),c(cc),d(dd),e(ee),f(ff),g(gg),h(hh),i(ii),j(jj),k(kk),l(ll),m(mm),n(nn),o(oo),p(pp),q(qq),r(rr),s(ss),t(tt),u(uu) {}\n
+        float& operator[](unsigned ind) {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j;case 10: return k;case 11: return l;case 12: return m;case 13: return n;case 14: return o;case 15: return p;case 16: return q;case 17: return r;case 18: return s;case 19: return t;case 20: return u; default:throw std::out_of_range(\"Index out of range\");}}\n
+        const float& operator[](unsigned ind) const {switch(ind) { case 0: return a;case 1: return b;case 2: return c;case 3: return d;case 4: return e;case 5: return f;case 6: return g;case 7: return h;case 8: return i;case 9: return j;case 10: return k;case 11: return l;case 12: return m;case 13: return n;case 14: return o;case 15: return p;case 16: return q;case 17: return r;case 18: return s;case 19: return t;case 20: return u; default:throw std::out_of_range(\"Index out of range\");}}\n
+        bool operator==(const Cov6f& v) const {return a == v.a && b == v.b && c == v.c && d == v.d && e == v.e && f == v.f && g == v.g && h == v.h && i == v.i && j == v.j && k == v.k && l == v.l && m == v.m && n == v.n && o == v.o && p == v.p && q == v.q && r == v.r && s == v.s && t == v.t && u == v.u;}\n
+        bool operator!=(const Cov6f& v) const {return a != v.a || b != v.b || c != v.c || d != v.d || e != v.e || f != v.f || g != v.g || h != v.h || i != v.i || j != v.j || k != v.k || l != v.l || m != v.m || n != v.n || o != v.o || p != v.p || q != v.q || r != v.r || s != v.s || t != v.t || u != v.u;}\n
+        const float* data() const {return &a;} //temporary\n
+      "
 
 datatypes:
 
@@ -326,7 +422,7 @@ datatypes:
       - float                energy [GeV]        // energy of the cluster
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
-      - std::array<float,6>  positionError   // covariance matrix of the position (6 Parameters)
+      - edm4hep::Cov3f       positionError   // covariance matrix of the position (6 Parameters)
       - float                iTheta          // intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP
       - float                phi             // intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP
       - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction (3 Parameters)
@@ -350,7 +446,7 @@ datatypes:
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on EDep
       - edm4hep::Vector3d position [mm]    // hit position
-      - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+      - edm4hep::Cov3f covMatrix           // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
 
 
   #-------------  TrackerHitPlane
@@ -369,7 +465,7 @@ datatypes:
       - float du                       // measurement error along the direction
       - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
-      - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+      - edm4hep::Cov3f covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
 
 
  #---------- RawTimeSeries
@@ -413,7 +509,7 @@ datatypes:
       - float               chi2          // chi-squared of the vertex fit
       - float               probability   // probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex
-      - std::array<float,6> covMatrix     // covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
+      - edm4hep::Cov3f      covMatrix     // covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
@@ -433,7 +529,7 @@ datatypes:
       - float                  charge         // charge of the reconstructed particle
       - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
-      - std::array<float,10>   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
+      - edm4hep::Cov4f         covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
       - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
@@ -572,7 +668,7 @@ datatypes:
        - float time [ns]                 // time
        - float charge [fC]               // charge
        - int16_t quality                 // quality
-       - std::array<float,3> covMatrix   // lower triangle covariance matrix of the charge(c) and time(t) measurements
+       - edm4hep::Cov2f covMatrix        // lower triangle covariance matrix of the charge(c) and time(t) measurements
     OneToOneRelations:
       - edm4hep::TimeSeries timeSeries   // Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse
 
