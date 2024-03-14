@@ -31,6 +31,9 @@ static constexpr const char* shapeParameterNames = "shapeParameterNames";
 // Could go to 8 bits, but would need a fix in podio first
 using DimType = std::uint16_t;
 
+/// The enum for accessing cartesian coordinate values in covariance matrices
+enum class Cartesian : DimType { x = 0, y, z };
+
 /// The enum for accessing track parameter values in covariance matrices
 enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
 } // namespace edm4hep
