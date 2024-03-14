@@ -1,4 +1,5 @@
 #include "edm4hep/Constants.h"
+#include "edm4hep/CovMatrix3f.h"
 #include "edm4hep/MutableTrackerHit3D.h"
 #include "edm4hep/TrackState.h"
 #include "edm4hep/TrackerHit3D.h"
@@ -46,6 +47,44 @@ TEST_CASE("CovarianceMatrix indexing", "[cov_matrix_utils]") {
   STATIC_REQUIRE(to_lower_tri(3, 2) == 8);
   STATIC_REQUIRE(to_lower_tri(5, 3) == 18);
   STATIC_REQUIRE(to_lower_tri(2, 5) == 17);
+}
+
+TEST_CASE("CovMatrixNf array access", "[cov_matrix_utils]") {
+  // We use the 3D version here, but since the ExtraCode is effectively
+  // duplicated for the others as well it shouldn't really matter
+  auto covMatrix = edm4hep::CovMatrix3f{};
+
+  covMatrix[3] = 3.14f;
+  REQUIRE(covMatrix[3] == 3.14f);
+
+  REQUIRE(covMatrix.data()[3] == 3.14f);
+  covMatrix.data()[2] = 2.13f;
+  REQUIRE(covMatrix[2] == 2.13f);
+
+  float i = 0.f;
+  for (auto& v : covMatrix) {
+    v = i++;
+  }
+  i = 0.f;
+  for (const auto& v : covMatrix) {
+    REQUIRE(v == i++);
+  }
+}
+
+TEST_CASE("CovMatrixNf enum access", "[cov_matrix_utils]") {
+  enum class TestDims : uint32_t { a = 0, b, c };
+
+  auto covMatrix = edm4hep::CovMatrix3f{};
+  covMatrix.setValue(1.23f, TestDims::a, TestDims::c);
+  REQUIRE(covMatrix.getValue(TestDims::a, TestDims::c) == 1.23f);
+}
+
+TEST_CASE("CovMatrixNf equality operators", "[cov_matrix_utils]") {
+  auto covMatrix = edm4hep::CovMatrix3f{};
+  covMatrix[3] = 3.14f;
+  covMatrix[2] = 2.13f;
+  REQUIRE(covMatrix == std::array<float, 6>{0, 0, 2.13f, 3.14f, 0, 0});
+  REQUIRE(covMatrix != std::array<float, 6>{});
 }
 
 TEST_CASE("TrackState covariance", "[cov_matrix_utils]") {
