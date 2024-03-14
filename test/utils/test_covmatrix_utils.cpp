@@ -1,5 +1,7 @@
 #include "edm4hep/Constants.h"
+#include "edm4hep/MutableTrackerHit3D.h"
 #include "edm4hep/TrackState.h"
+#include "edm4hep/TrackerHit3D.h"
 #include "edm4hep/utils/cov_matrix_utils.h"
 
 #include <catch2/catch_test_macros.hpp>
@@ -53,4 +55,15 @@ TEST_CASE("TrackState covariance", "[cov_matrix_utils]") {
   // We know the expected index in this case
   REQUIRE(trackState.covMatrix.values[1] == 1.23f);
   REQUIRE(trackState.getCovMatrix(edm4hep::TrackParams::time, edm4hep::TrackParams::omega) == 0);
+}
+
+TEST_CASE("TrackerHit3D covariance", "[cov_matrix_utils]") {
+  auto trackerHit = edm4hep::MutableTrackerHit3D{};
+  trackerHit.setCovMatrix(3.14f, edm4hep::Cartesian::x, edm4hep::Cartesian::z);
+  REQUIRE(trackerHit.getCovMatrix(edm4hep::Cartesian::x, edm4hep::Cartesian::z) == 3.14f);
+  // We can also use the expected index of (x, y)
+  REQUIRE(trackerHit.getCovMatrix().values[3] == 3.14f);
+
+  auto hit = edm4hep::TrackerHit3D(trackerHit);
+  REQUIRE(hit.getCovMatrix(edm4hep::Cartesian::x, edm4hep::Cartesian::z) == 3.14f);
 }
