@@ -120,6 +120,25 @@ components:
           return *( &a + i ) ; }\n
         "
 
+    edm4hep::CovMatrix2f:
+      Description: "A generic 2 dimensional covariance matrix with values stored in lower triangular form"
+      Members:
+        - std::array<float, 3> values // the covariance matrix values
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
+          float* data() { return values.data(); }\n
+          const float* data() const { return values.data(); }\n
+          /// Get the value of the covariance matrix for the two passed dimensions\n
+          template<typename DimEnum>\n
+          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
+          /// Set a value in the covariance matrix for the two passed dimensions\n
+          template<typename DimEnum>\n
+          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
+        "
+
     edm4hep::CovMatrix3f:
       Description: "A generic 3 dimensional covariance matrix with values stored in lower triangular form"
       Members:
@@ -717,9 +736,21 @@ datatypes:
        - float time [ns]                 // time
        - float charge [fC]               // charge
        - int16_t quality                 // quality
-       - std::array<float,3> covMatrix   // lower triangle covariance matrix of the charge(c) and time(t) measurements
+       - edm4hep::CovMatrix2f covMatrix  // lower triangle covariance matrix of the charge(c) and time(t) measurements
     OneToOneRelations:
       - edm4hep::TimeSeries timeSeries   // Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the postion covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the postion covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      "
 
  #----------  RecIonizationCluster
   edm4hep::RecIonizationCluster:
