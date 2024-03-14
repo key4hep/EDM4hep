@@ -4,6 +4,10 @@
 PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS})
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
+target_include_directories(edm4hep PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/utils/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 add_library(EDM4HEP::edm4hep ALIAS edm4hep)
 
 file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)

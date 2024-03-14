@@ -19,11 +19,20 @@
 #ifndef EDM4HEP_CONSTANTS_H
 #define EDM4HEP_CONSTANTS_H
 
+#include <cstdint>
+
 namespace edm4hep {
 static constexpr const char* CellIDEncoding = "CellIDEncoding";
 static constexpr const char* EventHeaderName = "EventHeader";
 static constexpr const char* EventWeights = "EventWeightNames";
 static constexpr const char* shapeParameterNames = "shapeParameterNames";
+
+// Use 16 bits to encode the dimension
+// Could go to 8 bits, but would need a fix in podio first
+using DimType = std::uint16_t;
+
+/// The enum for accessing track parameter values in covariance matrices
+enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
 } // namespace edm4hep
 
 #endif // EDM4HEP_CONSTANTS_H
