@@ -120,6 +120,24 @@ components:
           return *( &a + i ) ; }\n
         "
 
+    edm4hep::CovMatrix6f:
+      Members:
+        - std::array<float, 21> values // the covariance matrix values stored in lower triangular matrix form (i.e. row-major flattening of the matrix)
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
+          float* data() { return values.data(); }\n
+          const float* data() const { return values.data(); }\n
+          /// Get the value of the covariance matrix for the two passed dimensions\n
+          template<typename DimEnum>\n
+          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
+          /// Set a value in the covariance matrix for the two passed dimensions\n
+          template<typename DimEnum>\n
+          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
+        "
+
       # Parametrized description of a particle track
     edm4hep::TrackState:
       Members:
@@ -131,8 +149,9 @@ components:
         - float tanLambda // lambda is the dip angle of the track in r-z
         - float time [ns] // time of the track at this trackstate
         - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
-        - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
+        - edm4hep::CovMatrix6f covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
       ExtraCode:
+        includes: "#include <edm4hep/Constants.h>"
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n
         static const int AtIP = 1 ;\n
@@ -141,6 +160,11 @@ components:
         static const int AtCalorimeter = 4 ;\n
         static const int AtVertex = 5 ;\n
         static const int LastLocation = AtVertex  ;\n
+
+        /// Get the covariance matrix value for the two passed parameters\n
+        constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }\n
+        /// Set the covariance matrix value for the two passed parameters\n
+        constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
         "
 
     # quantity with an identifier, a value and an error
