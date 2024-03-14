@@ -127,8 +127,17 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
+          constexpr CovMatrix2f() = default;\n
+          constexpr CovMatrix2f(const std::array<float, 3> v) : values(v) {}\n
+          constexpr CovMatrix2f& operator=(std::array<float, 3> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
+          constexpr float operator[](unsigned i) const { return values[i]; }\n
+          constexpr float& operator[](unsigned i) { return values[i]; }\n
+          constexpr auto begin() const { return values.begin(); }\n
+          constexpr auto begin() { return values.begin(); }\n
+          constexpr auto end() const { return values.begin(); }\n
+          constexpr auto end() { return values.begin(); }\n
           float* data() { return values.data(); }\n
           const float* data() const { return values.data(); }\n
           /// Get the value of the covariance matrix for the two passed dimensions\n
@@ -146,8 +155,17 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
+          constexpr CovMatrix3f() = default;\n
+          constexpr CovMatrix3f(const std::array<float, 6> v) : values(v) {}\n
+          constexpr CovMatrix3f& operator=(std::array<float, 6> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
+          constexpr float operator[](unsigned i) const { return values[i]; }\n
+          constexpr float& operator[](unsigned i) { return values[i]; }\n
+          constexpr auto begin() const { return values.begin(); }\n
+          constexpr auto begin() { return values.begin(); }\n
+          constexpr auto end() const { return values.begin(); }\n
+          constexpr auto end() { return values.begin(); }\n
           float* data() { return values.data(); }\n
           const float* data() const { return values.data(); }\n
           /// Get the value of the covariance matrix for the two passed dimensions\n
@@ -165,8 +183,17 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
+          constexpr CovMatrix4f() = default;\n
+          constexpr CovMatrix4f(const std::array<float, 10> v) : values(v) {}\n
+          constexpr CovMatrix4f& operator=(std::array<float, 10> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix4f& v) const { return v.values != values; }\n
+          constexpr float operator[](unsigned i) const { return values[i]; }\n
+          constexpr float& operator[](unsigned i) { return values[i]; }\n
+          constexpr auto begin() const { return values.begin(); }\n
+          constexpr auto begin() { return values.begin(); }\n
+          constexpr auto end() const { return values.begin(); }\n
+          constexpr auto end() { return values.begin(); }\n
           float* data() { return values.data(); }\n
           const float* data() const { return values.data(); }\n
           /// Get the value of the covariance matrix for the two passed dimensions\n
@@ -184,8 +211,17 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
+          constexpr CovMatrix6f() = default;\n
+          constexpr CovMatrix6f(const std::array<float, 21> v) : values(v) {}\n
+          constexpr CovMatrix6f& operator=(std::array<float, 21> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
+          constexpr float operator[](unsigned i) const { return values[i]; }\n
+          constexpr float& operator[](unsigned i) { return values[i]; }\n
+          constexpr auto begin() const { return values.begin(); }\n
+          constexpr auto begin() { return values.begin(); }\n
+          constexpr auto end() const { return values.begin(); }\n
+          constexpr auto end() { return values.begin(); }\n
           float* data() { return values.data(); }\n
           const float* data() const { return values.data(); }\n
           /// Get the value of the covariance matrix for the two passed dimensions\n
@@ -461,6 +497,7 @@ datatypes:
       declaration: "
       /// Set the postion error value for the two passed dimensions\n
       void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
+      void setPositionError(std::array<float, 6> values) { getPositionError() = values; }
       "
 
   #-------------  TrackerHit
@@ -487,6 +524,7 @@ datatypes:
       declaration: "
       /// Set the postion covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
 
   #-------------  TrackerHitPlane
@@ -517,6 +555,7 @@ datatypes:
       declaration: "
       /// Set the postion covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
 
  #---------- RawTimeSeries
@@ -577,6 +616,7 @@ datatypes:
       declaration: "
       /// Set the postion covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
 
   #------- ReconstructedParticle
@@ -618,6 +658,7 @@ datatypes:
       void setType(int32_t pdg) { setPDG(pdg); }\n
       /// Set the four momentum covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      void setCovMatrix(std::array<float, 10> values) { getCovMatrix() = values; }
       "
 
   edm4hep::MCRecoParticleAssociation:
