@@ -40,6 +40,9 @@ enum class FourMomCoords : DimType { x = 0, y, z, t };
 
 /// The enum for accessing track parameter values in covariance matrices
 enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
+
+/// Enum for accessing the covariance matrix in the TrackerPulse
+enum class TrackerPulseDims : DimType { charge = 0, time };
 } // namespace edm4hep
 
 #endif // EDM4HEP_CONSTANTS_H
