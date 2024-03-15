@@ -489,13 +489,13 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Get the postion error value for the two passed dimensions\n
+      /// Get the position error value for the two passed dimensions\n
       float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Set the postion error value for the two passed dimensions\n
+      /// Set the position error value for the two passed dimensions\n
       void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
       void setPositionError(std::array<float, 6> values) { getPositionError() = values; }
       "
@@ -516,13 +516,13 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Get the postion covariance matrix value for the two passed dimensions\n
+      /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Set the postion covariance matrix value for the two passed dimensions\n
+      /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
@@ -547,13 +547,13 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Get the postion covariance matrix value for the two passed dimensions\n
+      /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Set the postion covariance matrix value for the two passed dimensions\n
+      /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
@@ -608,13 +608,13 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Get the postion covariance matrix value for the two passed dimensions\n
+      /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Set the postion covariance matrix value for the two passed dimensions\n
+      /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
       "
@@ -631,7 +631,7 @@ datatypes:
       - float                  charge         // charge of the reconstructed particle
       - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
-      - edm4hep::CovMatrix4f   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
+      - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
       - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
@@ -783,13 +783,13 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Get the postion covariance matrix value for the two passed dimensions\n
+      /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
-      /// Set the postion covariance matrix value for the two passed dimensions\n
+      /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
