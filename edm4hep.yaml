@@ -243,7 +243,7 @@ components:
         - float tanLambda // lambda is the dip angle of the track in r-z
         - float time [ns] // time of the track at this trackstate
         - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
-        - edm4hep::CovMatrix6f covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
+        - edm4hep::CovMatrix6f covMatrix // covariance matrix of the track parameters.
       ExtraCode:
         includes: "#include <edm4hep/Constants.h>"
         declaration: "
@@ -475,10 +475,10 @@ datatypes:
       - float                energy [GeV]        // energy of the cluster
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
-      - edm4hep::CovMatrix3f positionError   // covariance matrix of the position (6 Parameters)
+      - edm4hep::CovMatrix3f positionError   // covariance matrix of the position
       - float                iTheta          // intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP
       - float                phi             // intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP
-      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction (3 Parameters)
+      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
       - float   subdetectorEnergies  // energy observed in a particular subdetector
@@ -512,7 +512,7 @@ datatypes:
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on EDep
       - edm4hep::Vector3d position [mm]    // hit position
-      - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+      - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
@@ -543,7 +543,7 @@ datatypes:
       - float du                       // measurement error along the direction
       - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
-      - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+      - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
@@ -599,7 +599,7 @@ datatypes:
       - float               chi2          // chi-squared of the vertex fit
       - float               probability   // probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex
-      - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
+      - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
@@ -631,7 +631,7 @@ datatypes:
       - float                  charge         // charge of the reconstructed particle
       - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
-      - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
+      - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
       - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
@@ -777,7 +777,7 @@ datatypes:
        - float time [ns]                 // time
        - float charge [fC]               // charge
        - int16_t quality                 // quality
-       - edm4hep::CovMatrix2f covMatrix  // lower triangle covariance matrix of the charge(c) and time(t) measurements
+       - edm4hep::CovMatrix2f covMatrix  // covariance matrix of the charge and time measurements
     OneToOneRelations:
       - edm4hep::TimeSeries timeSeries   // Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse
     ExtraCode:
