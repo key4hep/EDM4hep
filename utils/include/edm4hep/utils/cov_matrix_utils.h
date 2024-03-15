@@ -13,7 +13,7 @@ namespace edm4hep {
 namespace utils {
 
   namespace detail {
-// From c++23 this is functionality offerd by the STL
+    // From c++23 this is functionality offered by the STL
 #if __cpp_lib_to_underlying
     using to_index = std::to_underlying;
 #else
