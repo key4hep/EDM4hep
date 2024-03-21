@@ -24,6 +24,9 @@ if res != 0:
     raise RuntimeError('Failed to load Constants.h')
 from ROOT import edm4hep
 
+from podio.pythonizations import load_pythonizations
+load_pythonizations('edm4hep')
+
 # Make TAB completion work for utils
 setattr(edm4hep, 'utils', edm4hep.utils)
 
