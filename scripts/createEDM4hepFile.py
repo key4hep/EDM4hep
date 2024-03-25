@@ -3,7 +3,6 @@
 # to create a file with dummy data.
 import podio
 import edm4hep
-import cppyy.ll
 from itertools import count
 import argparse
 import sys
