@@ -5,7 +5,6 @@ PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources IO_BACKEND_HAND
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 add_library(EDM4HEP::edm4hep ALIAS edm4hep)
-set_target_properties(edm4hep PROPERTIES ALIAS_GLOBAL true)
 
 file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
 target_sources(edm4hep PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
@@ -17,7 +16,6 @@ endif()
 
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
-set_target_properties(edm4hep PROPERTIES ALIAS_GLOBAL true)
 
 list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
 
