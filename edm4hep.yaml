@@ -132,22 +132,8 @@ components:
           constexpr CovMatrix2f& operator=(std::array<float, 3> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
-          constexpr float operator[](unsigned i) const { return values[i]; }\n
-          constexpr float& operator[](unsigned i) { return values[i]; }\n
-          constexpr auto begin() const { return values.begin(); }\n
-          constexpr auto begin() { return values.begin(); }\n
-          constexpr auto end() const { return values.begin(); }\n
-          constexpr auto end() { return values.begin(); }\n
-          float* data() { return values.data(); }\n
-          const float* data() const { return values.data(); }\n
-          /// Get the value of the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
-          /// Set a value in the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
-        "
-
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
+          "
     edm4hep::CovMatrix3f:
       Description: "A generic 3 dimensional covariance matrix with values stored in lower triangular form"
       Members:
@@ -160,20 +146,7 @@ components:
           constexpr CovMatrix3f& operator=(std::array<float, 6> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
-          constexpr float operator[](unsigned i) const { return values[i]; }\n
-          constexpr float& operator[](unsigned i) { return values[i]; }\n
-          constexpr auto begin() const { return values.begin(); }\n
-          constexpr auto begin() { return values.begin(); }\n
-          constexpr auto end() const { return values.begin(); }\n
-          constexpr auto end() { return values.begin(); }\n
-          float* data() { return values.data(); }\n
-          const float* data() const { return values.data(); }\n
-          /// Get the value of the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
-          /// Set a value in the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
         "
 
     edm4hep::CovMatrix4f:
@@ -188,21 +161,8 @@ components:
           constexpr CovMatrix4f& operator=(std::array<float, 10> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix4f& v) const { return v.values != values; }\n
-          constexpr float operator[](unsigned i) const { return values[i]; }\n
-          constexpr float& operator[](unsigned i) { return values[i]; }\n
-          constexpr auto begin() const { return values.begin(); }\n
-          constexpr auto begin() { return values.begin(); }\n
-          constexpr auto end() const { return values.begin(); }\n
-          constexpr auto end() { return values.begin(); }\n
-          float* data() { return values.data(); }\n
-          const float* data() const { return values.data(); }\n
-          /// Get the value of the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
-          /// Set a value in the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
-        "
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
+          "
 
     edm4hep::CovMatrix6f:
       Description: "A generic 6 dimensional covariance matrix with values stored in lower triangular form"
@@ -216,20 +176,7 @@ components:
           constexpr CovMatrix6f& operator=(std::array<float, 21> v) { values = v; return *this; }\n
           bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
-          constexpr float operator[](unsigned i) const { return values[i]; }\n
-          constexpr float& operator[](unsigned i) { return values[i]; }\n
-          constexpr auto begin() const { return values.begin(); }\n
-          constexpr auto begin() { return values.begin(); }\n
-          constexpr auto end() const { return values.begin(); }\n
-          constexpr auto end() { return values.begin(); }\n
-          float* data() { return values.data(); }\n
-          const float* data() const { return values.data(); }\n
-          /// Get the value of the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr float getValue(DimEnum dimI, DimEnum dimJ) const { return utils::get_cov_value(values, dimI, dimJ); }\n
-          /// Set a value in the covariance matrix for the two passed dimensions\n
-          template<typename DimEnum>\n
-          constexpr void setValue(float value, DimEnum dimI, DimEnum dimJ) { utils::set_cov_value(value, values, dimI, dimJ); }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>\n
         "
 
       # Parametrized description of a particle track
