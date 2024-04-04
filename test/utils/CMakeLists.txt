@@ -16,7 +16,7 @@ endif()
 include(Catch)
 
 add_executable(unittests_edm4hep
-  test_kinematics.cpp test_vector_utils.cpp)
+  test_kinematics.cpp test_vector_utils.cpp test_PIDHandler.cpp)
 target_link_libraries(unittests_edm4hep edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
 
 option(SKIP_CATCH_DISCOVERY "Skip the Catch2 test discovery" OFF)
