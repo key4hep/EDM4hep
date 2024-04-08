@@ -18,8 +18,8 @@ if res != 0:
 res = ROOT.gInterpreter.LoadFile('edm4hep/utils/dataframe.h')
 if res != 0:
     raise RuntimeError('Failed to load dataframe.h')
-res = ROOT.gInterpreter.LoadFile('edm4hep/Constants.h')
 
+res = ROOT.gInterpreter.LoadFile('edm4hep/Constants.h')
 if res != 0:
     raise RuntimeError('Failed to load Constants.h')
 from ROOT import edm4hep
