@@ -40,7 +40,7 @@ public:
   void addColl(const edm4hep::ParticleIDCollection& coll);
 
   /// Retrieve all ParticleIDs that are related to the passed
-  /// RecontstructedParticle
+  /// ReconstructedParticle
   std::vector<edm4hep::ParticleID> getPIDs(const edm4hep::ReconstructedParticle& reco) const;
 };
 } // namespace edm4hep::utils
