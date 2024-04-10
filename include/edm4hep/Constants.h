@@ -24,6 +24,12 @@ static constexpr const char* CellIDEncoding = "CellIDEncoding";
 static constexpr const char* EventHeaderName = "EventHeader";
 static constexpr const char* EventWeights = "EventWeightNames";
 static constexpr const char* shapeParameterNames = "shapeParameterNames";
+
+/// The collection parameter name for accessing the names of the parameters for
+/// a ParticleID collection
+static constexpr const char* pidParameterNames = "ParameterNames";
+static constexpr const char* pidAlgoName = "AlgoName";
+static constexpr const char* pidAlgoType = "AlgoType";
 } // namespace edm4hep
 
 #endif // EDM4HEP_CONSTANTS_H

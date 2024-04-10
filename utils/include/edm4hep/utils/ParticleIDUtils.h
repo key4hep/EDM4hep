@@ -4,7 +4,11 @@
 #include <edm4hep/ParticleIDCollection.h>
 #include <edm4hep/ReconstructedParticle.h>
 
+#include <podio/Frame.h>
+
 #include <map>
+#include <optional>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -13,9 +17,14 @@ namespace edm4hep::utils {
 /// Utility class to invert the ParticleID to ReconstructedParticle relation
 class PIDHandler {
 
-  using MapType = std::multimap<edm4hep::ReconstructedParticle, edm4hep::ParticleID>;
+  using RecoPidMapT = std::multimap<edm4hep::ReconstructedParticle, edm4hep::ParticleID>;
 
-  MapType m_recoPidMap{}; ///< The internal map from recos to pids
+  RecoPidMapT m_recoPidMap{}; ///< The internal map from recos to pids
+
+  std::map<std::string, int> m_algoTypes{}; ///< Maps algo names to algo types
+
+  /// Maps algo types to the parameter names for each algorithm
+  std::map<int, std::vector<std::string>> m_algoParamNames{};
 
 public:
   PIDHandler() = default;
@@ -36,12 +45,25 @@ public:
     return handler;
   }
 
+  /// Create a PIDHandler from a Frame potentially also populating some metadata information.
+  static PIDHandler from(const podio::Frame& event, const podio::Frame& metadata = {});
+
   /// Add the information from one ParticleIDCollection to the handler
   void addColl(const edm4hep::ParticleIDCollection& coll);
 
   /// Retrieve all ParticleIDs that are related to the passed
   /// ReconstructedParticle
   std::vector<edm4hep::ParticleID> getPIDs(const edm4hep::ReconstructedParticle& reco) const;
+
+  /// Retrieve the ParticleID for a given algorithm type
+  std::optional<edm4hep::ParticleID> getPID(const edm4hep::ReconstructedParticle& reco, int algoType) const;
+
+  /// Retrieve the index in the parameters for a given parameter name and
+  /// algoType
+  std::optional<int> getParamIndex(int32_t algoType, const std::string& paramName) const;
+
+  /// Retrieve the algoType for a given algorithm name
+  std::optional<int32_t> getAlgoType(const std::string& algoName) const;
 };
 } // namespace edm4hep::utils
 
