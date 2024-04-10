@@ -93,20 +93,19 @@ std::optional<int32_t> PIDHandler::getAlgoType(const std::string& algoName) cons
 }
 
 void PIDHandler::setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidColl,
-                             const std::string& collName, const std::string& algoName, const int32_t algoType,
-                             const std::vector<std::string>& paramNames) {
+                             const std::string& collName, const edm4hep::utils::ParticleIDMeta& pidMetaInfo) {
   for (auto pid : pidColl) {
-    pid.setAlgorithmType(algoType);
+    pid.setAlgorithmType(pidMetaInfo.algoType);
   }
 
-  PIDHandler::setAlgoInfo(metadata, collName, algoName, algoType, paramNames);
+  PIDHandler::setAlgoInfo(metadata, collName, pidMetaInfo);
 }
 
-void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName, const std::string& algoName,
-                             const int32_t algoType, const std::vector<std::string>& paramNames) {
-  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoName), algoName);
-  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoType), algoType);
-  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidParameterNames), paramNames);
+void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName,
+                             const edm4hep::utils::ParticleIDMeta& pidMetaInfo) {
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoName), pidMetaInfo.algoName);
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoType), pidMetaInfo.algoType);
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidParameterNames), pidMetaInfo.paramNames);
 }
 
 } // namespace edm4hep::utils

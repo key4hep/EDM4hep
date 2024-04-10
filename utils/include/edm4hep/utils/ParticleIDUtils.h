@@ -14,6 +14,13 @@
 
 namespace edm4hep::utils {
 
+/// A simple struct bundling relevant metadata for a ParticleID collection
+struct ParticleIDMeta {
+  std::string algoName{};                ///< The name of the algorithm
+  int32_t algoType{0};                   ///< The (user defined) algorithm type
+  std::vector<std::string> paramNames{}; ///< The names of the parameters
+};
+
 /// Utility class to invert the ParticleID to ReconstructedParticle relation
 class PIDHandler {
 
@@ -65,12 +72,11 @@ public:
   /// Retrieve the algoType for a given algorithm name
   std::optional<int32_t> getAlgoType(const std::string& algoName) const;
 
-  static void setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidColl, const std::string& collName,
-                          const std::string& algoName, const int32_t algoType,
-                          const std::vector<std::string>& paramNames);
+  static void setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidcoll, const std::string& collname,
+                          const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
 
-  static void setAlgoInfo(podio::Frame& metadata, const std::string& collName, const std::string& algoName,
-                          const int32_t algoType, const std::vector<std::string>& paramNames);
+  static void setAlgoInfo(podio::Frame& metadata, const std::string& collname,
+                          const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
 };
 } // namespace edm4hep::utils
 

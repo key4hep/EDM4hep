@@ -45,9 +45,9 @@ std::tuple<podio::Frame, podio::Frame> createEventAndMetadata() {
   auto pidColl1 = createParticleIDs(recos, 1.0f);
   auto pidColl2 = createParticleIDs(recos, 2.0f);
 
-  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl1, "particleIds_1", "pidAlgo_1", 42,
-                                          {"first_param", "second_param"});
-  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl2, "particleIds_2", "algo_2", 123, {"1", "2"});
+  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl1, "particleIds_1",
+                                          {"pidAlgo_1", 42, {"first_param", "second_param"}});
+  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl2, "particleIds_2", {"algo_2", 123, {"1", "2"}});
 
   event.put(std::move(pidColl1), "particleIds_1");
   event.put(std::move(pidColl2), "particleIds_2");
