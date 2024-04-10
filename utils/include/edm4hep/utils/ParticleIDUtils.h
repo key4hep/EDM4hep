@@ -64,6 +64,13 @@ public:
 
   /// Retrieve the algoType for a given algorithm name
   std::optional<int32_t> getAlgoType(const std::string& algoName) const;
+
+  static void setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidColl, const std::string& collName,
+                          const std::string& algoName, const int32_t algoType,
+                          const std::vector<std::string>& paramNames);
+
+  static void setAlgoInfo(podio::Frame& metadata, const std::string& collName, const std::string& algoName,
+                          const int32_t algoType, const std::vector<std::string>& paramNames);
 };
 } // namespace edm4hep::utils
 

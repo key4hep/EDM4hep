@@ -3,6 +3,8 @@
 #include "edm4hep/Constants.h"
 #include "edm4hep/ReconstructedParticle.h"
 
+#include <podio/FrameCategories.h>
+
 #include <cassert>
 #include <iterator>
 #include <stdexcept>
@@ -88,6 +90,23 @@ std::optional<int32_t> PIDHandler::getAlgoType(const std::string& algoName) cons
   }
 
   return std::nullopt;
+}
+
+void PIDHandler::setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidColl,
+                             const std::string& collName, const std::string& algoName, const int32_t algoType,
+                             const std::vector<std::string>& paramNames) {
+  for (auto pid : pidColl) {
+    pid.setAlgorithmType(algoType);
+  }
+
+  PIDHandler::setAlgoInfo(metadata, collName, algoName, algoType, paramNames);
+}
+
+void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName, const std::string& algoName,
+                             const int32_t algoType, const std::vector<std::string>& paramNames) {
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoName), algoName);
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoType), algoType);
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidParameterNames), paramNames);
 }
 
 } // namespace edm4hep::utils

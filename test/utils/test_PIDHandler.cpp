@@ -3,7 +3,11 @@
 #include <edm4hep/ParticleIDCollection.h>
 #include <edm4hep/ReconstructedParticleCollection.h>
 
+#include <podio/Frame.h>
+
 #include <catch2/catch_test_macros.hpp>
+
+#include <tuple>
 
 edm4hep::ReconstructedParticleCollection createRecos() {
   edm4hep::ReconstructedParticleCollection coll;
@@ -23,9 +27,32 @@ edm4hep::ParticleIDCollection createParticleIDs(const edm4hep::ReconstructedPart
     auto pid = coll.create();
     pid.setLikelihood(likelihood);
     pid.setParticle(reco);
+
+    pid.addToParameters(1.23f);
+    pid.addToParameters(3.14f);
   }
 
   return coll;
+}
+
+/// Create an event with some ParticleID collections and a metadata Frame that
+/// holds the corresponding metadata
+std::tuple<podio::Frame, podio::Frame> createEventAndMetadata() {
+  auto retTuple = std::make_tuple(podio::Frame{}, podio::Frame{});
+  auto& [event, metadata] = retTuple;
+
+  const auto& recos = event.put(createRecos(), "reco_particles");
+  auto pidColl1 = createParticleIDs(recos, 1.0f);
+  auto pidColl2 = createParticleIDs(recos, 2.0f);
+
+  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl1, "particleIds_1", "pidAlgo_1", 42,
+                                          {"first_param", "second_param"});
+  edm4hep::utils::PIDHandler::setAlgoInfo(metadata, pidColl2, "particleIds_2", "algo_2", 123, {"1", "2"});
+
+  event.put(std::move(pidColl1), "particleIds_1");
+  event.put(std::move(pidColl2), "particleIds_2");
+
+  return retTuple;
 }
 
 void checkHandlerValidReco(const edm4hep::utils::PIDHandler& handler, const edm4hep::ReconstructedParticle& reco) {
@@ -34,8 +61,17 @@ void checkHandlerValidReco(const edm4hep::utils::PIDHandler& handler, const edm4
   REQUIRE(pids.size() == 2);
   REQUIRE(pids[0].getParticle() == reco);
   REQUIRE(pids[1].getParticle() == reco);
-  REQUIRE(pids[0].getLikelihood() == 1.0f);
-  REQUIRE(pids[1].getLikelihood() == 2.0f);
+  REQUIRE(pids[0].getParameters()[0] == 1.23f);
+  REQUIRE(pids[0].getParameters()[1] == 3.14f);
+
+  // Cannot guarantee an order if the handler is constructed from a Frame
+  const auto llh1 = pids[0].getLikelihood();
+  const auto llh2 = pids[1].getLikelihood();
+  if (llh1 == 1.0f) {
+    REQUIRE(llh2 == 2.0f);
+  } else {
+    REQUIRE(llh2 == 1.0f);
+  }
 }
 
 TEST_CASE("PIDHandler basics", "[pid_utils]") {
@@ -77,6 +113,64 @@ TEST_CASE("PIDHandler from variadic list of collections", "[pid_utils]") {
   }
 
   SECTION("Unkown reco") {
+    const auto reco = edm4hep::ReconstructedParticle();
+    const auto pids = handler.getPIDs(reco);
+
+    REQUIRE(pids.empty());
+  }
+}
+
+TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
+  using namespace edm4hep;
+  const auto& [event, metadata] = createEventAndMetadata();
+
+  const auto handler = utils::PIDHandler::from(event, metadata);
+
+  const auto pidAlgo1 = handler.getAlgoType("pidAlgo_1").value();
+  const auto pidAlgo2 = handler.getAlgoType("algo_2").value();
+  REQUIRE(pidAlgo1 == 42);
+  REQUIRE(pidAlgo2 == 123);
+  REQUIRE_FALSE(handler.getAlgoType("non-existant-algo").has_value());
+
+  // Check that getting a ParticleID object for a reconstructed particle via the
+  // algorithmType works
+  const auto& recos = event.get<edm4hep::ReconstructedParticleCollection>("reco_particles");
+  const auto& pidColl1 = event.get<edm4hep::ParticleIDCollection>("particleIds_1");
+  const auto& pidColl2 = event.get<edm4hep::ParticleIDCollection>("particleIds_2");
+  const auto pid1 = handler.getPID(recos[0], pidAlgo1).value();
+  REQUIRE(pid1 == pidColl1[0]);
+  const auto pid2 = handler.getPID(recos[0], pidAlgo2).value();
+  REQUIRE(pid2 == pidColl2[0]);
+  REQUIRE_FALSE(handler.getPID(recos[0], -1).has_value()); // empty optional for non-existant algoType
+
+  // Check that parameter handling works as well
+  const auto parIndex1 = handler.getParamIndex(pidAlgo1, "first_param").value();
+  REQUIRE(parIndex1 == 0);
+  const auto parIndex2 = handler.getParamIndex(pidAlgo2, "2").value();
+  REQUIRE(parIndex2 == 1);
+  // Valid algo but invalid parameter name
+  REQUIRE_FALSE(handler.getParamIndex(pidAlgo1, "non-existant-param").has_value());
+  // Invalid algorithm, the parameter name is not even checked in this case
+  REQUIRE_FALSE(handler.getParamIndex(-1, "doesnot matter").has_value());
+}
+
+TEST_CASE("PIDHandler from Frame w/o metadata", "[pid_utils]") {
+  using namespace edm4hep;
+  const auto& [event, _] = createEventAndMetadata();
+
+  const auto handler = utils::PIDHandler::from(event);
+  // No metadata available info available in this case
+  REQUIRE_FALSE(handler.getAlgoType("pidAlgo_1").has_value());
+
+  // But the rest should still work as expected
+  const auto& recoColl = event.get<edm4hep::ReconstructedParticleCollection>("reco_particles");
+
+  SECTION("Valid PID for reco") {
+    auto reco = recoColl[0];
+    checkHandlerValidReco(handler, reco);
+  }
+
+  SECTION("Unknown reco") {
     const auto reco = edm4hep::ReconstructedParticle();
     const auto pids = handler.getPIDs(reco);
 
