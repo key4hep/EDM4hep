@@ -77,6 +77,9 @@ public:
 
   static void setAlgoInfo(podio::Frame& metadata, const std::string& collname,
                           const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
+
+  static std::optional<edm4hep::utils::ParticleIDMeta> getAlgoInfo(const podio::Frame& metadata,
+                                                                   const std::string& collName);
 };
 } // namespace edm4hep::utils
 

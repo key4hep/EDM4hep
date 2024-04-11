@@ -108,4 +108,22 @@ void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName
   metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidParameterNames), pidMetaInfo.paramNames);
 }
 
+std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podio::Frame& metadata,
+                                                                      const std::string& collName) {
+  ParticleIDMeta pidInfo{};
+
+  pidInfo.algoName = metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
+  // Use the algoName as proxy to see whether we could actually get the
+  // information from the metadata
+  if (pidInfo.algoName.empty()) {
+    return std::nullopt;
+  }
+
+  pidInfo.algoType = metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType));
+  pidInfo.paramNames = metadata.getParameter<std::vector<std::string>>(
+      podio::collMetadataParamName(collName, edm4hep::pidParameterNames));
+
+  return pidInfo;
+}
+
 } // namespace edm4hep::utils
