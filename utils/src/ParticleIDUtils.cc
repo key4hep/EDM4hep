@@ -1,7 +1,6 @@
 #include <edm4hep/utils/ParticleIDUtils.h>
 
 #include "edm4hep/Constants.h"
-#include "edm4hep/ReconstructedParticle.h"
 
 #include <podio/FrameCategories.h>
 
@@ -18,6 +17,27 @@ void PIDHandler::addColl(const edm4hep::ParticleIDCollection& coll) {
   }
 }
 
+void PIDHandler::addColl(const edm4hep::ParticleIDCollection& coll, const edm4hep::utils::ParticleIDMeta& pidInfo) {
+  addColl(coll);
+  addMetaInfo(pidInfo);
+}
+
+void PIDHandler::addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo) {
+  const auto [algoIt, inserted] = m_algoTypes.emplace(pidInfo.algoName, pidInfo.algoType);
+  if (!inserted) {
+    throw std::runtime_error("Cannot have duplicate algorithm names (" + pidInfo.algoName + " already exists)");
+  }
+
+  const auto [__, parInserted] = m_algoParamNames.emplace(pidInfo.algoType, pidInfo.paramNames);
+  if (!parInserted) {
+    if (inserted) {
+      m_algoTypes.erase(algoIt);
+    }
+    throw std::runtime_error("Cannot have duplicate algorithm types (" + std::to_string(pidInfo.algoType) +
+                             " already exists)");
+  }
+}
+
 PIDHandler PIDHandler::from(const podio::Frame& event, const podio::Frame& metadata) {
   PIDHandler handler{};
   for (const auto& name : event.getAvailableCollections()) {
@@ -25,23 +45,9 @@ PIDHandler PIDHandler::from(const podio::Frame& event, const podio::Frame& metad
     if (const auto pidColl = dynamic_cast<const edm4hep::ParticleIDCollection*>(coll)) {
       handler.addColl(*pidColl);
 
-      const auto& algoName =
-          metadata.getParameter<std::string>(podio::collMetadataParamName(name, edm4hep::pidAlgoName));
-      const auto algoType = metadata.getParameter<int>(podio::collMetadataParamName(name, edm4hep::pidAlgoType));
-
-      // Here we have to assume that an empty name and an algoType of 0 simply
-      // mean that this has not been set at all
-      if (!algoName.empty() && algoType != 0) {
-        const auto [_, inserted] = handler.m_algoTypes.emplace(algoName, algoType);
-        if (!inserted) {
-          throw std::runtime_error("Cannot have duplicate algorithm names");
-        }
-
-        const auto& paramNames = metadata.getParameter<std::vector<std::string>>(
-            podio::collMetadataParamName(name, edm4hep::pidParameterNames));
-        if (!paramNames.empty()) {
-          handler.m_algoParamNames.emplace(algoType, paramNames);
-        }
+      auto maybeMetaInfo = PIDHandler::getAlgoInfo(metadata, name);
+      if (maybeMetaInfo) {
+        handler.addMetaInfo(std::move(maybeMetaInfo.value()));
       }
     }
   }

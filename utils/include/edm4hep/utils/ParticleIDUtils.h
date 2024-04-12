@@ -58,6 +58,13 @@ public:
   /// Add the information from one ParticleIDCollection to the handler
   void addColl(const edm4hep::ParticleIDCollection& coll);
 
+  /// Add the information from one ParticleIDCollection to the handler together
+  /// with its meta data
+  void addColl(const edm4hep::ParticleIDCollection& coll, const edm4hep::utils::ParticleIDMeta& pidInfo);
+
+  /// Add meta information for a collection
+  void addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo);
+
   /// Retrieve all ParticleIDs that are related to the passed
   /// ReconstructedParticle
   std::vector<edm4hep::ParticleID> getPIDs(const edm4hep::ReconstructedParticle& reco) const;

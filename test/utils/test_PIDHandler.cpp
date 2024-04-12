@@ -120,6 +120,39 @@ TEST_CASE("PIDHandler from variadic list of collections", "[pid_utils]") {
   }
 }
 
+TEST_CASE("PIDHandler w/ addMetaInfo", "[pid_utils]") {
+  using namespace edm4hep;
+  auto handler = utils::PIDHandler();
+
+  const auto recoColl = createRecos();
+  auto pidColl1 = createParticleIDs(recoColl, 1.0f);
+  for (auto pid : pidColl1) {
+    pid.setAlgorithmType(42);
+  }
+  const auto pidInfo1 = utils::ParticleIDMeta{"fancyAlgo", 42, {"p1", "p2"}};
+
+  handler.addColl(pidColl1, pidInfo1);
+
+  REQUIRE(handler.getAlgoType("fancyAlgo").value_or(0) == 42);
+  REQUIRE(handler.getParamIndex(42, "p2").value_or(-1) == 1);
+  REQUIRE(handler.getPID(recoColl[0], 42).value() == pidColl1[0]);
+
+  // Technically, we can even just add meta data without having a corresponding
+  // ParticleID collection to match
+  handler.addMetaInfo(utils::ParticleIDMeta{"anotherAlgo", 123, {}});
+  REQUIRE(handler.getAlgoType("anotherAlgo").value() == 123);
+
+  // Expected exceptions also get thrown
+  REQUIRE_THROWS_AS(handler.addMetaInfo(utils::ParticleIDMeta{"anotherAlgo", 321, {"param"}}), std::runtime_error);
+  // No information about this meta data can be obtained
+  REQUIRE_FALSE(handler.getParamIndex(321, "param").has_value());
+
+  REQUIRE_THROWS_AS(handler.addMetaInfo(utils::ParticleIDMeta{"newAlgo", 42, {"PARAM"}}), std::runtime_error);
+  // Existing meta info is unchanged
+  REQUIRE_FALSE(handler.getParamIndex(42, "PARAM").has_value());
+  REQUIRE(handler.getParamIndex(42, "p2").value_or(-1) == 1);
+}
+
 TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
   using namespace edm4hep;
   const auto& [event, metadata] = createEventAndMetadata();
