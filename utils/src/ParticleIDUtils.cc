@@ -11,6 +11,14 @@
 
 namespace edm4hep::utils {
 
+std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param) {
+  const auto nameIt = std::find(pidMetaInfo.paramNames.begin(), pidMetaInfo.paramNames.end(), param);
+  if (nameIt != pidMetaInfo.paramNames.end()) {
+    return std::distance(pidMetaInfo.paramNames.begin(), nameIt);
+  }
+  return std::nullopt;
+}
+
 void PIDHandler::addColl(const edm4hep::ParticleIDCollection& coll) {
   for (const auto pid : coll) {
     m_recoPidMap.emplace(pid.getParticle(), pid);
@@ -28,8 +36,8 @@ void PIDHandler::addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo) {
     throw std::runtime_error("Cannot have duplicate algorithm names (" + pidInfo.algoName + " already exists)");
   }
 
-  const auto [__, parInserted] = m_algoParamNames.emplace(pidInfo.algoType, pidInfo.paramNames);
-  if (!parInserted) {
+  const auto [__, metaInserted] = m_algoPidMeta.emplace(pidInfo.algoType, pidInfo);
+  if (!metaInserted) {
     if (inserted) {
       m_algoTypes.erase(algoIt);
     }
@@ -79,12 +87,8 @@ std::optional<edm4hep::ParticleID> PIDHandler::getPID(const edm4hep::Reconstruct
 }
 
 std::optional<int> PIDHandler::getParamIndex(int32_t algoType, const std::string& paramName) const {
-  if (const auto it = m_algoParamNames.find(algoType); it != m_algoParamNames.end()) {
-    const auto& names = it->second;
-    const auto nameIt = std::find(names.begin(), names.end(), paramName);
-    if (nameIt != names.end()) {
-      return std::distance(names.begin(), nameIt);
-    }
+  if (const auto it = m_algoPidMeta.find(algoType); it != m_algoPidMeta.end()) {
+    return edm4hep::utils::getParamIndex(it->second, paramName);
   }
 
   return std::nullopt;

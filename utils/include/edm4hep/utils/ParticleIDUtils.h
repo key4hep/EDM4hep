@@ -21,6 +21,9 @@ struct ParticleIDMeta {
   std::vector<std::string> paramNames{}; ///< The names of the parameters
 };
 
+/// Get the index of the parameter in the passed ParticleID meta info
+std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param);
+
 /// Utility class to invert the ParticleID to ReconstructedParticle relation
 class PIDHandler {
 
@@ -30,8 +33,8 @@ class PIDHandler {
 
   std::map<std::string, int> m_algoTypes{}; ///< Maps algo names to algo types
 
-  /// Maps algo types to the parameter names for each algorithm
-  std::map<int, std::vector<std::string>> m_algoParamNames{};
+  /// Maps algo types to the full particle id meta information
+  std::map<int, edm4hep::utils::ParticleIDMeta> m_algoPidMeta{};
 
 public:
   PIDHandler() = default;
