@@ -22,7 +22,4 @@ include("${CMAKE_CURRENT_LIST_DIR}/EDM4HEPTargets.cmake")
 include(FindPackageHandleStandardArgs)
 get_property(TEST_EDM4HEP_LIBRARY TARGET EDM4HEP::edm4hep PROPERTY LOCATION)
 
-# For backwards compatibility and for slightly less typing
-add_library(EDM4HEP::utils ALIAS EDM4HEP::edm4hepUtils)
-
 find_package_handle_standard_args(EDM4HEP DEFAULT_MSG CMAKE_CURRENT_LIST_FILE TEST_EDM4HEP_LIBRARY)
