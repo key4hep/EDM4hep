@@ -25,6 +25,7 @@ struct ParticleIDMeta {
 std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param);
 
 /// Utility class to invert the ParticleID to ReconstructedParticle relation
+/// See [this page](@ref md_doc_2_p_i_d_handler) for example usage and more information.
 class PIDHandler {
 
   using RecoPidMapT = std::multimap<edm4hep::ReconstructedParticle, edm4hep::ParticleID>;
