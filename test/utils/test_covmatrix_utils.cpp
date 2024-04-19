@@ -14,7 +14,10 @@ TEST_CASE("CovarianceMatrix indexing", "[cov_matrix_utils]") {
 
   STATIC_REQUIRE(get_cov_dim(21) == 6);
   STATIC_REQUIRE(get_cov_dim(1) == 1);
+#if !__cpp_consteval
+  // This will fail to compile if we have consteval
   REQUIRE_THROWS_AS(get_cov_dim(14), std::invalid_argument);
+#endif
 
   // clang-format off
   // For better interpretability of the tests below, these are the indices of a

@@ -1,10 +1,7 @@
 #ifndef EDM4HEP_UTILS_COVMATRIXUTILS_H
 #define EDM4HEP_UTILS_COVMATRIXUTILS_H
 
-#include <algorithm>
 #include <array>
-#include <cstdint>
-#include <iostream>
 #include <stdexcept>
 #include <type_traits>
 
@@ -44,13 +41,19 @@ namespace utils {
    *
    * **NOTE: to avoid having to do a square root operation and in order to keep
    * this constexpr this is currently only implemented for storage sizes up to
-   * 21 (corresponding to covariance matrix dimensions of 6 x 6)**
+   * 21 (corresponding to covariance matrix dimensions of 6 x 6)**. This
+   * function is intended to be called in constexpr or immediate contexts in
+   * order to fail at compilation already for invalid values of N.
    *
    * @param N the size of the 1D storage
    *
    * @returns the dimension of the covariance matrix
    */
-  inline constexpr std::size_t get_cov_dim(std::size_t N) {
+#if cpp_consteval
+  consteval std::size_t get_cov_dim(std::size_t N) {
+#else
+  constexpr std::size_t get_cov_dim(std::size_t N) {
+#endif
     switch (N) {
     case 21:
       return 6;
@@ -91,7 +94,7 @@ namespace utils {
     const auto i = detail::to_index(dimI);
     const auto j = detail::to_index(dimJ);
 
-    const auto dim = get_cov_dim(N);
+    constexpr auto dim = get_cov_dim(N);
     if (i < 0 || j < 0 || i >= dim || j >= dim) {
       // TODO: error handling
     }
@@ -104,7 +107,7 @@ namespace utils {
     auto i = detail::to_index(dimI);
     auto j = detail::to_index(dimJ);
 
-    const auto dim = get_cov_dim(N);
+    constexpr auto dim = get_cov_dim(N);
     if (i < 0 || j < 0 || i >= dim || j >= dim) {
       // TODO: error handling
     }
