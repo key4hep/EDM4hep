@@ -10,7 +10,7 @@
 #include <stdexcept>
 
 TEST_CASE("CovarianceMatrix indexing", "[cov_matrix_utils]") {
-  using namespace edm4hep::utils;
+  using namespace edm4hep::utils::detail;
 
   STATIC_REQUIRE(get_cov_dim(21) == 6);
   STATIC_REQUIRE(get_cov_dim(1) == 1);
@@ -80,6 +80,15 @@ TEST_CASE("CovMatrixNf enum access", "[cov_matrix_utils]") {
   auto covMatrix = edm4hep::CovMatrix3f{};
   covMatrix.setValue(1.23f, TestDims::a, TestDims::c);
   REQUIRE(covMatrix.getValue(TestDims::a, TestDims::c) == 1.23f);
+}
+
+TEST_CASE("CovMatrixNf invalid enum access", "[cov_matrix_utils]") {
+  // Invalid dimensions with too many elements to fit the 3D convariance matrix
+  enum class InvalidDims : edm4hep::DimType { i = 0, j, k, l, m };
+
+  auto covMatrix = edm4hep::CovMatrix3f{};
+  REQUIRE_THROWS_AS(covMatrix.setValue(1.23f, InvalidDims::k, InvalidDims::l), std::invalid_argument);
+  REQUIRE_THROWS_AS(covMatrix.getValue(InvalidDims::m, InvalidDims::i), std::invalid_argument);
 }
 
 TEST_CASE("CovMatrixNf equality operators", "[cov_matrix_utils]") {
