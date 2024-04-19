@@ -10,7 +10,7 @@ features are
 - the retrieval meta information for a `ParticleIDCollection`, making it
   possible to e.g. retrieve the indices of parameters from parameter names
 - the possibility to invert the relation to `ReconstructedParticle`s, which
-  allows to, e.g. get all `ParticleID`s that point to one
+  allows one to, e.g. get all `ParticleID`s that point to a specific
   `ReconstructedParticle`.
 
 ## ParticleIDMeta basics
