@@ -82,12 +82,22 @@ public:
   /// Retrieve the algoType for a given algorithm name
   std::optional<int32_t> getAlgoType(const std::string& algoName) const;
 
+  /// Set the metadata information for the passed collection in the metadata Frame.
+  ///
+  /// This also sets the algorithmType of all elements in the collection to the
+  /// one that is found in the meta information.
   static void setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidcoll, const std::string& collname,
                           const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
 
+  /// Set the metadata information for a given collection name in the metadata Frame.
+  ///
+  /// @note It is user responsibility to ensure that the meta information that
+  /// is passed here and the one that is present in the collection with the
+  /// given name is consisent
   static void setAlgoInfo(podio::Frame& metadata, const std::string& collname,
                           const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
 
+  /// Get the ParticleID meta information for a given collection name from the metadata Frame.
   static std::optional<edm4hep::utils::ParticleIDMeta> getAlgoInfo(const podio::Frame& metadata,
                                                                    const std::string& collName);
 };
