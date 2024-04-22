@@ -192,7 +192,7 @@ for it the following snippet shows you how to do that
 
 ```cpp
 // Create ParticleID meta information for an algorithm
-const auto tofMeta = {"TimeOfFlight", 42, {"time", "time_error"}};
+const auto tofMeta = edm4hep::utils::ParticleIDMeta{"TimeOfFlight", 42, {"time", "time_error"}};
 
 auto tofPIDs = edm4hep::ParticleIDCollection{};
 // ... fill collection
@@ -216,7 +216,7 @@ longer have mutable access to, this can be done via
 
 ```cpp
 // Create ParticleID meta information for an algorithm
-const auto tofMeta = {"TimeOfFlight", 42, {"time", "time_error"}};
+const auto tofMeta = edm4hep::utils::ParticleIDMeta{"TimeOfFlight", 42, {"time", "time_error"}};
 
 edm4hep::utils::PIDHandler::setAlgoInfo(metadata, "ToFPID", tofMeta);
 ```
