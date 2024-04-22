@@ -1,7 +1,7 @@
 # PIDHandler introduction and usage
 
 This page contains some bigger picture introduction for the utilities that are
-availbale to work with `ParticleID`s and its related metadata. It also contains
+available to work with `ParticleID`s and its related metadata. It also contains
 examples for the most common usage patterns.
 
 ## PIDHandler basics
@@ -191,7 +191,7 @@ If you have a `ParticleIDCollection` and want to persist some meta information
 for it the following snippet shows you how to do that
 
 ```cpp
-// Create ParticleID meta information for an algorihtm
+// Create ParticleID meta information for an algorithm
 const auto tofMeta = {"TimeOfFlight", 42, {"time", "time_error"}};
 
 auto tofPIDs = edm4hep::ParticleIDCollection{};
@@ -215,7 +215,7 @@ If you want to set the meta information for a `ParticleIDCollection` that you no
 longer have mutable access to, this can be done via
 
 ```cpp
-// Create ParticleID meta information for an algorihtm
+// Create ParticleID meta information for an algorithm
 const auto tofMeta = {"TimeOfFlight", 42, {"time", "time_error"}};
 
 edm4hep::utils::PIDHandler::setAlgoInfo(metadata, "ToFPID", tofMeta);
