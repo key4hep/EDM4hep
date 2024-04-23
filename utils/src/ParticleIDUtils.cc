@@ -77,9 +77,10 @@ std::vector<edm4hep::ParticleID> PIDHandler::getPIDs(const edm4hep::Reconstructe
 
 std::optional<edm4hep::ParticleID> PIDHandler::getPID(const edm4hep::ReconstructedParticle& reco,
                                                       int32_t algoType) const {
-  for (const auto& pid : getPIDs(reco)) {
-    if (pid.getAlgorithmType() == algoType) {
-      return pid;
+  const auto& [begin, end] = m_recoPidMap.equal_range(reco);
+  for (auto it = begin; it != end; ++it) {
+    if (it->second.getAlgorithmType() == algoType) {
+      return it->second;
     }
   }
 
