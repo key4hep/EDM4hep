@@ -13,6 +13,23 @@ features are
   allows one to, e.g. get all `ParticleID`s that point to a specific
   `ReconstructedParticle`.
 
+### When (not) to use the PIDHandler
+NOTE: Depending on how you use the `PIDHandler` it might incur an unnecessary
+performance overhead. The main purpose is to use it in cases, where the relation
+between `ParticleID`s and `ReconstructedParticle`s is not trivial, e.g.
+- When the two collections do **not** run in parallel
+- When not all `ReconstructedParticle`s have a `ParticleID` attached
+- When you want to have access to several `ParticleID`s for a given
+  `ReonstructedParticle` and there is no trivial relation between them.
+
+In case your collections run in parallel it will be much quicker to just loop
+over them in parallel.
+
+In case you just want look at one `ParticleID` collection, but need to look at
+some properties of the `ReconstructedParticle`, simply use the existing relation
+to do that.
+
+
 ## ParticleIDMeta basics
 `ParticleIDMeta` is a simple struct that bundles all ParticleID meta information
 for one collection together. Whenever metadata is involved for ParticleIDs this
