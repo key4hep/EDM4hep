@@ -104,15 +104,8 @@ that most of the times you will see lines like this
 const auto value = pidHandler.getAlgoType("someAlgo").value();
 ```
 
-This will throw an exception if some information is not available. If you want /
-need to check first whether information is present you can do
-
-```cpp
-const auto maybeValue = pidHandler.getAlgoType("someAlgo");
-if (maybeValue.has_value()) {
-  const auto value = maybeValue.value();
-}
-```
+This will throw an exception if some information is not available. Check if the
+optional has a value when actually using these utilities.
 
 ### Creating a PIDHandler for a complete event
 
