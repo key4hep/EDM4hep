@@ -471,7 +471,7 @@ datatypes:
       declaration: "
       /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
+      void setCovMatrix(const std::array<float, 6>& values) { getCovMatrix() = values; }
       "
 
   #-------------  TrackerHitPlane
@@ -502,7 +502,7 @@ datatypes:
       declaration: "
       /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
+      void setCovMatrix(const std::array<float, 6>& values) { getCovMatrix() = values; }
       "
 
  #---------- RawTimeSeries
@@ -563,7 +563,7 @@ datatypes:
       declaration: "
       /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      void setCovMatrix(std::array<float, 6> values) { getCovMatrix() = values; }
+      void setCovMatrix(const std::array<float, 6>& values) { getCovMatrix() = values; }
       "
 
   #------- ReconstructedParticle
@@ -605,7 +605,7 @@ datatypes:
       void setType(int32_t pdg) { setPDG(pdg); }\n
       /// Set the four momentum covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      void setCovMatrix(std::array<float, 10> values) { getCovMatrix() = values; }
+      void setCovMatrix(const std::array<float, 10>& values) { getCovMatrix() = values; }
       "
 
   edm4hep::MCRecoParticleAssociation:
