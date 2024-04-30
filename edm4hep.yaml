@@ -128,8 +128,8 @@ components:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
           constexpr CovMatrix2f() = default;\n
-          constexpr CovMatrix2f(const std::array<float, 3> v) : values(v) {}\n
-          constexpr CovMatrix2f& operator=(std::array<float, 3> v) { values = v; return *this; }\n
+          constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}\n
+          constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
           #include <edm4hep/detail/CovMatrixCommon.ipp>
@@ -142,8 +142,8 @@ components:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
           constexpr CovMatrix3f() = default;\n
-          constexpr CovMatrix3f(const std::array<float, 6> v) : values(v) {}\n
-          constexpr CovMatrix3f& operator=(std::array<float, 6> v) { values = v; return *this; }\n
+          constexpr CovMatrix3f(const std::array<float, 6>& v) : values(v) {}\n
+          constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
           #include <edm4hep/detail/CovMatrixCommon.ipp>
@@ -157,8 +157,8 @@ components:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
           constexpr CovMatrix4f() = default;\n
-          constexpr CovMatrix4f(const std::array<float, 10> v) : values(v) {}\n
-          constexpr CovMatrix4f& operator=(std::array<float, 10> v) { values = v; return *this; }\n
+          constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}\n
+          constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix4f& v) const { return v.values != values; }\n
           #include <edm4hep/detail/CovMatrixCommon.ipp>
@@ -172,8 +172,8 @@ components:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
         declaration: "
           constexpr CovMatrix6f() = default;\n
-          constexpr CovMatrix6f(const std::array<float, 21> v) : values(v) {}\n
-          constexpr CovMatrix6f& operator=(std::array<float, 21> v) { values = v; return *this; }\n
+          constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}\n
+          constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
           #include <edm4hep/detail/CovMatrixCommon.ipp>\n
