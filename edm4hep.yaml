@@ -453,7 +453,6 @@ datatypes:
       declaration: "
       /// Set the position error value for the two passed dimensions\n
       void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
-      void setPositionError(std::array<float, 6> values) { getPositionError() = values; }
       "
 
   #-------------  TrackerHit
