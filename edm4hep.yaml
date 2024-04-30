@@ -136,6 +136,7 @@ components:
           bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
           #include <edm4hep/detail/CovMatrixCommon.ipp>
           "
+
     edm4hep::CovMatrix3f:
       Description: "A generic 3 dimensional covariance matrix with values stored in lower triangular form"
       Members:
