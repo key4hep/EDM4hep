@@ -120,6 +120,74 @@ components:
           return *( &a + i ) ; }\n
         "
 
+    edm4hep::CovMatrix2f:
+      Description: "A generic 2 dimensional covariance matrix with values stored in lower triangular form"
+      Members:
+        - std::array<float, 3> values // the covariance matrix values
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          constexpr CovMatrix2f() = default;\n
+          template<typename... Vs>\n
+          constexpr CovMatrix2f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}\n
+          constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }\n
+          bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
+          "
+
+    edm4hep::CovMatrix3f:
+      Description: "A generic 3 dimensional covariance matrix with values stored in lower triangular form"
+      Members:
+        - std::array<float, 6> values // the covariance matrix values
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          constexpr CovMatrix3f() = default;\n
+          constexpr CovMatrix3f(const std::array<float, 6>& v) : values(v) {}\n
+          template<typename... Vs>\n
+          constexpr CovMatrix3f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }\n
+          bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
+        "
+
+    edm4hep::CovMatrix4f:
+      Description: "A generic 4 dimensional covariance matrix with values stored in lower triangular form"
+      Members:
+        - std::array<float, 10> values // the covariance matrix values
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          constexpr CovMatrix4f() = default;\n
+          template<typename... Vs>\n
+          constexpr CovMatrix4f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}\n
+          constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }\n
+          bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix4f& v) const { return v.values != values; }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>
+          "
+
+    edm4hep::CovMatrix6f:
+      Description: "A generic 6 dimensional covariance matrix with values stored in lower triangular form"
+      Members:
+        - std::array<float, 21> values // the covariance matrix values
+      ExtraCode:
+        includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
+        declaration: "
+          constexpr CovMatrix6f() = default;\n
+          template<typename... Vs>\n
+          constexpr CovMatrix6f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}\n
+          constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }\n
+          bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
+          bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
+          #include <edm4hep/detail/CovMatrixCommon.ipp>\n
+        "
+
       # Parametrized description of a particle track
     edm4hep::TrackState:
       Members:
@@ -131,8 +199,9 @@ components:
         - float tanLambda // lambda is the dip angle of the track in r-z
         - float time [ns] // time of the track at this trackstate
         - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
-        - std::array<float, 21> covMatrix // lower triangular covariance matrix of the track parameters.  the order of parameters is  d0, phi, omega, z0, tan(lambda), time. the array is a row-major flattening of the matrix
+        - edm4hep::CovMatrix6f covMatrix // covariance matrix of the track parameters.
       ExtraCode:
+        includes: "#include <edm4hep/Constants.h>"
         declaration: "
         static const int AtOther = 0 ; // any location other than the ones defined below\n
         static const int AtIP = 1 ;\n
@@ -141,6 +210,11 @@ components:
         static const int AtCalorimeter = 4 ;\n
         static const int AtVertex = 5 ;\n
         static const int LastLocation = AtVertex  ;\n
+
+        /// Get the covariance matrix value for the two passed parameters\n
+        constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }\n
+        /// Set the covariance matrix value for the two passed parameters\n
+        constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
         "
 
     # quantity with an identifier, a value and an error
@@ -359,17 +433,29 @@ datatypes:
       - float                energy [GeV]        // energy of the cluster
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
-      - std::array<float,6>  positionError   // covariance matrix of the position (6 Parameters)
+      - edm4hep::CovMatrix3f positionError   // covariance matrix of the position
       - float                iTheta          // intrinsic direction of cluster at position  Theta. Not to be confused with direction cluster is seen from IP
       - float                phi             // intrinsic direction of cluster at position - Phi. Not to be confused with direction cluster is seen from IP
-      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction (3 Parameters)
+      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
       - float   subdetectorEnergies  // energy observed in a particular subdetector
     OneToManyRelations:
       - edm4hep::Cluster        clusters     // clusters that have been combined to this cluster
       - edm4hep::CalorimeterHit hits         // hits that have been combined to this cluster
-
+      - edm4hep::ParticleID     particleIDs  // particle IDs (sorted by their likelihood)
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the position error value for the two passed dimensions\n
+      float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the position error value for the two passed dimensions\n
+      void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
+      "
 
   #-------------  TrackerHit
   edm4hep::TrackerHit3D:
@@ -383,8 +469,19 @@ datatypes:
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on EDep
       - edm4hep::Vector3d position [mm]    // hit position
-      - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
-
+      - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position (x,y,z)
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the position covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the position covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      "
 
   #-------------  TrackerHitPlane
   edm4hep::TrackerHitPlane:
@@ -402,8 +499,19 @@ datatypes:
       - float du                       // measurement error along the direction
       - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
-      - std::array<float,6> covMatrix  // covariance of the position (x,y,z), stored as lower triangle matrix. i.e. cov(x,x) , cov(y,x) , cov(y,y) , cov(z,x) , cov(z,y) , cov(z,z)
-
+      - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z)
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the position covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the position covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      "
 
  #---------- RawTimeSeries
   edm4hep::RawTimeSeries:
@@ -446,13 +554,24 @@ datatypes:
       - float               chi2          // chi-squared of the vertex fit
       - float               probability   // probability of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex
-      - std::array<float,6> covMatrix     // covariance matrix of the position (stored as lower triangle matrix, i.e. cov(xx),cov(y,x),cov(z,x),cov(y,y),... )
+      - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
     OneToOneRelations:
       - edm4hep::ReconstructedParticle associatedParticle // reconstructed particle associated to this vertex
-
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the position covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the position covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      "
 
   #------- ReconstructedParticle
   edm4hep::ReconstructedParticle:
@@ -466,7 +585,7 @@ datatypes:
       - float                  charge         // charge of the reconstructed particle
       - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
-      - std::array<float,10>   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
+      - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
     OneToManyRelations:
@@ -474,17 +593,23 @@ datatypes:
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
       - edm4hep::ReconstructedParticle particles    // reconstructed particles that have been combined to this particle
     ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
       declaration: "
       bool isCompound() const { return particles_size() > 0 ;}\n
       [[deprecated(\"use setPDG instead\")]]\n
       int32_t getType() const { return getPDG(); }\n
+      /// Get the four momentum covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
       "
     MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
       declaration: "
       //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.\n
       //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n
       [[deprecated(\"use setPDG instead\")]]\n
       void setType(int32_t pdg) { setPDG(pdg); }\n
+      /// Set the four momentum covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
   edm4hep::MCRecoParticleAssociation:
@@ -603,9 +728,21 @@ datatypes:
        - float time [ns]                 // time
        - float charge [fC]               // charge
        - int16_t quality                 // quality
-       - std::array<float,3> covMatrix   // lower triangle covariance matrix of the charge(c) and time(t) measurements
+       - edm4hep::CovMatrix2f covMatrix  // covariance matrix of the charge and time measurements
     OneToOneRelations:
       - edm4hep::TimeSeries timeSeries   // Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse
+    ExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Get the position covariance matrix value for the two passed dimensions\n
+      float getCovMatrix(edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      "
+    MutableExtraCode:
+      includes: "#include <edm4hep/Constants.h>"
+      declaration: "
+      /// Set the position covariance matrix value for the two passed dimensions\n
+      void setCovMatrix(float value, edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      "
 
  #----------  RecIonizationCluster
   edm4hep::RecIonizationCluster:
