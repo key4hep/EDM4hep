@@ -43,6 +43,13 @@ enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
 
 /// Enum for accessing the covariance matrix in the TrackerPulse
 enum class TrackerPulseDims : DimType { charge = 0, time };
+
+/// The collection parameter name for accessing the names of the parameters for
+/// a ParticleID collection
+static constexpr const char* pidParameterNames = "ParameterNames";
+static constexpr const char* pidAlgoName = "AlgoName";
+static constexpr const char* pidAlgoType = "AlgoType";
+
 } // namespace edm4hep
 
 #endif // EDM4HEP_CONSTANTS_H

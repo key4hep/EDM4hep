@@ -420,6 +420,8 @@ datatypes:
       - float likelihood     // likelihood of this hypothesis - in a user defined normalization
     VectorMembers:
       - float parameters     // parameters associated with this hypothesis
+    OneToOneRelations:
+      - edm4hep::ReconstructedParticle particle // the particle from which this PID has been computed
 
 
  #------ Cluster
@@ -586,12 +588,10 @@ datatypes:
       - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
-      - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
     OneToManyRelations:
       - edm4hep::Cluster               clusters     // clusters that have been used for this particle
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
       - edm4hep::ReconstructedParticle particles    // reconstructed particles that have been combined to this particle
-      - edm4hep::ParticleID            particleIDs  // particle Ids (not sorted by their likelihood)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
