@@ -346,6 +346,8 @@ datatypes:
       - float likelihood     // likelihood of this hypothesis - in a user defined normalization
     VectorMembers:
       - float parameters     // parameters associated with this hypothesis
+    OneToOneRelations:
+      - edm4hep::ReconstructedParticle particle // the particle from which this PID has been computed
 
 
  #------ Cluster
@@ -367,7 +369,7 @@ datatypes:
     OneToManyRelations:
       - edm4hep::Cluster        clusters     // clusters that have been combined to this cluster
       - edm4hep::CalorimeterHit hits         // hits that have been combined to this cluster
-      - edm4hep::ParticleID     particleIDs  // particle IDs (sorted by their likelihood)
+
 
   #-------------  TrackerHit
   edm4hep::TrackerHit3D:
@@ -467,12 +469,10 @@ datatypes:
       - std::array<float,10>   covMatrix      // cvariance matrix of the reconstructed particle 4vector (10 parameters). Stored as lower triangle matrix of the four momentum (px,py,pz,E), i.e. cov(px,px), cov(py,##
     OneToOneRelations:
       - edm4hep::Vertex          startVertex    // start vertex associated to this particle
-      - edm4hep::ParticleID      particleIDUsed // particle Id used for the kinematics of this particle
     OneToManyRelations:
       - edm4hep::Cluster               clusters     // clusters that have been used for this particle
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
       - edm4hep::ReconstructedParticle particles    // reconstructed particles that have been combined to this particle
-      - edm4hep::ParticleID            particleIDs  // particle Ids (not sorted by their likelihood)
     ExtraCode:
       declaration: "
       bool isCompound() const { return particles_size() > 0 ;}\n
