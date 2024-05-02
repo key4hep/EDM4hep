@@ -112,7 +112,7 @@ TEST_CASE("PIDHandler from variadic list of collections", "[pid_utils]") {
     checkHandlerValidReco(handler, reco);
   }
 
-  SECTION("Unkown reco") {
+  SECTION("Unknown reco") {
     const auto reco = edm4hep::ReconstructedParticle();
     const auto pids = handler.getPIDs(reco);
 
@@ -184,7 +184,7 @@ TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
   // Valid algo but invalid parameter name
   REQUIRE_FALSE(handler.getParamIndex(pidAlgo1, "non-existant-param").has_value());
   // Invalid algorithm, the parameter name is not even checked in this case
-  REQUIRE_FALSE(handler.getParamIndex(-1, "doesnot matter").has_value());
+  REQUIRE_FALSE(handler.getParamIndex(-1, "doesn't matter").has_value());
 
   const auto pidInfo = utils::PIDHandler::getAlgoInfo(metadata, "particleIds_1").value();
   REQUIRE(pidInfo.algoName == "pidAlgo_1");

@@ -4,7 +4,7 @@
 // the edm4hep.yaml file
 //
 // NOTE: All of these functions are intended to be member functions, and the
-// only member of a CovMatrixNx component is an apropriately sized std::array
+// only member of a CovMatrixNx component is an appropriately sized std::array
 // named values.
 //
 // NOTE: It is also assumed that the edm4hep/utils/cov_matrix_utils.h header is
@@ -58,7 +58,7 @@ const auto* data() const {
 
 /// Get the value of the covariance matrix for the passed dimensions
 ///
-/// @tparam DimEnum The enum (class) type that describes the dimenstions of this
+/// @tparam DimEnum The enum (class) type that describes the dimensions of this
 ///                 covariance matrix. This will be deduced from the passed
 ///                 arguments!
 ///
@@ -75,7 +75,7 @@ constexpr float getValue(DimEnum dimI, DimEnum dimJ) const {
 
 /// Set the value of the covariance matrix for the passed dimensions
 ///
-/// @tparam DimEnum The enum (class) type that describes the dimenstions of this
+/// @tparam DimEnum The enum (class) type that describes the dimensions of this
 ///                 covariance matrix. This will be deduced from the passed
 ///                 arguments!
 ///

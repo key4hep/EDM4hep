@@ -94,7 +94,7 @@ public:
   ///
   /// @note It is user responsibility to ensure that the meta information that
   /// is passed here and the one that is present in the collection with the
-  /// given name is consisent
+  /// given name is consistent
   static void setAlgoInfo(podio::Frame& metadata, const std::string& collname,
                           const edm4hep::utils::ParticleIDMeta& pidMetaInfo);
 
