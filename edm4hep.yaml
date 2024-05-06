@@ -781,6 +781,19 @@ datatypes:
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
 
+  #-------------  RecTof
+  edm4hep::RecTof:
+    Description: "Reconstructed TOF (time of flight) info."
+    Author: "EDM4hep authors"
+    Members:
+      - float time [ns]                      // time measurement
+      - std::array<float, 5> timeExp [ns]    // expected time for e(0),mu(1),pi(2),K(3),p(4)
+      - float sigma                          // time resolution
+      - std::array<float, 5> pathLength [mm] // length of flight for e(0),mu(1),pi(2),K(3),p(4)
+      - edm4hep::Vector3d position [mm]      // extrapolated hit position
+    OneToOneRelations:
+      - edm4hep::Track track                 // the corresponding track
+
 interfaces:
   edm4hep::TrackerHit:
     Description: "Tracker hit interface class"
