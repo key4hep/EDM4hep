@@ -613,7 +613,7 @@ datatypes:
       "
 
   edm4hep::MCRecoParticleAssociation:
-    Description: "Used to keep track of the correspondence between MC and reconstructed particles"
+    Description: "Association between a ReconstructedParticle and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
       - float weight                        // weight of this association
@@ -622,7 +622,7 @@ datatypes:
      - edm4hep::MCParticle sim              // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoCaloAssociation:
-    Description: "Association between a CaloHit and the corresponding simulated CaloHit"
+    Description: "Association between a CalorimeterHit and the corresponding SimCalorimeterHit"
     Author: "EDM4hep authors"
     Members:
       - float weight                    // weight of this association
@@ -631,7 +631,7 @@ datatypes:
      - edm4hep::SimCalorimeterHit sim  // reference to the simulated hit
 
   edm4hep::MCRecoTrackerAssociation:
-    Description: "Association between a TrackerHit and the corresponding simulated TrackerHit"
+    Description: "Association between a TrackerHit and the corresponding SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
       - float weight              // weight of this association
@@ -640,7 +640,7 @@ datatypes:
      - edm4hep::SimTrackerHit sim // reference to the simulated hit
 
   edm4hep::MCRecoTrackerHitPlaneAssociation:
-    Description: "Association between a TrackerHitPlane and the corresponding simulated TrackerHit"
+    Description: "Association between a TrackerHitPlane and the corresponding SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
@@ -649,7 +649,7 @@ datatypes:
      - edm4hep::SimTrackerHit sim   // reference to the simulated hit
 
   edm4hep::MCRecoCaloParticleAssociation:
-    Description: "Association between a CalorimeterHit and a MCParticle"
+    Description: "Association between a CalorimeterHit and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
@@ -658,7 +658,7 @@ datatypes:
      - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoClusterParticleAssociation:
-    Description: "Association between a Cluster and a MCParticle"
+    Description: "Association between a Cluster and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
@@ -667,7 +667,7 @@ datatypes:
      - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
 
   edm4hep::MCRecoTrackParticleAssociation:
-    Description: "Association between a Track and a MCParticle"
+    Description: "Association between a Track and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
       - float weight                // weight of this association
@@ -676,7 +676,7 @@ datatypes:
      - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
 
   edm4hep::RecoParticleVertexAssociation:
-    Description: "Association between a Reconstructed Particle and a Vertex"
+    Description: "Association between a ReconstructedParticle and a Vertex"
     Author: "EDM4hep authors"
     Members:
       - float weight                      // weight of this association
