@@ -443,7 +443,6 @@ datatypes:
     OneToManyRelations:
       - edm4hep::Cluster        clusters     // clusters that have been combined to this cluster
       - edm4hep::CalorimeterHit hits         // hits that have been combined to this cluster
-      - edm4hep::ParticleID     particleIDs  // particle IDs (sorted by their likelihood)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: "
