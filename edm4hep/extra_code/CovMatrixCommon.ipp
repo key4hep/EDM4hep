@@ -1,5 +1,5 @@
-// This file is meant to be included inside the declaration part of the
-// ExtraCode for the CovMatrixNx components. They live in this file because they
+// This file is meant to be included with ExtraCode  declarationFile directive
+// for the CovMatrixNx components. They live in this file because they
 // can be written very generically and reduce the clutter and code repetition in
 // the edm4hep.yaml file
 //
