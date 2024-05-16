@@ -188,7 +188,7 @@ TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
 
   const auto pidInfo = utils::PIDHandler::getAlgoInfo(metadata, "particleIds_1").value();
   REQUIRE(pidInfo.algoName == "pidAlgo_1");
-  REQUIRE(pidInfo.algoType == 42);
+  REQUIRE(pidInfo.algoType() == 42);
   REQUIRE(pidInfo.paramNames.size() == 2);
   REQUIRE(pidInfo.paramNames[0] == "first_param");
   REQUIRE(pidInfo.paramNames[1] == "second_param");

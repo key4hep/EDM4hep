@@ -1,5 +1,7 @@
 #include <edm4hep/utils/ParticleIDUtils.h>
 
+#include "MurmurHash3.h"
+
 #include "edm4hep/Constants.h"
 
 #include <podio/FrameCategories.h>
@@ -10,6 +12,22 @@
 #include <string>
 
 namespace edm4hep::utils {
+
+namespace {
+  int32_t getAlgoID(const std::string& name) {
+    int32_t ID = 0;
+    MurmurHash3_x86_32(name.c_str(), name.size(), 0, &ID);
+    return ID;
+  }
+} // namespace
+
+ParticleIDMeta::ParticleIDMeta(const std::string& algName, int32_t algType, const std::vector<std::string>& parNames) :
+    algoName(algName), paramNames(parNames), m_algoType(algType) {
+}
+
+ParticleIDMeta::ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames) :
+    algoName(algName), paramNames(parNames), m_algoType(getAlgoID(algName)) {
+}
 
 std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param) {
   const auto nameIt = std::find(pidMetaInfo.paramNames.begin(), pidMetaInfo.paramNames.end(), param);
@@ -31,17 +49,17 @@ void PIDHandler::addColl(const edm4hep::ParticleIDCollection& coll, const edm4he
 }
 
 void PIDHandler::addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo) {
-  const auto [algoIt, inserted] = m_algoTypes.emplace(pidInfo.algoName, pidInfo.algoType);
+  const auto [algoIt, inserted] = m_algoTypes.emplace(pidInfo.algoName, pidInfo.algoType());
   if (!inserted) {
     throw std::runtime_error("Cannot have duplicate algorithm names (" + pidInfo.algoName + " already exists)");
   }
 
-  const auto [__, metaInserted] = m_algoPidMeta.emplace(pidInfo.algoType, pidInfo);
+  const auto [__, metaInserted] = m_algoPidMeta.emplace(pidInfo.algoType(), pidInfo);
   if (!metaInserted) {
     if (inserted) {
       m_algoTypes.erase(algoIt);
     }
-    throw std::runtime_error("Cannot have duplicate algorithm types (" + std::to_string(pidInfo.algoType) +
+    throw std::runtime_error("Cannot have duplicate algorithm types (" + std::to_string(pidInfo.algoType()) +
                              " already exists)");
   }
 }
@@ -106,7 +124,7 @@ std::optional<int32_t> PIDHandler::getAlgoType(const std::string& algoName) cons
 void PIDHandler::setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidColl,
                              const std::string& collName, const edm4hep::utils::ParticleIDMeta& pidMetaInfo) {
   for (auto pid : pidColl) {
-    pid.setAlgorithmType(pidMetaInfo.algoType);
+    pid.setAlgorithmType(pidMetaInfo.algoType());
   }
 
   PIDHandler::setAlgoInfo(metadata, collName, pidMetaInfo);
@@ -115,13 +133,12 @@ void PIDHandler::setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollecti
 void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName,
                              const edm4hep::utils::ParticleIDMeta& pidMetaInfo) {
   metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoName), pidMetaInfo.algoName);
-  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoType), pidMetaInfo.algoType);
+  metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidAlgoType), pidMetaInfo.algoType());
   metadata.putParameter(podio::collMetadataParamName(collName, edm4hep::pidParameterNames), pidMetaInfo.paramNames);
 }
 
 std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podio::Frame& metadata,
                                                                       const std::string& collName) {
-  ParticleIDMeta pidInfo{};
 
 #if PODIO_BUILD_VERSION > PODIO_VERSION(0, 99, 0)
   auto maybeAlgoName = metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
@@ -129,24 +146,27 @@ std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podi
     return std::nullopt;
   }
 
-  pidInfo.algoName = std::move(maybeAlgoName.value());
-  pidInfo.algoType = metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)).value();
-  pidInfo.paramNames =
+  ParticleIDMeta pidInfo{
+      std::move(maybeAlgoName.value()),
+      metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)).value(),
       metadata
           .getParameter<std::vector<std::string>>(podio::collMetadataParamName(collName, edm4hep::pidParameterNames))
-          .value();
+          .value()};
 
 #else
-  pidInfo.algoName = metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
+
+  const auto& algoName =
+      metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
   // Use the algoName as proxy to see whether we could actually get the
   // information from the metadata
-  if (pidInfo.algoName.empty()) {
+  if (algoName.empty()) {
     return std::nullopt;
   }
 
-  pidInfo.algoType = metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType));
-  pidInfo.paramNames = metadata.getParameter<std::vector<std::string>>(
-      podio::collMetadataParamName(collName, edm4hep::pidParameterNames));
+  ParticlIDMeta pidInfo{algoName,
+                        metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)),
+                        metadata.getParameter<std::vector<std::string>>(
+                            podio::collMetadataParamName(collName, edm4hep::pidParameterNames))};
 #endif
 
   return pidInfo;
