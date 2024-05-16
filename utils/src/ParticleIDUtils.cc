@@ -3,8 +3,8 @@
 #include "edm4hep/Constants.h"
 
 #include <podio/FrameCategories.h>
+#include <podio/podioVersion.h>
 
-#include <cassert>
 #include <iterator>
 #include <stdexcept>
 #include <string>
@@ -123,6 +123,20 @@ std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podi
                                                                       const std::string& collName) {
   ParticleIDMeta pidInfo{};
 
+#if PODIO_BUILD_VERSION > PODIO_VERSION(0, 99, 0)
+  auto maybeAlgoName = metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
+  if (!maybeAlgoName.has_value()) {
+    return std::nullopt;
+  }
+
+  pidInfo.algoName = std::move(maybeAlgoName.value());
+  pidInfo.algoType = metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)).value();
+  pidInfo.paramNames =
+      metadata
+          .getParameter<std::vector<std::string>>(podio::collMetadataParamName(collName, edm4hep::pidParameterNames))
+          .value();
+
+#else
   pidInfo.algoName = metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::pidAlgoName));
   // Use the algoName as proxy to see whether we could actually get the
   // information from the metadata
@@ -133,6 +147,7 @@ std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podi
   pidInfo.algoType = metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType));
   pidInfo.paramNames = metadata.getParameter<std::vector<std::string>>(
       podio::collMetadataParamName(collName, edm4hep::pidParameterNames));
+#endif
 
   return pidInfo;
 }
