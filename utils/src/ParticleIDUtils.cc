@@ -163,10 +163,10 @@ std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podi
     return std::nullopt;
   }
 
-  ParticlIDMeta pidInfo{algoName,
-                        metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)),
-                        metadata.getParameter<std::vector<std::string>>(
-                            podio::collMetadataParamName(collName, edm4hep::pidParameterNames))};
+  ParticleIDMeta pidInfo{algoName,
+                         metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::pidAlgoType)),
+                         metadata.getParameter<std::vector<std::string>>(
+                             podio::collMetadataParamName(collName, edm4hep::pidParameterNames))};
 #endif
 
   return pidInfo;
