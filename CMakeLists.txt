@@ -83,6 +83,8 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/edm4hep/edm4hep/EDM4hepVersion.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/edm4hep )
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/python/edm4hep/__version__.py.in
   ${CMAKE_CURRENT_SOURCE_DIR}/python/edm4hep/__version__.py)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/edm4hep
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 #--- add CMake infrastructure --------------------------------------------------
 include(cmake/EDM4HEPCreateConfig.cmake)

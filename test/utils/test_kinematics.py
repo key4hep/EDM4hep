@@ -48,7 +48,7 @@ class TestKinematics(unittest.TestCase):
                                       1.0,  # charge
                                       125.0,  # mass
                                       0.0,  # goodnessOfPID
-                                      cppyy.gbl.std.array('float', 10)()  # covMatrix
+                                      edm4hep.CovMatrix4f() # covMatrix
                                       )
 
     self.assertEqual(p4(p), LVM(1.0, 2.0, 3.0, 125.0))
