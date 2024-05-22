@@ -794,7 +794,7 @@ datatypes:
       - int signal_process_id           // id of signal process
       - double sqrt_s                   // sqrt(s)
     VectorMembers:
-      - double crossSections            // list of cross sections
+      - double crossSections            // list of cross sections in pb
       - double crossSectionErrors       // list of cross section errors
 
   #---------- GeneratorPdfInfo
@@ -802,11 +802,11 @@ datatypes:
     Description: "Generator pdf information"
     Author: "EDM4hep authors"
     Members:
-      - std::array<double, 2> parton_id // PDF parton id
-      - std::array<double, 2> x         // PDF x
-      - std::array<double, 2> xf        // PDF xf
-      - std::array<double, 2> id        // PDF id
-      - double scale                    // PDF scale
+      - std::array<int, 2> parton_id    // Parton PDG id
+      - std::array<int, 2> id           // LHAPDF PDF id (see http:///projects.hepforge.org/lhapdf/PDFsets.index)
+      - std::array<double, 2> x         // Parton momentum fraction
+      - std::array<double, 2> xf        // PDF value
+      - double scale [GeV]              // Factorisation scale
     OneToManyRelations:
       - MCParticle signal_vertex        // pointing into MC Generators collection
 
