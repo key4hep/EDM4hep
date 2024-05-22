@@ -780,6 +780,31 @@ datatypes:
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
 
+
+  #===== Generator related data =====
+
+  #----------
+  edm4hep::GeneratorParameters
+    Description: "Generator parameters"
+    Author: "EDM4hep authors"
+    Members:
+      - double event_scale              // event scale
+      - double alphaQED                 // alpha_QED
+      - double alphaQCD                 // alpha_QCD
+      - int signal_process_id           // id of signal process
+      - double PDF_scale                // PDF scale
+      - double sqrt_s                   // sqrt(s)
+    VectorMembers:
+      - double crossSections
+      - double crossSectionErrors
+      - double PDF_parton_id            // PDF parton id
+      - double PDX_x                    // PDF x
+      - double PDF_xf                   // PDF xf
+      - double PDF_id                   // PDF id
+    OneToOneRelations:
+      - MCParticle signal_vertex // pointing into MC Generators collection
+
+
 interfaces:
   edm4hep::TrackerHit:
     Description: "Tracker hit interface class"
