@@ -784,7 +784,7 @@ datatypes:
   #===== Generator related data =====
 
   #----------
-  edm4hep::GeneratorParameters
+  edm4hep::GeneratorParameters:
     Description: "Generator parameters"
     Author: "EDM4hep authors"
     Members:
