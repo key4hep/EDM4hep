@@ -803,7 +803,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - std::array<int, 2> parton_id    // Parton PDG id
-      - std::array<int, 2> id           // LHAPDF PDF id (see http:///projects.hepforge.org/lhapdf/PDFsets.index)
+      - std::array<int, 2> id           // LHAPDF PDF id (see https://lhapdf.hepforge.org/pdfsets.html)
       - std::array<double, 2> x         // Parton momentum fraction
       - std::array<double, 2> xf        // PDF value
       - double scale [GeV]              // Factorisation scale
