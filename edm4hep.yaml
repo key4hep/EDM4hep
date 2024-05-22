@@ -795,8 +795,8 @@ datatypes:
       - double PDF_scale                // PDF scale
       - double sqrt_s                   // sqrt(s)
     VectorMembers:
-      - double crossSections
-      - double crossSectionErrors
+      - double crossSections            // list of cross sections
+      - double crossSectionErrors       // list of cross section errors
       - double PDF_parton_id            // PDF parton id
       - double PDX_x                    // PDF x
       - double PDF_xf                   // PDF xf
