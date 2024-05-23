@@ -2,6 +2,9 @@
 #define EDM4HEP_TEST_WRITE_EVENTS_H
 
 // Data model
+#include "edm4hep/GeneratorParametersCollection.h"
+#include "edm4hep/GeneratorPdfInfoCollection.h"
+#include "edm4hep/GenToolInfo.h"
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
@@ -28,6 +31,7 @@ void write(std::string outfilename) {
   for (unsigned i = 0; i < nevents; ++i) {
     std::cout << " --- processing event " << i << std::endl;
     auto event = podio::Frame();
+    auto run   = podio::Frame();
 
     // place the following generator event to the MCParticle collection
     //
@@ -107,6 +111,40 @@ void write(std::string outfilename) {
         pmom.addToDaughters(p);
       }
     }
+
+    //===============================================================================
+    // write some generator event data
+    auto genParametersCollection = edm4hep::GeneratorParametersCollection();
+    auto genParam = genParametersCollection.create();
+    genParam.setEvent_scale(23);
+    genParam.setAlphaQED(1/127);
+    genParam.setAlphaQCD(0.1);
+    genParam.setSignal_process_id(42);
+    genParam.setSqrt_s(90);
+    genParam.addToCrossSections(10);
+    genParam.addToCrossSectionErrors(3);
+    event.put(std::move(genParametersCollection), "GeneratorParameters");
+
+    auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
+    auto genPdfInfo = genPdfInfoCollection.create();
+    genPdfInfo.setParton_id(1,2);
+    genPdfInfo.setId({20,20});
+    genPdfInfo.setX({0.5,0.5});
+    genPdfInfo.setXf({0.5,0.5});
+    genPdfInfo.setScale(23);
+    genPdfInfo.addToSignal_vertex(mcp1);
+    genPdfInfo.addToSignal_vertex(mcp2);
+    event.put(std::move(genPdfInfoCollection), "GeneratorPdfInfo");
+
+    //===============================================================================
+    // write some generator tool info into the run
+    auto toolInfos = std::vector<edm4hep::GenToolInfo>();
+    auto toolInfo = edm4hep::GenToolInfo();
+    toolInfo.name = "something";
+    toolInfo.version = "v1";
+    toolInfo.description = "some tool";
+    toolInfos.emplace_back(std::move(toolInfo));
+    edm4hep::putGenToolInfos(run, toolInfos);
 
     // fixme: should this become a utility function ?
     //-------------------------------------------------------------
@@ -237,6 +275,7 @@ void write(std::string outfilename) {
     event.putParameter("EventType", "test");
 
     writer.writeFrame(event, "events");
+    writer.writeFrame(run, "runs");
   }
 
   writer.finish();
