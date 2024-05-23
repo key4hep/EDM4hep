@@ -49,3 +49,7 @@ install(FILES
 install(FILES
   ../edm4hep.yaml
   DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
+
+install(DIRECTORY
+  extra_code
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep/edm4hep" COMPONENT dev)
