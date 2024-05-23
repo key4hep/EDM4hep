@@ -792,7 +792,7 @@ datatypes:
       - double alphaQED                 // alpha_QED
       - double alphaQCD                 // alpha_QCD
       - int signal_process_id           // id of signal process
-      - double sqrt_s                   // sqrt(s)
+      - double sqrt_s  [GeV]            // sqrt(s)
     VectorMembers:
       - double crossSections            // list of cross sections in pb
       - double crossSectionErrors       // list of cross section errors
