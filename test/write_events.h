@@ -2,10 +2,11 @@
 #define EDM4HEP_TEST_WRITE_EVENTS_H
 
 // Data model
+
+#include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/GenToolInfo.h"
 #include "edm4hep/GeneratorParametersCollection.h"
 #include "edm4hep/GeneratorPdfInfoCollection.h"
-#include "edm4hep/GenToolInfo.h"
-#include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -31,7 +32,7 @@ void write(std::string outfilename) {
   for (unsigned i = 0; i < nevents; ++i) {
     std::cout << " --- processing event " << i << std::endl;
     auto event = podio::Frame();
-    auto run   = podio::Frame();
+    auto run = podio::Frame();
 
     // place the following generator event to the MCParticle collection
     //
@@ -117,7 +118,7 @@ void write(std::string outfilename) {
     auto genParametersCollection = edm4hep::GeneratorParametersCollection();
     auto genParam = genParametersCollection.create();
     genParam.setEvent_scale(23);
-    genParam.setAlphaQED(1/127);
+    genParam.setAlphaQED(1 / 127);
     genParam.setAlphaQCD(0.1);
     genParam.setSignal_process_id(42);
     genParam.setSqrt_s(90);
@@ -127,10 +128,10 @@ void write(std::string outfilename) {
 
     auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
     auto genPdfInfo = genPdfInfoCollection.create();
-    genPdfInfo.setParton_id(1,2);
-    genPdfInfo.setId({20,20});
-    genPdfInfo.setX({0.5,0.5});
-    genPdfInfo.setXf({0.5,0.5});
+    genPdfInfo.setParton_id(1, 2);
+    genPdfInfo.setId({20, 20});
+    genPdfInfo.setX({0.5, 0.5});
+    genPdfInfo.setXf({0.5, 0.5});
     genPdfInfo.setScale(23);
     genPdfInfo.addToSignal_vertex(mcp1);
     genPdfInfo.addToSignal_vertex(mcp2);

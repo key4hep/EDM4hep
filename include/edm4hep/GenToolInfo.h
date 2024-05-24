@@ -1,11 +1,10 @@
 #ifndef EDM4HEP_GENTOOLINFO_H
 #define EDM4HEP_GENTOOLINFO_H
 
-#include <string>
-#include <vector>
 #include "podio/Frame.h"
 #include "Constants.h"
-
+#include <string>
+#include <vector>
 
 namespace edm4hep {
 
@@ -20,7 +19,7 @@ const std::vector<GenToolInfo> getGenToolInfos(podio::Frame& frame) {
   auto names = frame.getParameter<std::string>("name");
   auto versions = frame.getParameter<std::string>("version");
   auto descriptions = frame.getParameter<std::string>("description");
-  for (unsigned int i = 0; i < names.size(); ++i){
+  for (unsigned int i = 0; i < names.size(); ++i) {
     auto toolInfo = GenToolInfo();
     toolInfo.name = names[i];
     toolInfo.version = versions[i];
