@@ -2,7 +2,7 @@
 #define EDM4HEP_GENTOOLINFO_H
 
 #include "podio/Frame.h"
-#include "Constants.h"
+#include "edm4hep/Constants.h"
 #include <string>
 #include <vector>
 
