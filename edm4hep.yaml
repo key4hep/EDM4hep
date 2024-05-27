@@ -808,7 +808,7 @@ datatypes:
       - std::array<double, 2> xf          // PDF value
       - double scale [GeV]                // Factorisation scale
     OneToManyRelations:
-      - edm4hep::MCParticle signal_vertex // pointing into MC Generators collection
+      - edm4hep::MCParticle signal_vertex // pointing into MCParticle collection
 
 interfaces:
   edm4hep::TrackerHit:
