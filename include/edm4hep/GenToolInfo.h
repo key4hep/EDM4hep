@@ -20,7 +20,7 @@ const std::vector<GenToolInfo> getGenToolInfos(podio::Frame& frame) {
   auto versions = frame.getParameter<std::string>("version");
   auto descriptions = frame.getParameter<std::string>("description");
   for (unsigned int i = 0; i < names.size(); ++i) {
-    toolInfo.emplace_back(names[i], versions[i], descriptions[i]);
+    toolInfos.emplace_back(names[i], versions[i], descriptions[i]);
   }
   return toolInfos;
 };
