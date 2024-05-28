@@ -43,7 +43,7 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [GeneratorParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L787) | | |
+| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L787) | | |
 | [GeneratorPdfInfo](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L801) | | |
 
 **Interfaces**
