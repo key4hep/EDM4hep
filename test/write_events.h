@@ -5,7 +5,7 @@
 
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/GenToolInfo.h"
-#include "edm4hep/GeneratorParametersCollection.h"
+#include "edm4hep/GeneratorEventParametersCollection.h"
 #include "edm4hep/GeneratorPdfInfoCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
@@ -115,7 +115,7 @@ void write(std::string outfilename) {
 
     //===============================================================================
     // write some generator event data
-    auto genParametersCollection = edm4hep::GeneratorParametersCollection();
+    auto genParametersCollection = edm4hep::GeneratorEventParametersCollection();
     auto genParam = genParametersCollection.create();
     genParam.setEvent_scale(23);
     genParam.setAlphaQED(1 / 127);
@@ -124,7 +124,7 @@ void write(std::string outfilename) {
     genParam.setSqrt_s(90);
     genParam.addToCrossSections(10);
     genParam.addToCrossSectionErrors(3);
-    event.put(std::move(genParametersCollection), "GeneratorParameters");
+    event.put(std::move(genParametersCollection), edm4hep::generatorEventParametersLabel);
 
     auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
     auto genPdfInfo = genPdfInfoCollection.create();
@@ -135,7 +135,7 @@ void write(std::string outfilename) {
     genPdfInfo.setScale(23);
     genPdfInfo.addToSignal_vertex(mcp1);
     genPdfInfo.addToSignal_vertex(mcp2);
-    event.put(std::move(genPdfInfoCollection), "GeneratorPdfInfo");
+    event.put(std::move(genPdfInfoCollection), edm4hep::generatorPdfInfoLabel);
 
     //===============================================================================
     // write some generator tool info into the run
@@ -146,6 +146,13 @@ void write(std::string outfilename) {
     toolInfo.description = "some tool";
     toolInfos.emplace_back(std::move(toolInfo));
     edm4hep::putGenToolInfos(run, toolInfos);
+
+    //===============================================================================
+    // write some generator weightname info into the run
+    auto weightNames = std::vector<std::string>();
+    weightNames.emplace_back("oneWeight");
+    weightNames.emplace_back("anotherWeight");
+    run.putParameter(edm4hep::generatorWeightNamesLabel, std::move(weightNames));
 
     // fixme: should this become a utility function ?
     //-------------------------------------------------------------
