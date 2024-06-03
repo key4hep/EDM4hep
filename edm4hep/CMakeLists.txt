@@ -1,7 +1,11 @@
+# files used in ExtraCode directives
+set(extra_code extra_code/CovMatrixCommon.ipp)
 
 # For now unconditionally generate all the code that is supported by the
 # installed podio
-PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS})
+PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources
+  IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS} DEPENDS ${extra_code}
+)
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 target_include_directories(edm4hep PUBLIC
@@ -45,3 +49,7 @@ install(FILES
 install(FILES
   ../edm4hep.yaml
   DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep" COMPONENT dev)
+
+install(DIRECTORY
+  extra_code
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/edm4hep/edm4hep" COMPONENT dev)
