@@ -24,11 +24,11 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1136"
+     inkscape:window-height="1016"
      id="namedview332"
      showgrid="true"
      inkscape:zoom="0.86342179"
-     inkscape:cx="775.98227"
+     inkscape:cx="776.56136"
      inkscape:cy="422.15752"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -1165,8 +1165,8 @@
        style="color-interpolation-filters:sRGB"
        id="filter6544-3"
        height="1.0105024"
-       width="1.0010917"
-       x="-0.00054584329"
+       width="1.0013339"
+       x="-0.00066693183"
        y="-0.0052512013">
       <feOffset
          dy="0"
@@ -1689,7 +1689,7 @@
          x="130.28593"
          y="7.5458164"
          style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Italic';text-align:center;text-anchor:middle;stroke-width:0.264583"
-         id="tspan2610">EDM4hep DataModel Overview (v0.10)</tspan></tspan></text>
+         id="tspan2610">EDM4hep DataModel Overview (v0.99)</tspan></tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.264583"
