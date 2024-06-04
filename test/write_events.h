@@ -124,6 +124,8 @@ void write(std::string outfilename) {
     genParam.setSqrt_s(90);
     genParam.addToCrossSections(10);
     genParam.addToCrossSectionErrors(3);
+    genParam.addToSignalVertex(mcp1);
+    genParam.addToSignalVertex(mcp2);
     event.put(std::move(genParametersCollection), edm4hep::generatorEventParametersLabel);
 
     auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
@@ -133,8 +135,6 @@ void write(std::string outfilename) {
     genPdfInfo.setX({0.5, 0.5});
     genPdfInfo.setXf({0.5, 0.5});
     genPdfInfo.setScale(23);
-    genPdfInfo.addToSignal_vertex(mcp1);
-    genPdfInfo.addToSignal_vertex(mcp2);
     event.put(std::move(genPdfInfoCollection), edm4hep::generatorPdfInfoLabel);
 
     //===============================================================================

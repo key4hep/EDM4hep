@@ -796,6 +796,8 @@ datatypes:
     VectorMembers:
       - double crossSections [pb]       // list of cross sections
       - double crossSectionErrors       // list of cross section errors
+    OneToManyRelations:
+      - edm4hep::MCParticle signalVertex // pointing into MCParticle collection
 
   #---------- GeneratorPdfInfo
   edm4hep::GeneratorPdfInfo:
@@ -807,8 +809,6 @@ datatypes:
       - std::array<double, 2> x           // Parton momentum fraction
       - std::array<double, 2> xf          // PDF value
       - double scale [GeV]                // Factorisation scale
-    OneToManyRelations:
-      - edm4hep::MCParticle signal_vertex // pointing into MCParticle collection
 
 interfaces:
   edm4hep::TrackerHit:

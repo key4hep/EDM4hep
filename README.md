@@ -50,7 +50,7 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L813) | | |
+| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L814) | | |
 
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
