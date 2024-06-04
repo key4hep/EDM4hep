@@ -261,7 +261,7 @@ void processEvent(const podio::Frame& event) {
   auto& genParametersCollection =
       event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::generatorEventParametersLabel);
   auto genParam = genParametersCollection[0];
-  if (genParam.getEvent_scale() != 23)
+  if (genParam.getEventScale() != 23)
     throw std::runtime_error("Event_scale != 23");
 
   auto& generatorPdfInfoCollection = event.get<edm4hep::GeneratorPdfInfoCollection>(edm4hep::generatorPdfInfoLabel);
