@@ -801,7 +801,7 @@ datatypes:
       - double crossSectionErrors [pb]  // list of cross section errors
     OneToManyRelations:
       - edm4hep::MCParticle signalVertex // List of initial state MCParticle that are the source of the hard interaction
-  
+
 
   #---------- GeneratorPdfInfo
   edm4hep::GeneratorPdfInfo:
