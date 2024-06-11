@@ -22,9 +22,9 @@ namespace utils {
 
   const std::vector<GenToolInfo> getGenToolInfos(const podio::Frame& frame) {
     auto toolInfos = std::vector<GenToolInfo>();
-    const auto names = frame.getParameter<std::vector<std::string>>(generatorToolName);
-    const auto versions = frame.getParameter<std::vector<std::string>>(generatorToolVersion);
-    const auto descriptions = frame.getParameter<std::vector<std::string>>(generatorToolDescription);
+    const auto names = frame.getParameter<std::vector<std::string>>(generatorToolName).value();
+    const auto versions = frame.getParameter<std::vector<std::string>>(generatorToolVersion).value();
+    const auto descriptions = frame.getParameter<std::vector<std::string>>(generatorToolDescription).value();
     for (unsigned int i = 0; i < names.size(); ++i) {
       toolInfos.emplace_back(names[i], versions[i], descriptions[i]);
     }
