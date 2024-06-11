@@ -126,7 +126,7 @@ void write(std::string outfilename) {
     genParam.addToCrossSectionErrors(3);
     genParam.addToSignalVertex(mcp1);
     genParam.addToSignalVertex(mcp2);
-    event.put(std::move(genParametersCollection), edm4hep::generatorEventParametersLabel);
+    event.put(std::move(genParametersCollection), edm4hep::generatorEventParameters);
 
     auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
     auto genPdfInfo = genPdfInfoCollection.create();
@@ -135,7 +135,7 @@ void write(std::string outfilename) {
     genPdfInfo.setX({0.5, 0.5});
     genPdfInfo.setXf({0.5, 0.5});
     genPdfInfo.setScale(23);
-    event.put(std::move(genPdfInfoCollection), edm4hep::generatorPdfInfoLabel);
+    event.put(std::move(genPdfInfoCollection), edm4hep::generatorPdfInfo);
 
     //===============================================================================
     // write some generator tool info into the run
@@ -145,14 +145,14 @@ void write(std::string outfilename) {
     toolInfo.version = "v1";
     toolInfo.description = "some tool";
     toolInfos.emplace_back(std::move(toolInfo));
-    edm4hep::putGenToolInfos(run, toolInfos);
+    edm4hep::utils::putGenToolInfos(run, toolInfos);
 
     //===============================================================================
     // write some generator weightname info into the run
     auto weightNames = std::vector<std::string>();
     weightNames.emplace_back("oneWeight");
     weightNames.emplace_back("anotherWeight");
-    run.putParameter(edm4hep::generatorWeightNamesLabel, std::move(weightNames));
+    run.putParameter(edm4hep::generatorWeightNames, std::move(weightNames));
 
     // fixme: should this become a utility function ?
     //-------------------------------------------------------------

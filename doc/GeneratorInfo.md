@@ -17,7 +17,7 @@ At run level, information about generator tools (name, version, description) are
     toolInfo.description = "some tool";
     toolInfos.emplace_back(std::move(toolInfo));
 
-    edm4hep::putGenToolInfos(run, toolInfos);
+    edm4hep::utils::putGenToolInfos(run, toolInfos);
 ```
 
 and read-back via:
@@ -25,7 +25,7 @@ and read-back via:
 ```cpp
   #include "edm4hep/GenToolInfo.h"
   ...
-  auto toolInfos = edm4hep::getGenToolInfos(run);
+  auto toolInfos = edm4hep::utils::getGenToolInfos(run);
 
 ```
 

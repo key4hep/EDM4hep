@@ -22,7 +22,7 @@
 void processRun(const podio::Frame& run) {
   //===============================================================================
   // get generator tool info from the run
-  auto toolInfos = edm4hep::getGenToolInfos(run);
+  auto toolInfos = edm4hep::utils::getGenToolInfos(run);
   auto toolinfo = toolInfos[0];
   if (toolinfo.name != "something")
     throw std::runtime_error("toolinfo.name != 'something'");
@@ -33,7 +33,7 @@ void processRun(const podio::Frame& run) {
 
   //===============================================================================
   // get generator weight names
-  auto weightNames = run.getParameter<std::vector<std::string>>(edm4hep::generatorWeightNamesLabel);
+  auto weightNames = run.getParameter<std::vector<std::string>>(edm4hep::generatorWeightNames);
   if (weightNames[0] != "oneWeight")
     throw std::runtime_error("weightNames[0] != 'oneWeight'");
   if (weightNames[1] != "anotherWeight")
@@ -259,12 +259,12 @@ void processEvent(const podio::Frame& event) {
   //===============================================================================
   // check the generator meta data
   auto& genParametersCollection =
-      event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::generatorEventParametersLabel);
+      event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::generatorEventParameters);
   auto genParam = genParametersCollection[0];
   if (genParam.getEventScale() != 23)
     throw std::runtime_error("Event_scale != 23");
 
-  auto& generatorPdfInfoCollection = event.get<edm4hep::GeneratorPdfInfoCollection>(edm4hep::generatorPdfInfoLabel);
+  auto& generatorPdfInfoCollection = event.get<edm4hep::GeneratorPdfInfoCollection>(edm4hep::generatorPdfInfo);
   auto genPdfInfo = generatorPdfInfoCollection[0];
 
   // //===============================================================================
