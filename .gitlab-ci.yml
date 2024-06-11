@@ -19,7 +19,7 @@ generate-docs:
   # these are usually tagged with "cvmfs"
   tags:
     - k8s-cvmfs
-  image: registry.cern.ch/ghcr.io/key4hep/key4hep-images/centos7:latest
+  image: registry.cern.ch/ghcr.io/key4hep/key4hep-images/alma9:latest
   script:
     # use a setup that provides all dependencies - if the dependencies change,
     # this needs to be updated
