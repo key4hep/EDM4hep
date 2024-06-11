@@ -42,7 +42,7 @@ void putGenToolInfos(podio::Frame& frame, std::vector<GenToolInfo>& toolInfos) {
   frame.putParameter(generatorToolVersionLabel, std::move(versions));
   frame.putParameter(generatorToolDescriptionLabel, std::move(descriptions));
 };
-
+} // namespace utils
 } // namespace edm4hep
 
 #endif // EDM4HEP_GENTOOLINFO_H
