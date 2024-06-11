@@ -10,6 +10,7 @@ target_compile_features(kinematics INTERFACE cxx_std_17)
 
 set(utils_sources
   src/ParticleIDUtils.cc
+  src/MurmurHash3.cpp
 )
 
 add_library(utils SHARED ${utils_sources})

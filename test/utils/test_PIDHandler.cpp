@@ -74,6 +74,14 @@ void checkHandlerValidReco(const edm4hep::utils::PIDHandler& handler, const edm4
   }
 }
 
+TEST_CASE("ParticleIDMeta constructor") {
+  using namespace edm4hep::utils;
+
+  ParticleIDMeta pidMeta{"name", {}};
+  REQUIRE(pidMeta.algoName == "name");
+  REQUIRE(pidMeta.algoType() == -609270800); // 32 bit MurmurHash3 of "name"
+}
+
 TEST_CASE("PIDHandler basics", "[pid_utils]") {
   using namespace edm4hep;
 
@@ -188,7 +196,7 @@ TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
 
   const auto pidInfo = utils::PIDHandler::getAlgoInfo(metadata, "particleIds_1").value();
   REQUIRE(pidInfo.algoName == "pidAlgo_1");
-  REQUIRE(pidInfo.algoType == 42);
+  REQUIRE(pidInfo.algoType() == 42);
   REQUIRE(pidInfo.paramNames.size() == 2);
   REQUIRE(pidInfo.paramNames[0] == "first_param");
   REQUIRE(pidInfo.paramNames[1] == "second_param");

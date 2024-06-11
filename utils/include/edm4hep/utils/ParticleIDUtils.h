@@ -16,9 +16,25 @@ namespace edm4hep::utils {
 
 /// A simple struct bundling relevant metadata for a ParticleID collection
 struct ParticleIDMeta {
+  ParticleIDMeta(const std::string& algName, int32_t algType, const std::vector<std::string>& parNames);
+  ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames);
+
+  ~ParticleIDMeta() = default;
+  ParticleIDMeta() = default;
+  ParticleIDMeta(const ParticleIDMeta&) = default;
+  ParticleIDMeta& operator=(const ParticleIDMeta&) = default;
+  ParticleIDMeta(ParticleIDMeta&&) = default;
+  ParticleIDMeta& operator=(ParticleIDMeta&&) = default;
+
   std::string algoName{};                ///< The name of the algorithm
-  int32_t algoType{0};                   ///< The (user defined) algorithm type
   std::vector<std::string> paramNames{}; ///< The names of the parameters
+
+  int32_t algoType() const {
+    return m_algoType;
+  }
+
+private:
+  int32_t m_algoType{0}; ///< The (user defined) algorithm type
 };
 
 /// Get the index of the parameter in the passed ParticleID meta info
