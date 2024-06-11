@@ -26,6 +26,7 @@ static constexpr const char* CellIDEncoding = "CellIDEncoding";
 static constexpr const char* EventHeaderName = "EventHeader";
 static constexpr const char* EventWeights = "EventWeightNames";
 static constexpr const char* shapeParameterNames = "shapeParameterNames";
+static constexpr const char* EventFilterStats = "EventFilterStats";
 
 // Use 16 bits to encode the dimension
 // Could go to 8 bits, but would need a fix in podio first
