@@ -51,12 +51,12 @@ static constexpr const char* pidAlgoName = "AlgoName";
 static constexpr const char* pidAlgoType = "AlgoType";
 
 // Parameter names for Generator level metadata
-static constexpr const char* generatorToolVersion = "generatorToolVersion";
-static constexpr const char* generatorToolName = "generatorToolName";
-static constexpr const char* generatorToolDescription = "generatorToolDescription";
-static constexpr const char* generatorEventParameters = "generatorEventParameters";
-static constexpr const char* generatorPdfInfo = "generatorPdfInfo";
-static constexpr const char* generatorWeightNames = "generatorWeightNames";
+static constexpr const char* GeneratorToolVersion = "GeneratorToolVersion";
+static constexpr const char* GeneratorToolName = "GeneratorToolName";
+static constexpr const char* GeneratorToolDescription = "GeneratorToolDescription";
+static constexpr const char* GeneratorEventParameters = "GeneratorEventParameters";
+static constexpr const char* GeneratorPdfInfo = "GeneratorPdfInfo";
+static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
 
 } // namespace edm4hep
 
