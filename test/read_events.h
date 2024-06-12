@@ -33,7 +33,7 @@ void processRun(const podio::Frame& run) {
 
   //===============================================================================
   // get generator weight names
-  auto weightNames = run.getParameter<std::vector<std::string>>(edm4hep::generatorWeightNames);
+  auto weightNames = run.getParameter<std::vector<std::string>>(edm4hep::generatorWeightNames).value();
   if (weightNames[0] != "oneWeight")
     throw std::runtime_error("weightNames[0] != 'oneWeight'");
   if (weightNames[1] != "anotherWeight")
