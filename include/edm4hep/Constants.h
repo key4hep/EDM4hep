@@ -28,7 +28,7 @@ namespace edm4hep {
 namespace labels {
   static constexpr const char* CellIDEncoding = "CellIDEncoding";
   static constexpr const char* EventHeader = "EventHeader";
-  static constexpr const char* EventWeights = "EventWeightNames";
+  static constexpr const char* EventWeightsNames = "EventWeightNames";
   static constexpr const char* ShapeParameterNames = "shapeParameterNames";
   static constexpr const char* EventFilterStats = "EventFilterStats";
 
