@@ -41,7 +41,7 @@ namespace labels {
 
 DEPRECATED_LABEL(CellIDEncoding, CellIDEncoding);
 DEPRECATED_LABEL(EventHeaderName, EventHeader);
-DEPRECATED_LABEL(EventWeights, EventWeights);
+DEPRECATED_LABEL(EventWeights, EventWeightsNames);
 DEPRECATED_LABEL(shapeParameterNames, ShapeParameterNames);
 DEPRECATED_LABEL(EventFilterStats, EventFilterStats);
 
