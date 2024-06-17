@@ -45,7 +45,6 @@ namespace labels {
   static constexpr const char* GeneratorEventParameters = "GeneratorEventParameters";
   static constexpr const char* GeneratorPdfInfo = "GeneratorPdfInfo";
   static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
-
 } // namespace labels
 
 DEPRECATED_LABEL(CellIDEncoding, CellIDEncoding);

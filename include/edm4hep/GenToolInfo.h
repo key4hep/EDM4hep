@@ -21,10 +21,14 @@ struct GenToolInfo {
 namespace utils {
 
   const std::vector<GenToolInfo> getGenToolInfos(const podio::Frame& frame) {
+    using namespace edm4hep::labels;
     auto toolInfos = std::vector<GenToolInfo>();
-    const auto names = frame.getParameter<std::vector<std::string>>(generatorToolName).value();
-    const auto versions = frame.getParameter<std::vector<std::string>>(generatorToolVersion).value();
-    const auto descriptions = frame.getParameter<std::vector<std::string>>(generatorToolDescription).value();
+    const auto names =
+        frame.getParameter<std::vector<std::string>>(GeneratorToolName).value_or(std::vector<std::string>{});
+    const auto versions =
+        frame.getParameter<std::vector<std::string>>(GeneratorToolVersion).value_or(std::vector<std::string>{});
+    const auto descriptions =
+        frame.getParameter<std::vector<std::string>>(GeneratorToolDescription).value_or(std::vector<std::string>{});
     for (unsigned int i = 0; i < names.size(); ++i) {
       toolInfos.emplace_back(names[i], versions[i], descriptions[i]);
     }
@@ -40,9 +44,11 @@ namespace utils {
       versions.push_back(toolInfo.version);
       descriptions.push_back(toolInfo.description);
     }
-    frame.putParameter(generatorToolName, std::move(names));
-    frame.putParameter(generatorToolVersion, std::move(versions));
-    frame.putParameter(generatorToolDescription, std::move(descriptions));
+
+    using namespace edm4hep::labels;
+    frame.putParameter(GeneratorToolName, std::move(names));
+    frame.putParameter(GeneratorToolVersion, std::move(versions));
+    frame.putParameter(GeneratorToolDescription, std::move(descriptions));
   };
 } // namespace utils
 } // namespace edm4hep
