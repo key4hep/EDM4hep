@@ -39,9 +39,9 @@ namespace labels {
   static constexpr const char* PIDAlgoType = "AlgoType";
 
   // Parameter names for Generator level metadata
-  static constexpr const char* GeneratorToolVersion = "GeneratorToolVersion";
-  static constexpr const char* GeneratorToolName = "GeneratorToolName";
-  static constexpr const char* GeneratorToolDescription = "GeneratorToolDescription";
+  static constexpr const char* GeneratorToolVersions = "GeneratorToolVersions";
+  static constexpr const char* GeneratorToolNames = "GeneratorToolNames";
+  static constexpr const char* GeneratorToolDescriptions = "GeneratorToolDescriptions";
   static constexpr const char* GeneratorEventParameters = "GeneratorEventParameters";
   static constexpr const char* GeneratorPdfInfo = "GeneratorPdfInfo";
   static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
