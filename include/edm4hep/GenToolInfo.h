@@ -8,18 +8,40 @@
 
 namespace edm4hep {
 
+/// Meta information class to group information about the used generator (tools)
+/// to create a file
+///
+/// @note Since this is all rather loosely coupled and stored via podio Frame
+/// parameters, use of the @ref getGenToolInfos and @ref putGenToolInfos utility
+/// functions for retrieval, resp. storage of this information is crucial to
+/// ensure consistent information.
 struct GeneratorToolInfo {
-  std::string name;
-  std::string version;
-  std::string description;
+  std::string name{};        ///< The name of the tool
+  std::string version{};     ///< The version of the tool
+  std::string description{}; ///< A brief description of the tool
 
-  GeneratorToolInfo(){};
+  /// Construct a complete tool info object from all ingredients
+  ///
+  /// @param name        The name of the tool
+  /// @param version     The version of the tool
+  /// @param description The brief description of the tool
   GeneratorToolInfo(const std::string& name, const std::string& version, const std::string& description) :
       name(name), version(version), description(description){};
 };
 
 namespace utils {
 
+  /// Get all the generator tool infos that are available from the passed
+  /// (metadata) frame.
+  ///
+  /// Tries to retrieve all meta information that are available and that have
+  /// been stored via the @ref putGenToolInfos function.
+  ///
+  /// @param frame The (metadata) frame that should be queried for the
+  ///              information
+  ///
+  /// @returns The GeneratorToolInfo that were found in the Frame. If none ar
+  ///          found an empty vector will be returned.
   const inline std::vector<GeneratorToolInfo> getGenToolInfos(const podio::Frame& frame) {
     using namespace edm4hep::labels;
     auto toolInfos = std::vector<GeneratorToolInfo>();
@@ -35,7 +57,14 @@ namespace utils {
     return toolInfos;
   };
 
-  void inline putGenToolInfos(podio::Frame& frame, std::vector<GeneratorToolInfo>& toolInfos) {
+  /// Put the generator tool meta information into a (metadata) frame
+  ///
+  /// In order to guarantee consistent storage and retrieval of these metadata
+  /// it is necessary to use this utility function.
+  ///
+  /// @param frame     The (metadata) Frame into which the generator tool info should go
+  /// @param toolInfos The generator tool infos that should be stored
+  void inline putGenToolInfos(podio::Frame& frame, const std::vector<GeneratorToolInfo>& toolInfos) {
     auto names = std::vector<std::string>();
     auto versions = std::vector<std::string>();
     auto descriptions = std::vector<std::string>();
