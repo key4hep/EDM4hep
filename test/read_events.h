@@ -3,9 +3,9 @@
 
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
-#include "edm4hep/GenToolInfo.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
 #include "edm4hep/GeneratorPdfInfoCollection.h"
+#include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"

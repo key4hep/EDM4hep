@@ -1,5 +1,5 @@
-#ifndef EDM4HEP_GENTOOLINFO_H
-#define EDM4HEP_GENTOOLINFO_H
+#ifndef EDM4HEP_GENERATORTOOLINFO_H
+#define EDM4HEP_GENERATORTOOLINFO_H
 
 #include "edm4hep/Constants.h"
 #include "podio/Frame.h"
@@ -19,6 +19,9 @@ struct GeneratorToolInfo {
   std::string name{};        ///< The name of the tool
   std::string version{};     ///< The version of the tool
   std::string description{}; ///< A brief description of the tool
+
+  /// Construct a generator tool info object with all empty fields
+  GeneratorToolInfo() = default;
 
   /// Construct a complete tool info object from all ingredients
   ///
@@ -82,4 +85,4 @@ namespace utils {
 } // namespace utils
 } // namespace edm4hep
 
-#endif // EDM4HEP_GENTOOLINFO_H
+#endif // EDM4HEP_GENERATORTOOLINFO_H

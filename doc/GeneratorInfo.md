@@ -7,11 +7,11 @@ At run level, information about generator tools (name, version, description) are
 
 
 ```cpp
-    #include "edm4hep/GenToolInfo.h"
-    ...
+    #include "edm4hep/GeneratorToolInfo.h"
+    // ...
     // write some generator tool info into the run
-    auto toolInfo = edm4hep::GenToolInfo();
-    auto toolInfos = std::vector<edm4hep::GenToolInfo>();
+    auto toolInfo = edm4hep::GeneratorToolInfo();
+    auto toolInfos = std::vector<edm4hep::GeneratorToolInfo>();
     toolInfo.name = "something";
     toolInfo.version = "v1";
     toolInfo.description = "some tool";
@@ -23,8 +23,8 @@ At run level, information about generator tools (name, version, description) are
 and read-back via:
 
 ```cpp
-  #include "edm4hep/GenToolInfo.h"
-  ...
+  #include "edm4hep/GeneratorToolInfo.h"
+  // ...
   auto toolInfos = edm4hep::utils::getGenToolInfos(run);
 
 ```
