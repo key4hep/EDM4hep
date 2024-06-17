@@ -139,8 +139,8 @@ void write(std::string outfilename) {
 
     //===============================================================================
     // write some generator tool info into the run
-    auto toolInfos = std::vector<edm4hep::GenToolInfo>();
-    auto toolInfo = edm4hep::GenToolInfo();
+    auto toolInfos = std::vector<edm4hep::GeneratorToolInfo>();
+    auto toolInfo = edm4hep::GeneratorToolInfo();
     toolInfo.name = "something";
     toolInfo.version = "v1";
     toolInfo.description = "some tool";

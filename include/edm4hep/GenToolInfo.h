@@ -8,21 +8,21 @@
 
 namespace edm4hep {
 
-struct GenToolInfo {
+struct GeneratorToolInfo {
   std::string name;
   std::string version;
   std::string description;
 
-  GenToolInfo(){};
-  GenToolInfo(const std::string& name, const std::string& version, const std::string& description) :
+  GeneratorToolInfo(){};
+  GeneratorToolInfo(const std::string& name, const std::string& version, const std::string& description) :
       name(name), version(version), description(description){};
 };
 
 namespace utils {
 
-  const std::vector<GenToolInfo> getGenToolInfos(const podio::Frame& frame) {
+  const inline std::vector<GeneratorToolInfo> getGenToolInfos(const podio::Frame& frame) {
     using namespace edm4hep::labels;
-    auto toolInfos = std::vector<GenToolInfo>();
+    auto toolInfos = std::vector<GeneratorToolInfo>();
     const auto names =
         frame.getParameter<std::vector<std::string>>(GeneratorToolName).value_or(std::vector<std::string>{});
     const auto versions =
@@ -35,7 +35,7 @@ namespace utils {
     return toolInfos;
   };
 
-  void putGenToolInfos(podio::Frame& frame, std::vector<GenToolInfo>& toolInfos) {
+  void inline putGenToolInfos(podio::Frame& frame, std::vector<GeneratorToolInfo>& toolInfos) {
     auto names = std::vector<std::string>();
     auto versions = std::vector<std::string>();
     auto descriptions = std::vector<std::string>();
