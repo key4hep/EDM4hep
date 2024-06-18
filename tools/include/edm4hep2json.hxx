@@ -6,6 +6,8 @@
 #include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/EventHeaderCollection.h"
+#include "edm4hep/GeneratorEventParametersCollection.h"
+#include "edm4hep/GeneratorPdfInfoCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/ParticleIDCollection.h"
 #include "edm4hep/RawCalorimeterHitCollection.h"
@@ -154,6 +156,12 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<podio::UserDataCollection<uint32_t>>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "podio::UserDataCollection<uint64_t>") {
       insertIntoJson<podio::UserDataCollection<uint64_t>>(jsonDict, coll, collList[i]);
+    }
+    // Generator (meta-)data
+    else if (coll->getTypeName() == "podio::GeneratorParametersCollection") {
+      insertIntoJson<edm4hep::GeneratorEventParametersCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "podio::GeneratorPdfInfoCollection") {
+      insertIntoJson<edm4hep::GeneratorPdfInfoCollection>(jsonDict, coll, collList[i]);
     } else {
       std::cout << "WARNING: Collection type not recognized!\n"
                 << "         " << coll->getTypeName() << "\n";

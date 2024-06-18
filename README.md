@@ -39,12 +39,18 @@ A generic event data model for future HEP collider experiments.
 | [MCRecoTrackerHitPlaneAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L644) | [MCRecoCaloParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L653) | [MCRecoClusterParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L662) |
 | [MCRecoTrackParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L671)   | [RecoParticleVertexAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L680) |                                                                                                      |
 
+**Generator related (meta-)data**
+
+| | | |
+|-|-|-|
+| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L790) | | |
+| [GeneratorPdfInfo](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L807) | | |
+
 **Interfaces**
 
 | | | |
 |-|-|-|
-| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L787) | | |
-
+| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L818) | | |
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
 

@@ -783,6 +783,37 @@ datatypes:
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
 
+
+  #===== Generator related data =====
+
+  #---------- GeneratorEventParameters
+  edm4hep::GeneratorEventParameters:
+    Description: "Generator event parameters"
+    Author: "EDM4hep authors"
+    Members:
+      - double eventScale              // event scale
+      - double alphaQED                 // alpha_QED
+      - double alphaQCD                 // alpha_QCD
+      - int signalProcessId           // id of signal process
+      - double sqrts  [GeV]            // sqrt(s)
+    VectorMembers:
+      - double crossSections [pb]       // list of cross sections
+      - double crossSectionErrors [pb]  // list of cross section errors
+    OneToManyRelations:
+      - edm4hep::MCParticle signalVertex // List of initial state MCParticle that are the source of the hard interaction
+
+
+  #---------- GeneratorPdfInfo
+  edm4hep::GeneratorPdfInfo:
+    Description: "Generator pdf information"
+    Author: "EDM4hep authors"
+    Members:
+      - std::array<int, 2> partonId      // Parton PDG id
+      - std::array<int, 2> lhapdfId             // LHAPDF PDF id (see https://lhapdf.hepforge.org/pdfsets.html)
+      - std::array<double, 2> x           // Parton momentum fraction
+      - std::array<double, 2> xf          // PDF value
+      - double scale [GeV]                // Factorisation scale
+
 interfaces:
   edm4hep::TrackerHit:
     Description: "Tracker hit interface class"

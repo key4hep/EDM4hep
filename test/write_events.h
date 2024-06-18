@@ -2,7 +2,11 @@
 #define EDM4HEP_TEST_WRITE_EVENTS_H
 
 // Data model
+
 #include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/GeneratorEventParametersCollection.h"
+#include "edm4hep/GeneratorPdfInfoCollection.h"
+#include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -28,6 +32,7 @@ void write(std::string outfilename) {
   for (unsigned i = 0; i < nevents; ++i) {
     std::cout << " --- processing event " << i << std::endl;
     auto event = podio::Frame();
+    auto run = podio::Frame();
 
     // place the following generator event to the MCParticle collection
     //
@@ -107,6 +112,47 @@ void write(std::string outfilename) {
         pmom.addToDaughters(p);
       }
     }
+
+    //===============================================================================
+    // write some generator event data
+    auto genParametersCollection = edm4hep::GeneratorEventParametersCollection();
+    auto genParam = genParametersCollection.create();
+    genParam.setEventScale(23);
+    genParam.setAlphaQED(1 / 127);
+    genParam.setAlphaQCD(0.1);
+    genParam.setSignalProcessId(42);
+    genParam.setSqrts(90);
+    genParam.addToCrossSections(10);
+    genParam.addToCrossSectionErrors(3);
+    genParam.addToSignalVertex(mcp1);
+    genParam.addToSignalVertex(mcp2);
+    event.put(std::move(genParametersCollection), edm4hep::labels::GeneratorEventParameters);
+
+    auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
+    auto genPdfInfo = genPdfInfoCollection.create();
+    genPdfInfo.setPartonId(1, 2);
+    genPdfInfo.setLhapdfId({20, 20});
+    genPdfInfo.setX({0.5, 0.5});
+    genPdfInfo.setXf({0.5, 0.5});
+    genPdfInfo.setScale(23);
+    event.put(std::move(genPdfInfoCollection), edm4hep::labels::GeneratorPdfInfo);
+
+    //===============================================================================
+    // write some generator tool info into the run
+    auto toolInfos = std::vector<edm4hep::GeneratorToolInfo>();
+    auto toolInfo = edm4hep::GeneratorToolInfo();
+    toolInfo.name = "something";
+    toolInfo.version = "v1";
+    toolInfo.description = "some tool";
+    toolInfos.emplace_back(std::move(toolInfo));
+    edm4hep::utils::putGenToolInfos(run, toolInfos);
+
+    //===============================================================================
+    // write some generator weightname info into the run
+    auto weightNames = std::vector<std::string>();
+    weightNames.emplace_back("oneWeight");
+    weightNames.emplace_back("anotherWeight");
+    run.putParameter(edm4hep::labels::GeneratorWeightNames, std::move(weightNames));
 
     // fixme: should this become a utility function ?
     //-------------------------------------------------------------
@@ -237,6 +283,7 @@ void write(std::string outfilename) {
     event.putParameter("EventType", "test");
 
     writer.writeFrame(event, "events");
+    writer.writeFrame(run, "runs");
   }
 
   writer.finish();

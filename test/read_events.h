@@ -3,6 +3,9 @@
 
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/GeneratorEventParametersCollection.h"
+#include "edm4hep/GeneratorPdfInfoCollection.h"
+#include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -15,6 +18,27 @@
 
 // STL
 #include <iostream>
+
+void processRun(const podio::Frame& run) {
+  //===============================================================================
+  // get generator tool info from the run
+  auto toolInfos = edm4hep::utils::getGenToolInfos(run);
+  auto toolinfo = toolInfos[0];
+  if (toolinfo.name != "something")
+    throw std::runtime_error("toolinfo.name != 'something'");
+  if (toolinfo.version != "v1")
+    throw std::runtime_error("toolinfo.version != 'v1'");
+  if (toolinfo.description != "some tool")
+    throw std::runtime_error("toolinfo.description != 'some tool'");
+
+  //===============================================================================
+  // get generator weight names
+  auto weightNames = run.getParameter<std::vector<std::string>>(edm4hep::labels::GeneratorWeightNames).value();
+  if (weightNames[0] != "oneWeight")
+    throw std::runtime_error("weightNames[0] != 'oneWeight'");
+  if (weightNames[1] != "anotherWeight")
+    throw std::runtime_error("weightNames[1] != 'anotherWeight'");
+}
 
 void processEvent(const podio::Frame& event) {
   auto& mcps = event.get<edm4hep::MCParticleCollection>("MCParticles");
@@ -232,6 +256,17 @@ void processEvent(const podio::Frame& event) {
     throw std::runtime_error("Collection 'TrackerHitPlanes' should be present");
   }
 
+  //===============================================================================
+  // check the generator meta data
+  auto& genParametersCollection =
+      event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::labels::GeneratorEventParameters);
+  auto genParam = genParametersCollection[0];
+  if (genParam.getEventScale() != 23)
+    throw std::runtime_error("Event_scale != 23");
+
+  auto& generatorPdfInfoCollection = event.get<edm4hep::GeneratorPdfInfoCollection>(edm4hep::labels::GeneratorPdfInfo);
+  auto genPdfInfo = generatorPdfInfoCollection[0];
+
   // //===============================================================================
   //  if( sccons.isValid() ){
   //  } else {
@@ -250,6 +285,9 @@ template <typename ReaderT>
 void read_events(const std::string& filename) {
   ReaderT reader;
   reader.openFile(filename);
+
+  const auto run = podio::Frame(reader.readNextEntry("runs"));
+  processRun(run);
 
   unsigned nEvents = reader.getEntries("events");
   for (unsigned i = 0; i < nEvents; ++i) {
