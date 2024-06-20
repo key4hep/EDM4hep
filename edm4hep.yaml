@@ -539,7 +539,7 @@ datatypes:
     Members:
       - int32_t                 primary       // boolean flag, if vertex is the primary vertex of the event
       - float               chi2          // chi-squared of the vertex fit
-      - float               ndf           // number of degrees of freedom of the vertex fit
+      - int32_t             ndf           // number of degrees of freedom of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex
       - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
