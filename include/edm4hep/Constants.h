@@ -33,7 +33,6 @@ namespace labels {
   static constexpr const char* EventFilterStats = "EventFilterStats";
   /// The canonical name for the main MCParticle collection
   static constexpr const char* MCParticles = "MCParticles";
-  
   /// The collection parameter name for accessing the names of the parameters for
   /// a ParticleID collection
   static constexpr const char* PIDParameterNames = "ParameterNames";
