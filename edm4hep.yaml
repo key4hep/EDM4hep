@@ -523,7 +523,6 @@ datatypes:
       - int32_t ndf                          // number of degrees of freedom of the track fit
       - float dEdx                       // dEdx of the track
       - float dEdxError                  // error of dEdx
-      - float radiusOfInnermostHit       // radius of the innermost hit that has been used in the track fit
     VectorMembers:
       - int32_t subdetectorHitNumbers        // number of hits in particular subdetectors
       - edm4hep::TrackState trackStates  // track states
