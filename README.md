@@ -26,29 +26,29 @@ A generic event data model for future HEP collider experiments.
 | [CaloHitContribution](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L355) | [SimCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L367) | [RawCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L379)     |
 | [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L388)      | [ParticleID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L400)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L415)               |
 | [TrackerHit3D](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L447)          | [TrackerHitPlane](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L473)   | [RawTimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L503)                |
-| [Track](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L517)               | [Vertex](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L536)            | [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L564) |
-| [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L666) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L678) |                                                                                          |
+| [Track](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L517)               | [Vertex](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L535)            | [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L563) |
+| [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L665) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L677) |                                                                                          |
 
 **Associations**
 
 | | | |
 |-|-|-|
-| [MCRecoParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L602)        | [MCRecoCaloAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L611)         | [MCRecoTrackerAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L620)         |
-| [MCRecoCaloParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L629) | [MCRecoClusterParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L638) | [MCRecoTrackParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L647)   |
-| [RecoParticleVertexAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L656) | | |
+| [MCRecoParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L601)        | [MCRecoCaloAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L610)         | [MCRecoTrackerAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L619)         |
+| [MCRecoCaloParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L628) | [MCRecoClusterParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L637) | [MCRecoTrackParticleAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L646)   |
+| [RecoParticleVertexAssociation](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L655) | | |
 
 **Generator related (meta-)data**
 
 | | | |
 |-|-|-|
-| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L690) | | |
-| [GeneratorPdfInfo](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L707) | | |
+| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L689) | | |
+| [GeneratorPdfInfo](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L706) | | |
 
 **Interfaces**
 
 | | | |
 |-|-|-|
-| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L718) | | |
+| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L717) | | |
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
 
