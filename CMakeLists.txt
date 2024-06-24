@@ -9,7 +9,7 @@ SET( ${PROJECT_NAME}_VERSION_PATCH 99 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-find_package(podio REQUIRED HINTS $ENV{PODIO})
+find_package(podio 1.0 REQUIRED HINTS $ENV{PODIO})
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 #--- Define basic build settings -----------------------------------------------
