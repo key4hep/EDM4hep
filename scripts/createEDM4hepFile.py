@@ -183,7 +183,7 @@ for i in range(frames):
     cluster.setEnergyError(next(counter))
     cluster.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     for j in range(6):
-        cluster.setPositionError(j, next(counter))
+        cluster.setPositionError([next(counter) for _ in range(6)])
     cluster.setITheta(next(counter))
     cluster.setPhi(next(counter))
     cluster.setDirectionError(
@@ -211,7 +211,7 @@ for i in range(frames):
     hit.setEDep(next(counter))
     hit.setEDepError(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    hit.setCovMatrix(j, next(counter))
+    hit.setCovMatrix([next(counter) for _ in range(6)])
     if args.use_pre1:
         for j in range(vectorsize):
             oid = edm4hep.ObjectID()
@@ -234,8 +234,7 @@ for i in range(frames):
     hit.setDu(next(counter))
     hit.setDv(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    for j in range(6):
-        hit.setCovMatrix(j, next(counter))
+    hit.setCovMatrix([next(counter) for _ in range(6)])
     if args.use_pre1:
         for j in range(vectorsize):
             oid = edm4hep.ObjectID()
@@ -277,9 +276,7 @@ for i in range(frames):
         state.referencePoint = edm4hep.Vector3f(
             next(counter), next(counter), next(counter)
         )
-        # TODO
-        # for k in range(21):
-        #     state.setCovMatrix(k, next(counter))
+        # state.setCovMatrix([next(counter) for _ in range(21)])
         track.addToTrackStates(state)
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
@@ -291,8 +288,7 @@ for i in range(frames):
     v.setChi2(next(counter))
     v.setProbability(next(counter))
     v.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    for j in range(6):
-        v.setCovMatrix(j, next(counter))
+    v.setCovMatrix([next(counter) for _ in range(6)])
     v.setAlgorithmType(next(counter))
     for j in range(vectorsize):
         v.addToParameters(next(counter))
@@ -312,8 +308,7 @@ for i in range(frames):
     particle.setCharge(next(counter))
     particle.setMass(next(counter))
     particle.setGoodnessOfPID(next(counter))
-    for j in range(10):
-        particle.setCovMatrix(j, next(counter))
+    particle.setCovMatrix([next(counter) for _ in range(10)])
     particle.setStartVertex(v)
     if args.use_pre1:
         particle.setParticleIDUsed(pid)
@@ -412,8 +407,7 @@ for i in range(frames):
     pulse.setTime(next(counter))
     pulse.setCharge(next(counter))
     pulse.setQuality(next(counter))
-    for j in range(3):
-        pulse.setCovMatrix(j, next(counter))
+    pulse.setCovMatrix([next(counter) for _ in range(3)])
     pulse.setTimeSeries(serie)
     frame.put(trackerpulse, "TrackerPulseCollection")
 
