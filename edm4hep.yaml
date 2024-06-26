@@ -537,7 +537,7 @@ datatypes:
     Description: "Vertex"
     Author: "EDM4hep authors"
     Members:
-      - int32_t                 primary       // boolean flag, if vertex is the primary vertex of the event
+      - uint32_t            type          // Flagword that defines the type of the vertex, see reserved bits for more information
       - float               chi2          // chi-squared of the vertex fit
       - int32_t             ndf           // number of degrees of freedom of the vertex fit
       - edm4hep::Vector3f   position      // [mm] position of the vertex
@@ -548,16 +548,34 @@ datatypes:
     OneToOneRelations:
       - edm4hep::ReconstructedParticle associatedParticle // reconstructed particle associated to this vertex
     ExtraCode:
-      includes: "#include <edm4hep/Constants.h>"
+      includes: "#include <edm4hep/Constants.h>\n
+                 #include <edm4hep/utils/bit_utils.h>\n"
       declaration: "
       /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
+      // Reserved bits for the type flagword\n
+      static constexpr int BITPrimaryVertex = 1;\n
+      static constexpr int BITSecondaryVertex = 2;\n
+      static constexpr int BITTertiaryVertex = 2;\n
+
+      /// Check if this is a primary vertex\n
+      bool isPrimary() const { return utils::checkBit(getType(), BITPrimaryVertex); }\n
+      /// Check if this is a secondary vertex\n
+      bool isSecondary() const { return utils::checkBit(getType(), BITSecondaryVertex); }\n
+      /// Check if this is a tertiary vertex\n
+      bool isTertiary() const { return utils::checkBit(getType(), BITTertiaryVertex); }\n
       "
     MutableExtraCode:
-      includes: "#include <edm4hep/Constants.h>"
       declaration: "
       /// Set the position covariance matrix value for the two passed dimensions\n
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+
+      /// Set the primary vertex flag for this vertex
+      void setPrimaryVertex(bool value=true) { setType(utils::setBit(getType(), BITPrimaryVertex, value)); }\n
+      /// Set the secondary vertex flag for this vertex
+      void setSecondaryVertex(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }\n
+      /// Set the tertiary vertex flag for this vertex
+      void setTertiaryVertex(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }\n
       "
 
   #------- ReconstructedParticle
