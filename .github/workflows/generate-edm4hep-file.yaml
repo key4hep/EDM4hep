@@ -1,0 +1,41 @@
+name: Generate an EDM4Hep file
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  generate-file:
+    runs-on: ubuntu-latest
+    steps:
+    - shell: bash
+      run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/ccache
+        key: nightly-alma9-${{ env.NOW }}
+        restore-keys: |
+          nightly-alma9
+
+    - name: Start container
+      shell: bash
+      run: |
+          docker run --name container --privileged -v ${GITHUB_WORKSPACE}:/${name} -v ~/.cache/ccache:/root/.cache/ccache -d ghcr.io/key4hep/key4hep-images/alma9-cvmfs tail -f /dev/null
+
+    - name: Run script
+      run: |
+          source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
+          cd /EDM4hep
+          k4_local_repo
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -G Ninja
+          time ninja install
+          ccache -s
+
+          python3 /EDM4hep/scripts/createEDM4hepFile.py
+
+          chmod +x ${GITHUB_WORKSPACE}/script_container.sh
+
+          docker exec container /bin/bash -c "/mount.sh && /${name}/script_container.sh"
