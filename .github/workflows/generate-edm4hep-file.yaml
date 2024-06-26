@@ -42,4 +42,4 @@ jobs:
 
           chmod +x ${GITHUB_WORKSPACE}/script_container.sh
 
-          docker exec container /bin/bash -c "/mount.sh && /${name}/script_container.sh"
+          docker exec container /bin/bash -c "/mount.sh && /EDM4hep/script_container.sh"
