@@ -276,7 +276,7 @@ for i in range(frames):
         state.referencePoint = edm4hep.Vector3f(
             next(counter), next(counter), next(counter)
         )
-        # state.setCovMatrix([next(counter) for _ in range(21)])
+        state.CovMatrix = [next(counter) for _ in range(21)]
         track.addToTrackStates(state)
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
