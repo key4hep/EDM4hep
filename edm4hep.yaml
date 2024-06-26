@@ -264,18 +264,18 @@ datatypes:
     MutableExtraCode:
       includes: "#include <cmath>"
       declaration: "
-      int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }                               \n
-      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
-      void setBackscatter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
-      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
-      void setDecayedInTracker(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
-      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     \n
-      void setHasLeftDetector(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
-      void setStopped(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
-      void setOverlay(bool bitval) { setSimulatorStatus( set_bit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n
+      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
+      void setBackscatter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
+      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
+      void setDecayedInTracker(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
+      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     \n
+      void setHasLeftDetector(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
+      void setStopped(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
+      void setOverlay(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n
       "
 
     ExtraCode:
+      includes: "#include <edm4hep/utils/bit_utils.h>\n"
       declaration: "
       // define the bit positions for the simulation flag\n
       static const int BITCreatedInSimulation = 30;\n
@@ -291,21 +291,21 @@ datatypes:
                                         getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;} \n
 
       /// True if the particle has been created by the simulation program (rather than the generator).     \n
-      bool isCreatedInSimulation() const { return ( getSimulatorStatus() & ( 0x1 << BITCreatedInSimulation ))  ; }    \n
+      bool isCreatedInSimulation() const { return utils::checkBit(getSimulatorStatus(), BITCreatedInSimulation); }    \n
       /// True if the particle is the result of a backscatter from a calorimeter shower. \n
-      bool isBackscatter() const { return ( getSimulatorStatus() & ( 0x1 << BITBackscatter )) ; }   \n
+      bool isBackscatter() const { return utils::checkBit(getSimulatorStatus(), BITBackscatter); }   \n
       /// True if the particle's vertex is not the endpoint of the  parent particle.     \n
-      bool vertexIsNotEndpointOfParent() const { return ( getSimulatorStatus() & ( 0x1 << BITVertexIsNotEndpointOfParent )) ; } \n
+      bool vertexIsNotEndpointOfParent() const { return utils::checkBit(getSimulatorStatus(), BITVertexIsNotEndpointOfParent); } \n
       /// True if the particle has interacted in a tracking region.                \n
-      bool isDecayedInTracker() const { return ( getSimulatorStatus() & ( 0x1 << BITDecayedInTracker )) ; }     \n
+      bool isDecayedInTracker() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInTracker); }     \n
       /// True if the particle has interacted in a calorimeter region.             \n
-      bool isDecayedInCalorimeter() const { return ( getSimulatorStatus() & ( 0x1 << BITDecayedInCalorimeter )) ; }   \n
+      bool isDecayedInCalorimeter() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInCalorimeter); }   \n
       /// True if the particle has left the world volume undecayed.                \n
-      bool hasLeftDetector() const { return ( getSimulatorStatus() & ( 0x1 << BITLeftDetector )) ; }\n
+      bool hasLeftDetector() const { return utils::checkBit(getSimulatorStatus(), BITLeftDetector); }\n
       /// True if the particle has been stopped by the simulation program.         \n
-      bool isStopped() const { return ( getSimulatorStatus() & ( 0x1 << BITStopped )) ; }     \n
+      bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }     \n
       /// True if the particle has been overlayed by the simulation (or digitization)  program.\n
-      bool isOverlay() const { return ( getSimulatorStatus() & ( 0x1 << BITOverlay )) ; }     \n
+      bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }     \n
       "
 
 
