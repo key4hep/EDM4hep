@@ -21,7 +21,7 @@ jobs:
     - name: Start container
       shell: bash
       run: |
-          docker run --name container --privileged -v ${GITHUB_WORKSPACE}:/${name} -v ~/.cache/ccache:/root/.cache/ccache -d ghcr.io/key4hep/key4hep-images/alma9-cvmfs tail -f /dev/null
+          docker run --name container --privileged -v ${GITHUB_WORKSPACE}:/EDM4hep -v ~/.cache/ccache:/root/.cache/ccache -d ghcr.io/key4hep/key4hep-images/alma9-cvmfs tail -f /dev/null
 
     - name: Run script
       run: |
