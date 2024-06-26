@@ -533,7 +533,7 @@ datatypes:
     Description: "Reconstructed track"
     Author: "EDM4hep authors"
     Members:
-      - int32_t type                         // flagword that defines the type of track.Bits 16-31 are used internally
+      - int32_t type                         // flagword that defines the type of track
       - float chi2                       // Chi^2 of the track fit
       - int32_t ndf                          // number of degrees of freedom of the track fit
       - float dEdx                       // dEdx of the track
