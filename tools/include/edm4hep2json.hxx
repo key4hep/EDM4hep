@@ -28,7 +28,6 @@
 #include "edm4hep/MCRecoParticleAssociationCollection.h"
 #include "edm4hep/MCRecoTrackParticleAssociationCollection.h"
 #include "edm4hep/MCRecoTrackerAssociationCollection.h"
-#include "edm4hep/MCRecoTrackerHitPlaneAssociationCollection.h"
 #include "edm4hep/RecoParticleVertexAssociationCollection.h"
 
 #include "edm4hep/EDM4hepVersion.h"
@@ -115,8 +114,6 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::MCRecoCaloAssociationCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::MCRecoTrackerAssociationCollection") {
       insertIntoJson<edm4hep::MCRecoTrackerAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoTrackerHitPlaneAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoTrackerHitPlaneAssociationCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::MCRecoCaloParticleAssociationCollection") {
       insertIntoJson<edm4hep::MCRecoCaloParticleAssociationCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::MCRecoClusterParticleAssociationCollection") {
