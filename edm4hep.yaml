@@ -541,8 +541,8 @@ datatypes:
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
-    OneToOneRelations:
-      - edm4hep::ReconstructedParticle associatedParticle // reconstructed particle associated to this vertex
+    OneToManyRelations:
+      - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>\n
                  #include <edm4hep/utils/bit_utils.h>\n"
