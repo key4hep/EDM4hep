@@ -227,22 +227,6 @@ components:
         - float value  // value of the quantity
         - float error  // error on the value of the quantity
 
-
-    # Hypothesis for 5 particle types
-    edm4hep::Hypothesis:
-      Members:
-        - float chi2       // chi2
-        - float expected   // expected value
-        - float sigma      // sigma value
-
-    # Reconstructed hit information
-    edm4hep::HitLevelData:
-      Members:
-        - uint64_t cellID  // cell id
-        - uint32_t N       // number of reconstructed ionization cluster
-        - float eDep [GeV]      // reconstructed energy deposit
-        - float pathLength [mm] // track path length
-
 datatypes:
 
 
@@ -528,6 +512,7 @@ datatypes:
     VectorMembers:
        - int32_t adcCounts          // raw data (32-bit) word at i
 
+
  #-------- Track
   edm4hep::Track:
     Description: "Reconstructed track"
@@ -686,77 +671,6 @@ datatypes:
      - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
      - edm4hep::Vertex vertex             // reference to the vertex
 
-
-  #----------- SimPrimaryIonizationCluster
-  edm4hep::SimPrimaryIonizationCluster:
-    Description: "Simulated Primary Ionization"
-    Author: "EDM4hep authors"
-    Members:
-      - uint64_t cellID                      // cell id
-      - float time [ns]                      // the primary ionization's time in the lab frame
-      - edm4hep::Vector3d position [mm]      // the primary ionization's position
-      - int16_t type                         // type
-    VectorMembers:
-       - uint64_t electronCellID             // cell id
-       - float electronTime [ns]             // the time in the lab frame
-       - edm4hep::Vector3d electronPosition [mm]  // the position in the lab frame
-       - float pulseTime [ns]                // the pulse's time in the lab frame
-       - float pulseAmplitude [fC]           // the pulse's amplitude
-    OneToOneRelations:
-      - edm4hep::MCParticle particle       // the particle that caused the ionizing collisions
-    MutableExtraCode:
-      includes: "
-      #include <cmath>\n
-      #include <edm4hep/MCParticle.h>\n
-      "
-      declaration: "
-      [[deprecated(\"use setParticle instead\")]]\n
-      void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
-      "
-
-    ExtraCode:
-      includes: "#include <edm4hep/MCParticle.h>\n"
-      declaration: "
-      [[deprecated(\"use getParticle instead\")]]
-      edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
-      "
-
- #----------  TrackerPulse
-  edm4hep::TrackerPulse:
-    Description: "Reconstructed Tracker Pulse"
-    Author: "EDM4hep authors"
-    Members:
-       - uint64_t cellID                 // cell id
-       - float time [ns]                 // time
-       - float charge [fC]               // charge
-       - int16_t quality                 // quality
-       - edm4hep::CovMatrix2f covMatrix  // covariance matrix of the charge and time measurements
-    OneToOneRelations:
-      - edm4hep::TimeSeries timeSeries   // Optionally, the timeSeries that has been used to create the pulse can be stored with the pulse
-    ExtraCode:
-      includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Get the position covariance matrix value for the two passed dimensions\n
-      float getCovMatrix(edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
-      "
-    MutableExtraCode:
-      includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Set the position covariance matrix value for the two passed dimensions\n
-      void setCovMatrix(float value, edm4hep::TrackerPulseDims dimI, edm4hep::TrackerPulseDims dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      "
-
- #----------  RecIonizationCluster
-  edm4hep::RecIonizationCluster:
-    Description: "Reconstructed Ionization Cluster"
-    Author: "EDM4hep authors"
-    Members:
-       - uint64_t cellID            // cell id
-       - float significance         // significance
-       - int16_t type               // type
-    OneToManyRelations:
-       - edm4hep::TrackerPulse trackerPulse // the TrackerPulse used to create the ionization cluster
-
  #----------  TimeSeries
   edm4hep::TimeSeries:
     Description: "Calibrated Detector Data"
@@ -775,11 +689,6 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - edm4hep::Quantity dQdx         // the reconstructed dEdx or dNdx and its error
-      - int16_t particleType           // particle type, e(0),mu(1),pi(2),K(3),p(4)
-      - int16_t type                   // type
-      - std::array<edm4hep::Hypothesis, 5> hypotheses // 5 particle hypothesis
-    VectorMembers:
-      - edm4hep::HitLevelData hitData   // hit level data
     OneToOneRelations:
       - edm4hep::Track track           // the corresponding track
 
