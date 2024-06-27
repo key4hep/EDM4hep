@@ -690,7 +690,7 @@ datatypes:
 
   #-------------  RecDqdx
   edm4hep::RecDqdx:
-    Description: "dN/dx or dE/dx info of Track."
+    Description: "dN/dx or dE/dx info of a Track"
     Author: "EDM4hep authors"
     Members:
       - edm4hep::Quantity dQdx         // the reconstructed dEdx or dNdx and its error
