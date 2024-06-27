@@ -571,11 +571,11 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
 
       /// Set the primary vertex flag for this vertex
-      void setPrimaryVertex(bool value=true) { setType(utils::setBit(getType(), BITPrimaryVertex, value)); }\n
+      void setPrimary(bool value=true) { setType(utils::setBit(getType(), BITPrimaryVertex, value)); }\n
       /// Set the secondary vertex flag for this vertex
-      void setSecondaryVertex(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }\n
+      void setSecondary(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }\n
       /// Set the tertiary vertex flag for this vertex
-      void setTertiaryVertex(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }\n
+      void setTertiary(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }\n
       "
 
   #------- ReconstructedParticle
