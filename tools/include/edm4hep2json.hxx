@@ -13,16 +13,13 @@
 #include "edm4hep/RawCalorimeterHitCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/RecDqdxCollection.h"
-#include "edm4hep/RecIonizationClusterCollection.h"
 #include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
-#include "edm4hep/SimPrimaryIonizationClusterCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TimeSeriesCollection.h"
 #include "edm4hep/TrackCollection.h"
 #include "edm4hep/TrackerHit3DCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
-#include "edm4hep/TrackerPulseCollection.h"
 #include "edm4hep/VertexCollection.h"
 
 #include "edm4hep/MCRecoCaloAssociationCollection.h"
@@ -106,12 +103,6 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::VertexCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::ReconstructedParticleCollection") {
       insertIntoJson<edm4hep::ReconstructedParticleCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::SimPrimaryIonizationClusterCollection") {
-      insertIntoJson<edm4hep::SimPrimaryIonizationClusterCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::TrackerPulseCollection") {
-      insertIntoJson<edm4hep::TrackerPulseCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::RecIonizationClusterCollection") {
-      insertIntoJson<edm4hep::RecIonizationClusterCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::TimeSeriesCollection") {
       insertIntoJson<edm4hep::TimeSeriesCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::RecDqdxCollection") {
