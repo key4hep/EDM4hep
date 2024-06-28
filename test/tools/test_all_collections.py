@@ -21,8 +21,7 @@ def test(yamlfile_path, cxxfile_path):
     datatypes_found = []
 
     with open(cxxfile_path, mode='r', encoding="utf-8") as cxxfile:
-        for cxxline in cxxfile:
-            cxxline = cxxfile.readline()
+        for cxxline in cxxfile.readlines():
             result = re.search('insertIntoJson<edm4hep::(.+?)Collection>',
                                cxxline)
             if result:
