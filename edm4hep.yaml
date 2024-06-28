@@ -626,15 +626,6 @@ datatypes:
      - edm4hep::TrackerHit rec    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit sim // reference to the simulated hit
 
-  edm4hep::MCRecoTrackerHitPlaneAssociation:
-    Description: "Association between a TrackerHitPlane and the corresponding SimTrackerHit"
-    Author: "EDM4hep authors"
-    Members:
-      - float weight                // weight of this association
-    OneToOneRelations:
-     - edm4hep::TrackerHitPlane rec // reference to the reconstructed hit
-     - edm4hep::SimTrackerHit sim   // reference to the simulated hit
-
   edm4hep::MCRecoCaloParticleAssociation:
     Description: "Association between a CalorimeterHit and the corresponding MCParticle"
     Author: "EDM4hep authors"
