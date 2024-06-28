@@ -5,16 +5,8 @@
 #include "TFile.h"
 
 // podio
-#include "podio/podioVersion.h"
-#if PODIO_BUILD_VERSION >= PODIO_VERSION(0, 99, 0)
-#include "podio/ROOTReader.h"
-#else
-#include "podio/ROOTFrameReader.h"
-namespace podio {
-using ROOTReader = podio::ROOTFrameReader;
-}
-#endif
 #include "podio/ROOTLegacyReader.h"
+#include "podio/ROOTReader.h"
 
 // std
 #include <filesystem>

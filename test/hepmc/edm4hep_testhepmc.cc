@@ -17,11 +17,7 @@
 #include "HepPDT/ParticleID.hh"
 
 #include "podio/Frame.h"
-#if PODIO_VERSION_MAJOR > 0 || (PODIO_VERSION_MAJOR == 0 && PODIO_VERSION_MINOR >= 99)
 #include "podio/ROOTWriter.h"
-#else
-#include "podio/ROOTFrameWriter.h"
-#endif
 
 #include "edm4hep/MCParticleCollection.h"
 
@@ -158,11 +154,7 @@ int main() {
   auto event = podio::Frame();
   event.put(std::move(edm_particle_collection), "TestParticles2");
 
-#if PODIO_VERSION_MAJOR > 0 || (PODIO_VERSION_MAJOR == 0 && PODIO_VERSION_MINOR >= 99)
   auto writer = podio::ROOTWriter("edm4hep_testhepmc.root");
-#else
-  auto writer = podio::ROOTFrameWriter("edm4hep_testhepmc.root");
-#endif
   writer.writeFrame(event, "events");
 
   // after all events
