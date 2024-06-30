@@ -36,9 +36,7 @@ jobs:
           time ninja install
           ccache -s
 
-          ls /EDM4hep
-          ls /EDM4hep/scripts
-          python3 /EDM4hep/scripts/createEDM4hepFile.py
+          python3 /scripts/createEDM4hepFile.py
 
           EOF
 
