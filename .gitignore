@@ -235,8 +235,7 @@ spack-*
 install/
 ## podio
 podio_generated_files.cmake
-/include/podio/podioVersion.h
-/python/podio/__init__.py
+
 ## EDM4hep
 /python/edm4hep/__version__.py
 edm4hep/edm4hep/
