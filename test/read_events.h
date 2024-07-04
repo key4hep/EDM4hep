@@ -14,7 +14,6 @@
 
 // podio specific includes
 #include "podio/Frame.h"
-#include "podio/podioVersion.h"
 
 // STL
 #include <iostream>
@@ -273,11 +272,7 @@ void processEvent(const podio::Frame& event) {
   //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
   //  }
 
-#if PODIO_BUILD_VERSION > PODIO_VERSION(0, 99, 0)
   const auto evtType = event.getParameter<std::string>("EventType").value();
-#else
-  const auto& evtType = event.getParameter<std::string>("EventType");
-#endif
   std::cout << "Event Type: " << evtType << std::endl;
 }
 
