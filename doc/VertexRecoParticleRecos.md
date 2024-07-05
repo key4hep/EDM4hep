@@ -27,6 +27,9 @@ should follow these main guidelines
 - in order to allow navigation from a decay particle to the vertex it originated
   from a `RecoParticleVertexAssociation` should be created. If no such
   navigation is necessary, creating these associations can also be omitted.
+- in order to allow for an easy navigation from the `Vertex` to the high level
+  `ReconstructedParticle` a `RecoParticleVertexAssociation` should be created if
+  necessary.
 
 ## Using `Vertex` and (high level) `ReconstructeParticle` objects
 
@@ -36,6 +39,10 @@ that the following variables are defined externally somehow
 - `startVtxAssocs` is a `edm4hep::RecoParticleVertexAssociationCollection`
 - `reco` is a `edm4hep::ReconstructedParticle`. This denotes a decay particle,
   i.e. it was used as an input to vertexing.
+
+A few concrete examples are shown now, a few more can be found
+[below](#in-lcio-i-do-this-how-do-i-do-it-in-edm4hep) where a few more details
+about the differences between LCIO and EDM4hep can be found.
 
 ### Getting all decay particles from a `ReconstructedParticle`
 
@@ -75,7 +82,7 @@ following outputs
 All of the steps will use function stubs whereever necessary and will mainly
 focus on setting the relations / associations.
 
-### 1. Creating vertices
+### Creating vertices
 
 The main point here is to attach the decay particles to the `particles` field of
 each `Vertex`. In this example we will assume that that is not already done by
@@ -101,7 +108,7 @@ edm4hep::VertexCollection createVertices(const edm4hep::ReconstructedParticleCol
 }
 ```
 
-### 2. Creating high level reconstruction particles
+### Creating high level reconstruction particles
 
 This is the most simplest implementation possible. It simply sums up all four
 vectors of the decay particles and sets that into the newly created particles.
@@ -127,13 +134,33 @@ edm4hep::ReconstructedParticleCollection createVertexRecos(const edm4hep::Vertex
 }
 ```
 
-### 3. Creating start vertex associations
+#### Creating associations from `Vertex` to high level `ReconstructedParticle`
+
+This is a potentially optional step that makes it possible to more easily access
+the `ReconstructedParticle` that decayed at a `Vertex`
+
+```cpp
+edm4hep::RecoParticleVertexAssociationCollection
+createVtxParticleAssociations(const edm4hep::ReconstructedParticleCollection& particles) {
+  auto vtxPartAssocs = edm4hep::RecoParticleVertexAssociationCollection{};
+  for (const auto p : particles) {
+    auto assoc = vtxPartAssocs.create();
+    assoc.setRec(p);
+    assoc.setVertex(p.getDecayVertex());
+  }
+  
+  return vtxPartAssocs;
+}
+```
+
+### Creating start vertex associations
 
 This is a potentially optional step, depending on whether it is necessary to
 allow for easier navigation from the particles back to their start vertices.
 
 ```cpp
-edm4hep::RecoParticleVertexAssociationCollection(const edm4hep::VertexCollection& vertices) {
+edm4hep::RecoParticleVertexAssociationCollection 
+createStartVtxAssociations(const edm4hep::VertexCollection& vertices) {
   auto startVtxAssocs = edm4hep::RecoParticleVertexAssociationCollection{};
   for (const auto vtx : vertices) {
     for (const auto particle : vtx.getParticles()) {
@@ -145,7 +172,6 @@ edm4hep::RecoParticleVertexAssociationCollection(const edm4hep::VertexCollection
   return startVtxAssocs;
 }
 ```
-
 
 ## EDM4hep vs LCIO
 
@@ -171,8 +197,83 @@ information in the EDM4hep mutability model without either
   reconstruction in one step
 - or cloning collections of objects several times in order to be able to fill
   all the information consistently
+  
+In many cases the `Vertex` and `ReconstructedParticle` collection containing the
+high level particle are created in one step in LCIO to circumvent parts of these
+limitations.
 
 ### In LCIO I do this, how do I do it in EDM4hep?
 
-- [ ] TODO
+#### Get the decay products from a `Vertex` 
 
+This case is rather similar between the two datamodels. There is effectively
+just one additional step involved for LCIO.
+
+<table>
+<tr>
+<th>LCIO</th><th>EDM4hep</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const auto& dps = vtx->getAssociatedParticle()->getParticles();
+```
+
+`dps` will be a `std::vector<EVENT::ReconstructedParticle*>`.
+
+</td>
+<td>
+
+```cpp
+const auto dps = vtx.getParticles();
+```
+
+`dps` will be a `podio::RelationRange<edm4hep::ReconstructeParticle>`.
+
+</td>
+</tr>
+</table>
+
+#### Get the particle associated to a `Vertex`
+
+In this case there is a conceptual difference that requires to switch approaches
+a bit. The example below assumes that you are looping over all vertices to
+figure out the associated `ReconstructedParticle`. The main difference in this
+case is that in EDM4hep the iteration does not go over a `Vertex` collection,
+but rather a `RecoParticleVertexAssociation` collection.
+
+<table>
+<tr>
+<th>LCIO</th><th>EDM4hep</th>
+</tr>
+<tr>
+<td>
+
+```cpp
+const auto vtxColl = event->getCollection("vertices");
+
+for (size_t i = 0; i < vtxColl->getNumberOfElements(); ++i) {
+  const auto vtx = dynamic_cast<EVENT::Vertex*>(vtxColl->getElementAt(i));
+  const auto reco = vtx->getAssociatedParticle();
+  // .. do something with reco and vtx
+}
+```
+
+</td>
+<td>
+
+```cpp
+const auto& assocColl =
+  event.get<edm4hep::RecoParticleVertexAssociationCollection>("vtx_particle_associations");
+
+for (const auto assoc : assocColl) {
+  const auto vtx = assoc.getVertex();
+  const auto reco = assoc.getRec();
+  // .. do something with reco and vtx
+}
+```
+
+</td>
+</tr>
+</table>
