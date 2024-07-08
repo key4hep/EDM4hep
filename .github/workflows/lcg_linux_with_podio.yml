@@ -9,11 +9,10 @@ jobs:
       fail-fast: false
       matrix:
         LCG: ["dev3/x86_64-el9-clang16-opt",
-              "dev4/x86_64-el9-clang16-opt"]
+              "dev4/x86_64-el9-clang16-opt",
+              "dev4/x86_64-el9-gcc13-opt"]
         CXX_STANDARD: [20]
         include:
-          - LCG: "dev4/x86_64-centos7-gcc11-opt"
-            CXX_STANDARD: 17
           - LCG: "LCG_104/x86_64-centos8-gcc11-opt"
             CXX_STANDARD: 17
           - LCG: "dev4/x86_64-ubuntu2004-gcc9-opt"
