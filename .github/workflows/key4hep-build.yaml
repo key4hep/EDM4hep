@@ -12,6 +12,9 @@ on:
   schedule:
         - cron: '16 5 * * *'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
