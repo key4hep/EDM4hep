@@ -3,13 +3,13 @@ import sys
 
 from .__version__ import __version__
 import ROOT
-res = ROOT.gSystem.Load('libedm4hepDict.so')
+res = ROOT.gSystem.Load('libedm4hepDict')
 if res < 0:
-    raise RuntimeError('Failed to load libedm4hepDict.so')
+    raise RuntimeError('Failed to load libedm4hepDict')
 
-res = ROOT.gSystem.Load('libedm4hepRDF.so')
+res = ROOT.gSystem.Load('libedm4hepRDF')
 if res < 0:
-    raise RuntimeError('Failed to load libedm4hepRDF.so')
+    raise RuntimeError('Failed to load libedm4hepRDF')
 
 res = ROOT.gInterpreter.LoadFile('edm4hep/utils/kinematics.h')
 if res != 0:
