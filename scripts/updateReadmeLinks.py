@@ -46,5 +46,5 @@ else:
       readme.write(new_readme_content)
     print("README.md links updated.")
   else:
-    print("README.md links should be updated. (Use the scripts/updateReadmeLinks.py script)")
+    print("README.md links should be updated. (Run ./scripts/updateReadmeLinks.py to fix them)")
     sys.exit(1)
