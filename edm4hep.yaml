@@ -628,7 +628,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setRec(const edm4hep::ReconstructedParticle& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::MCParticle& sim);\n
       "
       implementation: "
@@ -651,7 +651,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setRec(const edm4hep::CalorimeterHit& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::SimCalorimeterHit& sim);\n
       "
       implementation: "
@@ -675,7 +675,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setRec(const edm4hep::TrackerHit& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::SimTrackerHit& sim);\n
       "
       implementation: "
@@ -698,7 +698,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setRec(const edm4hep::CalorimeterHit& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::MCParticle& sim);\n
       "
       implementation: "
@@ -721,7 +721,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void inline setRec(const edm4hep::Cluster& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void inline setSim(const edm4hep::MCParticle& sim);\n
       "
       implementation: "
@@ -744,7 +744,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setRec(const edm4hep::Track& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::MCParticle& sim);\n
       "
       implementation: "
@@ -774,7 +774,7 @@ datatypes:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
       void setVertex(const edm4hep::Vertex& rec);\n
-      [[deprecated(\"use setSim instead\")]]\n
+      [[deprecated(\"use setTo instead\")]]\n
       void setRec(const edm4hep::ReconstructedParticle& sim);\n
       "
       implementation: "
