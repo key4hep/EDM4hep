@@ -622,21 +622,18 @@ datatypes:
      - edm4hep::ReconstructedParticle  from  // reference to the reconstructed particle
      - edm4hep::MCParticle to              // reference to the Monte-Carlo particle
     ExtraCode:
-      includes: "
-      #include <edm4hep/ReconstructedParticle.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/ReconstructedParticle.h>\n
-      #include <edm4hep/MCParticle.h>\n"
-
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::ReconstructedParticle& rec) {setFrom(rec);}\n
+      void setRec(const edm4hep::ReconstructedParticle& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setSim(const edm4hep::MCParticle& sim) {setTo(sim);}\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setFrom(rec); }\n
       "
 
   edm4hep::MCRecoCaloAssociation:
@@ -648,20 +645,18 @@ datatypes:
      - edm4hep::CalorimeterHit from     // reference to the reconstructed hit
      - edm4hep::SimCalorimeterHit to  // reference to the simulated hit
     ExtraCode:
-      includes: "
-      #include <edm4hep/CalorimeterHit.h>\n
-      #include <edm4hep/SimCalorimeterHit.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/CalorimeterHit.h>\n
-      #include <edm4hep/SimCalorimeterHit.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::CalorimeterHit& rec) {setFrom(rec);}\n
+      void setRec(const edm4hep::CalorimeterHit& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setSim(const edm4hep::SimCalorimeterHit& sim) {setTo(sim);}\n
+      void setSim(const edm4hep::SimCalorimeterHit& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::SimCalorimeterHit& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
       "
 
 
@@ -674,20 +669,18 @@ datatypes:
      - edm4hep::TrackerHit from    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit to // reference to the simulated hit
     ExtraCode:
-      includes: "
-        #include <edm4hep/TrackerHit.h>\n
-        #include <edm4hep/SimTrackerHit.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-        #include <edm4hep/TrackerHit.h>\n
-        #include <edm4hep/SimTrackerHit.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::TrackerHit& rec) {setFrom(rec);}\n
+      void setRec(const edm4hep::TrackerHit& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setSim(const edm4hep::SimTrackerHit& sim) {setTo(sim);}\n
+      void setSim(const edm4hep::SimTrackerHit& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::SimTrackerHit& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::TrackerHit& rec) { setFrom(rec); }\n
       "
 
   edm4hep::MCRecoCaloParticleAssociation:
@@ -699,20 +692,18 @@ datatypes:
      - edm4hep::CalorimeterHit from  // reference to the reconstructed hit
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      includes: "
-      #include <edm4hep/CalorimeterHit.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/CalorimeterHit.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::CalorimeterHit& rec) {setFrom(rec);}\n
+      void setRec(const edm4hep::CalorimeterHit& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setSim(const edm4hep::MCParticle& sim) {setTo(sim);}\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
       "
 
   edm4hep::MCRecoClusterParticleAssociation:
@@ -724,20 +715,18 @@ datatypes:
      - edm4hep::Cluster from         // reference to the cluster
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      includes: "
-      #include <edm4hep/Cluster.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/Cluster.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void inline setRec(const edm4hep::Cluster& rec) {setFrom(rec);}\n
+      void inline setRec(const edm4hep::Cluster& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void inline setSim(const edm4hep::MCParticle& sim) {setTo(sim);}\n
+      void inline setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::Cluster& rec) { setFrom(rec); }\n
       "
 
   edm4hep::MCRecoTrackParticleAssociation:
@@ -749,20 +738,18 @@ datatypes:
      - edm4hep::Track   from         // reference to the track
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      includes: "
-      #include <edm4hep/Track.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
       implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/Cluster.h>\n
-      #include <edm4hep/MCParticle.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::Track& rec) {setFrom(rec);}\n
+      void setRec(const edm4hep::Track& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setSim(const edm4hep::MCParticle& sim) {setTo(sim);}\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::Track& rec) { setFrom(rec); }\n
       "
 
   edm4hep::RecoParticleVertexAssociation:
@@ -774,24 +761,25 @@ datatypes:
      - edm4hep::ReconstructedParticle to // reference to the reconstructed particle
      - edm4hep::Vertex from             // reference to the vertex
     ExtraCode:
-      includes: "
-      #include <edm4hep/ReconstructedParticle.h>\n
-      #include <edm4hep/Vertex.h>\n"
       declaration: "
       [[deprecated(\"use getTo instead\")]]\n
-      auto getRec() const { return getTo(); }\n
+      auto getRec() const;\n
       [[deprecated(\"use getFrom instead\")]]\n
-      auto getVertex() const { return getFrom(); }\n
+      auto getVertex()const ;\n
       "
+      implementation: "
+      auto {name}::getRec() const { return getTo(); }\n
+      auto {name}::getVertex() const { return getFrom(); }\n"
     MutableExtraCode:
-      includes: "
-      #include <edm4hep/ReconstructedParticle.h>\n
-      #include <edm4hep/Vertex.h>\n"
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setVertex(const edm4hep::Vertex& rec) {setFrom(rec);}\n
+      void setVertex(const edm4hep::Vertex& rec);\n
       [[deprecated(\"use setSim instead\")]]\n
-      void setRec(const edm4hep::ReconstructedParticle& sim) {setTo(sim);}\n
+      void setRec(const edm4hep::ReconstructedParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setVertex(const edm4hep::Vertex& vertex) { setFrom(vertex); }\n
+      void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
       "
 
  #----------  TimeSeries
