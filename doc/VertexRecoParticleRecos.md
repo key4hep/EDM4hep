@@ -56,7 +56,7 @@ const auto decayParticles = vtx.getParticles();
 This is a small helper function that encapsulates the main functionality
 
 ```cpp
-std::optional<edm4hep::Vertex> getStartVertex(edm4hep::ReconstructedParticle p, 
+std::optional<edm4hep::Vertex> getStartVertex(edm4hep::ReconstructedParticle p,
                                               const edm4hep::RecoParticleVertexAssociationCollection& assocs) {
   for (const auto assoc : assocs) {
     if (assoc.getRec() == rec) {
@@ -148,7 +148,7 @@ createVtxParticleAssociations(const edm4hep::ReconstructedParticleCollection& pa
     assoc.setRec(p);
     assoc.setVertex(p.getDecayVertex());
   }
-  
+
   return vtxPartAssocs;
 }
 ```
@@ -159,7 +159,7 @@ This is a potentially optional step, depending on whether it is necessary to
 allow for easier navigation from the particles back to their start vertices.
 
 ```cpp
-edm4hep::RecoParticleVertexAssociationCollection 
+edm4hep::RecoParticleVertexAssociationCollection
 createStartVtxAssociations(const edm4hep::VertexCollection& vertices) {
   auto startVtxAssocs = edm4hep::RecoParticleVertexAssociationCollection{};
   for (const auto vtx : vertices) {
@@ -197,14 +197,14 @@ information in the EDM4hep mutability model without either
   reconstruction in one step
 - or cloning collections of objects several times in order to be able to fill
   all the information consistently
-  
+
 In many cases the `Vertex` and `ReconstructedParticle` collection containing the
 high level particle are created in one step in LCIO to circumvent parts of these
 limitations.
 
 ### In LCIO I do this, how do I do it in EDM4hep?
 
-#### Get the decay products from a `Vertex` 
+#### Get the decay products from a `Vertex`
 
 This case is rather similar between the two datamodels. There is effectively
 just one additional step involved for LCIO.
