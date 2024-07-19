@@ -541,8 +541,8 @@ datatypes:
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
-    OneToOneRelations:
-      - edm4hep::ReconstructedParticle associatedParticle // reconstructed particle associated to this vertex
+    OneToManyRelations:
+      - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>\n
                  #include <edm4hep/utils/bit_utils.h>\n"
@@ -588,7 +588,7 @@ datatypes:
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
       - edm4hep::CovMatrix4f   covMatrix      // covariance matrix of the reconstructed particle 4vector
     OneToOneRelations:
-      - edm4hep::Vertex          startVertex    // start vertex associated to this particle
+      - edm4hep::Vertex          decayVertex    // decay vertex for the particle (if it is a composite particle)
     OneToManyRelations:
       - edm4hep::Cluster               clusters     // clusters that have been used for this particle
       - edm4hep::Track                 tracks       // tracks that have been used for this particle
