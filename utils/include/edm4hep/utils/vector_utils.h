@@ -1,12 +1,6 @@
 #ifndef EDM4HEP_UTILS_VECTOR_HH
 #define EDM4HEP_UTILS_VECTOR_HH
 
-// These ultilies require concepts. If not available, use the fallback
-// vector_utils_legacy.h instead to capture most functionality.
-#if !__cpp_concepts
-#include <edm4hep/utils/vector_utils_legacy.h>
-#else
-
 #include <edm4hep/Vector3f.h>
 
 #include <cmath>
@@ -326,5 +320,4 @@ inline constexpr V operator/(const V& v, const double d) {
 
 } // namespace edm4hep
 
-#endif
 #endif

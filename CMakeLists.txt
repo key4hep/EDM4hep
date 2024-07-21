@@ -38,9 +38,9 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # - Define the C++ Standard to use (Simplest Possible)
-set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "")
 
-if(NOT CMAKE_CXX_STANDARD MATCHES "17|20")
+if(NOT CMAKE_CXX_STANDARD MATCHES "20|23")
   message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}")
 endif()
 
