@@ -352,10 +352,22 @@ for i in range(frames):
 
     gpi_coll = edm4hep.GeneratorPdfInfoCollection()
     gpi = gpi_coll.create()
-    gpi.setPartonId([next(counter), next(counter)])
-    gpi.setLhapdfId([next(counter), next(counter)])
-    gpi.setX([next(counter), next(counter)])
-    gpi.setXf([next(counter), next(counter)])
+    # Doesn't work with ROOT 6.30.06
+    # gpi.setPartonId([next(counter), next(counter)])
+    gpi.setPartonId(0, next(counter))
+    gpi.setPartonId(1, next(counter))
+    # Doesn't work with ROOT 6.30.06
+    # gpi.setLhapdfId([next(counter), next(counter)])
+    gpi.setLhapdfId(0, next(counter))
+    gpi.setLhapdfId(1, next(counter))
+    # Doesn't work with ROOT 6.30.06
+    # gpi.setX([next(counter), next(counter)])
+    gpi.setX(0, next(counter))
+    gpi.setX(1, next(counter))
+    # Doesn't work with ROOT 6.30.06
+    # gpi.setXf([next(counter), next(counter)])
+    gpi.setXf(0, next(counter))
+    gpi.setXf(1, next(counter))
     gpi.setScale(next(counter))
 
     writer.write_frame(frame, "events")
