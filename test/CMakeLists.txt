@@ -12,6 +12,9 @@ function(set_test_env _testname)
     )
 endfunction()
 
+add_test(NAME "Create an EDM4hep data file" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py)
+set_test_env("Create an EDM4hep data file")
+
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
 target_link_libraries(write_events edm4hep podio::podioRootIO)

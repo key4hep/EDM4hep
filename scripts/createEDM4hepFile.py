@@ -7,7 +7,7 @@ from itertools import count
 import argparse
 import sys
 
-frames = 10  # How many frames or events will be written
+frames = 3  # How many frames or events will be written
 vectorsize = 5  # For vector members, each vector member will have this size
 counter = count()  # next(counter) will return 0, 1, 2, ...
 # used to generate the dummy data
@@ -25,9 +25,8 @@ if args.rntuple:
     except AttributeError:
         print("The RNTuple writer from podio is not available but was requested")
         sys.exit(1)
-
-
-writer = podio.root_io.Writer(output_file)
+else:
+    writer = podio.root_io.Writer(output_file)
 
 for i in range(frames):
     print(f"Writing frame {i}")
