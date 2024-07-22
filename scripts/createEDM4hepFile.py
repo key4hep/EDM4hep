@@ -15,9 +15,6 @@ output_file = "output.root"
 
 parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
 parser.add_argument(
-    "--use-pre1", action="store_true", help="Use a pre 1.0 version of EDM4hep"
-)
-parser.add_argument(
     "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
 )
 args = parser.parse_args()
@@ -42,78 +39,39 @@ for i in range(frames):
     h.setRunNumber(next(counter))
     h.setTimeStamp(next(counter))
     h.setWeight(1.0)
-    if not args.use_pre1:
-        for j in range(vectorsize):
-            h.addToWeights(next(counter))
+    for j in range(vectorsize):
+        h.addToWeights(next(counter))
     frame.put(header, "EventHeader")
 
     particles = edm4hep.MCParticleCollection()
-    parent_particle = particles.create()
-    parent_particle.setPDG(next(counter))
-    parent_particle.setGeneratorStatus(next(counter))
-    parent_particle.setSimulatorStatus(next(counter))
-    parent_particle.setCharge(next(counter))
-    parent_particle.setTime(next(counter))
-    parent_particle.setMass(next(counter))
-    parent_particle.setVertex(
-        edm4hep.Vector3d(next(counter), next(counter), next(counter))
-    )
-    parent_particle.setEndpoint(
-        edm4hep.Vector3d(next(counter), next(counter), next(counter))
-    )
-    if not args.use_pre1:
-        parent_particle.setMomentum(
+    for i in range(3):
+        particle = particles.create()
+        particle.setPDG(next(counter))
+        particle.setGeneratorStatus(next(counter))
+        particle.setSimulatorStatus(next(counter))
+        particle.setCharge(next(counter))
+        particle.setTime(next(counter))
+        particle.setMass(next(counter))
+        particle.setVertex(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
-        parent_particle.setMomentumAtEndpoint(
+        particle.setEndpoint(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
-    else:
-        parent_particle.setMomentum(
+        particle.setMomentum(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
+        particle.setMomentumAtEndpoint(
+            edm4hep.Vector3d(next(counter), next(counter), next(counter))
+        )
+        particle.setSpin(
             edm4hep.Vector3f(next(counter), next(counter), next(counter))
         )
-        parent_particle.setMomentumAtEndpoint(
-            edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        )
-    parent_particle.setSpin(
-        edm4hep.Vector3f(next(counter), next(counter), next(counter))
-    )
-    parent_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
+        particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
-    daughter_particle = particles.create()
-    daughter_particle.setPDG(next(counter))
-    daughter_particle.setGeneratorStatus(next(counter))
-    daughter_particle.setSimulatorStatus(next(counter))
-    daughter_particle.setCharge(next(counter))
-    daughter_particle.setTime(next(counter))
-    daughter_particle.setMass(next(counter))
-    daughter_particle.setVertex(
-        edm4hep.Vector3d(next(counter), next(counter), next(counter))
-    )
-    daughter_particle.setEndpoint(
-        edm4hep.Vector3d(next(counter), next(counter), next(counter))
-    )
-    if not args.use_pre1:
-        daughter_particle.setMomentum(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
-        daughter_particle.setMomentumAtEndpoint(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
-    else:
-        daughter_particle.setMomentum(
-            edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        )
-        daughter_particle.setMomentumAtEndpoint(
-            edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        )
-    daughter_particle.setSpin(
-        edm4hep.Vector3f(next(counter), next(counter), next(counter))
-    )
-    daughter_particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
-
-    parent_particle.addToDaughters(daughter_particle)
-    daughter_particle.addToParents(parent_particle)
+    particles[0].addToDaughters(particles[1])
+    particles[0].addToParents(particles[2])
+    particle = particles[0]
     frame.put(particles, "MCParticleCollection")
 
     hits = edm4hep.SimTrackerHitCollection()
@@ -125,7 +83,7 @@ for i in range(frames):
     hit.setQuality(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(daughter_particle)
+    hit.setParticle(particle)
     simtracker_hit = hit
     frame.put(hits, "SimTrackerHitCollection")
 
@@ -135,7 +93,7 @@ for i in range(frames):
     hit.setEnergy(next(counter))
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.setParticle(daughter_particle)
+    hit.setParticle(particle)
     calohit = hit
     frame.put(hits, "CaloHitContributionCollection")
 
@@ -191,18 +149,12 @@ for i in range(frames):
     )
     for j in range(vectorsize):
         cluster.addToShapeParameters(next(counter))
-    for j in range(vectorsize):
         cluster.addToSubdetectorEnergies(next(counter))
     cluster.addToClusters(cluster)
     cluster.addToHits(calo_hit)
-    if args.use_pre1:
-        cluster.addToParticleIDs(pid)
     frame.put(clusters, "ClusterCollection")
 
-    if args.use_pre1:
-        hits = edm4hep.TrackerHitCollection()
-    else:
-        hits = edm4hep.TrackerHit3DCollection()
+    hits = edm4hep.TrackerHit3DCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
     hit.setType(next(counter))
@@ -212,12 +164,6 @@ for i in range(frames):
     hit.setEDepError(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setCovMatrix([next(counter) for _ in range(6)])
-    if args.use_pre1:
-        for j in range(vectorsize):
-            oid = edm4hep.ObjectID()
-            oid.index = next(counter)
-            oid.collectionID = next(counter)
-            hit.addToRawHits(oid)
     tracker_hit = hit
     frame.put(hits, "TrackerHit3DCollection")
 
@@ -235,12 +181,6 @@ for i in range(frames):
     hit.setDv(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setCovMatrix([next(counter) for _ in range(6)])
-    if args.use_pre1:
-        for j in range(vectorsize):
-            oid = edm4hep.ObjectID()
-            oid.index = next(counter)
-            oid.collectionID = next(counter)
-            hit.addToRawHits(oid)
     frame.put(hits, "TrackerHitPlaneCollection")
 
     series = edm4hep.RawTimeSeriesCollection()
@@ -259,12 +199,8 @@ for i in range(frames):
     track.setType(next(counter))
     track.setChi2(next(counter))
     track.setNdf(next(counter))
-    track.setDEdx(next(counter))
-    track.setDEdxError(next(counter))
-    track.setRadiusOfInnermostHit(next(counter))
     for j in range(vectorsize):
         track.addToSubdetectorHitNumbers(next(counter))
-    for j in range(vectorsize):
         state = edm4hep.TrackState()
         state.location = next(counter)
         state.d0 = next(counter)
@@ -284,9 +220,9 @@ for i in range(frames):
 
     vertex = edm4hep.VertexCollection()
     v = vertex.create()
-    v.setPrimary(next(counter))
+    v.setType(next(counter))
     v.setChi2(next(counter))
-    v.setProbability(next(counter))
+    v.setNdf(next(counter))
     v.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     v.setCovMatrix([next(counter) for _ in range(6)])
     v.setAlgorithmType(next(counter))
@@ -294,33 +230,27 @@ for i in range(frames):
         v.addToParameters(next(counter))
     frame.put(vertex, "VertexCollection")
 
-    particles = edm4hep.ReconstructedParticleCollection()
-    particle = particles.create()
-    if args.use_pre1:
-        particle.setType(next(counter))
-    else:
-        particle.setPDG(next(counter))
-    particle.setEnergy(next(counter))
-    particle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    particle.setReferencePoint(
+    rparticles = edm4hep.ReconstructedParticleCollection()
+    rparticle = rparticles.create()
+    rparticle.setPDG(next(counter))
+    rparticle.setEnergy(next(counter))
+    rparticle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    rparticle.setReferencePoint(
         edm4hep.Vector3f(next(counter), next(counter), next(counter))
     )
-    particle.setCharge(next(counter))
-    particle.setMass(next(counter))
-    particle.setGoodnessOfPID(next(counter))
-    particle.setCovMatrix([next(counter) for _ in range(10)])
-    particle.setStartVertex(v)
-    if args.use_pre1:
-        particle.setParticleIDUsed(pid)
-    particle.addToClusters(cluster)
-    particle.addToTracks(track)
-    particle.addToParticles(particle)
-    if args.use_pre1:
-        particle.addToParticleIDs(pid)
-    reco_particle = particle
-    frame.put(particles, "ReconstructedParticleCollection")
+    rparticle.setCharge(next(counter))
+    rparticle.setMass(next(counter))
+    rparticle.setGoodnessOfPID(next(counter))
+    rparticle.setCovMatrix([next(counter) for _ in range(10)])
+    rparticle.setDecayVertex(v)
+    rparticle.addToClusters(cluster)
+    rparticle.addToTracks(track)
+    rparticle.addToParticles(rparticle)
+    reco_particle = rparticle
+    frame.put(rparticles, "ReconstructedParticleCollection")
 
-    v.setAssociatedParticle(reco_particle)
+    v.addToParticles(reco_particle)
+    pid.setParticle(reco_particle)
 
     # TODO: Add when the PID PR is merged
     # if not args.use_pre1:
@@ -330,7 +260,7 @@ for i in range(frames):
     assoc = assocs.create()
     assoc.setWeight(next(counter))
     assoc.setRec(reco_particle)
-    assoc.setSim(daughter_particle)
+    assoc.setSim(particle)
     frame.put(assocs, "MCRecoParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoCaloAssociationCollection()
@@ -351,21 +281,21 @@ for i in range(frames):
     assoc = assocs.create()
     assoc.setWeight(next(counter))
     assoc.setRec(calo_hit)
-    assoc.setSim(daughter_particle)
+    assoc.setSim(particle)
     frame.put(assocs, "MCRecoCaloParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoClusterParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
     assoc.setRec(cluster)
-    assoc.setSim(daughter_particle)
+    assoc.setSim(particle)
     frame.put(assocs, "MCRecoClusterParticleAssociationCollection")
 
     assocs = edm4hep.MCRecoTrackParticleAssociationCollection()
     assoc = assocs.create()
     assoc.setWeight(next(counter))
     assoc.setRec(track)
-    assoc.setSim(daughter_particle)
+    assoc.setSim(particle)
     frame.put(assocs, "MCRecoTrackParticleAssociationCollection")
 
     assocs = edm4hep.RecoParticleVertexAssociationCollection()
@@ -374,23 +304,6 @@ for i in range(frames):
     assoc.setRec(reco_particle)
     assoc.setVertex(v)
     frame.put(assocs, "MCRecoParticleVertexAssociationCollection")
-
-    simiocluster = edm4hep.SimPrimaryIonizationClusterCollection()
-    cluster = simiocluster.create()
-    cluster.setCellID(next(counter))
-    cluster.setTime(next(counter))
-    cluster.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    cluster.setType(next(counter))
-    for j in range(vectorsize):
-        cluster.addToElectronCellID(next(counter))
-        cluster.addToElectronTime(next(counter))
-        cluster.addToElectronPosition(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
-        cluster.addToPulseTime(next(counter))
-        cluster.addToPulseAmplitude(next(counter))
-    cluster.setParticle(daughter_particle)
-    frame.put(simiocluster, "SimPrimaryIonizationClusterCollection")
 
     timeseries = edm4hep.TimeSeriesCollection()
     serie = timeseries.create()
@@ -401,42 +314,35 @@ for i in range(frames):
         serie.addToAmplitude(next(counter))
     frame.put(timeseries, "TimeSeriesCollection")
 
-    trackerpulse = edm4hep.TrackerPulseCollection()
-    pulse = trackerpulse.create()
-    pulse.setCellID(next(counter))
-    pulse.setTime(next(counter))
-    pulse.setCharge(next(counter))
-    pulse.setQuality(next(counter))
-    pulse.setCovMatrix([next(counter) for _ in range(3)])
-    pulse.setTimeSeries(serie)
-    frame.put(trackerpulse, "TrackerPulseCollection")
-
-    recioncluster = edm4hep.RecIonizationClusterCollection()
-    cluster = recioncluster.create()
-    cluster.setCellID(next(counter))
-    cluster.setSignificance(next(counter))
-    cluster.setType(next(counter))
-    cluster.addToTrackerPulse(pulse)
-    frame.put(recioncluster, "RecIonizationClusterCollection")
-
     recdqdx = edm4hep.RecDqdxCollection()
     dqdx = recdqdx.create()
-    dqdx.setParticleType(next(counter))
-    dqdx.setType(next(counter))
-    for j in range(5):
-        h = edm4hep.Hypothesis()
-        h.chi2 = next(counter)
-        h.expected = next(counter)
-        h.sigma = next(counter)
-        dqdx.setHypotheses(j, h)
-    for j in range(vectorsize):
-        hd = edm4hep.HitLevelData()
-        hd.cellID = next(counter)
-        hd.N = next(counter)
-        hd.eDep = next(counter)
-        hd.pathLength = next(counter)
-        dqdx.addToHitData(hd)
+    q = edm4hep.Quantity()
+    q.type = next(counter)
+    q.value = next(counter)
+    q.error = next(counter)
+    dqdx.setDQdx(q)
     dqdx.setTrack(track)
     frame.put(recdqdx, "RecDqdxCollection")
+
+    gep_coll = edm4hep.GeneratorEventParametersCollection()
+    gep = gep_coll.create()
+    gep.setEventScale(next(counter))
+    gep.setAlphaQED(next(counter))
+    gep.setAlphaQCD(next(counter))
+    gep.setSignalProcessId(next(counter))
+    gep.setSqrts(next(counter))
+
+    for i in range(vectorsize):
+        gep.addToCrossSections(next(counter))
+        gep.addToCrossSectionErrors(next(counter))
+    gep.addToSignalVertex(particle)
+
+    gpi_coll = edm4hep.GeneratorPdfInfoCollection()
+    gpi = gpi_coll.create()
+    gpi.setPartonId([next(counter), next(counter)])
+    gpi.setLhapdfId([next(counter), next(counter)])
+    gpi.setX([next(counter), next(counter)])
+    gpi.setXf([next(counter), next(counter)])
+    gpi.setScale(next(counter))
 
     writer.write_frame(frame, "events")
