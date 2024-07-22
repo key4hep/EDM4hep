@@ -32,6 +32,21 @@ for i in range(frames):
     print(f"Writing frame {i}")
     frame = podio.Frame()
 
+    # Make covariance matrices needed later
+
+    # With the current version of cppyy (from ROOT 6.30.06)
+    # it's not possible to initialize an std::array from a list
+    # In future versions (works with 6.32.02) it will be possible
+    cov3f = edm4hep.CovMatrix3f()
+    for i in range(6):
+        cov3f[i] = next(counter)
+    cov4f = edm4hep.CovMatrix4f()
+    for i in range(10):
+        cov4f[i] = next(counter)
+    cov6f = edm4hep.CovMatrix6f()
+    for i in range(21):
+        cov6f[i] = next(counter)
+
     header = edm4hep.EventHeaderCollection()
     h = header.create()
     h.setEventNumber(next(counter))
@@ -139,8 +154,7 @@ for i in range(frames):
     cluster.setEnergy(next(counter))
     cluster.setEnergyError(next(counter))
     cluster.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    for j in range(6):
-        cluster.setPositionError([next(counter) for _ in range(6)])
+    cluster.setPositionError(cov3f)
     cluster.setITheta(next(counter))
     cluster.setPhi(next(counter))
     cluster.setDirectionError(
@@ -162,7 +176,7 @@ for i in range(frames):
     hit.setEDep(next(counter))
     hit.setEDepError(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    hit.setCovMatrix([next(counter) for _ in range(6)])
+    hit.setCovMatrix(cov3f)
     tracker_hit = hit
     frame.put(hits, "TrackerHit3DCollection")
 
@@ -179,7 +193,7 @@ for i in range(frames):
     hit.setDu(next(counter))
     hit.setDv(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    hit.setCovMatrix([next(counter) for _ in range(6)])
+    hit.setCovMatrix(cov3f)
     frame.put(hits, "TrackerHitPlaneCollection")
 
     series = edm4hep.RawTimeSeriesCollection()
@@ -211,7 +225,7 @@ for i in range(frames):
         state.referencePoint = edm4hep.Vector3f(
             next(counter), next(counter), next(counter)
         )
-        state.CovMatrix = [next(counter) for _ in range(21)]
+        state.CovMatrix = cov6f
         track.addToTrackStates(state)
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
@@ -223,7 +237,7 @@ for i in range(frames):
     v.setChi2(next(counter))
     v.setNdf(next(counter))
     v.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    v.setCovMatrix([next(counter) for _ in range(6)])
+    v.setCovMatrix(cov3f)
     v.setAlgorithmType(next(counter))
     for j in range(vectorsize):
         v.addToParameters(next(counter))
@@ -240,7 +254,7 @@ for i in range(frames):
     rparticle.setCharge(next(counter))
     rparticle.setMass(next(counter))
     rparticle.setGoodnessOfPID(next(counter))
-    rparticle.setCovMatrix([next(counter) for _ in range(10)])
+    rparticle.setCovMatrix(cov4f)
     rparticle.setDecayVertex(v)
     rparticle.addToClusters(cluster)
     rparticle.addToTracks(track)
