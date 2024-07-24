@@ -12,7 +12,7 @@ if (nlohmann_json_FOUND)
   target_link_libraries(edm4hep2json PUBLIC ROOT::Core
                                             ROOT::Tree
                                             podio::podio
-                                            podio::podioRootIO
+                                            podio::podioIO
                                             edm4hep
                                             nlohmann_json::nlohmann_json)
 
