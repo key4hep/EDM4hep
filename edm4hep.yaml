@@ -613,17 +613,17 @@ datatypes:
       void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  edm4hep::MCRecoParticleAssociation:
-    Description: "Association between a ReconstructedParticle and the corresponding MCParticle"
+  edm4hep::MCRecoParticleLink:
+    Description: "Link between a ReconstructedParticle and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                        // weight of this association
+      - float weight                        // weight of this link
     OneToOneRelations:
      - edm4hep::ReconstructedParticle  from  // reference to the reconstructed particle
      - edm4hep::MCParticle to              // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -636,17 +636,17 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoCaloAssociation:
-    Description: "Association between a CalorimeterHit and the corresponding SimCalorimeterHit"
+  edm4hep::MCRecoCaloLink:
+    Description: "Link between a CalorimeterHit and the corresponding SimCalorimeterHit"
     Author: "EDM4hep authors"
     Members:
-      - float weight                    // weight of this association
+      - float weight                    // weight of this link
     OneToOneRelations:
      - edm4hep::CalorimeterHit from     // reference to the reconstructed hit
      - edm4hep::SimCalorimeterHit to  // reference to the simulated hit
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -660,17 +660,17 @@ datatypes:
       "
 
 
-  edm4hep::MCRecoTrackerAssociation:
-    Description: "Association between a TrackerHit and the corresponding SimTrackerHit"
+  edm4hep::MCRecoTrackerLink:
+    Description: "Link between a TrackerHit and the corresponding SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
-      - float weight              // weight of this association
+      - float weight              // weight of this link
     OneToOneRelations:
      - edm4hep::TrackerHit from    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit to // reference to the simulated hit
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -683,17 +683,17 @@ datatypes:
       void {name}::setRec(const edm4hep::TrackerHit& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoCaloParticleAssociation:
-    Description: "Association between a CalorimeterHit and the corresponding MCParticle"
+  edm4hep::MCRecoCaloParticleLink:
+    Description: "Link between a CalorimeterHit and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
      - edm4hep::CalorimeterHit from  // reference to the reconstructed hit
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -706,17 +706,17 @@ datatypes:
       void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoClusterParticleAssociation:
-    Description: "Association between a Cluster and the corresponding MCParticle"
+  edm4hep::MCRecoClusterParticleLink:
+    Description: "Link between a Cluster and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
      - edm4hep::Cluster from         // reference to the cluster
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -729,17 +729,17 @@ datatypes:
       void {name}::setRec(const edm4hep::Cluster& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoTrackParticleAssociation:
-    Description: "Association between a Track and the corresponding MCParticle"
+  edm4hep::MCRecoTrackParticleLink:
+    Description: "Link between a Track and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
      - edm4hep::Track   from         // reference to the track
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/AssociationGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/AssociationGetters.cc.ipp"
+      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
+      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -752,11 +752,11 @@ datatypes:
       void {name}::setRec(const edm4hep::Track& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::RecoParticleVertexAssociation:
-    Description: "Association between a ReconstructedParticle and a Vertex"
+  edm4hep::RecoParticleVertexLink:
+    Description: "Link between a ReconstructedParticle and a Vertex"
     Author: "EDM4hep authors"
     Members:
-      - float weight                      // weight of this association
+      - float weight                      // weight of this link
     OneToOneRelations:
      - edm4hep::ReconstructedParticle to // reference to the reconstructed particle
      - edm4hep::Vertex from             // reference to the vertex
