@@ -613,7 +613,7 @@ datatypes:
       void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  edm4hep::MCRecoParticleLink:
+  edm4hep::RecoMCParticleLink:
     Description: "Link between a ReconstructedParticle and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
@@ -636,7 +636,7 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoCaloLink:
+  edm4hep::CaloHitSimCaloHitLink:
     Description: "Link between a CalorimeterHit and the corresponding SimCalorimeterHit"
     Author: "EDM4hep authors"
     Members:
@@ -660,7 +660,7 @@ datatypes:
       "
 
 
-  edm4hep::MCRecoTrackerLink:
+  edm4hep::TrackerHitSimTrackerHitLink:
     Description: "Link between a TrackerHit and the corresponding SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
@@ -683,7 +683,7 @@ datatypes:
       void {name}::setRec(const edm4hep::TrackerHit& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoCaloParticleLink:
+  edm4hep::CaloHitMCParticleLink:
     Description: "Link between a CalorimeterHit and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
@@ -706,7 +706,7 @@ datatypes:
       void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoClusterParticleLink:
+  edm4hep::ClusterMCParticleLink:
     Description: "Link between a Cluster and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
@@ -729,7 +729,7 @@ datatypes:
       void {name}::setRec(const edm4hep::Cluster& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::MCRecoTrackParticleLink:
+  edm4hep::TrackMCParticleLink:
     Description: "Link between a Track and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
@@ -752,8 +752,8 @@ datatypes:
       void {name}::setRec(const edm4hep::Track& rec) { setFrom(rec); }\n
       "
 
-  edm4hep::RecoParticleVertexLink:
-    Description: "Link between a ReconstructedParticle and a Vertex"
+  edm4hep::VertexRecoParticleLink:
+    Description: "Link between a Vertex and a ReconstructedParticle"
     Author: "EDM4hep authors"
     Members:
       - float weight                      // weight of this link
