@@ -740,9 +740,9 @@ datatypes:
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void inline setRec(const edm4hep::Cluster& rec);\n
+      void setRec(const edm4hep::Cluster& rec);\n
       [[deprecated(\"use setTo instead\")]]\n
-      void inline setSim(const edm4hep::MCParticle& sim);\n
+      void setSim(const edm4hep::MCParticle& sim);\n
       "
       implementation: "
       void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
