@@ -129,7 +129,9 @@ components:
         declaration: "
           constexpr CovMatrix2f() = default;\n
           template<typename... Vs>\n
-          constexpr CovMatrix2f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix2f(Vs... v) : values{static_cast<float>(v)...} {
+            static_assert(sizeof...(v) == 3, \"CovMatrix2f requires 3 values\");
+          }\n
           constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}\n
           constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
@@ -148,7 +150,9 @@ components:
           constexpr CovMatrix3f() = default;\n
           constexpr CovMatrix3f(const std::array<float, 6>& v) : values(v) {}\n
           template<typename... Vs>\n
-          constexpr CovMatrix3f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix3f(Vs... v) : values{static_cast<float>(v)...} {
+            static_assert(sizeof...(v) == 6, \"CovMatrix3f requires 6 values\");
+          }\n
           constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
           bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
@@ -164,7 +168,9 @@ components:
         declaration: "
           constexpr CovMatrix4f() = default;\n
           template<typename... Vs>\n
-          constexpr CovMatrix4f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix4f(Vs... v) : values{static_cast<float>(v)...} {
+            static_assert(sizeof...(v) == 10, \"CovMatrix4f requires 10 values\");
+          }\n
           constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}\n
           constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
@@ -182,7 +188,9 @@ components:
         declaration: "
           constexpr CovMatrix6f() = default;\n
           template<typename... Vs>\n
-          constexpr CovMatrix6f(Vs... v) : values{v...} {}\n
+          constexpr CovMatrix6f(Vs... v) : values{static_cast<float>(v)...} {
+            static_assert(sizeof...(v) == 21, \"CovMatrix6f requires 21 values\");
+          }\n
           constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}\n
           constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }\n
           bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
