@@ -622,8 +622,12 @@ datatypes:
      - edm4hep::ReconstructedParticle  from  // reference to the reconstructed particle
      - edm4hep::MCParticle to              // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::ReconstructedParticle getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::ReconstructedParticle {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -645,8 +649,12 @@ datatypes:
      - edm4hep::CalorimeterHit from     // reference to the reconstructed hit
      - edm4hep::SimCalorimeterHit to  // reference to the simulated hit
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::CalorimeterHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::SimCalorimeterHit getSim() const;\n"
+      implementation: "
+      edm4hep::CalorimeterHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SimCalorimeterHit {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -669,8 +677,12 @@ datatypes:
      - edm4hep::TrackerHit from    // reference to the reconstructed hit
      - edm4hep::SimTrackerHit to // reference to the simulated hit
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::TrackerHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::SimTrackerHit getSim() const;\n"
+      implementation: "
+      edm4hep::TrackerHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SimTrackerHit {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -692,8 +704,12 @@ datatypes:
      - edm4hep::CalorimeterHit from  // reference to the reconstructed hit
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::CalorimeterHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::CalorimeterHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -715,8 +731,12 @@ datatypes:
      - edm4hep::Cluster from         // reference to the cluster
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Cluster getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::Cluster {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -738,8 +758,12 @@ datatypes:
      - edm4hep::Track   from         // reference to the track
      - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
     ExtraCode:
-      declarationFile: "edm4hep/extra_code/LinkGetters.h.ipp"
-      implementationFile: "edm4hep/extra_code/LinkGetters.cc.ipp"
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Track getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::Track {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
@@ -762,14 +786,11 @@ datatypes:
      - edm4hep::Vertex from             // reference to the vertex
     ExtraCode:
       declaration: "
-      [[deprecated(\"use getTo instead\")]]\n
-      auto getRec() const;\n
-      [[deprecated(\"use getFrom instead\")]]\n
-      auto getVertex()const ;\n
-      "
+      [[deprecated(\"use getTo instead\")]] edm4hep::ReconstructedParticle getRec() const;\n
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Vertex getVertex() const;\n"
       implementation: "
-      auto {name}::getRec() const { return getTo(); }\n
-      auto {name}::getVertex() const { return getFrom(); }\n"
+      edm4hep::ReconstructedParticle {name}::getRec() const { return getTo(); }\n
+      edm4hep::Vertex {name}::getVertex() const { return getFrom(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
