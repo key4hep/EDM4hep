@@ -43,6 +43,7 @@ jobs:
           unset CPATH
           export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
           export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
+          export PYTHONPATH=$(pwd)/install/lib/python3$(python -c 'import sys; print(sys.version_info[1])')/site-packages:$PYTHONPATH
           echo "::endgroup::"
           echo "::group::Build edm4hep"
           cd $STARTDIR
