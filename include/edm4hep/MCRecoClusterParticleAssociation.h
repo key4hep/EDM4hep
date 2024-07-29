@@ -4,7 +4,8 @@
 #include "edm4hep/ClusterMCParticleLink.h"
 
 namespace edm4hep {
-using MCRecoClusterParticleAssociation [[deprecated("use ClusterMCParticleLink instead")]] = edm4hep::ClusterMCParticleLink;
+using MCRecoClusterParticleAssociation [[deprecated("use ClusterMCParticleLink instead")]] =
+    edm4hep::ClusterMCParticleLink;
 }
 
 #endif

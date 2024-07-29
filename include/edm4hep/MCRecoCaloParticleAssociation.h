@@ -4,7 +4,8 @@
 #include "edm4hep/CaloHitMCParticleLink.h"
 
 namespace edm4hep {
-using MCRecoCaloParticleAssociation [[deprecated("use CaloHitMCParticleLink instead")]] = edm4hep::CaloHitMCParticleLink;
+using MCRecoCaloParticleAssociation [[deprecated("use CaloHitMCParticleLink instead")]] =
+    edm4hep::CaloHitMCParticleLink;
 }
 
 #endif

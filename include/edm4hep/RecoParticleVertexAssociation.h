@@ -4,7 +4,8 @@
 #include "edm4hep/VertexRecoParticleLink.h"
 
 namespace edm4hep {
-using RecoParticleVertexAssociation [[deprecated("use VertexRecoParticleLink instead")]] = edm4hep::VertexRecoParticleLink;
+using RecoParticleVertexAssociation [[deprecated("use VertexRecoParticleLink instead")]] =
+    edm4hep::VertexRecoParticleLink;
 }
 
 #endif
