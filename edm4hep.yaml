@@ -521,8 +521,10 @@ datatypes:
       - int32_t type                         // flagword that defines the type of track
       - float chi2                       // Chi^2 of the track fit
       - int32_t ndf                          // number of degrees of freedom of the track fit
+      - int32_t Nholes                   // number of holes on track
     VectorMembers:
       - int32_t subdetectorHitNumbers        // number of hits in particular subdetectors
+      - int32_t subdetectorHoleNumbers       // number of holes in particular subdetectors
       - edm4hep::TrackState trackStates  // track states
     OneToManyRelations:
       - edm4hep::TrackerHit trackerHits  // hits that have been used to create this track
