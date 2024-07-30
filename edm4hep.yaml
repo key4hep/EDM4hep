@@ -613,68 +613,195 @@ datatypes:
       void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  edm4hep::MCRecoParticleAssociation:
-    Description: "Association between a ReconstructedParticle and the corresponding MCParticle"
+  edm4hep::RecoMCParticleLink:
+    Description: "Link between a ReconstructedParticle and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                        // weight of this association
+      - float weight                        // weight of this link
     OneToOneRelations:
-     - edm4hep::ReconstructedParticle  rec  // reference to the reconstructed particle
-     - edm4hep::MCParticle sim              // reference to the Monte-Carlo particle
+     - edm4hep::ReconstructedParticle  from  // reference to the reconstructed particle
+     - edm4hep::MCParticle to              // reference to the Monte-Carlo particle
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::ReconstructedParticle getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::ReconstructedParticle {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::ReconstructedParticle& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setFrom(rec); }\n
+      "
 
-  edm4hep::MCRecoCaloAssociation:
-    Description: "Association between a CalorimeterHit and the corresponding SimCalorimeterHit"
+  edm4hep::CaloHitSimCaloHitLink:
+    Description: "Link between a CalorimeterHit and the corresponding SimCalorimeterHit"
     Author: "EDM4hep authors"
     Members:
-      - float weight                    // weight of this association
+      - float weight                    // weight of this link
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec     // reference to the reconstructed hit
-     - edm4hep::SimCalorimeterHit sim  // reference to the simulated hit
+     - edm4hep::CalorimeterHit from     // reference to the reconstructed hit
+     - edm4hep::SimCalorimeterHit to  // reference to the simulated hit
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::CalorimeterHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::SimCalorimeterHit getSim() const;\n"
+      implementation: "
+      edm4hep::CalorimeterHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SimCalorimeterHit {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::CalorimeterHit& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::SimCalorimeterHit& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::SimCalorimeterHit& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
+      "
 
-  edm4hep::MCRecoTrackerAssociation:
-    Description: "Association between a TrackerHit and the corresponding SimTrackerHit"
-    Author: "EDM4hep authors"
-    Members:
-      - float weight              // weight of this association
-    OneToOneRelations:
-     - edm4hep::TrackerHit rec    // reference to the reconstructed hit
-     - edm4hep::SimTrackerHit sim // reference to the simulated hit
 
-  edm4hep::MCRecoCaloParticleAssociation:
-    Description: "Association between a CalorimeterHit and the corresponding MCParticle"
+  edm4hep::TrackerHitSimTrackerHitLink:
+    Description: "Link between a TrackerHit and the corresponding SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight              // weight of this link
     OneToOneRelations:
-     - edm4hep::CalorimeterHit rec  // reference to the reconstructed hit
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::TrackerHit from    // reference to the reconstructed hit
+     - edm4hep::SimTrackerHit to // reference to the simulated hit
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::TrackerHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::SimTrackerHit getSim() const;\n"
+      implementation: "
+      edm4hep::TrackerHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SimTrackerHit {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::TrackerHit& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::SimTrackerHit& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::SimTrackerHit& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::TrackerHit& rec) { setFrom(rec); }\n
+      "
 
-  edm4hep::MCRecoClusterParticleAssociation:
-    Description: "Association between a Cluster and the corresponding MCParticle"
+  edm4hep::CaloHitMCParticleLink:
+    Description: "Link between a CalorimeterHit and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
-     - edm4hep::Cluster rec         // reference to the cluster
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::CalorimeterHit from  // reference to the reconstructed hit
+     - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::CalorimeterHit getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::CalorimeterHit {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::CalorimeterHit& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::CalorimeterHit& rec) { setFrom(rec); }\n
+      "
 
-  edm4hep::MCRecoTrackParticleAssociation:
-    Description: "Association between a Track and the corresponding MCParticle"
+  edm4hep::ClusterMCParticleLink:
+    Description: "Link between a Cluster and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
-     - edm4hep::Track   rec         // reference to the track
-     - edm4hep::MCParticle sim      // reference to the Monte-Carlo particle
+     - edm4hep::Cluster from         // reference to the cluster
+     - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Cluster getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::Cluster {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::Cluster& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::Cluster& rec) { setFrom(rec); }\n
+      "
 
-  edm4hep::RecoParticleVertexAssociation:
-    Description: "Association between a ReconstructedParticle and a Vertex"
+  edm4hep::TrackMCParticleLink:
+    Description: "Link between a Track and the corresponding MCParticle"
     Author: "EDM4hep authors"
     Members:
-      - float weight                      // weight of this association
+      - float weight                // weight of this link
     OneToOneRelations:
-     - edm4hep::ReconstructedParticle rec // reference to the reconstructed particle
-     - edm4hep::Vertex vertex             // reference to the vertex
+     - edm4hep::Track   from         // reference to the track
+     - edm4hep::MCParticle to      // reference to the Monte-Carlo particle
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Track getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::MCParticle getSim() const;\n"
+      implementation: "
+      edm4hep::Track {name}::getRec() const { return getFrom(); }\n
+      edm4hep::MCParticle {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::Track& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::MCParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setSim(const edm4hep::MCParticle& sim) { setTo(sim); }\n
+      void {name}::setRec(const edm4hep::Track& rec) { setFrom(rec); }\n
+      "
+
+  edm4hep::VertexRecoParticleLink:
+    Description: "Link between a Vertex and a ReconstructedParticle"
+    Author: "EDM4hep authors"
+    Members:
+      - float weight                      // weight of this link
+    OneToOneRelations:
+     - edm4hep::ReconstructedParticle to // reference to the reconstructed particle
+     - edm4hep::Vertex from             // reference to the vertex
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getTo instead\")]] edm4hep::ReconstructedParticle getRec() const;\n
+      [[deprecated(\"use getFrom instead\")]] edm4hep::Vertex getVertex() const;\n"
+      implementation: "
+      edm4hep::ReconstructedParticle {name}::getRec() const { return getTo(); }\n
+      edm4hep::Vertex {name}::getVertex() const { return getFrom(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setVertex(const edm4hep::Vertex& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setRec(const edm4hep::ReconstructedParticle& sim);\n
+      "
+      implementation: "
+      void {name}::setVertex(const edm4hep::Vertex& vertex) { setFrom(vertex); }\n
+      void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
+      "
 
  #----------  TimeSeries
   edm4hep::TimeSeries:

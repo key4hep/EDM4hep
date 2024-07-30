@@ -22,13 +22,13 @@
 #include "edm4hep/TrackerHitPlaneCollection.h"
 #include "edm4hep/VertexCollection.h"
 
-#include "edm4hep/MCRecoCaloAssociationCollection.h"
-#include "edm4hep/MCRecoCaloParticleAssociationCollection.h"
-#include "edm4hep/MCRecoClusterParticleAssociationCollection.h"
-#include "edm4hep/MCRecoParticleAssociationCollection.h"
-#include "edm4hep/MCRecoTrackParticleAssociationCollection.h"
-#include "edm4hep/MCRecoTrackerAssociationCollection.h"
-#include "edm4hep/RecoParticleVertexAssociationCollection.h"
+#include "edm4hep/CaloHitMCParticleLinkCollection.h"
+#include "edm4hep/CaloHitSimCaloHitLinkCollection.h"
+#include "edm4hep/ClusterMCParticleLinkCollection.h"
+#include "edm4hep/RecoMCParticleLinkCollection.h"
+#include "edm4hep/TrackMCParticleLinkCollection.h"
+#include "edm4hep/TrackerHitSimTrackerHitLinkCollection.h"
+#include "edm4hep/VertexRecoParticleLinkCollection.h"
 
 #include "edm4hep/EDM4hepVersion.h"
 
@@ -108,20 +108,20 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::RecDqdxCollection>(jsonDict, coll, collList[i]);
     }
     // Associations
-    else if (coll->getTypeName() == "edm4hep::MCRecoParticleAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoParticleAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoCaloAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoCaloAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoTrackerAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoTrackerAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoCaloParticleAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoCaloParticleAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoClusterParticleAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoClusterParticleAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::MCRecoTrackParticleAssociationCollection") {
-      insertIntoJson<edm4hep::MCRecoTrackParticleAssociationCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::RecoParticleVertexAssociationCollection") {
-      insertIntoJson<edm4hep::RecoParticleVertexAssociationCollection>(jsonDict, coll, collList[i]);
+    else if (coll->getTypeName() == "edm4hep::RecoMCParticleLinkCollection") {
+      insertIntoJson<edm4hep::RecoMCParticleLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::CaloHitSimCaloHitLinkCollection") {
+      insertIntoJson<edm4hep::CaloHitSimCaloHitLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::TrackerHitSimTrackerHitLinkCollection") {
+      insertIntoJson<edm4hep::TrackerHitSimTrackerHitLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::CaloHitMCParticleLinkCollection") {
+      insertIntoJson<edm4hep::CaloHitMCParticleLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::ClusterMCParticleLinkCollection") {
+      insertIntoJson<edm4hep::ClusterMCParticleLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::TrackMCParticleLinkCollection") {
+      insertIntoJson<edm4hep::TrackMCParticleLinkCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::VertexRecoParticleLinkCollection") {
+      insertIntoJson<edm4hep::VertexRecoParticleLinkCollection>(jsonDict, coll, collList[i]);
     }
     // Podio user data
     else if (coll->getTypeName() == "podio::UserDataCollection<float>") {
