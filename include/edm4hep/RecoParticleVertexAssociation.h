@@ -1,6 +1,8 @@
 #ifndef EDM4HEP_RecoParticleVertexAssociation_H
 #define EDM4HEP_RecoParticleVertexAssociation_H
 
+#include "edm4hep/MutableRecoParticleVertexAssociation.h"
+#include "edm4hep/RecoParticleVertexAssociation.h"
 #include "edm4hep/VertexRecoParticleLink.h"
 
 namespace edm4hep {
