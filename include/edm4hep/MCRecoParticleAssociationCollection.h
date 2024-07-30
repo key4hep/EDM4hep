@@ -1,6 +1,8 @@
 #ifndef EDM4HEP_MCRecoParticleAssociationCollection_H
 #define EDM4HEP_MCRecoParticleAssociationCollection_H
 
+#include "edm4hep/MCRecoParticleAssociation.h"
+#include "edm4hep/MutableMCRecoParticleAssociation.h"
 #include "edm4hep/RecoMCParticleLinkCollection.h"
 
 namespace edm4hep {
