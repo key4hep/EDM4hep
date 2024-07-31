@@ -1,3 +1,239 @@
+# v00-99
+
+* 2024-07-31 tmadlener ([PR#349](https://github.com/key4hep/EDM4hep/pull/349))
+  - Update the `Link` names in the diagram after #341
+
+* 2024-07-30 tmadlener ([PR#350](https://github.com/key4hep/EDM4hep/pull/350))
+  - Include the user handle types in the `Collection.h` legacy header files such that they can truly be used transparently.
+
+* 2024-07-30 tmadlener ([PR#348](https://github.com/key4hep/EDM4hep/pull/348))
+  - CI: Make sure to use the python bindings of podio that we build in CI
+
+* 2024-07-30 jmcarcell ([PR#347](https://github.com/key4hep/EDM4hep/pull/347))
+  - Covariance matrices: Check for the size of the input for one of the constructors
+    - `static_cast` the inputs to `float`
+
+* 2024-07-30 tmadlener ([PR#345](https://github.com/key4hep/EDM4hep/pull/345))
+  - Bump the schema version of EDM4hep to 2 to have a way to differentiate between *before pre-release* and afterwards
+
+* 2024-07-30 tmadlener ([PR#341](https://github.com/key4hep/EDM4hep/pull/341))
+  - Rename the members of the associations to `from` and `to` in preparation for a transparent introduction of templated associations in podio (https://github.com/AIDASoft/podio/pull/257)
+    - Add (immediately deprecated) compatibility getters and setters that keep the current behavior on the API side.
+  - **Rename `Association` to `Link` and make naming more consistent**
+    - Add (immediately deprecated) compatiblity typedefs and headers to keep the current behavior.
+
+* 2024-07-30 Federico Meloni ([PR#337](https://github.com/key4hep/EDM4hep/pull/337))
+  - edm4hep::Track: Added Nholes and subdetectorHoleNumbers
+
+* 2024-07-29 jmcarcell ([PR#346](https://github.com/key4hep/EDM4hep/pull/346))
+  - Update LCG workflow to use LCG_106 instead of LCG_104
+
+* 2024-07-28 jmcarcell ([PR#272](https://github.com/key4hep/EDM4hep/pull/272))
+  - Add a script to create an EDM4hep file. The script is in python and can be called like `python createEDM4hepFile.py`. I have tried to make use of every member and relation in the data model. The purpose is to have something that can create quickly an EDM4hep file and because the script is in python no compilation is needed, hopefully lowering the barrier to get to an EDM4hep file. People can adapt it to their needs or use it as an example for testing, debugging, etc.
+
+* 2024-07-19 tmadlener ([PR#332](https://github.com/key4hep/EDM4hep/pull/332))
+  - Make the `Vertex` have relations to the (decay) particles that were used to build it
+  - Rename the `ReconstructedParticle` relation to a `Vertex` to `decayVertex` (as dicsussed in [#320](https://github.com/key4hep/EDM4hep/issues/320))
+
+* 2024-07-16 tmadlener ([PR#340](https://github.com/key4hep/EDM4hep/pull/340))
+  - Improve the error message of the README links CI check to suggest how to fix it
+
+* 2024-07-16 tmadlener ([PR#311](https://github.com/key4hep/EDM4hep/pull/311))
+  - Remove the `dQ/dx` information from the Track
+  - Add `TrackPIDHandler` to allow for the reverse lookup
+
+* 2024-07-10 jmcarcell ([PR#339](https://github.com/key4hep/EDM4hep/pull/339))
+  - Load libraries without the .so suffix to make it work in other OSes
+
+* 2024-07-08 tmadlener ([PR#336](https://github.com/key4hep/EDM4hep/pull/336))
+  - Switch to EL9 as OS for the `dev4` stack based CI workflow
+
+* 2024-07-08 tmadlener ([PR#329](https://github.com/key4hep/EDM4hep/pull/329))
+  - Rename the `Vertex` `primary` field to `type` and make it a 32 bit unsigned integer
+  - Introduce 3 reserved bits and accompanying utility / ExtraCode functionality for checking primary, secondary or tertiary vertex
+  - Introduce `setBit` and `checkBit` utility functionality and also use that for the `MCParticle` extra code
+
+* 2024-07-08 jmcarcell ([PR#326](https://github.com/key4hep/EDM4hep/pull/326))
+  - Remove `radiusOfInnermostHit` from tracks
+
+* 2024-07-04 tmadlener ([PR#334](https://github.com/key4hep/EDM4hep/pull/334))
+  - Remove compatibility with podio versions before 1.0
+
+* 2024-06-28 tmadlener ([PR#335](https://github.com/key4hep/EDM4hep/pull/335))
+  - Remove the association between `TrackerHitPlane` and `SimTrackerHit` from the diagram
+
+* 2024-06-28 tmadlener ([PR#333](https://github.com/key4hep/EDM4hep/pull/333))
+  - Remove some of the drift chamber study types that were introduced in [#179](https://github.com/key4hep/EDM4hep/pull/179) again since they need a bit more consideration
+    - The removed types and components are: `Hypothesis`, `HitLevelData`, `RecIonizationCluster`, `SimPrimaryIonizationCluster`, `TrackerPulse`
+    - Keep the types and components that are already in use, mainly `TimeSeries`
+  - Remove the usage of the removed components from `RecDqdx` to make it a purely reconstruction level type
+  - Fix script that checks that all types are part of the json dumper
+
+* 2024-06-28 tmadlener ([PR#331](https://github.com/key4hep/EDM4hep/pull/331))
+  - Remove the `MCRecoTrackerHitPlaneAssociation` as it is no longer necessary
+
+* 2024-06-28 jmcarcell ([PR#324](https://github.com/key4hep/EDM4hep/pull/324))
+  - Change probability to ndf in Vertex
+
+* 2024-06-27 tmadlener ([PR#330](https://github.com/key4hep/EDM4hep/pull/330))
+  - Remove docstring of `Track::type` that is no longer relevant for EDM4hep and was a leftover from LCIO.
+    - EDM4hep does not (yet) reserve any bits in the Track
+
+* 2024-06-25 Wouter Deconinck ([PR#327](https://github.com/key4hep/EDM4hep/pull/327))
+  - Require podio 1.0
+
+* 2024-06-24 Thomas Madlener ([PR#325](https://github.com/key4hep/EDM4hep/pull/325))
+  - Introduce a `edm4hep::labels::MCParticles` label to formalize the name of the canonical MCParticle collection
+
+* 2024-06-18 Benedikt Hegner ([PR#310](https://github.com/key4hep/EDM4hep/pull/310))
+  - Add `GeneratorEventParameters` and `GeneratorPdfInfo` datatypes to store generator related data in a structured and well defined way.
+  - Add a `GeneratorToolInfo` struct and related utility functionality to store some high level metadata on the generator into Frame parameters.
+
+* 2024-06-17 tmadlener ([PR#315](https://github.com/key4hep/EDM4hep/pull/315))
+  - Introduce the `edm4hep::labels` namespace to hold the string constants that are used for consistent labeling / naming of collections or parameters.
+    - Use this opportunity to homogenize the naming and capitalization of the variables but leave string constants unchanged
+  - Deprecate existing string constants
+
+* 2024-06-12 tmadlener ([PR#314](https://github.com/key4hep/EDM4hep/pull/314))
+  - Make the python bindings install prefix conform to python conventions by default and allow overriding with the `EDM4HEP_PYTHON_INSTALLDIR` cmake variable
+    - Default prefix is now `<prefix>/lib[64]/pythonX.Y/site-packages` (where `lib` or `lib64` is defined from the platform defaults and `X.Y` is the python major and minor version).
+
+* 2024-06-11 tmadlener ([PR#313](https://github.com/key4hep/EDM4hep/pull/313))
+  - Switch to `alma9` image to fix documentation deploys
+
+* 2024-06-11 tmadlener ([PR#307](https://github.com/key4hep/EDM4hep/pull/307))
+  - To have a more consistent way of filling the `algoType` in the `edm4hep::utils::ParticleIDMeta` use the 32 bit version of MurmurHash3 to hash the `algoName` to get to `algoType`. Fixes #298 
+    - Make `algoType` a private member but allow read access to it via the `algoType` member function. `algoType` has to be filled on construction. It is still possible to set it manually, the hashing will only kick in for the constructor taking only a name.
+
+* 2024-06-11 Juraj Smiesko ([PR#283](https://github.com/key4hep/EDM4hep/pull/283))
+  - Adding metadata name for event filter statistics.
+
+* 2024-06-04 tmadlener ([PR#303](https://github.com/key4hep/EDM4hep/pull/303))
+  - Update the schema diagram to reflect the changes from [#268](https://github.com/key4hep/EDM4hep/pull/268)
+
+* 2024-06-03 Mateusz Jakub Fila ([PR#308](https://github.com/key4hep/EDM4hep/pull/308))
+  - Use declarationFile instead of include in CovMatrix to fix generated documentation for covariance matrix components. Fixes [#296](https://github.com/key4hep/EDM4hep/issues/296)
+
+* 2024-05-21 tmadlener ([PR#302](https://github.com/key4hep/EDM4hep/pull/302))
+  - Update the schema diagram to reflect the `TrackerHit` as interface
+    - Add `TrackerHit3D` as new type
+  - Fix all arrow heads to be consistently black
+
+* 2024-05-16 tmadlener ([PR#305](https://github.com/key4hep/EDM4hep/pull/305))
+  - Introduce pre-processor checks to transparently switch to the new `std::optional` return values of `podio::Frame::getParameter` (introduced with [AIDASoft/podio#580](https://github.com/AIDASoft/podio/pull/580))
+
+* 2024-05-14 jmcarcell ([PR#304](https://github.com/key4hep/EDM4hep/pull/304))
+  - Remove ParticleID that was deleted in https://github.com/key4hep/EDM4hep/pull/268 and reintroduced in https://github.com/key4hep/EDM4hep/pull/287
+
+* 2024-05-07 Andre Sailer ([PR#300](https://github.com/key4hep/EDM4hep/pull/300))
+  - DOC: change association descriptions to allow doxygen to link to respective classes
+
+* 2024-05-02 Mateusz Jakub Fila ([PR#297](https://github.com/key4hep/EDM4hep/pull/297))
+  - Fix datatypes table formatting. Fix typos
+
+* 2024-05-01 tmadlener ([PR#287](https://github.com/key4hep/EDM4hep/pull/287))
+  - Introduce `edm4hep::CovMatrix[2,3,4,6}f` components to represent covariance matrices
+    - using `std::array<float, N>` under the hood
+    - Access functionality that works on enums for defining dimensions and some utilities to do the indexing into the underlying storage
+  - Introduce some `enum class`es for defining dimensions, e.g. `TrackParams` or `Cartesian`
+  - Use these components instead of the raw `std::array`s in datatypes and other components and tie the interpretation of the values to the approriate dimension `enum class`
+  
+  Usage example:
+  ```cpp
+  #include "edm4hep/TrackerHit3D.h"
+  
+  void foo(const edm4hep::TrackerHit3D& hit) {
+    const auto covXY  = hit.getCovMatrix(edm4hep::Cartesian::x, edm4hep::Cartesian:y);
+  }
+  ```
+
+* 2024-05-01 tmadlener ([PR#268](https://github.com/key4hep/EDM4hep/pull/268))
+  - Remove the relations from `Cluster` to `ParticleID`
+  - Remove the relations from `ReconstructedParticle` to `ParticleID`
+  - Add a `OneToOneRelation` from `ParticleID` to a `ReconstructedParticle`
+  - **This is a breaking change for both existing files and interfaces. There will be no schema evolution for this change**
+  - Add a new `edm4hep::utils::PIDHandler` and some related utility functionality to help with handling the necessary meta data.
+
+* 2024-04-19 tmadlener ([PR#295](https://github.com/key4hep/EDM4hep/pull/295))
+  - Make sure that the `utils` (currently INTERFACE only) target appears as `edm4hepUtils` "on disk" in order to avoid having on overly generic `libutils.so` once it actually becomes a shared library.
+
+* 2024-04-19 tmadlener ([PR#289](https://github.com/key4hep/EDM4hep/pull/289))
+  - Only pass what is strictly necessary as input to doxygen
+  - Exclude dependencies to avoid generating empty namespaces in the EDM4hep API reference
+
+* 2024-04-08 jmcarcell ([PR#294](https://github.com/key4hep/EDM4hep/pull/294))
+  - Load Constants.h in python, making some names available like `edm4hep::EventHeaderName`
+
+* 2024-04-04 tmadlener ([PR#293](https://github.com/key4hep/EDM4hep/pull/293))
+  - Use non deprecated versions of the `SIOWriter` and `SIOReader`
+
+* 2024-04-02 jmcarcell ([PR#292](https://github.com/key4hep/EDM4hep/pull/292))
+  - Do not try to set the read-only property ALIAS_GLOBAL
+
+* 2024-03-12 tmadlener ([PR#286](https://github.com/key4hep/EDM4hep/pull/286))
+  - Make sure that `operator[]` of the `VectorNx` types return the correct type.
+
+* 2024-03-12 Mateusz Jakub Fila ([PR#285](https://github.com/key4hep/EDM4hep/pull/285))
+  - added static asserting vector components' member ordering and padding
+
+* 2024-02-26 tmadlener ([PR#282](https://github.com/key4hep/EDM4hep/pull/282))
+  - Bump the patch version to 99 in order to keep preprocessor version checks working for current tagged version.
+
+* 2024-02-26 tmadlener ([PR#281](https://github.com/key4hep/EDM4hep/pull/281))
+  - Add `operator!=` to `VectorXY` classes to keep symmetry with updated podio generated code.
+
+* 2024-02-25 Mateusz Jakub Fila ([PR#280](https://github.com/key4hep/EDM4hep/pull/280))
+  - Fix readme formatting and links to trackerhit
+
+* 2024-02-23 jmcarcell ([PR#279](https://github.com/key4hep/EDM4hep/pull/279))
+  - Fix a few compiler warnings, some of them introduced in 1.0 PRs
+
+* 2024-02-23 tmadlener ([PR#252](https://github.com/key4hep/EDM4hep/pull/252))
+  - Make the `edm4hep::TrackerHit` an `interface` type and use that in the `edm4hep::Track`.
+  - Rename the current `edm4hep::TrackerHit` to `edm4hep::TrackerHit3D`
+  - **This is a breaking change. However, we currently do not plan to implement schema evolution for this**
+
+* 2024-02-22 jmcarcell ([PR#278](https://github.com/key4hep/EDM4hep/pull/278))
+  - Remove any path containing /fccanalyses/ for one test to prevent ROOT from loading FCCAnalyses dictionaries
+
+* 2024-02-22 tmadlener ([PR#277](https://github.com/key4hep/EDM4hep/pull/277))
+  - Use the units explictly in the yaml file to make them appear nicer in the generated docstrings.
+
+* 2024-02-22 BrieucF ([PR#276](https://github.com/key4hep/EDM4hep/pull/276))
+  - "EDM4hep authors" as `Author` field for all data types. Fixes https://github.com/key4hep/EDM4hep/issues/255
+  - Remove the confusing reference to collection parameters. Fixes https://github.com/key4hep/EDM4hep/issues/191
+  - Homogenize the comments (dot at the end or not, space after // or not).
+
+* 2024-02-22 jmcarcell ([PR#275](https://github.com/key4hep/EDM4hep/pull/275))
+  - Remove BITEndpoint from MCParticle
+
+* 2024-02-22 jmcarcell ([PR#274](https://github.com/key4hep/EDM4hep/pull/274))
+  - Rename EDep to eDep in SimTrackerHit for consistency with other uses of "eDep"
+
+* 2024-02-22 jmcarcell ([PR#273](https://github.com/key4hep/EDM4hep/pull/273))
+  - Rename type to PDG in ReconstructedParticle
+
+* 2024-02-22 Thomas Madlener ([PR#267](https://github.com/key4hep/EDM4hep/pull/267))
+  - Bring back MCParticle momenta as doubles. See #237 and #266
+
+* 2024-02-22 tmadlener ([PR#260](https://github.com/key4hep/EDM4hep/pull/260))
+  - Remove the `edm4hep::ObjectID` component. Fixes #259 
+  - Remove its usage from the `edm4hep::TrackerHit` and `edm4hep::TrackerHitPlane`
+  - **This is a breaking change both in code and existing files**. Existing usages might switch to use the `podio::ObjectID` to have effectively the same functionality.
+
+* 2024-02-22 tmadlener ([PR#256](https://github.com/key4hep/EDM4hep/pull/256))
+  - Rename `MCParticle` relations to `particle` in `SimTrackerHit` and `SimPrimaryIonizationCluster` to avoid clashes with the `MCParticle` typename.
+    - Add `getMCParticle` and `setMCParticle` via `ExtraCode` to keep everything working.
+    - **This will break the reading of existing files via podio utilities**
+
+* 2024-02-22 jmcarcell ([PR#254](https://github.com/key4hep/EDM4hep/pull/254))
+  - Add a `double weight` `VectorMember` to the `EventHeader` to allow storing multiple weights.
+    - **This should not break any existing code as we simply add a new member. However, this will break the possibility of reading existing files through podio**.
+  - Introduce the `edm4hep::EventWeights` constant to have a consistent name for storing / accessing them in file level metadata.
+
+* 2024-02-12 tmadlener ([PR#269](https://github.com/key4hep/EDM4hep/pull/269))
+  - Put the `schema_version` to the correct level for the downstream usage tests to keep it working after [podio#556)(https://github.com/AIDASoft/podio/pull/556)
+
 # v00-10-05
 
 * 2024-02-07 Thomas Madlener ([PR#266](https://github.com/key4hep/EDM4hep/pull/266))
