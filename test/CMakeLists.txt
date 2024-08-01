@@ -6,11 +6,15 @@ function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
       LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
+      PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
   )
   set_tests_properties(${_testname} PROPERTIES
     FAIL_REGULAR_EXPRESSION "[^a-z]Error;ERROR;error;Failed"
     )
 endfunction()
+
+add_test(NAME "Create an EDM4hep data file" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py)
+set_test_env("Create an EDM4hep data file")
 
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )

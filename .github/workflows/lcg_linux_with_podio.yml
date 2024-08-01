@@ -13,7 +13,7 @@ jobs:
               "dev4/x86_64-el9-gcc13-opt"]
         CXX_STANDARD: [20]
         include:
-          - LCG: "LCG_104/x86_64-centos8-gcc11-opt"
+          - LCG: "LCG_106/x86_64-el9-gcc13-opt"
             CXX_STANDARD: 17
           - LCG: "dev4/x86_64-ubuntu2004-gcc9-opt"
             CXX_STANDARD: 17
@@ -43,6 +43,7 @@ jobs:
           unset CPATH
           export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
           export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
+          export PYTHONPATH=$(pwd)/install/lib/python3$(python -c 'import sys; print(sys.version_info[1])')/site-packages:$PYTHONPATH
           echo "::endgroup::"
           echo "::group::Build edm4hep"
           cd $STARTDIR
