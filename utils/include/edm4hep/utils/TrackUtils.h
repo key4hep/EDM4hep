@@ -4,7 +4,6 @@
 #include <edm4hep/RecDqdxCollection.h>
 #include <edm4hep/Track.h>
 
-
 #include <map>
 #include <vector>
 
