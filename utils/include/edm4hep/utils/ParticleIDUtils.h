@@ -9,7 +9,6 @@
 #include <map>
 #include <optional>
 #include <string>
-#include <type_traits>
 #include <vector>
 
 namespace edm4hep::utils {
