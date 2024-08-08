@@ -37,7 +37,6 @@ components:
         - float y
         - float z
       ExtraCode:
-        includes: "#include <cstddef>"
         declaration: "
         constexpr Vector3f() : x(0),y(0),z(0) {}\n
         constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
@@ -59,10 +58,8 @@ components:
         - double y
         - double z
       ExtraCode:
-        includes: "
-        #include <edm4hep/Vector3f.h>\n
-        #include <cstddef>\n
-        "
+        includes: "#include <edm4hep/Vector3f.h>\n
+                   #include <cstddef>"
         declaration: "
         constexpr Vector3d() : x(0),y(0),z(0) {}\n
         constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
@@ -283,7 +280,7 @@ datatypes:
       "
 
     ExtraCode:
-      includes: "#include <edm4hep/utils/bit_utils.h>\n"
+      includes: "#include <edm4hep/utils/bit_utils.h>"
       declaration: "
       // define the bit positions for the simulation flag\n
       static const int BITCreatedInSimulation = 30;\n
@@ -332,10 +329,8 @@ datatypes:
     OneToOneRelations:
       - edm4hep::MCParticle particle // MCParticle that caused the hit
     MutableExtraCode:
-      includes: "
-      #include <cmath>\n
-      #include <edm4hep/MCParticle.h>\n
-      "
+      includes: "#include <cmath>\n
+                 #include <edm4hep/MCParticle.h>"
       declaration: "
       int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
       void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
@@ -344,7 +339,7 @@ datatypes:
       void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
       "
     ExtraCode:
-      includes: "#include <edm4hep/MCParticle.h>\n"
+      includes: "#include <edm4hep/MCParticle.h>"
       declaration: "
       static const int  BITOverlay = 31;\n
       static const int  BITProducedBySecondary = 30;\n
@@ -555,7 +550,7 @@ datatypes:
       - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>\n
-                 #include <edm4hep/utils/bit_utils.h>\n"
+                 #include <edm4hep/utils/bit_utils.h>"
       declaration: "
       /// Get the position covariance matrix value for the two passed dimensions\n
       float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
