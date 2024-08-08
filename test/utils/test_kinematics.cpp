@@ -8,8 +8,6 @@
 #include "edm4hep/MutableMCParticle.h"
 #include "edm4hep/MutableReconstructedParticle.h"
 
-#include "Math/Vector4D.h"
-
 #include <tuple>
 
 using ParticleTypes = std::tuple<edm4hep::MutableMCParticle, edm4hep::MutableReconstructedParticle>;

@@ -40,10 +40,7 @@
 // JSON
 #include "nlohmann/json.hpp"
 
-// STL
-#include <cassert>
 #include <cstdint>
-#include <exception>
 #include <fstream>
 #include <iostream>
 #include <sstream>
