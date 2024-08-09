@@ -1,18 +1,15 @@
+#include "podio/FrameCategories.h"
+
 // EDM4hep
 #include "edm4hep2json.hxx"
-
-// ROOT
-#include "TFile.h"
-
-// podio
-#include "podio/ROOTLegacyReader.h"
-#include "podio/ROOTReader.h"
 
 // std
 #include <filesystem>
 
 // *nix
 #include <getopt.h>
+
+#include "TFile.h"
 
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"
@@ -35,7 +32,7 @@ int main(int argc, char** argv) {
   std::filesystem::path outFilePath;
   std::string requestedCollections;
   std::string requestedEvents;
-  std::string frameName = "events";
+  std::string frameName = podio::Category::Event;
   bool verboser = false;
   int nEventsMax = -1;
 
@@ -120,20 +117,14 @@ int main(int argc, char** argv) {
     outFilePath = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
-  bool legacyReader = false;
   {
     std::unique_ptr<TFile> inFile(TFile::Open(inFilePath.c_str(), "READ"));
-    legacyReader = !inFile->GetListOfKeys()->FindObject("podio_metadata");
+    if (!inFile->GetListOfKeys()->FindObject("podio_metadata")) {
+      std::cout << "ERROR: Reading file produced with an incompatible version of EDM4hep. Aborting..." << std::endl;
+      return 1;
+    }
+    inFile->Close();
   }
 
-  if (legacyReader) {
-    std::cout << "WARNING: Reading legacy file, some collections might not be recognized!" << std::endl;
-    return read_frames<podio::ROOTLegacyReader>(inFilePath, outFilePath, requestedCollections, requestedEvents,
-                                                frameName, nEventsMax, verboser);
-  } else {
-    return read_frames<podio::ROOTReader>(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName,
-                                          nEventsMax, verboser);
-  }
-
-  return EXIT_SUCCESS;
+  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax, verboser);
 }

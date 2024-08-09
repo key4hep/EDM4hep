@@ -34,6 +34,7 @@
 
 // podio specific includes
 #include "podio/Frame.h"
+#include "podio/Reader.h"
 #include "podio/UserDataCollection.h"
 #include "podio/podioVersion.h"
 
@@ -170,13 +171,10 @@ std::vector<std::string> splitString(const std::string& inString) {
 
   return outString;
 }
-
-template <typename ReaderT>
 int read_frames(const std::string& filename, const std::string& jsonFile, const std::string& requestedCollections,
                 const std::string& requestedEvents, const std::string& frameName, int nEventsMax = -1,
                 bool verboser = false) {
-  ReaderT reader;
-  reader.openFile(filename);
+  podio::Reader reader = podio::makeReader(filename);
 
   nlohmann::json allEventsDict;
 
@@ -193,7 +191,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
 
   auto collList = splitString(requestedCollections);
   if (collList.empty()) {
-    auto frame = podio::Frame(reader.readEntry(frameName, 0));
+    auto frame = reader.readFrame(frameName, 0);
     collList = frame.getAvailableCollections();
   }
   if (collList.empty()) {
@@ -269,13 +267,13 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
         std::cout << "INFO: Reading event " << i << std::endl;
       }
 
-      auto frame = podio::Frame(reader.readEntry(frameName, i));
+      auto frame = reader.readFrame(frameName, i);
       auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
     for (auto& i : eventVec) {
-      auto frame = podio::Frame(reader.readEntry(frameName, i));
+      auto frame = reader.readFrame(frameName, i);
       auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
