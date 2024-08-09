@@ -191,7 +191,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
 
   auto collList = splitString(requestedCollections);
   if (collList.empty()) {
-    auto frame = podio::Frame(reader.readFrame(frameName, 0));
+    auto frame = reader.readFrame(frameName, 0);
     collList = frame.getAvailableCollections();
   }
   if (collList.empty()) {
@@ -267,13 +267,13 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
         std::cout << "INFO: Reading event " << i << std::endl;
       }
 
-      auto frame = podio::Frame(reader.readFrame(frameName, i));
+      auto frame = reader.readFrame(frameName, i);
       auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
   } else {
     for (auto& i : eventVec) {
-      auto frame = podio::Frame(reader.readFrame(frameName, i));
+      auto frame = reader.readFrame(frameName, i);
       auto eventDict = processEvent(frame, collList, reader.currentFileVersion());
       allEventsDict["Event " + std::to_string(i)] = eventDict;
     }
