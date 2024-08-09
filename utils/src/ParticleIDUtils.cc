@@ -29,7 +29,7 @@ ParticleIDMeta::ParticleIDMeta(const std::string& algName, const std::vector<std
 }
 
 std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param) {
-  const auto nameIt = std::find(pidMetaInfo.paramNames.begin(), pidMetaInfo.paramNames.end(), param);
+  const auto nameIt = std::ranges::find(pidMetaInfo.paramNames, param);
   if (nameIt != pidMetaInfo.paramNames.end()) {
     return std::distance(pidMetaInfo.paramNames.begin(), nameIt);
   }

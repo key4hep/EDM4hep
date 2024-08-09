@@ -19,7 +19,7 @@ jobs:
           cd podio
           mkdir build install
           cd build
-          cmake .. -DCMAKE_CXX_STANDARD=17 \
+          cmake .. -DCMAKE_CXX_STANDARD=20 \
             -DENABLE_SIO=ON \
             -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/../install \
@@ -40,7 +40,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -DENABLE_SIO=ON \
-            -DCMAKE_CXX_STANDARD=17 \
+            -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
             -DUSE_EXTERNAL_CATCH2=OFF

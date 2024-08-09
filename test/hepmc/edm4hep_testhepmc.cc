@@ -114,7 +114,7 @@ int main() {
     std::cout << "Converting particle with PDG ID: " << particle_i->pdg_id() << std::endl;
     std::cout << "\t and id: " << particle_i->id() << std::endl;
 
-    if (hepmcToEdmMap.find(particle_i->id()) == hepmcToEdmMap.end()) {
+    if (!hepmcToEdmMap.contains(particle_i->id())) {
       auto edm_particle = convert(particle_i);
       hepmcToEdmMap.insert({particle_i->id(), edm_particle});
     }
@@ -124,7 +124,7 @@ int main() {
     if (nullptr != prodvertex) {
 
       for (auto particle_mother : prodvertex->particles_in()) {
-        if (hepmcToEdmMap.find(particle_mother->id()) == hepmcToEdmMap.end()) {
+        if (!hepmcToEdmMap.contains(particle_mother->id())) {
           auto edm_particle = convert(particle_mother);
           hepmcToEdmMap.insert({particle_mother->id(), edm_particle});
         }
@@ -136,7 +136,7 @@ int main() {
     if (nullptr != prodvertex) {
 
       for (auto particle_daughter : prodvertex->particles_in()) {
-        if (hepmcToEdmMap.find(particle_daughter->id()) == hepmcToEdmMap.end()) {
+        if (!hepmcToEdmMap.contains(particle_daughter->id())) {
           auto edm_particle = convert(particle_daughter);
           hepmcToEdmMap.insert({particle_daughter->id(), edm_particle});
         }
