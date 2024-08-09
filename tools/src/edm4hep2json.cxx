@@ -9,6 +9,8 @@
 // *nix
 #include <getopt.h>
 
+#include "TFile.h"
+
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"
             << "  -o/--out-file           output file path\n"
@@ -115,7 +117,14 @@ int main(int argc, char** argv) {
     outFilePath = std::filesystem::path(outFileStr + ".edm4hep.json");
   }
 
-  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax, verboser);
+  {
+    std::unique_ptr<TFile> inFile(TFile::Open(inFilePath.c_str(), "READ"));
+    if (!inFile->GetListOfKeys()->FindObject("podio_metadata")) {
+      std::cout << "ERROR: Reading file produced with an incompatible version of EDM4hep. Aborting..." << std::endl;
+      return 1;
+    }
+    inFile->Close();
+  }
 
-  return EXIT_SUCCESS;
+  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax, verboser);
 }
