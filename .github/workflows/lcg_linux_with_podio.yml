@@ -11,8 +11,7 @@ jobs:
         LCG: ["dev3/x86_64-el9-clang16-opt",
               "dev4/x86_64-el9-clang16-opt",
               "dev4/x86_64-el9-gcc13-opt",
-              "LCG_106/x86_64-el9-gcc13-opt",
-              "LCG_106/x86_64-ubuntu2204-gcc11-opt"]
+              "LCG_106/x86_64-el9-gcc13-opt"]
         CXX_STANDARD: [20]
     steps:
     - uses: actions/checkout@v3
