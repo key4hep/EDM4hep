@@ -49,11 +49,7 @@ namespace utils {
      *
      * @returns the dimension of the covariance matrix
      */
-#if cpp_consteval
     consteval std::size_t get_cov_dim(std::size_t N) {
-#else
-    constexpr std::size_t get_cov_dim(std::size_t N) {
-#endif
       switch (N) {
       case 21:
         return 6;
