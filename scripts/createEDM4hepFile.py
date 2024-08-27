@@ -10,14 +10,16 @@ import sys
 frames = 3  # How many frames or events will be written
 vectorsize = 5  # For vector members, each vector member will have this size
 counter = count()  # next(counter) will return 0, 1, 2, ...
-# used to generate the dummy data
-output_file = "output.root"
 
 parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
 parser.add_argument(
     "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
 )
+parser.add_argument(
+    "--output-file", type=str, help="Output file name", default="edm4hep.root"
+)
 args = parser.parse_args()
+output_file = args.output_file
 
 if args.rntuple:
     try:
@@ -78,9 +80,7 @@ for i in range(frames):
         particle.setMomentumAtEndpoint(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
-        particle.setSpin(
-            edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        )
+        particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
         particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
     particles[0].addToDaughters(particles[1])
