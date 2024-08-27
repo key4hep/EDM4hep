@@ -18,7 +18,7 @@ set_test_env("Create an EDM4hep data file")
 
 add_test(NAME "Create an EDM4hep data file (RNTuple)" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
 set_test_env("Create an EDM4hep data file (RNTuple)")
-set_test_properties("Create an EDM4hep data file (RNTuple)" PROPERTIES
+set_tests_properties("Create an EDM4hep data file (RNTuple)" PROPERTIES
   SKIP_REGULAR_EXPRESSION "The RNTuple writer from podio is not available but was requested"
 )
 
