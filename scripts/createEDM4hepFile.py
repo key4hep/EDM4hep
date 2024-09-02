@@ -344,6 +344,7 @@ for i in range(frames):
     gep.setAlphaQCD(next(counter))
     gep.setSignalProcessId(next(counter))
     gep.setSqrts(next(counter))
+    frame.put(gep_coll, "GeneratorEventParametersCollection")
 
     for i in range(vectorsize):
         gep.addToCrossSections(next(counter))
@@ -369,5 +370,6 @@ for i in range(frames):
     gpi.setXf(0, next(counter))
     gpi.setXf(1, next(counter))
     gpi.setScale(next(counter))
+    frame.put(gpi_coll, "GeneratorPdfInfoCollection")
 
     writer.write_frame(frame, "events")
