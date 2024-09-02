@@ -140,6 +140,14 @@ with tools that consume JSON.
 Use `edm4hep2json --help` to see the available options for selecting which parts
 of the input file should be part of the output.
 
+## Example files
+
+Example EDM4hep files can be obtained from the Continuous Integration (CI)
+workflows. From the EDM4hep github page, go to Actions -> Key4hep build, click
+one of the runs (the latest scheduled is preferred) and they will appear at the
+bottom, under Artifacts.
+
+
 ## Contributing
 
 Contributions and bug reports are welcome! See our [contributing guidelines](doc/contributing.md) if you want to contribute code to EDM4hep.

@@ -10,14 +10,16 @@ import sys
 frames = 3  # How many frames or events will be written
 vectorsize = 5  # For vector members, each vector member will have this size
 counter = count()  # next(counter) will return 0, 1, 2, ...
-# used to generate the dummy data
-output_file = "output.root"
 
 parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
 parser.add_argument(
     "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
 )
+parser.add_argument(
+    "--output-file", type=str, help="Output file name", default="edm4hep.root"
+)
 args = parser.parse_args()
+output_file = args.output_file
 
 if args.rntuple:
     try:
@@ -78,9 +80,7 @@ for i in range(frames):
         particle.setMomentumAtEndpoint(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
-        particle.setSpin(
-            edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        )
+        particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
         particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
     particles[0].addToDaughters(particles[1])
@@ -225,10 +225,11 @@ for i in range(frames):
         state.referencePoint = edm4hep.Vector3f(
             next(counter), next(counter), next(counter)
         )
-        state.CovMatrix = cov6f
+        state.covMatrix = cov6f
         track.addToTrackStates(state)
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
+    track.setNholes(next(counter))
     frame.put(tracks, "TrackCollection")
 
     vertex = edm4hep.VertexCollection()
@@ -272,50 +273,50 @@ for i in range(frames):
     links = edm4hep.RecoMCParticleLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(reco_particle)
-    link.setSim(particle)
+    link.setFrom(reco_particle)
+    link.setTo(particle)
     frame.put(links, "RecoMCParticleLinkCollection")
 
     links = edm4hep.CaloHitSimCaloHitLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(calo_hit)
-    link.setSim(simcalo_hit)
+    link.setFrom(calo_hit)
+    link.setTo(simcalo_hit)
     frame.put(links, "CaloHitSimCaloHitLinkCollection")
 
     links = edm4hep.TrackerHitSimTrackerHitLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(tracker_hit)
-    link.setSim(simtracker_hit)
+    link.setFrom(tracker_hit)
+    link.setTo(simtracker_hit)
     frame.put(links, "TrackerHitSimTrackerHitLinkCollection")
 
     links = edm4hep.CaloHitMCParticleLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(calo_hit)
-    link.setSim(particle)
+    link.setFrom(calo_hit)
+    link.setTo(particle)
     frame.put(links, "CaloHitMCParticleLinkCollection")
 
     links = edm4hep.ClusterMCParticleLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(cluster)
-    link.setSim(particle)
+    link.setFrom(cluster)
+    link.setTo(particle)
     frame.put(links, "ClusterMCParticleLinkCollection")
 
     links = edm4hep.TrackMCParticleLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(track)
-    link.setSim(particle)
+    link.setFrom(track)
+    link.setTo(particle)
     frame.put(links, "TrackMCParticleLinkCollection")
 
     links = edm4hep.VertexRecoParticleLinkCollection()
     link = links.create()
     link.setWeight(next(counter))
-    link.setRec(reco_particle)
-    link.setVertex(v)
+    link.setTo(reco_particle)
+    link.setFrom(v)
     frame.put(links, "MCVertexRecoParticleLinkCollection")
 
     timeseries = edm4hep.TimeSeriesCollection()
@@ -344,6 +345,7 @@ for i in range(frames):
     gep.setAlphaQCD(next(counter))
     gep.setSignalProcessId(next(counter))
     gep.setSqrts(next(counter))
+    frame.put(gep_coll, "GeneratorEventParametersCollection")
 
     for i in range(vectorsize):
         gep.addToCrossSections(next(counter))
@@ -369,5 +371,6 @@ for i in range(frames):
     gpi.setXf(0, next(counter))
     gpi.setXf(1, next(counter))
     gpi.setScale(next(counter))
+    frame.put(gpi_coll, "GeneratorPdfInfoCollection")
 
     writer.write_frame(frame, "events")

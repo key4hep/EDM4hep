@@ -13,8 +13,14 @@ function(set_test_env _testname)
     )
 endfunction()
 
-add_test(NAME "Create an EDM4hep data file" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py)
+add_test(NAME "Create an EDM4hep data file" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --output-file edm4hep_example.root)
 set_test_env("Create an EDM4hep data file")
+
+add_test(NAME "Create an EDM4hep data file (RNTuple)" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
+set_test_env("Create an EDM4hep data file (RNTuple)")
+set_tests_properties("Create an EDM4hep data file (RNTuple)" PROPERTIES
+  SKIP_REGULAR_EXPRESSION "The RNTuple writer from podio is not available but was requested"
+)
 
 add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
