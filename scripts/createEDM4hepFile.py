@@ -229,6 +229,7 @@ for i in range(frames):
         track.addToTrackStates(state)
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
+    track.setNholes(next(counter))
     frame.put(tracks, "TrackCollection")
 
     vertex = edm4hep.VertexCollection()
