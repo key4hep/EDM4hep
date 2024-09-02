@@ -2,12 +2,7 @@
 #define EDM4HEP_VERSION_H
 
 #include <cstdint>
-#include <tuple>
 #include <ostream>
-#if __cplusplus >= 202002L
-#include <compare>
-#endif
-
 // Some preprocessor constants and macros for the use cases where they might be
 // necessary
 
@@ -41,24 +36,7 @@ namespace edm4hep::version {
     uint16_t minor{0};
     uint16_t patch{0};
 
-#if __cplusplus >= 202002L
     auto operator<=>(const Version&) const = default;
-#else
-// No spaceship yet in c++17
-#define DEFINE_COMP_OPERATOR(OP)                                                   \
-    constexpr bool operator OP(const Version& o) const noexcept {                  \
-      return std::tie(major, minor, patch) OP std::tie(o.major, o.minor, o.patch); \
-    }
-
-    DEFINE_COMP_OPERATOR(<)
-    DEFINE_COMP_OPERATOR(<=)
-    DEFINE_COMP_OPERATOR(>)
-    DEFINE_COMP_OPERATOR(>=)
-    DEFINE_COMP_OPERATOR(==)
-    DEFINE_COMP_OPERATOR(!=)
-
-#undef DEFINE_COMP_OPERATOR
-#endif
 
     friend std::ostream& operator<<(std::ostream&, const Version& v);
   };
