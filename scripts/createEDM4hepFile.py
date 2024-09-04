@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Description: Create a file with EDM4hep data using the EDM4hep python bindings
 # The purpose of the script is to use all the classes of the EDM4hep library
 # to create a file with dummy data.
