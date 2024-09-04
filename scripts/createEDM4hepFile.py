@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Description: Create a file with EDM4hep data using the EDM4hep python bindings
 # The purpose of the script is to use all the classes of the EDM4hep library
 # to create a file with dummy data.
@@ -216,10 +218,10 @@ for i in range(frames):
         track.addToSubdetectorHitNumbers(next(counter))
         state = edm4hep.TrackState()
         state.location = next(counter)
-        state.d0 = next(counter)
+        state.D0 = next(counter)
         state.phi = next(counter)
         state.omega = next(counter)
-        state.z0 = next(counter)
+        state.Z0 = next(counter)
         state.tanLambda = next(counter)
         state.time = next(counter)
         state.referencePoint = edm4hep.Vector3f(
