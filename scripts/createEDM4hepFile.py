@@ -218,10 +218,10 @@ for i in range(frames):
         track.addToSubdetectorHitNumbers(next(counter))
         state = edm4hep.TrackState()
         state.location = next(counter)
-        state.d0 = next(counter)
+        state.D0 = next(counter)
         state.phi = next(counter)
         state.omega = next(counter)
-        state.z0 = next(counter)
+        state.Z0 = next(counter)
         state.tanLambda = next(counter)
         state.time = next(counter)
         state.referencePoint = edm4hep.Vector3f(
