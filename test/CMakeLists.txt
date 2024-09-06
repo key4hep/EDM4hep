@@ -95,3 +95,5 @@ endif()
 
 add_subdirectory(utils)
 add_subdirectory(tools)
+
+add_subdirectory(backwards_compat)

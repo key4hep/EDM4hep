@@ -253,7 +253,7 @@ def create_TrackCollection(vectorsize, tracker_hit):
         )
         state.covMatrix = create_CovMatrixNf(6)
         track.addToTrackStates(state)
-        track.addToSubdetectorHoleNumbers(next(counter))
+
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
     track.setNholes(next(counter))
