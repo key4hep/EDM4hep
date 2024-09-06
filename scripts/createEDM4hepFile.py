@@ -216,7 +216,7 @@ def create_TrackerHitPlaneCollection():
     return hits
 
 
-def create_RawTimeSeriesCollection():
+def create_RawTimeSeriesCollection(vectorsize):
     """Create a RawTimeSeriesCollection"""
     counter = count()
     series = edm4hep.RawTimeSeriesCollection()
@@ -424,7 +424,7 @@ def create_frame():
     tracker_hit = hits[0]
     frame.put(create_TrackerHitPlaneCollection(), "TrackerHitPlaneCollection")
 
-    frame.put(create_RawTimeSeriesCollection(), "RawTimeSeriesCollection")
+    frame.put(create_RawTimeSeriesCollection(VECTORSIZE), "RawTimeSeriesCollection")
 
     tracks = frame.put(
         create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection"
@@ -460,15 +460,15 @@ def create_frame():
     put_link_collection(frame, "VertexRecoParticleLink", vertex, reco_particle)
 
     frame.put(create_TimeSeriesCollection(VECTORSIZE), "TimeSeriesCollection")
-
     frame.put(create_RecDqdxCollection(track), "RecDqdxCollection")
 
     frame.put(
         create_GeneratorEventParametersCollection(VECTORSIZE, particle),
         "GeneratorEventParametersCollection",
     )
-
     frame.put(create_GeneratorPdfInfoCollection(), "GeneratorPdfInfoCollection")
+
+    return frame
 
 
 if __name__ == "__main__":
