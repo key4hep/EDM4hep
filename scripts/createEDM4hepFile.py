@@ -6,8 +6,6 @@
 import podio
 import edm4hep
 from itertools import count
-import argparse
-import sys
 
 FRAMES = 3  # How many frames or events will be written
 VECTORSIZE = 5  # For vector members, each vector member will have this size
@@ -472,6 +470,9 @@ def create_frame():
 
 
 if __name__ == "__main__":
+    import argparse
+    import sys
+
     parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
     parser.add_argument(
         "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
