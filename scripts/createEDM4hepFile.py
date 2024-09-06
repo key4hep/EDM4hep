@@ -12,25 +12,6 @@ import sys
 frames = 3  # How many frames or events will be written
 vectorsize = 5  # For vector members, each vector member will have this size
 
-parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
-parser.add_argument(
-    "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
-)
-parser.add_argument(
-    "--output-file", type=str, help="Output file name", default="edm4hep.root"
-)
-args = parser.parse_args()
-output_file = args.output_file
-
-if args.rntuple:
-    try:
-        writer = podio.root_io.RNTupleWriter(output_file)
-    except AttributeError:
-        print("The RNTuple writer from podio is not available but was requested")
-        sys.exit(1)
-else:
-    writer = podio.root_io.Writer(output_file)
-
 
 def create_EventHeaderCollection(vectorsize):
     """Create an EventHeaderCollection"""
@@ -329,13 +310,6 @@ def create_LinkCollection(coll_type, from_el, to_el):
     return links
 
 
-def put_link_collection(frame, link_name, from_el, to_el):
-    """Helper function to put a link collection into the frame"""
-    coll_name = f"{link_name}Collection"
-    coll_type = getattr(edm4hep, coll_name)
-    frame.put(create_LinkCollection(coll_type, from_el, to_el), coll_name)
-
-
 def create_TimeSeriesCollection(vectorsize):
     """Create a TimeSeriesCollection"""
     counter = count()
@@ -405,8 +379,15 @@ def create_GeneratorPdfInfoCollection():
     return gpi_coll
 
 
-for i in range(frames):
-    print(f"Writing frame {i}")
+def put_link_collection(frame, link_name, from_el, to_el):
+    """Helper function to put a link collection into the frame"""
+    coll_name = f"{link_name}Collection"
+    coll_type = getattr(edm4hep, coll_name)
+    frame.put(create_LinkCollection(coll_type, from_el, to_el), coll_name)
+
+
+def create_frame():
+    """Create a Frame with all types"""
     frame = podio.Frame()
 
     frame.put(create_EventHeaderCollection(vectorsize), "EventHeader")
@@ -489,4 +470,29 @@ for i in range(frames):
 
     frame.put(create_GeneratorPdfInfoCollection(), "GeneratorPdfInfoCollection")
 
-    writer.write_frame(frame, "events")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
+    parser.add_argument(
+        "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
+    )
+    parser.add_argument(
+        "--output-file", type=str, help="Output file name", default="edm4hep.root"
+    )
+    args = parser.parse_args()
+    output_file = args.output_file
+
+    if args.rntuple:
+        try:
+            writer = podio.root_io.RNTupleWriter(output_file)
+        except AttributeError:
+            print("The RNTuple writer from podio is not available but was requested")
+            sys.exit(1)
+    else:
+        writer = podio.root_io.Writer(output_file)
+
+    for i in range(frames):
+        frame = create_frame()
+        print(f"Writing frame {i}")
+
+        writer.write_frame(frame, "events")
