@@ -239,6 +239,7 @@ def create_TrackCollection(vectorsize, tracker_hit):
     track.setNdf(next(counter))
     for j in range(vectorsize):
         track.addToSubdetectorHitNumbers(next(counter))
+        track.addToSubdetectorHoleNumbers(next(counter))
         state = edm4hep.TrackState()
         state.location = next(counter)
         state.D0 = next(counter)
