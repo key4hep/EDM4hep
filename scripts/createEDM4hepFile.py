@@ -9,8 +9,8 @@ from itertools import count
 import argparse
 import sys
 
-frames = 3  # How many frames or events will be written
-vectorsize = 5  # For vector members, each vector member will have this size
+FRAMES = 3  # How many frames or events will be written
+VECTORSIZE = 5  # For vector members, each vector member will have this size
 
 
 def create_EventHeaderCollection(vectorsize):
@@ -390,7 +390,7 @@ def create_frame():
     """Create a Frame with all types"""
     frame = podio.Frame()
 
-    frame.put(create_EventHeaderCollection(vectorsize), "EventHeader")
+    frame.put(create_EventHeaderCollection(VECTORSIZE), "EventHeader")
 
     particles = frame.put(create_MCParticleCollection(), "MCParticleCollection")
     particle = particles[0]
@@ -416,7 +416,7 @@ def create_frame():
     calo_hit = hits[0]
 
     clusters = frame.put(
-        create_ClusterCollection(vectorsize, calo_hit), "ClusterCollection"
+        create_ClusterCollection(VECTORSIZE, calo_hit), "ClusterCollection"
     )
     cluster = clusters[0]
 
@@ -427,14 +427,14 @@ def create_frame():
     frame.put(create_RawTimeSeriesCollection(), "RawTimeSeriesCollection")
 
     tracks = frame.put(
-        create_TrackCollection(vectorsize, tracker_hit), "TrackCollection"
+        create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection"
     )
     track = tracks[0]
 
-    pids = create_ParticleIDCollection(vectorsize)
+    pids = create_ParticleIDCollection(VECTORSIZE)
     pid = pids[0]
 
-    vertices = create_VertexCollection(vectorsize)
+    vertices = create_VertexCollection(VECTORSIZE)
     vertex = vertices[0]
 
     reco_particles = frame.put(
@@ -459,12 +459,12 @@ def create_frame():
     put_link_collection(frame, "TrackMCParticleLink", track, particle)
     put_link_collection(frame, "VertexRecoParticleLink", vertex, reco_particle)
 
-    frame.put(create_TimeSeriesCollection(vectorsize), "TimeSeriesCollection")
+    frame.put(create_TimeSeriesCollection(VECTORSIZE), "TimeSeriesCollection")
 
     frame.put(create_RecDqdxCollection(track), "RecDqdxCollection")
 
     frame.put(
-        create_GeneratorEventParametersCollection(vectorsize, particle),
+        create_GeneratorEventParametersCollection(VECTORSIZE, particle),
         "GeneratorEventParametersCollection",
     )
 
@@ -491,7 +491,7 @@ if __name__ == "__main__":
     else:
         writer = podio.root_io.Writer(output_file)
 
-    for i in range(frames):
+    for i in range(FRAMES):
         frame = create_frame()
         print(f"Writing frame {i}")
 
