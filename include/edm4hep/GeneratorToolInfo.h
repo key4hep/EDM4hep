@@ -25,11 +25,11 @@ struct GeneratorToolInfo {
 
   /// Construct a complete tool info object from all ingredients
   ///
-  /// @param name        The name of the tool
-  /// @param version     The version of the tool
-  /// @param description The brief description of the tool
-  GeneratorToolInfo(const std::string& name, const std::string& version, const std::string& description) :
-      name(name), version(version), description(description){};
+  /// @param nameTool        The name of the tool
+  /// @param versionTool     The version of the tool
+  /// @param descrTool       The brief description of the tool
+  GeneratorToolInfo(const std::string& nameTool, const std::string& versionTool, const std::string& descrTool) :
+      name(nameTool), version(versionTool), description(descrTool){};
 };
 
 namespace utils {
