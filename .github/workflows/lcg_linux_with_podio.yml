@@ -14,32 +14,32 @@ jobs:
               "LCG_106/x86_64-el9-gcc13-opt"]
         CXX_STANDARD: [20]
     steps:
-    - uses: actions/checkout@v3
-    - uses: cvmfs-contrib/github-action-cvmfs@v3
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: AIDASoft/podio
+        path: podio
+    - uses: cvmfs-contrib/github-action-cvmfs@v4
     - uses: aidasoft/run-lcg-view@v4
       with:
         release-platform: ${{ matrix.LCG }}
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
-          echo "Building podio @"$(git log -1 --format=%H)
-          git clone --depth 1 https://github.com/AIDASoft/podio
           cd podio
+          echo "Building podio @"$(git log -1 --format=%H)
           mkdir build install
           cd build
           cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DENABLE_SIO=ON \
+            -DENABLE_RNTUPLE=ON \
+            -DENABLE_DATASOURCE=ON \
             -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/../install \
             -G Ninja
-          ninja -k0
-          ninja install
+          ninja -k0 install
           cd ..
-          export ROOT_INCLUDE_PATH=$(pwd)/install/include:$ROOT_INCLUDE_PATH:$CPATH
-          unset CPATH
-          export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
-          export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
-          export PYTHONPATH=$(pwd)/install/lib/python3$(python -c 'import sys; print(sys.version_info[1])')/site-packages:$PYTHONPATH
+          source init.sh && env.sh
           echo "::endgroup::"
           echo "::group::Build edm4hep"
           cd $STARTDIR
