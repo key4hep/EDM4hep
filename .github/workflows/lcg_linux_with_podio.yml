@@ -36,7 +36,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -G Ninja -B build
           cmake --build build --target install -- -k0
-          source init.sh && env.sh
+          source init.sh && source env.sh
           echo "::endgroup::"
           echo "::group::Build edm4hep"
           cd $STARTDIR

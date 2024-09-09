@@ -23,10 +23,10 @@ jobs:
           cmake .. -DCMAKE_CXX_STANDARD=20 \
             -DENABLE_SIO=ON \
             -DBUILD_TESTING=OFF \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)install \
             -G Ninja -B build
           cmake --build build --target install
-          source init.sh && env.sh
+          source init.sh && source env.sh
           echo "::endgroup::"
           echo "::group::Run pre-commit"
           cd $STARTDIR
