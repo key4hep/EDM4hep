@@ -30,9 +30,9 @@ jobs:
           echo "::endgroup::"
           echo "::group::Run pre-commit"
           cd $STARTDIR
-          export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
-          export PATH=/root/.local/bin:$PATH
-          pip install argparse --user
+          python3 -m venv /root/pre-commit-venv
+          source /root/pre-commit-venv/bin/activate
+          pip install pre-commit
           cmake -DENABLE_SIO=ON \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
