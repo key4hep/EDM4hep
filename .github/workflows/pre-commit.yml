@@ -20,10 +20,10 @@ jobs:
           echo "::group::Build podio"
           cd podio
           echo "Building podio @"$(git log -1 --format=%H)
-          cmake .. -DCMAKE_CXX_STANDARD=20 \
+          cmake -DCMAKE_CXX_STANDARD=20 \
             -DENABLE_SIO=ON \
             -DBUILD_TESTING=OFF \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)install \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -G Ninja -B build
           cmake --build build --target install
           source init.sh && source env.sh
@@ -33,7 +33,7 @@ jobs:
           export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=/root/.local/bin:$PATH
           pip install argparse --user
-          cmake .. -DENABLE_SIO=ON \
+          cmake -DENABLE_SIO=ON \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
