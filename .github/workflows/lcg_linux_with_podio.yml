@@ -28,40 +28,32 @@ jobs:
           echo "::group::Build podio"
           cd podio
           echo "Building podio @"$(git log -1 --format=%H)
-          mkdir build install
-          cd build
           cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DENABLE_SIO=ON \
             -DENABLE_RNTUPLE=ON \
             -DENABLE_DATASOURCE=ON \
             -DBUILD_TESTING=OFF \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/../install \
-            -G Ninja
-          ninja -k0 install
-          cd ..
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+            -G Ninja -B build
+          cmake --build build --target install -- -k0
           source init.sh && env.sh
           echo "::endgroup::"
           echo "::group::Build edm4hep"
           cd $STARTDIR
           echo "Building edm4hep"
-          mkdir build install
-          cd build
           cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
-            -DCMAKE_INSTALL_PREFIX=../install \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -DUSE_EXTERNAL_CATCH2=OFF \
-            -G Ninja
-          ninja -k0
-          ctest --output-on-failure
-          ninja install
-          cd -
+            -G Ninja -B build
+          cmake --build build -- -k0
+          ctest --test-dir build --output-on-failure
+          cmake --build build --target install
           echo "::endgroup::"
           echo "::group::Test downstream usage"
           export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
           cd test/downstream-project-cmake-test
-          mkdir build
-          cd build
           cmake .. -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
-            -DCMAKE_INSTALL_PREFIX=../install \
-            -G Ninja
-          ninja -k0
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+            -G Ninja -B build
+          cmake --build build -- -k0
           echo "::endgroup::"
