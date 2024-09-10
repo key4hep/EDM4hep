@@ -476,4 +476,33 @@ def test_GeneratorPdfInfoCollection(event):
     assert gpi.getScale() == next(counter)
 
 
-# TODO: LINKS
+def check_LinkCollection(event, coll_type, from_el, to_el):
+    """Check a single link collection of a given type"""
+    counter = count()
+    coll_name = f"{coll_type}Collection"
+    link_coll = event.get(coll_name)
+    assert len(link_coll) == 1
+    link = link_coll[0]
+    assert link.getWeight() == next(counter)
+    assert link.getFrom() == from_el
+    assert link.getTo() == to_el
+
+
+def test_LinkCollections(event, particle, reco_particle, track):
+    """Check all the link collections"""
+    calo_hit = event.get("CalorimeterHitCollection")[0]
+    simcalo_hit = event.get("SimCalorimeterHitCollection")[0]
+    cluster = event.get("ClusterCollection")[0]
+    tracker_hit = event.get("TrackerHit3DCollection")[0]
+    simtracker_hit = event.get("SimTrackerHitCollection")[0]
+    vertex = event.get("VertexCollection")[0]
+
+    check_LinkCollection(event, "CaloHitSimCaloHitLink", calo_hit, simcalo_hit)
+    check_LinkCollection(
+        event, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit
+    )
+    check_LinkCollection(event, "CaloHitMCParticleLink", calo_hit, particle)
+    check_LinkCollection(event, "ClusterMCParticleLink", cluster, particle)
+    check_LinkCollection(event, "TrackMCParticleLink", track, particle)
+    check_LinkCollection(event, "RecoMCParticleLink", reco_particle, particle)
+    check_LinkCollection(event, "VertexRecoParticleLink", vertex, reco_particle)
