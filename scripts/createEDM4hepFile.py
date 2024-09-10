@@ -29,8 +29,10 @@ def create_MCParticleCollection():
     """Create an MCParticleCollection"""
     counter = count()
     particles = edm4hep.MCParticleCollection()
+    p_list = []
     for i in range(3):
         particle = particles.create()
+        p_list.append(particle)
         particle.setPDG(next(counter))
         particle.setGeneratorStatus(next(counter))
         particle.setSimulatorStatus(next(counter))
@@ -52,8 +54,8 @@ def create_MCParticleCollection():
         particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
         particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
-    particles[0].addToDaughters(particles[1])
-    particles[0].addToParents(particles[2])
+    p_list[0].addToDaughters(p_list[1])
+    p_list[0].addToParents(p_list[2])
     return particles
 
 
@@ -151,7 +153,7 @@ def create_ParticleIDCollection(vectorsize):
     for j in range(vectorsize):
         pid.addToParameters(next(counter))
 
-    return pids
+    return pids, pid
 
 
 def create_ClusterCollection(vectorsize, calo_hit):
@@ -273,7 +275,7 @@ def create_VertexCollection(vectorsize):
     v.setAlgorithmType(next(counter))
     for j in range(vectorsize):
         v.addToParameters(next(counter))
-    return vertex
+    return vertex, v
 
 
 def create_ReconstructedParticleCollection(vertex, cluster, track):
@@ -430,11 +432,9 @@ def create_frame():
     )
     track = tracks[0]
 
-    pids = create_ParticleIDCollection(VECTORSIZE)
-    pid = pids[0]
+    pids, pid = create_ParticleIDCollection(VECTORSIZE)
 
-    vertices = create_VertexCollection(VECTORSIZE)
-    vertex = vertices[0]
+    vertices, vertex = create_VertexCollection(VECTORSIZE)
 
     reco_particles = frame.put(
         create_ReconstructedParticleCollection(vertex, cluster, track),
