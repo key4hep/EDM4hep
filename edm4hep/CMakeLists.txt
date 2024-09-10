@@ -4,7 +4,9 @@ set(extra_code extra_code/CovMatrixCommon.ipp)
 # For now unconditionally generate all the code that is supported by the
 # installed podio
 PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources
-  IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS} DEPENDS ${extra_code}
+  IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS}
+  DEPENDS ${extra_code}
+  VERSION ${${PROJECT_NAME}_VERSION}
 )
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
