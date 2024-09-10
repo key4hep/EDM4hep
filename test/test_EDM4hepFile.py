@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Script that can be used to check whether the file that has been created by
-scripts/createEDM4hepFile.py has the expected contents
+"""Pytest module that can be used to check whether the file that has been
+created by scripts/createEDM4hepFile.py has the expected contents
 """
 
 import os
