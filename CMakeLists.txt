@@ -12,47 +12,14 @@ SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME
 find_package(podio 1.0 REQUIRED HINTS $ENV{PODIO})
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
+include(cmake/Key4hepConfig.cmake)
+
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
 
-# - Define a default build type when using a single-mode tool like make/ninja
-# If you're using a build tool that supports multiple modes (Visual Studio,
-# Xcode), this setting has no effect.
-# HSF recommend RelWithDebInfo (optimized with debugging symbols) as this is
-# generally the mode used by system packaging (rpm, deb, spack, macports).
-# However, it can be overriden by passing ``-DCMAKE_BUILD_TYPE=<type>`` when
-# invoking CMake
-if(NOT CMAKE_CONFIGURATION_TYPES)
-  if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE RelWithDebInfo
-      CACHE STRING "Choose the type of build, options are: None Release MinSizeRel Debug RelWithDebInfo"
-      FORCE
-      )
-  else()
-    set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}"
-      CACHE STRING "Choose the type of build, options are: None Release MinSizeRel Debug RelWithDebInfo"
-      FORCE
-      )
-  endif()
-endif()
-
-# - Define the C++ Standard to use (Simplest Possible)
-set(CMAKE_CXX_STANDARD 20 CACHE STRING "")
-
-if(NOT CMAKE_CXX_STANDARD MATCHES "20|23")
-  message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}")
-endif()
-
-message (STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
-
-option(EDM4HEP_SET_RPATH "Link libraries with built-in RPATH (run-time search path)" ON)
 include(cmake/EDM4HEPBuild.cmake)
-edm4hep_set_compiler_flags()
-edm4hep_set_rpath()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDROP_CGAL")
-
+edm4hep_set_linker_flags()
 
 #--- Declare options -----------------------------------------------------------
 
