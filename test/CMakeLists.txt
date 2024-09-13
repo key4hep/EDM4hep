@@ -117,5 +117,12 @@ if(HepMC3_FOUND AND HepPDT_FOUND )
   )
 endif()
 
+add_test(NAME py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
+set_test_env(py_test_module)
+set_property(TEST py_test_module APPEND PROPERTY ENVIRONMENT
+    ${ENVIRONMENT}
+    PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
+)
+
 add_subdirectory(utils)
 add_subdirectory(tools)
