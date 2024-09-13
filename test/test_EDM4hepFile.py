@@ -9,7 +9,7 @@ import edm4hep
 import pytest
 from itertools import count
 
-# For new simply copy these from createEDM4hepFile.py
+# For now simply copy these from createEDM4hepFile.py
 FRAMES = 3
 VECTORSIZE = 5
 
@@ -497,6 +497,7 @@ def test_LinkCollections(event, particle, reco_particle, track):
     simtracker_hit = event.get("SimTrackerHitCollection")[0]
     vertex = event.get("VertexCollection")[0]
 
+    check_LinkCollection(event, "RecoMCParticleLink", reco_particle, particle)
     check_LinkCollection(event, "CaloHitSimCaloHitLink", calo_hit, simcalo_hit)
     check_LinkCollection(
         event, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit
@@ -504,5 +505,4 @@ def test_LinkCollections(event, particle, reco_particle, track):
     check_LinkCollection(event, "CaloHitMCParticleLink", calo_hit, particle)
     check_LinkCollection(event, "ClusterMCParticleLink", cluster, particle)
     check_LinkCollection(event, "TrackMCParticleLink", track, particle)
-    check_LinkCollection(event, "RecoMCParticleLink", reco_particle, particle)
     check_LinkCollection(event, "VertexRecoParticleLink", vertex, reco_particle)
