@@ -12,6 +12,7 @@ from itertools import count
 # For now simply copy these from createEDM4hepFile.py
 FRAMES = 3
 VECTORSIZE = 5
+COUNT_START = 42  # Where to the counter from
 
 
 @pytest.fixture(scope="module")
@@ -61,7 +62,7 @@ def track(event):
 
 def check_cov_matrix(cov_matrix, n_dim):
     """Check the contents of the passed covariance matrix"""
-    counter = count()
+    counter = count(COUNT_START)
     # for val in cov_matrix: # Doesn't work as expected with root
     for i in range(n_dim * (n_dim + 1) // 2):
         assert cov_matrix[i] == next(counter)
@@ -74,7 +75,7 @@ def test_basic_file_contents(events):
 
 def test_EventHeaderCollection(event):
     """Check an EventHeaderCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     header = event.get("EventHeader")
     assert len(header) == 1
     h = header[0]
@@ -89,7 +90,7 @@ def test_EventHeaderCollection(event):
 
 def test_MCParticleCollection(event):
     """Check the MCParticleCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     particles = event.get("MCParticleCollection")
     assert len(particles) == 3
     for i in range(3):
@@ -123,7 +124,7 @@ def test_MCParticleCollection(event):
 
 def test_SimTrackerHitCollection(event, particle):
     """Check the SimTrackerHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("SimTrackerHitCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -144,7 +145,7 @@ def test_SimTrackerHitCollection(event, particle):
 
 def test_CaloHitContributionCollection(event, particle):
     """Check the CaloHitContributionCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("CaloHitContributionCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -160,7 +161,7 @@ def test_CaloHitContributionCollection(event, particle):
 
 def test_SimCalorimeterHitCollection(event):
     """Check the SimCalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("SimCalorimeterHitCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -177,7 +178,7 @@ def test_SimCalorimeterHitCollection(event):
 
 def test_RawCalorimeterHitCollection(event):
     """Check the RawCalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("RawCalorimeterHitCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -188,7 +189,7 @@ def test_RawCalorimeterHitCollection(event):
 
 def test_CalorimeterHitCollection(event):
     """Check the CalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("CalorimeterHitCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -204,7 +205,7 @@ def test_CalorimeterHitCollection(event):
 
 def test_ParticleIDCollection(event, reco_particle):
     """Check the ParticleIDCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     pids = event.get("ParticleIDCollection")
     assert len(pids) == 1
     pid = pids[0]
@@ -221,7 +222,7 @@ def test_ParticleIDCollection(event, reco_particle):
 
 def test_ClusterCollection(event):
     """Check the ClusterCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     clusters = event.get("ClusterCollection")
     assert len(clusters) == 1
     cluster = clusters[0]
@@ -255,7 +256,7 @@ def test_ClusterCollection(event):
 
 def test_TrackerHit3DCollection(event):
     """Check the TrackerHit3DCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("TrackerHit3DCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -273,7 +274,7 @@ def test_TrackerHit3DCollection(event):
 
 def test_TrackerHitPlaneCollection(event):
     """Check the TrackerHitPlaneCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = event.get("TrackerHitPlaneCollection")
     assert len(hits) == 1
     hit = hits[0]
@@ -295,7 +296,7 @@ def test_TrackerHitPlaneCollection(event):
 
 def test_RawTimeSeriesCollection(event):
     """Check a RawTimeSeriesCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     series = event.get("RawTimeSeriesCollection")
     assert len(series) == 1
     serie = series[0]
@@ -311,7 +312,7 @@ def test_RawTimeSeriesCollection(event):
 
 def test_TrackCollection(event):
     """Check the TrackCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     tracks = event.get("TrackCollection")
     assert len(tracks) == 1
     track = tracks[0]
@@ -355,7 +356,7 @@ def test_TrackCollection(event):
 
 def test_VertexCollection(event, reco_particle):
     """Check the VertexCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     vertex = event.get("VertexCollection")
     assert len(vertex) == 1
     v = vertex[0]
@@ -377,7 +378,7 @@ def test_VertexCollection(event, reco_particle):
 
 def test_ReconstructedParticleCollection(event, track):
     """Check the ReconstructedParticleCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     rparticles = event.get("ReconstructedParticleCollection")
     assert len(rparticles) == 1
     rparticle = rparticles[0]
@@ -410,7 +411,7 @@ def test_ReconstructedParticleCollection(event, track):
 
 def test_TimeSeriesCollection(event):
     """Check the TimeSeriesCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     timeseries = event.get("TimeSeriesCollection")
     assert len(timeseries) == 1
     serie = timeseries[0]
@@ -424,7 +425,7 @@ def test_TimeSeriesCollection(event):
 
 def test_RecDqdxCollection(event, track):
     """Check the RecDqdxCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     recdqdx = event.get("RecDqdxCollection")
     assert len(recdqdx) == 1
     dqdx = recdqdx[0]
@@ -437,7 +438,7 @@ def test_RecDqdxCollection(event, track):
 
 def test_GeneratorEventParametersCollection(event, particle):
     """Check the GeneratorEventParametersCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     gep_coll = event.get("GeneratorEventParametersCollection")
     assert len(gep_coll) == 1
     gep = gep_coll[0]
@@ -460,7 +461,7 @@ def test_GeneratorEventParametersCollection(event, particle):
 
 def test_GeneratorPdfInfoCollection(event):
     """Check the GeneratorPdfInfoCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     gpi_coll = event.get("GeneratorPdfInfoCollection")
     assert len(gpi_coll) == 1
     gpi = gpi_coll[0]
@@ -478,7 +479,7 @@ def test_GeneratorPdfInfoCollection(event):
 
 def check_LinkCollection(event, coll_type, from_el, to_el):
     """Check a single link collection of a given type"""
-    counter = count()
+    counter = count(COUNT_START)
     coll_name = f"{coll_type}Collection"
     link_coll = event.get(coll_name)
     assert len(link_coll) == 1

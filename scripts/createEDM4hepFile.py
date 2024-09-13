@@ -14,10 +14,12 @@ import edm4hep
 FRAMES = 3  # How many frames or events will be written
 VECTORSIZE = 5  # For vector members, each vector member will have this size
 
+COUNT_START = 42  # Where to the counter from
+
 
 def create_EventHeaderCollection(vectorsize):
     """Create an EventHeaderCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     header = edm4hep.EventHeaderCollection()
     h = header.create()
     h.setEventNumber(next(counter))
@@ -31,7 +33,7 @@ def create_EventHeaderCollection(vectorsize):
 
 def create_MCParticleCollection():
     """Create an MCParticleCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     particles = edm4hep.MCParticleCollection()
     p_list = []
     for i in range(3):
@@ -65,7 +67,7 @@ def create_MCParticleCollection():
 
 def create_SimTrackerHitCollection(particle):
     """Create a SimTrackerHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.SimTrackerHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -81,7 +83,7 @@ def create_SimTrackerHitCollection(particle):
 
 def create_CaloHitContributionCollection(particle):
     """Create a CaloHitContributionCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.CaloHitContributionCollection()
     hit = hits.create()
     hit.setPDG(next(counter))
@@ -94,7 +96,7 @@ def create_CaloHitContributionCollection(particle):
 
 def create_SimCalorimeterHitCollection(calo_contrib):
     """Create a SimCalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.SimCalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -106,7 +108,7 @@ def create_SimCalorimeterHitCollection(calo_contrib):
 
 def create_RawCalorimeterHitCollection():
     """Crate a RawCalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.RawCalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -117,7 +119,7 @@ def create_RawCalorimeterHitCollection():
 
 def create_CalorimeterHitCollection():
     """Create a CalorimeterHitCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.CalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -135,7 +137,7 @@ def create_CovMatrixNf(n_dim):
         return ValueError(
             f"{n_dim} is not a valid dimension for a CovMatrix in EDM4hep. Valid: (2, 3, 4, 6)"
         )
-    counter = count()
+    counter = count(COUNT_START)
     # With the current version of cppyy (from ROOT 6.30.06)
     # it's not possible to initialize an std::array from a list
     # In future versions (works with 6.32.02) it will be possible
@@ -147,7 +149,7 @@ def create_CovMatrixNf(n_dim):
 
 def create_ParticleIDCollection(vectorsize):
     """Create a ParticleIDCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     pids = edm4hep.ParticleIDCollection()
     pid = pids.create()
     pid.setType(next(counter))
@@ -162,7 +164,7 @@ def create_ParticleIDCollection(vectorsize):
 
 def create_ClusterCollection(vectorsize, calo_hit):
     """Create a ClusterCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     clusters = edm4hep.ClusterCollection()
     cluster = clusters.create()
     cluster.setType(next(counter))
@@ -186,7 +188,7 @@ def create_ClusterCollection(vectorsize, calo_hit):
 
 def create_TrackerHit3DCollection():
     """Create a TrackerHit3DCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.TrackerHit3DCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -202,7 +204,7 @@ def create_TrackerHit3DCollection():
 
 def create_TrackerHitPlaneCollection():
     """Create a TrackerHitPlaneCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     hits = edm4hep.TrackerHitPlaneCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -222,7 +224,7 @@ def create_TrackerHitPlaneCollection():
 
 def create_RawTimeSeriesCollection(vectorsize):
     """Create a RawTimeSeriesCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     series = edm4hep.RawTimeSeriesCollection()
     serie = series.create()
     serie.setCellID(next(counter))
@@ -237,7 +239,7 @@ def create_RawTimeSeriesCollection(vectorsize):
 
 def create_TrackCollection(vectorsize, tracker_hit):
     """Create a TrackCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     tracks = edm4hep.TrackCollection()
     track = tracks.create()
     track.setType(next(counter))
@@ -268,7 +270,7 @@ def create_TrackCollection(vectorsize, tracker_hit):
 
 def create_VertexCollection(vectorsize):
     """Create a VertexCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     vertex = edm4hep.VertexCollection()
     v = vertex.create()
     v.setType(next(counter))
@@ -284,7 +286,7 @@ def create_VertexCollection(vectorsize):
 
 def create_ReconstructedParticleCollection(vertex, cluster, track):
     """Create a ReconstructedParticleCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     rparticles = edm4hep.ReconstructedParticleCollection()
     rparticle = rparticles.create()
     rparticle.setPDG(next(counter))
@@ -306,7 +308,7 @@ def create_ReconstructedParticleCollection(vertex, cluster, track):
 
 def create_LinkCollection(coll_type, from_el, to_el):
     """Create a LinkCollection of the given type and add one link to it"""
-    counter = count()
+    counter = count(COUNT_START)
     links = coll_type()
     link = links.create()
     link.setWeight(next(counter))
@@ -317,7 +319,7 @@ def create_LinkCollection(coll_type, from_el, to_el):
 
 def create_TimeSeriesCollection(vectorsize):
     """Create a TimeSeriesCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     timeseries = edm4hep.TimeSeriesCollection()
     serie = timeseries.create()
     serie.setCellID(next(counter))
@@ -330,7 +332,7 @@ def create_TimeSeriesCollection(vectorsize):
 
 def create_RecDqdxCollection(track):
     """Create a RecDqdxCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     recdqdx = edm4hep.RecDqdxCollection()
     dqdx = recdqdx.create()
     q = edm4hep.Quantity()
@@ -344,7 +346,7 @@ def create_RecDqdxCollection(track):
 
 def create_GeneratorEventParametersCollection(vectorsize, particle):
     """Create a GeneratorEventParametersCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     gep_coll = edm4hep.GeneratorEventParametersCollection()
     gep = gep_coll.create()
     gep.setEventScale(next(counter))
@@ -361,7 +363,7 @@ def create_GeneratorEventParametersCollection(vectorsize, particle):
 
 def create_GeneratorPdfInfoCollection():
     """Create a GeneratorPdfInfoCollection"""
-    counter = count()
+    counter = count(COUNT_START)
     gpi_coll = edm4hep.GeneratorPdfInfoCollection()
     gpi = gpi_coll.create()
     # Doesn't work with ROOT 6.30.06
