@@ -8,6 +8,7 @@ PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources
   DEPENDS ${extra_code}
   VERSION ${${PROJECT_NAME}_VERSION}
 )
+list(APPEND sources src/LinkCollectionDeclarations.cc)
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
 target_include_directories(edm4hep PUBLIC
