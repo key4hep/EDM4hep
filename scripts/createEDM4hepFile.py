@@ -3,9 +3,13 @@
 # Description: Create a file with EDM4hep data using the EDM4hep python bindings
 # The purpose of the script is to use all the classes of the EDM4hep library
 # to create a file with dummy data.
+
+import argparse
+import sys
+from itertools import count
+
 import podio
 import edm4hep
-from itertools import count
 
 FRAMES = 3  # How many frames or events will be written
 VECTORSIZE = 5  # For vector members, each vector member will have this size
@@ -471,9 +475,6 @@ def create_frame():
 
 
 if __name__ == "__main__":
-    import argparse
-    import sys
-
     parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
     parser.add_argument(
         "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
