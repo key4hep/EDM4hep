@@ -30,7 +30,7 @@ components:
           return *( &x + i ) ; }\n
       "
 
-    # Vector3D with floats
+
     edm4hep::Vector3f:
       Members:
         - float x
@@ -52,7 +52,7 @@ components:
           return *( &x + i ) ; }\n
         "
 
-    # Vector3D with doubles
+
     edm4hep::Vector3d:
       Members:
         - double x
@@ -80,7 +80,7 @@ components:
           return *( &x + i ) ; }\n
         "
 
-    # Vector2D with ints
+
     edm4hep::Vector2i:
       Members:
         - int32_t a
@@ -100,7 +100,7 @@ components:
           return *( &a + i ) ; }\n
         "
 
-    # Vector2D with floats
+
     edm4hep::Vector2f:
       Members:
         - float a
@@ -119,6 +119,7 @@ components:
             \"operator[] requires no padding\");\n
           return *( &a + i ) ; }\n
         "
+
 
     edm4hep::CovMatrix2f:
       Description: "A generic 2 dimensional covariance matrix with values stored in lower triangular form"
@@ -199,8 +200,8 @@ components:
         declarationFile: "edm4hep/extra_code/CovMatrixCommon.ipp"
 
 
-      # Parametrized description of a particle track
     edm4hep::TrackState:
+      Description: "Parametrized description of a particle track"
       Members:
         - int32_t location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
         - float D0 // transverse impact parameter
@@ -228,7 +229,7 @@ components:
         constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
         "
 
-    # quantity with an identifier, a value and an error
+
     edm4hep::Quantity:
       Members:
         - int16_t type // flag identifying how to interpret the quantity
@@ -317,7 +318,6 @@ datatypes:
       "
 
 
-  #----------- SimTrackerHit
   edm4hep::SimTrackerHit:
     Description: "Simulated tracker hit"
     Author: "EDM4hep authors"
@@ -359,7 +359,6 @@ datatypes:
       "
 
 
-  #------------- CaloHitContribution
   edm4hep::CaloHitContribution:
     Description: "Monte Carlo contribution to SimCalorimeterHit"
     Author: "EDM4hep authors"
@@ -371,7 +370,7 @@ datatypes:
     OneToOneRelations:
       - edm4hep::MCParticle particle     // primary MCParticle that caused the shower responsible for this contribution to the hit
 
-  #------------- SimCalorimeterHit
+
   edm4hep::SimCalorimeterHit:
     Description: "Simulated calorimeter hit"
     Author: "EDM4hep authors"
@@ -383,7 +382,6 @@ datatypes:
       - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
 
 
-  #-------------  RawCalorimeterHit
   edm4hep::RawCalorimeterHit:
     Description: "Raw calorimeter hit"
     Author: "EDM4hep authors"
@@ -392,7 +390,7 @@ datatypes:
       - int32_t amplitude               // amplitude of the hit in ADC counts
       - int32_t timeStamp               // time stamp for the hit
 
-  #-------------  CalorimeterHit
+
   edm4hep::CalorimeterHit:
     Description: "Calorimeter hit"
     Author: "EDM4hep authors"
@@ -404,7 +402,6 @@ datatypes:
       - edm4hep::Vector3f position [mm] // position of the hit in world coordinates
       - int32_t type                   // type of hit
 
- #---------- ParticleID
   edm4hep::ParticleID:
     Description:  "ParticleID"
     Author: "EDM4hep authors"
@@ -419,7 +416,6 @@ datatypes:
       - edm4hep::ReconstructedParticle particle // the particle from which this PID has been computed
 
 
- #------ Cluster
   edm4hep::Cluster:
     Description: "Calorimeter Hit Cluster"
     Author: "EDM4hep authors"
@@ -451,7 +447,7 @@ datatypes:
       void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
       "
 
-  #-------------  TrackerHit
+
   edm4hep::TrackerHit3D:
     Description: "Tracker hit"
     Author: "EDM4hep authors"
@@ -477,7 +473,7 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  #-------------  TrackerHitPlane
+
   edm4hep::TrackerHitPlane:
     Description: "Tracker hit plane"
     Author: "EDM4hep authors"
@@ -507,7 +503,7 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
- #---------- RawTimeSeries
+
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
     Author: "EDM4hep authors"
@@ -521,7 +517,7 @@ datatypes:
        - int32_t adcCounts          // raw data (32-bit) word at i
 
 
- #-------- Track
+
   edm4hep::Track:
     Description: "Reconstructed track"
     Author: "EDM4hep authors"
@@ -538,7 +534,7 @@ datatypes:
       - edm4hep::TrackerHit trackerHits  // hits that have been used to create this track
       - edm4hep::Track tracks            // tracks (segments) that have been combined to create this track
 
- #---------- Vertex
+
   edm4hep::Vertex:
     Description: "Vertex"
     Author: "EDM4hep authors"
@@ -584,7 +580,7 @@ datatypes:
       void setTertiary(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }\n
       "
 
-  #------- ReconstructedParticle
+
   edm4hep::ReconstructedParticle:
     Description: "Reconstructed Particle"
     Author: "EDM4hep authors"
@@ -813,7 +809,7 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
       "
 
- #----------  TimeSeries
+
   edm4hep::TimeSeries:
     Description: "Calibrated Detector Data"
     Author: "EDM4hep authors"
@@ -825,7 +821,7 @@ datatypes:
        - float amplitude            // calibrated detector data
 
 
-  #-------------  RecDqdx
+
   edm4hep::RecDqdx:
     Description: "dN/dx or dE/dx info of a Track"
     Author: "EDM4hep authors"
@@ -837,7 +833,7 @@ datatypes:
 
   #===== Generator related data =====
 
-  #---------- GeneratorEventParameters
+
   edm4hep::GeneratorEventParameters:
     Description: "Generator event parameters"
     Author: "EDM4hep authors"
@@ -854,7 +850,6 @@ datatypes:
       - edm4hep::MCParticle signalVertex // List of initial state MCParticle that are the source of the hard interaction
 
 
-  #---------- GeneratorPdfInfo
   edm4hep::GeneratorPdfInfo:
     Description: "Generator pdf information"
     Author: "EDM4hep authors"
