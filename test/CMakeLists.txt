@@ -13,13 +13,37 @@ function(set_test_env _testname)
     )
 endfunction()
 
-add_test(NAME "Create an EDM4hep data file" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --output-file edm4hep_example.root)
-set_test_env("Create an EDM4hep data file")
+add_test(NAME create_complete_file COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --output-file edm4hep_example.root)
+set_test_env(create_complete_file)
 
-add_test(NAME "Create an EDM4hep data file (RNTuple)" COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
-set_test_env("Create an EDM4hep data file (RNTuple)")
-set_tests_properties("Create an EDM4hep data file (RNTuple)" PROPERTIES
+add_test(NAME create_complete_file_rntuple COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
+set_test_env(create_complete_file_rntuple)
+set_tests_properties(create_complete_file_rntuple PROPERTIES
   SKIP_REGULAR_EXPRESSION "The RNTuple writer from podio is not available but was requested"
+)
+
+add_test(NAME check_complete_file COMMAND pytest --inputfile=${CMAKE_BINARY_DIR}/test/edm4hep_example.root -v)
+set_test_env(check_complete_file)
+set_tests_properties(
+  check_complete_file
+  PROPERTIES
+   DEPENDS create_complete_file
+)
+add_test(NAME check_complete_file_rntuple COMMAND pytest --inputfile=${CMAKE_BINARY_DIR}/test/edm4hep_example_rntuple.root -v)
+set_test_env(check_complete_file_rntuple)
+set_tests_properties(
+  check_complete_file_rntuple
+  PROPERTIES
+   DEPENDS create_complete_file_rntuple
+)
+
+set_tests_properties(
+  check_complete_file
+  check_complete_file_rntuple
+
+  PROPERTIES
+   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+   FAIL_REGULAR_EXPRESSION ""
 )
 
 add_executable(write_events write_events.cc)

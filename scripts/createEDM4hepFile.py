@@ -3,54 +3,23 @@
 # Description: Create a file with EDM4hep data using the EDM4hep python bindings
 # The purpose of the script is to use all the classes of the EDM4hep library
 # to create a file with dummy data.
-import podio
-import edm4hep
-from itertools import count
+
 import argparse
 import sys
+from itertools import count
 
-frames = 3  # How many frames or events will be written
-vectorsize = 5  # For vector members, each vector member will have this size
-counter = count()  # next(counter) will return 0, 1, 2, ...
+import podio
+import edm4hep
 
-parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
-parser.add_argument(
-    "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
-)
-parser.add_argument(
-    "--output-file", type=str, help="Output file name", default="edm4hep.root"
-)
-args = parser.parse_args()
-output_file = args.output_file
+FRAMES = 3  # How many frames or events will be written
+VECTORSIZE = 5  # For vector members, each vector member will have this size
 
-if args.rntuple:
-    try:
-        writer = podio.root_io.RNTupleWriter(output_file)
-    except AttributeError:
-        print("The RNTuple writer from podio is not available but was requested")
-        sys.exit(1)
-else:
-    writer = podio.root_io.Writer(output_file)
+COUNT_START = 42  # Where to the counter from
 
-for i in range(frames):
-    print(f"Writing frame {i}")
-    frame = podio.Frame()
 
-    # Make covariance matrices needed later
-
-    # With the current version of cppyy (from ROOT 6.30.06)
-    # it's not possible to initialize an std::array from a list
-    # In future versions (works with 6.32.02) it will be possible
-    cov3f = edm4hep.CovMatrix3f()
-    for i in range(6):
-        cov3f[i] = next(counter)
-    cov4f = edm4hep.CovMatrix4f()
-    for i in range(10):
-        cov4f[i] = next(counter)
-    cov6f = edm4hep.CovMatrix6f()
-    for i in range(21):
-        cov6f[i] = next(counter)
-
+def create_EventHeaderCollection(vectorsize):
+    """Create an EventHeaderCollection"""
+    counter = count(COUNT_START)
     header = edm4hep.EventHeaderCollection()
     h = header.create()
     h.setEventNumber(next(counter))
@@ -59,11 +28,17 @@ for i in range(frames):
     h.setWeight(1.0)
     for j in range(vectorsize):
         h.addToWeights(next(counter))
-    frame.put(header, "EventHeader")
+    return header
 
+
+def create_MCParticleCollection():
+    """Create an MCParticleCollection"""
+    counter = count(COUNT_START)
     particles = edm4hep.MCParticleCollection()
-    for i in range(3):
+    p_list = []
+    for _ in range(3):
         particle = particles.create()
+        p_list.append(particle)
         particle.setPDG(next(counter))
         particle.setGeneratorStatus(next(counter))
         particle.setSimulatorStatus(next(counter))
@@ -85,11 +60,14 @@ for i in range(frames):
         particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
         particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
-    particles[0].addToDaughters(particles[1])
-    particles[0].addToParents(particles[2])
-    particle = particles[0]
-    frame.put(particles, "MCParticleCollection")
+    p_list[0].addToDaughters(p_list[1])
+    p_list[0].addToParents(p_list[2])
+    return particles
 
+
+def create_SimTrackerHitCollection(particle):
+    """Create a SimTrackerHitCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.SimTrackerHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -100,9 +78,12 @@ for i in range(frames):
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     hit.setParticle(particle)
-    simtracker_hit = hit
-    frame.put(hits, "SimTrackerHitCollection")
+    return hits
 
+
+def create_CaloHitContributionCollection(particle):
+    """Create a CaloHitContributionCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.CaloHitContributionCollection()
     hit = hits.create()
     hit.setPDG(next(counter))
@@ -110,25 +91,35 @@ for i in range(frames):
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     hit.setParticle(particle)
-    calohit = hit
-    frame.put(hits, "CaloHitContributionCollection")
+    return hits
 
+
+def create_SimCalorimeterHitCollection(calo_contrib):
+    """Create a SimCalorimeterHitCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.SimCalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
     hit.setEnergy(next(counter))
     hit.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    hit.addToContributions(calohit)
-    simcalo_hit = hit
-    frame.put(hits, "SimCalorimeterHitCollection")
+    hit.addToContributions(calo_contrib)
+    return hits
 
+
+def create_RawCalorimeterHitCollection():
+    """Crate a RawCalorimeterHitCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.RawCalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
     hit.setAmplitude(next(counter))
     hit.setTimeStamp(next(counter))
-    frame.put(hits, "RawCalorimeterHitCollection")
+    return hits
 
+
+def create_CalorimeterHitCollection():
+    """Create a CalorimeterHitCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.CalorimeterHitCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -137,9 +128,28 @@ for i in range(frames):
     hit.setTime(next(counter))
     hit.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     hit.setType(next(counter))
-    calo_hit = hit
-    frame.put(hits, "CalorimeterHitCollection")
+    return hits
 
+
+def create_CovMatrixNf(n_dim):
+    """Create a covariance matrix of dimension n_dim"""
+    if n_dim not in (2, 3, 4, 6):
+        return ValueError(
+            f"{n_dim} is not a valid dimension for a CovMatrix in EDM4hep. Valid: (2, 3, 4, 6)"
+        )
+    counter = count(COUNT_START)
+    # With the current version of cppyy (from ROOT 6.30.06)
+    # it's not possible to initialize an std::array from a list
+    # In future versions (works with 6.32.02) it will be possible
+    covNf = getattr(edm4hep, f"CovMatrix{n_dim}f")()
+    for i in range(n_dim * (n_dim + 1) // 2):
+        covNf[i] = next(counter)
+    return covNf
+
+
+def create_ParticleIDCollection(vectorsize):
+    """Create a ParticleIDCollection"""
+    counter = count(COUNT_START)
     pids = edm4hep.ParticleIDCollection()
     pid = pids.create()
     pid.setType(next(counter))
@@ -148,15 +158,20 @@ for i in range(frames):
     pid.setLikelihood(next(counter))
     for j in range(vectorsize):
         pid.addToParameters(next(counter))
-    frame.put(pids, "ParticleIDCollection")
 
+    return pids, pid
+
+
+def create_ClusterCollection(vectorsize, calo_hit):
+    """Create a ClusterCollection"""
+    counter = count(COUNT_START)
     clusters = edm4hep.ClusterCollection()
     cluster = clusters.create()
     cluster.setType(next(counter))
     cluster.setEnergy(next(counter))
     cluster.setEnergyError(next(counter))
     cluster.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    cluster.setPositionError(cov3f)
+    cluster.setPositionError(create_CovMatrixNf(3))
     cluster.setITheta(next(counter))
     cluster.setPhi(next(counter))
     cluster.setDirectionError(
@@ -167,8 +182,13 @@ for i in range(frames):
         cluster.addToSubdetectorEnergies(next(counter))
     cluster.addToClusters(cluster)
     cluster.addToHits(calo_hit)
-    frame.put(clusters, "ClusterCollection")
 
+    return clusters
+
+
+def create_TrackerHit3DCollection():
+    """Create a TrackerHit3DCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.TrackerHit3DCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -178,10 +198,13 @@ for i in range(frames):
     hit.setEDep(next(counter))
     hit.setEDepError(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    hit.setCovMatrix(cov3f)
-    tracker_hit = hit
-    frame.put(hits, "TrackerHit3DCollection")
+    hit.setCovMatrix(create_CovMatrixNf(3))
+    return hits
 
+
+def create_TrackerHitPlaneCollection():
+    """Create a TrackerHitPlaneCollection"""
+    counter = count(COUNT_START)
     hits = edm4hep.TrackerHitPlaneCollection()
     hit = hits.create()
     hit.setCellID(next(counter))
@@ -195,9 +218,13 @@ for i in range(frames):
     hit.setDu(next(counter))
     hit.setDv(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
-    hit.setCovMatrix(cov3f)
-    frame.put(hits, "TrackerHitPlaneCollection")
+    hit.setCovMatrix(create_CovMatrixNf(3))
+    return hits
 
+
+def create_RawTimeSeriesCollection(vectorsize):
+    """Create a RawTimeSeriesCollection"""
+    counter = count(COUNT_START)
     series = edm4hep.RawTimeSeriesCollection()
     serie = series.create()
     serie.setCellID(next(counter))
@@ -207,8 +234,12 @@ for i in range(frames):
     serie.setInterval(next(counter))
     for j in range(vectorsize):
         serie.addToAdcCounts(next(counter))
-    frame.put(series, "RawTimeSeriesCollection")
+    return series
 
+
+def create_TrackCollection(vectorsize, tracker_hit):
+    """Create a TrackCollection"""
+    counter = count(COUNT_START)
     tracks = edm4hep.TrackCollection()
     track = tracks.create()
     track.setType(next(counter))
@@ -216,6 +247,7 @@ for i in range(frames):
     track.setNdf(next(counter))
     for j in range(vectorsize):
         track.addToSubdetectorHitNumbers(next(counter))
+        track.addToSubdetectorHoleNumbers(next(counter))
         state = edm4hep.TrackState()
         state.location = next(counter)
         state.D0 = next(counter)
@@ -227,25 +259,34 @@ for i in range(frames):
         state.referencePoint = edm4hep.Vector3f(
             next(counter), next(counter), next(counter)
         )
-        state.covMatrix = cov6f
+        state.covMatrix = create_CovMatrixNf(6)
         track.addToTrackStates(state)
+
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
     track.setNholes(next(counter))
-    frame.put(tracks, "TrackCollection")
+    return tracks
 
+
+def create_VertexCollection(vectorsize):
+    """Create a VertexCollection"""
+    counter = count(COUNT_START)
     vertex = edm4hep.VertexCollection()
     v = vertex.create()
     v.setType(next(counter))
     v.setChi2(next(counter))
     v.setNdf(next(counter))
     v.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    v.setCovMatrix(cov3f)
+    v.setCovMatrix(create_CovMatrixNf(3))
     v.setAlgorithmType(next(counter))
     for j in range(vectorsize):
         v.addToParameters(next(counter))
-    frame.put(vertex, "VertexCollection")
+    return vertex, v
 
+
+def create_ReconstructedParticleCollection(vertex, cluster, track):
+    """Create a ReconstructedParticleCollection"""
+    counter = count(COUNT_START)
     rparticles = edm4hep.ReconstructedParticleCollection()
     rparticle = rparticles.create()
     rparticle.setPDG(next(counter))
@@ -257,70 +298,28 @@ for i in range(frames):
     rparticle.setCharge(next(counter))
     rparticle.setMass(next(counter))
     rparticle.setGoodnessOfPID(next(counter))
-    rparticle.setCovMatrix(cov4f)
-    rparticle.setDecayVertex(v)
+    rparticle.setCovMatrix(create_CovMatrixNf(4))
+    rparticle.setDecayVertex(vertex)
     rparticle.addToClusters(cluster)
     rparticle.addToTracks(track)
     rparticle.addToParticles(rparticle)
-    reco_particle = rparticle
-    frame.put(rparticles, "ReconstructedParticleCollection")
+    return rparticles
 
-    v.addToParticles(reco_particle)
-    pid.setParticle(reco_particle)
 
-    # TODO: Add when the PID PR is merged
-    # if not args.use_pre1:
-    #     pid.setParticle(reco_particle)
-
-    links = edm4hep.RecoMCParticleLinkCollection()
+def create_LinkCollection(coll_type, from_el, to_el):
+    """Create a LinkCollection of the given type and add one link to it"""
+    counter = count(COUNT_START)
+    links = coll_type()
     link = links.create()
     link.setWeight(next(counter))
-    link.setFrom(reco_particle)
-    link.setTo(particle)
-    frame.put(links, "RecoMCParticleLinkCollection")
+    link.setFrom(from_el)
+    link.setTo(to_el)
+    return links
 
-    links = edm4hep.CaloHitSimCaloHitLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setFrom(calo_hit)
-    link.setTo(simcalo_hit)
-    frame.put(links, "CaloHitSimCaloHitLinkCollection")
 
-    links = edm4hep.TrackerHitSimTrackerHitLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setFrom(tracker_hit)
-    link.setTo(simtracker_hit)
-    frame.put(links, "TrackerHitSimTrackerHitLinkCollection")
-
-    links = edm4hep.CaloHitMCParticleLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setFrom(calo_hit)
-    link.setTo(particle)
-    frame.put(links, "CaloHitMCParticleLinkCollection")
-
-    links = edm4hep.ClusterMCParticleLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setFrom(cluster)
-    link.setTo(particle)
-    frame.put(links, "ClusterMCParticleLinkCollection")
-
-    links = edm4hep.TrackMCParticleLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setFrom(track)
-    link.setTo(particle)
-    frame.put(links, "TrackMCParticleLinkCollection")
-
-    links = edm4hep.VertexRecoParticleLinkCollection()
-    link = links.create()
-    link.setWeight(next(counter))
-    link.setTo(reco_particle)
-    link.setFrom(v)
-    frame.put(links, "MCVertexRecoParticleLinkCollection")
-
+def create_TimeSeriesCollection(vectorsize):
+    """Create a TimeSeriesCollection"""
+    counter = count(COUNT_START)
     timeseries = edm4hep.TimeSeriesCollection()
     serie = timeseries.create()
     serie.setCellID(next(counter))
@@ -328,8 +327,12 @@ for i in range(frames):
     serie.setInterval(next(counter))
     for j in range(vectorsize):
         serie.addToAmplitude(next(counter))
-    frame.put(timeseries, "TimeSeriesCollection")
+    return timeseries
 
+
+def create_RecDqdxCollection(track):
+    """Create a RecDqdxCollection"""
+    counter = count(COUNT_START)
     recdqdx = edm4hep.RecDqdxCollection()
     dqdx = recdqdx.create()
     q = edm4hep.Quantity()
@@ -338,8 +341,12 @@ for i in range(frames):
     q.error = next(counter)
     dqdx.setDQdx(q)
     dqdx.setTrack(track)
-    frame.put(recdqdx, "RecDqdxCollection")
+    return recdqdx
 
+
+def create_GeneratorEventParametersCollection(vectorsize, particle):
+    """Create a GeneratorEventParametersCollection"""
+    counter = count(COUNT_START)
     gep_coll = edm4hep.GeneratorEventParametersCollection()
     gep = gep_coll.create()
     gep.setEventScale(next(counter))
@@ -347,13 +354,16 @@ for i in range(frames):
     gep.setAlphaQCD(next(counter))
     gep.setSignalProcessId(next(counter))
     gep.setSqrts(next(counter))
-    frame.put(gep_coll, "GeneratorEventParametersCollection")
-
     for i in range(vectorsize):
         gep.addToCrossSections(next(counter))
         gep.addToCrossSectionErrors(next(counter))
     gep.addToSignalVertex(particle)
+    return gep_coll
 
+
+def create_GeneratorPdfInfoCollection():
+    """Create a GeneratorPdfInfoCollection"""
+    counter = count(COUNT_START)
     gpi_coll = edm4hep.GeneratorPdfInfoCollection()
     gpi = gpi_coll.create()
     # Doesn't work with ROOT 6.30.06
@@ -373,6 +383,121 @@ for i in range(frames):
     gpi.setXf(0, next(counter))
     gpi.setXf(1, next(counter))
     gpi.setScale(next(counter))
-    frame.put(gpi_coll, "GeneratorPdfInfoCollection")
+    return gpi_coll
 
-    writer.write_frame(frame, "events")
+
+def put_link_collection(frame, link_name, from_el, to_el):
+    """Helper function to put a link collection into the frame"""
+    coll_name = f"{link_name}Collection"
+    coll_type = getattr(edm4hep, coll_name)
+    frame.put(create_LinkCollection(coll_type, from_el, to_el), coll_name)
+
+
+def create_frame():
+    """Create a Frame with all types"""
+    frame = podio.Frame()
+
+    frame.put(create_EventHeaderCollection(VECTORSIZE), "EventHeader")
+
+    particles = frame.put(create_MCParticleCollection(), "MCParticleCollection")
+    particle = particles[0]
+
+    hits = frame.put(
+        create_SimTrackerHitCollection(particle), "SimTrackerHitCollection"
+    )
+    simtracker_hit = hits[0]
+
+    calo_contribs = frame.put(
+        create_CaloHitContributionCollection(particle), "CaloHitContributionCollection"
+    )
+    calo_contrib = calo_contribs[0]
+
+    hits = frame.put(
+        create_SimCalorimeterHitCollection(calo_contrib), "SimCalorimeterHitCollection"
+    )
+    simcalo_hit = hits[0]
+
+    frame.put(create_RawCalorimeterHitCollection(), "RawCalorimeterHitCollection")
+
+    hits = frame.put(create_CalorimeterHitCollection(), "CalorimeterHitCollection")
+    calo_hit = hits[0]
+
+    clusters = frame.put(
+        create_ClusterCollection(VECTORSIZE, calo_hit), "ClusterCollection"
+    )
+    cluster = clusters[0]
+
+    hits = frame.put(create_TrackerHit3DCollection(), "TrackerHit3DCollection")
+    tracker_hit = hits[0]
+    frame.put(create_TrackerHitPlaneCollection(), "TrackerHitPlaneCollection")
+
+    frame.put(create_RawTimeSeriesCollection(VECTORSIZE), "RawTimeSeriesCollection")
+
+    tracks = frame.put(
+        create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection"
+    )
+    track = tracks[0]
+
+    pids, pid = create_ParticleIDCollection(VECTORSIZE)
+
+    vertices, vertex = create_VertexCollection(VECTORSIZE)
+
+    reco_particles = frame.put(
+        create_ReconstructedParticleCollection(vertex, cluster, track),
+        "ReconstructedParticleCollection",
+    )
+    reco_particle = reco_particles[0]
+
+    vertex.addToParticles(reco_particle)
+    frame.put(vertices, "VertexCollection")
+
+    pid.setParticle(reco_particle)
+    frame.put(pids, "ParticleIDCollection")
+
+    put_link_collection(frame, "RecoMCParticleLink", reco_particle, particle)
+    put_link_collection(frame, "CaloHitSimCaloHitLink", calo_hit, simcalo_hit)
+    put_link_collection(
+        frame, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit
+    )
+    put_link_collection(frame, "CaloHitMCParticleLink", calo_hit, particle)
+    put_link_collection(frame, "ClusterMCParticleLink", cluster, particle)
+    put_link_collection(frame, "TrackMCParticleLink", track, particle)
+    put_link_collection(frame, "VertexRecoParticleLink", vertex, reco_particle)
+
+    frame.put(create_TimeSeriesCollection(VECTORSIZE), "TimeSeriesCollection")
+    frame.put(create_RecDqdxCollection(track), "RecDqdxCollection")
+
+    frame.put(
+        create_GeneratorEventParametersCollection(VECTORSIZE, particle),
+        "GeneratorEventParametersCollection",
+    )
+    frame.put(create_GeneratorPdfInfoCollection(), "GeneratorPdfInfoCollection")
+
+    return frame
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Create a file with EDM4hep data")
+    parser.add_argument(
+        "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
+    )
+    parser.add_argument(
+        "--output-file", type=str, help="Output file name", default="edm4hep.root"
+    )
+    args = parser.parse_args()
+    output_file = args.output_file
+
+    if args.rntuple:
+        try:
+            writer = podio.root_io.RNTupleWriter(output_file)
+        except AttributeError:
+            print("The RNTuple writer from podio is not available but was requested")
+            sys.exit(1)
+    else:
+        writer = podio.root_io.Writer(output_file)
+
+    for i in range(FRAMES):
+        frame = create_frame()
+        print(f"Writing frame {i}")
+
+        writer.write_frame(frame, "events")
