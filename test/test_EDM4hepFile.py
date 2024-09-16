@@ -3,7 +3,6 @@
 created by scripts/createEDM4hepFile.py has the expected contents
 """
 
-import os
 import podio
 import edm4hep
 import pytest
@@ -12,7 +11,7 @@ from itertools import count
 # For now simply copy these from createEDM4hepFile.py
 FRAMES = 3
 VECTORSIZE = 5
-COUNT_START = 42  # Where to the counter from
+COUNT_START = 42  # Starting point for the counters
 
 
 @pytest.fixture(scope="module")

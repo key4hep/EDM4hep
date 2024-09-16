@@ -36,7 +36,7 @@ def create_MCParticleCollection():
     counter = count(COUNT_START)
     particles = edm4hep.MCParticleCollection()
     p_list = []
-    for i in range(3):
+    for _ in range(3):
         particle = particles.create()
         p_list.append(particle)
         particle.setPDG(next(counter))
