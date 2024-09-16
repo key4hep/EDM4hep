@@ -250,7 +250,6 @@ def test_ClusterCollection(event):
     calo_hit = event.get("CalorimeterHitCollection")[0]
     assert len(cluster.getHits()) == 1
     assert cluster.getHits()[0] == calo_hit
-    cluster.addToHits(calo_hit)
 
 
 def test_TrackerHit3DCollection(event):
