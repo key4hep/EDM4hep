@@ -27,5 +27,12 @@ from ROOT import edm4hep
 # Make TAB completion work for utils
 setattr(edm4hep, 'utils', edm4hep.utils)
 
+# set package attributes for edm4hep
+edm4hep.__version__ = __version__
+edm4hep.__name__ = __name__
+edm4hep.__spec__ = __spec__
+edm4hep.__path__ = __path__
+edm4hep.__file__ = __file__
+
 # Make `import edm4hep` work
 sys.modules['edm4hep'] = edm4hep
