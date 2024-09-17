@@ -3,15 +3,25 @@
 created by scripts/createEDM4hepFile.py has the expected contents
 """
 
+import os
 import podio
 import edm4hep
 import pytest
 from itertools import count
 
+from conftest import options
+
 # For now simply copy these from createEDM4hepFile.py
 FRAMES = 3
 VECTORSIZE = 5
 COUNT_START = 42  # Starting point for the counters
+
+# Skip the test if an rntuple file has not been produced
+if "rntuple" in options.inputfile and not os.path.isfile(options.inputfile):
+    pytest.skip(
+        "Skipping rntuple reading tests, because input is not produced",
+        allow_module_level=True,
+    )
 
 
 @pytest.fixture(scope="module")
