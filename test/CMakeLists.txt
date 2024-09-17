@@ -35,6 +35,7 @@ set_tests_properties(
   check_complete_file_rntuple
   PROPERTIES
    DEPENDS create_complete_file_rntuple
+   SKIP_REGULAR_EXPRESSION "collected 0 items / 1 skipped"
 )
 
 set_tests_properties(
