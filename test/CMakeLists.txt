@@ -104,7 +104,7 @@ IF(TARGET ROOT::ROOTDataFrame)
 endif()
 
 
-find_package(HepMC3 3.3)
+find_package(HepMC3)
 find_package(HepPDT)
 
 if(HepMC3_FOUND AND HepPDT_FOUND )
