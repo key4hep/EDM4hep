@@ -18,6 +18,8 @@ include(cmake/Key4hepConfig.cmake)
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 include(cmake/EDM4HEPBuild.cmake)
 edm4hep_set_linker_flags()
 
