@@ -1,0 +1,11 @@
+<lcgdict>
+    <selection>
+      <class name="edm4hep::RecoMCParticleLinkData" ClassVersion="2"/>
+      <class name="edm4hep::CaloHitMCParticleLinkData" ClassVersion="2"/>
+      <class name="edm4hep::ClusterMCParticleLinkData" ClassVersion="2"/>
+      <class name="edm4hep::TrackMCParticleLinkData" ClassVersion="2"/>
+      <class name="edm4hep::CaloHitSimCaloHitLinkData" ClassVersion="2"/>
+      <class name="edm4hep::TrackerHitSimTrackerHitLinkData" ClassVersion="2"/>
+      <class name="edm4hep::VertexRecoParticleLinkData" ClassVersion="2"/>
+    </selection>
+</lcgdict>

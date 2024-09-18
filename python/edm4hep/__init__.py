@@ -25,6 +25,10 @@ res = ROOT.gInterpreter.LoadFile("edm4hep/Constants.h")
 if res != 0:
     raise RuntimeError("Failed to load Constants.h")
 
+res = ROOT.gSystem.Load("libedm4hep_v2")
+if res != 0:
+    raise RuntimeError("Failed to load edm4hep v2 legacy library")
+
 _LINK_COLLS = [
     "RecoMCParticle",
     "CaloHitMCParticle",
@@ -39,7 +43,7 @@ for lc in _LINK_COLLS:
     if ROOT.gInterpreter.LoadFile(f"edm4hep/{lc}LinkCollection.h") != 0:
         raise RuntimeError(f"Failed to load {lc}LinkCollection.h")
 
-from ROOT import edm4hep
+from ROOT import edm4hep  # noqa: E402
 
 from podio.pythonizations import load_pythonizations  # noqa: E402
 
