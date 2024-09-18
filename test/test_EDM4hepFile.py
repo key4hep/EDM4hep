@@ -4,10 +4,13 @@ created by scripts/createEDM4hepFile.py has the expected contents
 """
 
 import os
+import re
 import podio
 import edm4hep
 import pytest
 from itertools import count
+
+from edm4hep import __version__
 
 from conftest import options
 
@@ -28,6 +31,29 @@ if "rntuple" in options.inputfile and not os.path.isfile(options.inputfile):
 def inputfile_name(pytestconfig):
     """Get the inputfile name that has been passed via commandline"""
     return pytestconfig.getoption("inputfile")
+
+
+VERSIONED_FILE_RGX = re.compile(
+    r"edm4hep_example_(?:rntuple_)?v(\d+-\d+(?:-\d+)?)_podio_v(\d+-\d+(?:-\d+)?).root"
+)
+
+
+@pytest.fixture(scope="module")
+def expected_edm4hep_version(inputfile_name):
+    """Get the expected edm4hep version from the file name"""
+    rgx_match = re.match(VERSIONED_FILE_RGX, inputfile_name)
+    if not rgx_match:
+        return podio.version.Version(__version__)
+    return podio.version.Version(rgx_match.group(1).replace("-", "."))
+
+
+@pytest.fixture(scope="module")
+def expected_podio_version(inputfile_name):
+    """Get the expected edm4hep version from the file name"""
+    rgx_match = re.match(VERSIONED_FILE_RGX, inputfile_name)
+    if not rgx_match:
+        return podio.version.build_version
+    return podio.version.Version(rgx_match.group(2).replace("-", "."))
 
 
 @pytest.fixture(scope="module")
@@ -77,9 +103,13 @@ def check_cov_matrix(cov_matrix, n_dim):
         assert cov_matrix[i] == next(counter)
 
 
-def test_basic_file_contents(events):
+def test_basic_file_contents(
+    reader, events, expected_edm4hep_version, expected_podio_version
+):
     """Make sure the basic file contents are OK"""
     assert len(events) == FRAMES
+    assert reader.current_file_version("edm4hep") == expected_edm4hep_version
+    assert reader.current_file_version() == expected_podio_version
 
 
 def test_EventHeaderCollection(event):
