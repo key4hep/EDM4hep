@@ -109,7 +109,6 @@ int main() {
 
   // Part2: Convert the particles and write to file
   std::unordered_map<unsigned int, edm4hep::MutableMCParticle> hepmcToEdmMap;
-  unsigned int particle_counter{0};
   for (auto particle_i : evt->particles()) {
     std::cout << "Converting particle with PDG ID: " << particle_i->pdg_id() << std::endl;
     std::cout << "\t and id: " << particle_i->id() << std::endl;
@@ -144,7 +143,6 @@ int main() {
       }
     }
 
-    particle_counter++;
   }
 
   auto edm_particle_collection = edm4hep::MCParticleCollection();
