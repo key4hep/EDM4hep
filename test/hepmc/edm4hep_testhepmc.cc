@@ -142,7 +142,6 @@ int main() {
         hepmcToEdmMap[particle_i->id()].addToDaughters(hepmcToEdmMap[particle_daughter->id()]);
       }
     }
-
   }
 
   auto edm_particle_collection = edm4hep::MCParticleCollection();
