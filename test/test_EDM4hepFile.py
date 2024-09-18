@@ -43,8 +43,8 @@ def expected_edm4hep_version(inputfile_name):
     """Get the expected edm4hep version from the file name"""
     rgx_match = re.match(VERSIONED_FILE_RGX, inputfile_name)
     if not rgx_match:
-        return podio.version.Version(__version__)
-    return podio.version.Version(rgx_match.group(1).replace("-", "."))
+        return podio.version.parse(__version__)
+    return podio.version.parse(rgx_match.group(1).replace("-", "."))
 
 
 @pytest.fixture(scope="module")
@@ -53,7 +53,7 @@ def expected_podio_version(inputfile_name):
     rgx_match = re.match(VERSIONED_FILE_RGX, inputfile_name)
     if not rgx_match:
         return podio.version.build_version
-    return podio.version.Version(rgx_match.group(2).replace("-", "."))
+    return podio.version.parse(rgx_match.group(2).replace("-", "."))
 
 
 @pytest.fixture(scope="module")
