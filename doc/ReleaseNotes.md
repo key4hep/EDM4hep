@@ -1,3 +1,72 @@
+# v00-99-01
+
+* 2024-09-20 tmadlener ([PR#374](https://github.com/key4hep/EDM4hep/pull/374))
+  - Bump the minimal podio version to v01-01 because we need [AIDASoft/podio#651](https://github.com/AIDASoft/podio/pull/651) and [AIDASoft/podio#678](https://github.com/AIDASoft/podio/pull/678)
+
+* 2024-09-18 jmcarcell ([PR#372](https://github.com/key4hep/EDM4hep/pull/372))
+  - Remove unused variable in edm4hep_testhepmc.cc
+
+* 2024-09-17 jmcarcell ([PR#371](https://github.com/key4hep/EDM4hep/pull/371))
+  - Relax the requirement for the HepMC3 version
+
+* 2024-09-17 tmadlener ([PR#369](https://github.com/key4hep/EDM4hep/pull/369))
+  - Skip the check for the full file in case the RNTuple has not been produce (e.g. if podio hasn't been built with RNTuple support)
+
+* 2024-09-17 tmadlener ([PR#367](https://github.com/key4hep/EDM4hep/pull/367))
+  - Fix the cmake warning related to `HepPDT`
+  - Make sure that the tests that are enabled by this actually build and run with a suitable HepMC3 version
+
+* 2024-09-16 jmcarcell ([PR#368](https://github.com/key4hep/EDM4hep/pull/368))
+  - Use PROJECT_BINARY_DIR instead of CMAKE_BINARY_DIR to always locate the test files
+
+* 2024-09-16 jmcarcell ([PR#366](https://github.com/key4hep/EDM4hep/pull/366))
+  - Remove comments in edm4hep.yaml that don't add any information
+
+* 2024-09-16 Mateusz Jakub Fila ([PR#363](https://github.com/key4hep/EDM4hep/pull/363))
+  - Added missing attributes for python package
+
+* 2024-09-16 tmadlener ([PR#361](https://github.com/key4hep/EDM4hep/pull/361))
+  - Refactor `createEDM4hepFile.py` script to facilitate testing. Apart from the obviously different values in the objects, the overall structure is almost unchanged for the output file.
+    - The `MCVertexRecoParticleLinkCollection` has been renamed to the `VertexRecoParticleLinkCollection`
+    - The `subdetectorHoleNumbers` are also populated for `Track`s.
+
+* 2024-09-16 Mateusz Jakub Fila ([PR#290](https://github.com/key4hep/EDM4hep/pull/290))
+  - Added loading pythonizations from podio
+
+* 2024-09-13 tmadlener ([PR#362](https://github.com/key4hep/EDM4hep/pull/362))
+  - Inject the EDM4hep version into the metadata that are stored by podio
+
+* 2024-09-10 jmcarcell ([PR#359](https://github.com/key4hep/EDM4hep/pull/359))
+  - Use the Key4hepConfig flag to set the standard, compiler flags and rpath magic.
+  - For EDM4hep, the standard keeps being C++20 and the rpath is set as it was before. For the compiler flags `-Wshadow` is added on top of the existing ones.
+
+* 2024-09-09 tmadlener ([PR#360](https://github.com/key4hep/EDM4hep/pull/360))
+  - CI: Update versions of github actions where appropriate
+  - CI: simplify workflows that build podio and EDM4hep by using cmake commands to invoke the build tool
+  - CI: Enable more features from podio for building EDM4hep on top of
+    - Also fix a buggy printout that states the commit of podio that was used for building
+
+* 2024-09-04 Mateusz Jakub Fila ([PR#357](https://github.com/key4hep/EDM4hep/pull/357))
+  - Fixed typos in member assignment in `createEDM4hep.py`
+
+* 2024-09-02 Mateusz Jakub Fila ([PR#354](https://github.com/key4hep/EDM4hep/pull/354))
+  - Removed C++17 compatibility in version header file
+
+* 2024-09-02 jmcarcell ([PR#353](https://github.com/key4hep/EDM4hep/pull/353))
+  - Create a RNTuple EDM4hep file (needs podio with RNTuple, if not present the test will be skipped) 
+  - Make the createED4MhepFile.py accept an argument for the output file name
+  - Add explanations in the README on how to obtain the files.
+  - Fix a few issues like https://github.com/key4hep/EDM4hep/issues/355 and https://github.com/key4hep/EDM4hep/issues/356 with the script.
+
+* 2024-08-27 jmcarcell ([PR#343](https://github.com/key4hep/EDM4hep/pull/343))
+  - Move to C++20 and remove vector_utils_legacy
+
+* 2024-08-09 jmcarcell ([PR#342](https://github.com/key4hep/EDM4hep/pull/342))
+  - Drop support for the ROOTLegacyReader when converting to JSON
+
+* 2024-08-08 jmcarcell ([PR#351](https://github.com/key4hep/EDM4hep/pull/351))
+  - Remove a few unnecessary includes
+
 # v00-99
 
 * 2024-07-31 tmadlener ([PR#349](https://github.com/key4hep/EDM4hep/pull/349))
