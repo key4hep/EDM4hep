@@ -31,40 +31,30 @@ namespace {
   /// of the templated links. The most important bit is the re-definition of
   /// createCollection to actually create a templated LinkCollection
   template <typename FromT, typename ToT>
-  auto evolveLinks(podio::CollectionReadBuffers oldBuffers, podio::SchemaVersionT) {
-    podio::CollectionReadBuffers newBuffers{};
-    newBuffers.type = podio::detail::linkCollTypeName<FromT, ToT>();
-    newBuffers.schemaVersion = podio::LinkCollection<FromT, ToT>::schemaVersion;
+  auto evolveLinks(podio::CollectionReadBuffers buffers, podio::SchemaVersionT) {
+    buffers.type = podio::detail::linkCollTypeName<FromT, ToT>();
+    buffers.schemaVersion = podio::LinkCollection<FromT, ToT>::schemaVersion;
 
-    // We can simply copy over all the buffer pointers since they are already
-    // created correctly by the factory function
-    newBuffers.data = oldBuffers.data;
-    oldBuffers.data = nullptr;
-    newBuffers.references = oldBuffers.references;
-    oldBuffers.references = nullptr;
-    newBuffers.vectorMembers = oldBuffers.vectorMembers;
-    oldBuffers.vectorMembers = nullptr;
-
-    newBuffers.createCollection = [](const podio::CollectionReadBuffers& buffers, bool isSubsetColl) {
-      podio::LinkCollectionData<FromT, ToT> data(buffers, isSubsetColl);
+    buffers.createCollection = [](const podio::CollectionReadBuffers& buffs, bool isSubsetColl) {
+      podio::LinkCollectionData<FromT, ToT> data(buffs, isSubsetColl);
       return std::make_unique<podio::LinkCollection<FromT, ToT>>(std::move(data), isSubsetColl);
     };
 
-    newBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
-      if (buffers.data) {
-        buffers.data = podio::CollectionWriteBuffers::asVector<podio::LinkData>(buffers.data);
+    buffers.recast = [](podio::CollectionReadBuffers& buffs) {
+      if (buffs.data) {
+        buffs.data = podio::CollectionWriteBuffers::asVector<podio::LinkData>(buffs.data);
       }
     };
 
-    newBuffers.deleteBuffers = [](podio::CollectionReadBuffers& buffers) {
-      if (buffers.data) {
-        delete static_cast<std::vector<podio::LinkData>*>(buffers.data);
+    buffers.deleteBuffers = [](podio::CollectionReadBuffers& buffs) {
+      if (buffs.data) {
+        delete static_cast<std::vector<podio::LinkData>*>(buffs.data);
       }
-      delete buffers.references;
-      delete buffers.vectorMembers;
+      delete buffs.references;
+      delete buffs.vectorMembers;
     };
 
-    return newBuffers;
+    return buffers;
   }
 
   /// Function factory for stamping out buffer creation functions that can be
