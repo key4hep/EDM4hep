@@ -9,7 +9,7 @@ macro(key4hep_set_compiler_flags)
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
     set(COMPILER_FLAGS "${COMPILER_FLAGS} -Winconsistent-missing-override -Wheader-hygiene -fcolor-diagnostics")
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(COMPILER_FLAGS "${COMPILER_FLAGS} -fdiagnostics-color=always")
+    set(COMPILER_FLAGS "${COMPILER_FLAGS} -fdiagnostics-color=always -Wno-dangling-reference")
   endif()
 
   if (DEFINED KEY4HEP_SET_COMPILER_FLAGS AND NOT KEY4HEP_SET_COMPILER_FLAGS)
