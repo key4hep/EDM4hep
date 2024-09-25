@@ -1,8 +1,8 @@
-
 [![key4hep](https://github.com/key4hep/EDM4hep/workflows/key4hep_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep_linux.yml)
 [![linux](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml)
-# EDM4hep
+[![DOI](https://zenodo.org/badge/209480664.svg)](https://zenodo.org/doi/10.5281/zenodo.4785062)
 
+# EDM4hep
 
 A generic event data model for future HEP collider experiments.
 
