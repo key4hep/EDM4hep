@@ -44,7 +44,6 @@ set_tests_properties(
 
   PROPERTIES
    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-   FAIL_REGULAR_EXPRESSION ""
 )
 
 add_executable(write_events write_events.cc)
