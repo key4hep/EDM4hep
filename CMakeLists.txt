@@ -67,9 +67,9 @@ find_package(nlohmann_json 3.10.5)
 
 add_subdirectory(edm4hep)
 add_subdirectory(utils)
-add_subdirectory(test)
 add_subdirectory(tools)
 add_subdirectory(python)
+add_subdirectory(test)
 
 #--- create uninstall target ---------------------------------------------------
 include(cmake/EDM4HEPUninstall.cmake)

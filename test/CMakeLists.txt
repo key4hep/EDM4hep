@@ -44,7 +44,6 @@ set_tests_properties(
 
   PROPERTIES
    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-   FAIL_REGULAR_EXPRESSION ""
 )
 
 add_executable(write_events write_events.cc)
@@ -127,3 +126,13 @@ set_property(TEST py_test_module APPEND PROPERTY ENVIRONMENT
 
 add_subdirectory(utils)
 add_subdirectory(tools)
+
+
+include(ExternalData)
+list(APPEND ExternalData_URL_TEMPLATES
+  "https://key4hep.web.cern.ch:443/testFiles/EDM4hep/%(hash)"
+)
+
+add_subdirectory(backwards_compat)
+
+ExternalData_Add_Target(backward_compat_tests)
