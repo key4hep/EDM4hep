@@ -45,15 +45,9 @@ def create_MCParticleCollection():
         particle.setCharge(next(counter))
         particle.setTime(next(counter))
         particle.setMass(next(counter))
-        particle.setVertex(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
-        particle.setEndpoint(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
-        particle.setMomentum(
-            edm4hep.Vector3d(next(counter), next(counter), next(counter))
-        )
+        particle.setVertex(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        particle.setEndpoint(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+        particle.setMomentum(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
         particle.setMomentumAtEndpoint(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
@@ -174,9 +168,7 @@ def create_ClusterCollection(vectorsize, calo_hit):
     cluster.setPositionError(create_CovMatrixNf(3))
     cluster.setITheta(next(counter))
     cluster.setPhi(next(counter))
-    cluster.setDirectionError(
-        edm4hep.Vector3f(next(counter), next(counter), next(counter))
-    )
+    cluster.setDirectionError(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     for j in range(vectorsize):
         cluster.addToShapeParameters(next(counter))
         cluster.addToSubdetectorEnergies(next(counter))
@@ -256,9 +248,7 @@ def create_TrackCollection(vectorsize, tracker_hit):
         state.Z0 = next(counter)
         state.tanLambda = next(counter)
         state.time = next(counter)
-        state.referencePoint = edm4hep.Vector3f(
-            next(counter), next(counter), next(counter)
-        )
+        state.referencePoint = edm4hep.Vector3f(next(counter), next(counter), next(counter))
         state.covMatrix = create_CovMatrixNf(6)
         track.addToTrackStates(state)
 
@@ -292,9 +282,7 @@ def create_ReconstructedParticleCollection(vertex, cluster, track):
     rparticle.setPDG(next(counter))
     rparticle.setEnergy(next(counter))
     rparticle.setMomentum(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-    rparticle.setReferencePoint(
-        edm4hep.Vector3f(next(counter), next(counter), next(counter))
-    )
+    rparticle.setReferencePoint(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     rparticle.setCharge(next(counter))
     rparticle.setMass(next(counter))
     rparticle.setGoodnessOfPID(next(counter))
@@ -402,9 +390,7 @@ def create_frame():
     particles = frame.put(create_MCParticleCollection(), "MCParticleCollection")
     particle = particles[0]
 
-    hits = frame.put(
-        create_SimTrackerHitCollection(particle), "SimTrackerHitCollection"
-    )
+    hits = frame.put(create_SimTrackerHitCollection(particle), "SimTrackerHitCollection")
     simtracker_hit = hits[0]
 
     calo_contribs = frame.put(
@@ -422,9 +408,7 @@ def create_frame():
     hits = frame.put(create_CalorimeterHitCollection(), "CalorimeterHitCollection")
     calo_hit = hits[0]
 
-    clusters = frame.put(
-        create_ClusterCollection(VECTORSIZE, calo_hit), "ClusterCollection"
-    )
+    clusters = frame.put(create_ClusterCollection(VECTORSIZE, calo_hit), "ClusterCollection")
     cluster = clusters[0]
 
     hits = frame.put(create_TrackerHit3DCollection(), "TrackerHit3DCollection")
@@ -433,9 +417,7 @@ def create_frame():
 
     frame.put(create_RawTimeSeriesCollection(VECTORSIZE), "RawTimeSeriesCollection")
 
-    tracks = frame.put(
-        create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection"
-    )
+    tracks = frame.put(create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection")
     track = tracks[0]
 
     pids, pid = create_ParticleIDCollection(VECTORSIZE)
@@ -456,9 +438,7 @@ def create_frame():
 
     put_link_collection(frame, "RecoMCParticleLink", reco_particle, particle)
     put_link_collection(frame, "CaloHitSimCaloHitLink", calo_hit, simcalo_hit)
-    put_link_collection(
-        frame, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit
-    )
+    put_link_collection(frame, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit)
     put_link_collection(frame, "CaloHitMCParticleLink", calo_hit, particle)
     put_link_collection(frame, "ClusterMCParticleLink", cluster, particle)
     put_link_collection(frame, "TrackMCParticleLink", track, particle)
@@ -481,9 +461,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--rntuple", action="store_true", help="Use a ROOT ntuple instead of EDM4hep"
     )
-    parser.add_argument(
-        "--output-file", type=str, help="Output file name", default="edm4hep.root"
-    )
+    parser.add_argument("--output-file", type=str, help="Output file name", default="edm4hep.root")
     args = parser.parse_args()
     output_file = args.output_file
 
