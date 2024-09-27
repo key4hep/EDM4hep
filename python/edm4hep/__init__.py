@@ -24,9 +24,9 @@ if res != 0:
 res = ROOT.gInterpreter.LoadFile("edm4hep/Constants.h")
 if res != 0:
     raise RuntimeError("Failed to load Constants.h")
-from ROOT import edm4hep
+from ROOT import edm4hep  # noqa: E402
 
-from podio.pythonizations import load_pythonizations
+from podio.pythonizations import load_pythonizations  # noqa: E402
 
 load_pythonizations("edm4hep")
 
