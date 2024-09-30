@@ -1,0 +1,13 @@
+target-version = "py311"
+
+line-length = 99
+
+[format]
+# Make things format the same way as black
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[lint]
+select = ["F", "E", "W", "PLE", "PLW", "PLC"]

@@ -18,3 +18,13 @@ repos:
         entry: python ./scripts/updateReadmeLinks.py --check
         files: (^README.md$)
         language: system
+      - id: ruff
+        name: ruff
+        entry: ruff check --force-exclude
+        types: [python]
+        language: system
+      - id: ruff-format
+        name: ruff-format
+        entry: ruff format --force-exclude
+        types: [python]
+        language: system
