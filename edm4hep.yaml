@@ -685,3 +685,46 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
+
+links:
+  edm4hep::RecoMCParticleLink:
+    Description: "Link between a ReconstructedParticle and an MCParticle"
+    Author: "EDM4hep authors"
+    From: edm4hep::ReconstructedParticle
+    To: edm4hep::MCParticle
+
+  edm4hep::CaloHitMCParticleLink:
+    Description: "Link between a CalorimeterHit and an MCParticle"
+    Author: "EDM4hep authors"
+    From: edm4hep::CalorimeterHit
+    To: edm4hep::MCParticle
+
+  edm4hep::ClusterMCParticleLink:
+    Description: "Link between a Cluster and an MCParticle"
+    Author: "EDM4hep authors"
+    From: edm4hep::Cluster
+    To: edm4hep::MCParticle
+
+  edm4hep::TrackMCParticleLink:
+    Description: "Link between a Track and an MCParticle"
+    Author: "EDM4hep authors"
+    From: edm4hep::Track
+    To: edm4hep::MCParticle
+
+  edm4hep::CaloHitSimCaloHitLink:
+    Description: "Link between a CalorimeterHit and a SimCalorimeterHit"
+    Author: "EDM4hep authors"
+    From: edm4hep::CalorimeterHit
+    To: edm4hep::SimCalorimeterHit
+
+  edm4hep::TrackerHitSimTrackerHitLink:
+    Description: "Link between a TrackerHit and a SimTrackerHit"
+    Author: "EDM4hep authors"
+    From: edm4hep::TrackerHit
+    To: edm4hep::SimTrackerHit
+
+  edm4hep::VertexRecoParticleLink:
+    Description: "Link between a Vertex and a ReconstructedParticle"
+    Author: "EDM4hep authors"
+    From: edm4hep::Vertex
+    To: edm4hep::ReconstructedParticle
