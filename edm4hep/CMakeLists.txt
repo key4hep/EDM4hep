@@ -18,7 +18,6 @@ add_library(EDM4HEP::edm4hep ALIAS edm4hep)
 
 file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
 target_sources(edm4hep PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
-
 if (nlohmann_json_FOUND)
   target_compile_definitions(edm4hep PUBLIC PODIO_JSON_OUTPUT)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
@@ -26,6 +25,14 @@ endif()
 
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
+
+add_library(edm4hep_v2 SHARED schema_evolution/src/OldLinkEvolution.cc)
+target_include_directories(edm4hep_v2 PRIVATE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include>
+)
+target_link_libraries(edm4hep_v2 PUBLIC podio::podio EDM4HEP::edm4hep)
+
+PODIO_ADD_ROOT_IO_DICT(edm4hep_v2Dict edm4hep_v2 ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h schema_evolution/src/selection.xml)
 
 list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
 
