@@ -235,20 +235,20 @@ namespace utils {
 } // namespace utils
 
 template <edm4hep::Vector2D V>
-inline constexpr V operator+(const V& v1, const V& v2) {
+constexpr V operator+(const V& v1, const V& v2) {
   return {edm4hep::utils::vector_x(v1) + edm4hep::utils::vector_x(v2),
           edm4hep::utils::vector_y(v1) + edm4hep::utils::vector_y(v2)};
 }
 
 template <edm4hep::Vector3D V>
-inline constexpr V operator+(const V& v1, const V& v2) {
+constexpr V operator+(const V& v1, const V& v2) {
   return {edm4hep::utils::vector_x(v1) + edm4hep::utils::vector_x(v2),
           edm4hep::utils::vector_y(v1) + edm4hep::utils::vector_y(v2),
           edm4hep::utils::vector_z(v1) + edm4hep::utils::vector_z(v2)};
 }
 
 template <edm4hep::Vector4D V>
-inline constexpr V operator+(const V& v1, const V& v2) {
+constexpr V operator+(const V& v1, const V& v2) {
   return {edm4hep::utils::vector_x(v1) + edm4hep::utils::vector_x(v2),
           edm4hep::utils::vector_y(v1) + edm4hep::utils::vector_y(v2),
           edm4hep::utils::vector_z(v1) + edm4hep::utils::vector_z(v2),
@@ -256,20 +256,20 @@ inline constexpr V operator+(const V& v1, const V& v2) {
 }
 
 template <edm4hep::Vector2D V>
-inline constexpr auto operator*(const V& v1, const V& v2) {
+constexpr auto operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
       edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2);
 }
 
 template <edm4hep::Vector3D V>
-inline constexpr auto operator*(const V& v1, const V& v2) {
+constexpr auto operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
       edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
       edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2);
 }
 
 template <edm4hep::Vector4D V>
-inline constexpr auto operator*(const V& v1, const V& v2) {
+constexpr auto operator*(const V& v1, const V& v2) {
   return (edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
           edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
           edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2)) -
@@ -277,7 +277,7 @@ inline constexpr auto operator*(const V& v1, const V& v2) {
 }
 
 template <edm4hep::Vector2D V>
-inline constexpr V operator*(const double d, const V& v) {
+constexpr V operator*(const double d, const V& v) {
   using VT = edm4hep::utils::ValueType<V>;
   const VT x = d * edm4hep::utils::vector_x(v);
   const VT y = d * edm4hep::utils::vector_y(v);
@@ -285,7 +285,7 @@ inline constexpr V operator*(const double d, const V& v) {
 }
 
 template <edm4hep::Vector3D V>
-inline constexpr V operator*(const double d, const V& v) {
+constexpr V operator*(const double d, const V& v) {
   using VT = edm4hep::utils::ValueType<V>;
   const VT x = d * edm4hep::utils::vector_x(v);
   const VT y = d * edm4hep::utils::vector_y(v);
@@ -294,7 +294,7 @@ inline constexpr V operator*(const double d, const V& v) {
 }
 
 template <edm4hep::Vector4D V>
-inline constexpr V operator*(const double d, const V& v) {
+constexpr V operator*(const double d, const V& v) {
   using VT = edm4hep::utils::ValueType<V>;
   const VT x = d * edm4hep::utils::vector_x(v);
   const VT y = d * edm4hep::utils::vector_y(v);
@@ -304,17 +304,17 @@ inline constexpr V operator*(const double d, const V& v) {
 }
 
 template <edm4hep::VectorND V>
-inline constexpr V operator*(const V& v, const double d) {
+constexpr V operator*(const V& v, const double d) {
   return d * v;
 }
 
 template <edm4hep::VectorND V>
-inline constexpr V operator-(const V& v1, const V& v2) {
+constexpr V operator-(const V& v1, const V& v2) {
   return v1 + (-1. * v2);
 }
 
 template <edm4hep::VectorND V>
-inline constexpr V operator/(const V& v, const double d) {
+constexpr V operator/(const V& v, const double d) {
   return (1. / d) * v;
 }
 
