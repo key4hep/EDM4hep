@@ -12,6 +12,12 @@ SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME
 find_package(podio 1.1 REQUIRED HINTS $ENV{PODIO})
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
+option(EDM4HEP_WITH_JSON "Whether or not to build EDM4HEP with JSON support (and edm4hep2json)" ON)
+if (EDM4HEP_WITH_JSON)
+ set(EDM4HEP_NLOHMANN_JSON_VERSION 3.10.5)
+ find_package(nlohmann_json ${EDM4HEP_NLOHMANN_JSON_VERSION} REQUIRED)
+endif()
+
 include(cmake/Key4hepConfig.cmake)
 
 #--- Define basic build settings -----------------------------------------------
@@ -63,7 +69,6 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
               ${CMAKE_CURRENT_SOURCE_DIR}/NOTICE
               DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
-find_package(nlohmann_json 3.10.5)
 
 add_subdirectory(edm4hep)
 add_subdirectory(utils)
