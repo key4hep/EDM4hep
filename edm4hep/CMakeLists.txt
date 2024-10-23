@@ -19,7 +19,7 @@ add_library(EDM4HEP::edm4hep ALIAS edm4hep)
 file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
 target_sources(edm4hep PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
 
-if (nlohmann_json_FOUND)
+if (EDM4HEP_WITH_JSON)
   target_compile_definitions(edm4hep PUBLIC PODIO_JSON_OUTPUT)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
 endif()

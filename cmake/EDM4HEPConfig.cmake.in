@@ -14,7 +14,7 @@ set_and_check(EDM4HEP_DATA_DIR "@PACKAGE_CMAKE_INSTALL_DATADIR@/edm4hep")
 include(CMakeFindDependencyMacro)
 find_dependency(podio REQUIRED)
 
-set(EDM4HEP_WITH_JSON @nlohmann_json_FOUND@)
+set(EDM4HEP_WITH_JSON @EDM4HEP_WITH_JSON@)
 if (EDM4HEP_WITH_JSON)
   find_dependency(nlohmann_json 3.10.5 REQUIRED)
 endif()
