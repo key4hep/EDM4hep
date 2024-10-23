@@ -558,7 +558,7 @@ datatypes:
       // Reserved bits for the type flagword\n
       static constexpr int BITPrimaryVertex = 1;\n
       static constexpr int BITSecondaryVertex = 2;\n
-      static constexpr int BITTertiaryVertex = 2;\n
+      static constexpr int BITTertiaryVertex = 3;\n
 
       /// Check if this is a primary vertex\n
       bool isPrimary() const { return utils::checkBit(getType(), BITPrimaryVertex); }\n
