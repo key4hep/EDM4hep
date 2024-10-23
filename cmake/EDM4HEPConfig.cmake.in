@@ -16,7 +16,7 @@ find_dependency(podio REQUIRED)
 
 set(EDM4HEP_WITH_JSON @EDM4HEP_WITH_JSON@)
 if (EDM4HEP_WITH_JSON)
-  find_dependency(nlohmann_json 3.10.5 REQUIRED)
+  find_dependency(nlohmann_json @EDM4HEP_NLOHMANN_JSON_VERSION@ REQUIRED)
 endif()
 
 # - Include the targets file to create the imported targets that a client can

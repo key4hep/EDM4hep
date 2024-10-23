@@ -14,7 +14,8 @@ find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 option(EDM4HEP_WITH_JSON "Whether or not to build EDM4HEP with JSON support (and edm4hep2json)" ON)
 if (EDM4HEP_WITH_JSON)
- find_package(nlohmann_json 3.10.5 REQUIRED)
+ set(EDM4HEP_NLOHMANN_JSON_VERSION 3.10.5)
+ find_package(nlohmann_json ${EDM4HEP_NLOHMANN_JSON_VERSION} REQUIRED)
 endif()
 
 include(cmake/Key4hepConfig.cmake)
