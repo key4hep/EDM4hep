@@ -27,7 +27,7 @@ A generic event data model for future HEP collider experiments.
 | [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L394)      | [ParticleID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L405)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L419)               |
 | [TrackerHit3D](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L451)          | [TrackerHitPlane](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L477)   | [RawTimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L507)                |
 | [Track](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L521)               | [Vertex](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L538)            | [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L584) |
-| [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L813) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L825) |                                                                                          |
+| [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L813) | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L825) | [DriftChamberDigi](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L506) |
 
 **Links**
 
@@ -35,7 +35,7 @@ A generic event data model for future HEP collider experiments.
 |-|-|-|
 | [RecoMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L622)        | [CaloHitSimCaloHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L649)         | [TrackerHitSimTrackerHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L677)         |
 | [CaloHitMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L704) | [ClusterMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L731) | [TrackMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L758)   |
-| [VertexRecoParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L785) | | |
+| [VertexRecoParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L785) | [DriftChamberDigiSimTrackerHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L828) | |
 
 **Generator related (meta-)data**
 

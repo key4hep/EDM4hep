@@ -503,6 +503,22 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
+  edm4hep::DriftChamberDigi:
+    Description: "Digitized drift chamber hit (before tracking)"
+    Author: "EDM4hep authors"
+    Members:
+      - uint64_t cellID // ID of the sensor that created this hit
+      - int32_t type // type of the raw data hit
+      - int32_t quality // quality bit flag of the hit
+      - float time [ns] // time of the hit
+      - float eDep [GeV] // energy deposited on the hit
+      - float eDepError [GeV] // error measured on eDep
+      - edm4hep::Vector3d position [mm] // point on the sensitive wire (SW) which is closest to the simhit
+      - edm4hep::Vector3d directionSW // direction of SW
+      - float distanceToWire [mm] // distance hit-wire
+      - uint32_t nCluster // number of clusters associated to this hit
+    VectorMembers:
+      - uint16_t nElectrons // number of electrons for each cluster (vector size = nCluster)
 
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
@@ -809,6 +825,33 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
       "
 
+  edm4hep::DriftChamberDigiSimTrackerHitLink:
+    Description: "Link between a DriftChamberDigi and a SimTrackerHit"
+    Author: "EDM4hep authors"
+    Members:
+      - float weight                      // weight of this link
+    OneToOneRelations:
+     - edm4hep::DriftChamberDigi from     // reference to the DriftChamberDigi
+     - edm4hep::SimTrackerHit to          // reference to the SimTrackerHit
+    ExtraCode:
+      declaration: "
+      [[deprecated(\"use getFrom instead\")]] edm4hep::DriftChamberDigi getRec() const;\n
+      [[deprecated(\"use getTo instead\")]] edm4hep::SimTrackerHit getSim() const;\n"
+      implementation: "
+      edm4hep::DriftChamberDigi {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SimTrackerHit {name}::getSim() const { return getTo(); }\n"
+    MutableExtraCode:
+      declaration: "
+      [[deprecated(\"use setFrom instead\")]]\n
+      void setRec(const edm4hep::DriftChamberDigi& rec);\n
+      [[deprecated(\"use setTo instead\")]]\n
+      void setSim(const edm4hep::SimTrackerHit& sim);\n
+      "
+      implementation: "
+      void {name}::setRec(const edm4hep::DriftChamberDigi& digi) { setFrom(digi); }\n
+      void {name}::setSim(const edm4hep::SimTrackerHit& simHit) { setTo(simHit); }\n
+      "
+
 
   edm4hep::TimeSeries:
     Description: "Calibrated Detector Data"
@@ -875,3 +918,4 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
+      - edm4hep::DriftChamberDigi
