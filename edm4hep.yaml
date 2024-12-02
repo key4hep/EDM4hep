@@ -516,9 +516,14 @@ datatypes:
       - edm4hep::Vector3d position [mm] // point on the sensitive wire which is closest to the hit (center of the circle)
       - edm4hep::Vector3d directionSW // direction of the sensitive wire (normal vector to the circle)
       - float distanceToWire [mm] // distance hit-wire (radius of the circle)
-      - uint32_t nClusters // number of clusters associated to this hit
     VectorMembers:
       - uint16_t nElectrons // number of electrons for each cluster (number of clusters = vector size)
+    ExtraCode:
+      declaration: "
+        /// Return the number of clusters associated to the hit\n
+        uint32_t nClusters() const { return getNElectrons().size(); }\n
+        "
+
 
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
