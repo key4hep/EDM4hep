@@ -833,24 +833,6 @@ datatypes:
     OneToOneRelations:
      - edm4hep::SensitiveWireHit from     // reference to the SensitiveWireHit
      - edm4hep::SimTrackerHit to          // reference to the SimTrackerHit
-    ExtraCode:
-      declaration: "
-      [[deprecated(\"use getFrom instead\")]] edm4hep::SensitiveWireHit getRec() const;\n
-      [[deprecated(\"use getTo instead\")]] edm4hep::SimTrackerHit getSim() const;\n"
-      implementation: "
-      edm4hep::SensitiveWireHit {name}::getRec() const { return getFrom(); }\n
-      edm4hep::SimTrackerHit {name}::getSim() const { return getTo(); }\n"
-    MutableExtraCode:
-      declaration: "
-      [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::SensitiveWireHit& rec);\n
-      [[deprecated(\"use setTo instead\")]]\n
-      void setSim(const edm4hep::SimTrackerHit& sim);\n
-      "
-      implementation: "
-      void {name}::setRec(const edm4hep::SensitiveWireHit& rec) { setFrom(rec); }\n
-      void {name}::setSim(const edm4hep::SimTrackerHit& sim) { setTo(sim); }\n
-      "
 
 
   edm4hep::TimeSeries:
