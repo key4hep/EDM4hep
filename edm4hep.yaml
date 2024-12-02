@@ -503,8 +503,8 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  edm4hep::DriftChamberDigi:
-    Description: "Digitized drift chamber hit (before tracking)"
+  edm4hep::SensitiveWireHit:
+    Description: "Sensitive wire hit, before the hit position degeneracy is resolved. The circle representing possible positions is parametrized with its center, radius and normal vector."
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID // ID of the sensor that created this hit
@@ -513,12 +513,12 @@ datatypes:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
-      - edm4hep::Vector3d position [mm] // point on the sensitive wire (SW) which is closest to the simhit
-      - edm4hep::Vector3d directionSW // direction of SW
-      - float distanceToWire [mm] // distance hit-wire
-      - uint32_t nCluster // number of clusters associated to this hit
+      - edm4hep::Vector3d position [mm] // point on the sensitive wire which is closest to the hit (center of the circle)
+      - edm4hep::Vector3d directionSW // direction of the sensitive wire (normal vector to the circle)
+      - float distanceToWire [mm] // distance hit-wire (radius of the circle)
+      - uint32_t nClusters // number of clusters associated to this hit
     VectorMembers:
-      - uint16_t nElectrons // number of electrons for each cluster (vector size = nCluster)
+      - uint16_t nElectrons // number of electrons for each cluster (number of clusters = vector size)
 
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
@@ -825,31 +825,31 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
       "
 
-  edm4hep::DriftChamberDigiSimTrackerHitLink:
-    Description: "Link between a DriftChamberDigi and a SimTrackerHit"
+  edm4hep::SensitiveWireHitSimTrackerHitLink:
+    Description: "Link between a SensitiveWireHit and a SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
       - float weight                      // weight of this link
     OneToOneRelations:
-     - edm4hep::DriftChamberDigi from     // reference to the DriftChamberDigi
+     - edm4hep::SensitiveWireHit from     // reference to the SensitiveWireHit
      - edm4hep::SimTrackerHit to          // reference to the SimTrackerHit
     ExtraCode:
       declaration: "
-      [[deprecated(\"use getFrom instead\")]] edm4hep::DriftChamberDigi getRec() const;\n
+      [[deprecated(\"use getFrom instead\")]] edm4hep::SensitiveWireHit getRec() const;\n
       [[deprecated(\"use getTo instead\")]] edm4hep::SimTrackerHit getSim() const;\n"
       implementation: "
-      edm4hep::DriftChamberDigi {name}::getRec() const { return getFrom(); }\n
+      edm4hep::SensitiveWireHit {name}::getRec() const { return getFrom(); }\n
       edm4hep::SimTrackerHit {name}::getSim() const { return getTo(); }\n"
     MutableExtraCode:
       declaration: "
       [[deprecated(\"use setFrom instead\")]]\n
-      void setRec(const edm4hep::DriftChamberDigi& rec);\n
+      void setRec(const edm4hep::SensitiveWireHit& rec);\n
       [[deprecated(\"use setTo instead\")]]\n
       void setSim(const edm4hep::SimTrackerHit& sim);\n
       "
       implementation: "
-      void {name}::setRec(const edm4hep::DriftChamberDigi& digi) { setFrom(digi); }\n
-      void {name}::setSim(const edm4hep::SimTrackerHit& simHit) { setTo(simHit); }\n
+      void {name}::setRec(const edm4hep::SensitiveWireHit& rec) { setFrom(rec); }\n
+      void {name}::setSim(const edm4hep::SimTrackerHit& sim) { setTo(sim); }\n
       "
 
 
@@ -918,4 +918,4 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
-      - edm4hep::DriftChamberDigi
+      - edm4hep::SensitiveWireHit
