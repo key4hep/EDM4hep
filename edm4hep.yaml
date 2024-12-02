@@ -521,7 +521,7 @@ datatypes:
     ExtraCode:
       declaration: "
         /// Return the number of clusters associated to the hit\n
-        uint32_t nClusters() const { return getNElectrons().size(); }\n
+        auto getNClusters() const { return getNElectrons().size(); }\n
         "
 
 
