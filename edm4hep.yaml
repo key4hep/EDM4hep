@@ -504,7 +504,7 @@ datatypes:
       "
 
   edm4hep::SensitiveWireHit:
-    Description: "Sensitive wire hit, before the hit position degeneracy is resolved. The circle representing possible positions is parametrized with its center, radius and normal vector."
+    Description: "Sensitive wire hit, before the hit position degeneracy is resolved. The circle representing possible positions is parametrized with its center, radius and normal vector (given by the wire direction)."
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID // ID of the sensor that created this hit
@@ -513,7 +513,8 @@ datatypes:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited by the hit
       - float eDepError [GeV] // error on eDep
-      - edm4hep::Vector2d sensitiveWireDirection // direction of the sensitive wire (normal vector to the circle)
+      - float wireStereoAngle // stereo angle of the sensitive wire (use it together with wireAzimuthalAngle to get the wire direction)
+      - float wireAzimuthalAngle // azimuthal angle of the sensitive wire (use it together with wireStereoAngle to get the wire direction)
       - edm4hep::Vector3d position [mm] // point on the sensitive wire which is closest to the hit (center of the circle)
       - double positionAlongWireError [mm] // error on the hit position along the wire direction
       - float distanceToWire [mm] // distance between the hit and the wire (radius of the circle)
