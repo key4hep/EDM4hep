@@ -1,9 +1,7 @@
-#include "edm4hep/MCParticle.h"
-#include "edm4hep/schema_evolution/OldLinkData.h"
-
 #include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/DatamodelDefinition.h"
+#include "edm4hep/MCParticle.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -11,6 +9,7 @@
 #include "edm4hep/TrackCollection.h"
 #include "edm4hep/TrackerHit.h"
 #include "edm4hep/VertexCollection.h"
+#include "edm4hep/schema_evolution/OldLinkData.h"
 
 #include <podio/CollectionBufferFactory.h>
 #include <podio/CollectionBuffers.h>
