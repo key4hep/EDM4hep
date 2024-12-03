@@ -513,7 +513,7 @@ datatypes:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited by the hit
       - float eDepError [GeV] // error on eDep
-      - edm4hep::Vector3d directionSW // direction of the sensitive wire (normal vector to the circle)
+      - edm4hep::Vector2d sensitiveWireDirection // direction of the sensitive wire (normal vector to the circle)
       - edm4hep::Vector3d position [mm] // point on the sensitive wire which is closest to the hit (center of the circle)
       - double positionAlongWireError [mm] // error on the hit position along the wire direction
       - float distanceToWire [mm] // distance between the hit and the wire (radius of the circle)
