@@ -12,6 +12,7 @@
 #include "edm4hep/ParticleIDCollection.h"
 #include "edm4hep/RawCalorimeterHitCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
+#include "edm4hep/TensorCollection.h"
 #include "edm4hep/RecDqdxCollection.h"
 #include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -102,6 +103,8 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::ReconstructedParticleCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::TimeSeriesCollection") {
       insertIntoJson<edm4hep::TimeSeriesCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::Tensor") {
+      insertIntoJson<edm4hep::TensorCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "edm4hep::RecDqdxCollection") {
       insertIntoJson<edm4hep::RecDqdxCollection>(jsonDict, coll, collList[i]);
     }
