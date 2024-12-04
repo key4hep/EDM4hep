@@ -821,6 +821,16 @@ datatypes:
        - float amplitude            // calibrated detector data
 
 
+  edm4hep::Tensor:
+    Description: "Tensor type for use in training/inference for ML models"
+    Author: "EDM4hep authors"
+    Members:
+      - int32_t elementType         // Data type in the same encoding as "ONNXTensorElementDataType", 1 - float, 7 - int64
+    VectorMembers:
+      - int64_t shape               // Vector of tensor lengths along its axes
+      - float floatData             // Iff elementType==1, values are stored here
+      - int64_t int64Data           // Iff elementType==7, values are stored here
+
 
   edm4hep::RecDqdx:
     Description: "dN/dx or dE/dx info of a Track"
