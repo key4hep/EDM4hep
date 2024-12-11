@@ -404,25 +404,18 @@ datatypes:
 
 
   edm4hep::SimDRCalorimeterHit:
-    Description: "Simulated dual-readout calorimeter hit with S/C counts and wavelength/timing bins"
+    Description: "Simulated dual-readout calorimeter hit"
     Author: "Wonyong Chung"
     Members:
-      - uint64_t cellID                              // detector cellID
-      - float energy [GeV]                           // energy of the hit
-      - edm4hep::Vector3f position [mm]              // position of the calorimeter cell in world coords
-      - int32_t eta                                  // detector cell eta
-      - int32_t phi                                  // detector cell phi
-      - int32_t depth                                // detector cell depth
-      - int32_t system                               // detector cell system
-      - int32_t ncerenkov                            // number of cerenkov hits
-      - int32_t nscintillator                        // number of scint hits
-      - std::array<int32_t, 6000> nwavelen_cer       // number of cerenkov wavelength hits
-      - std::array<int32_t, 6000> nwavelen_scint     // number of scint wavelength hits
-      - std::array<int32_t, 6000> ntime_cer          // number of cerenkov time hits
-      - std::array<int32_t, 6000> ntime_scint        // number of scint hits
+      - uint64_t cellID                             // detector cellID
+      - float energy [GeV]                          // energy of the hit
+      - edm4hep::Vector3f position [mm]             // position of the calorimeter cell in world coords
+      - int32_t nCerenkovProd                       // number of cerenkov photons produced
+      - int32_t nScintillationProd                  // number of scint photons produced
+      - float tAvgC [ns]                            // avg arrival time for cerenkov photons
+      - float tAvgS [ns]                            // avg arrival time for scint photons
     OneToManyRelations:
       - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
-
 
   edm4hep::ParticleID:
     Description:  "ParticleID"
