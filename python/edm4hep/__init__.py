@@ -25,9 +25,9 @@ res = ROOT.gInterpreter.LoadFile("edm4hep/Constants.h")
 if res != 0:
     raise RuntimeError("Failed to load Constants.h")
 
-res = ROOT.gSystem.Load("libedm4hep_v2")
+res = ROOT.gSystem.Load("libedm4hepOldSchemas")
 if res != 0:
-    raise RuntimeError("Failed to load edm4hep v2 legacy library")
+    raise RuntimeError("Failed to load edm4hep legacy schemas library")
 
 from ROOT import edm4hep  # noqa: E402
 
