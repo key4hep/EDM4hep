@@ -503,8 +503,8 @@ datatypes:
       void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
       "
 
-  edm4hep::SensitiveWireHit:
-    Description: "Sensitive wire hit, before the hit position degeneracy is resolved. The circle representing possible positions is parametrized with its center, radius and normal vector (given by the wire direction)."
+  edm4hep::SenseWireHit:
+    Description: "Sense wire hit, before the hit position degeneracy is resolved. The circle representing possible positions is parametrized with its center, radius and normal vector (given by the wire direction)."
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID // ID of the sensor that created this hit
@@ -513,9 +513,9 @@ datatypes:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited by the hit
       - float eDepError [GeV] // error on eDep
-      - float wireStereoAngle // angle between the sensitive wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
-      - float wireAzimuthalAngle // azimuthal angle at the middle of the sensitive wire - use it together with wireStereoAngle to get the wire direction
-      - edm4hep::Vector3d position [mm] // point on the sensitive wire which is closest to the hit (center of the circle)
+      - float wireStereoAngle // angle between the sense wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
+      - float wireAzimuthalAngle // azimuthal angle at the middle of the sense wire - use it together with wireStereoAngle to get the wire direction
+      - edm4hep::Vector3d position [mm] // point on the sense wire which is closest to the hit (center of the circle)
       - double positionAlongWireError [mm] // error on the hit position along the wire direction
       - float distanceToWire [mm] // distance between the hit and the wire (radius of the circle)
       - float distanceToWireError [mm] // error on distanceToWire
@@ -833,13 +833,13 @@ datatypes:
       void {name}::setRec(const edm4hep::ReconstructedParticle& rec) { setTo(rec); }\n
       "
 
-  edm4hep::SensitiveWireHitSimTrackerHitLink:
-    Description: "Link between a SensitiveWireHit and a SimTrackerHit"
+  edm4hep::SenseWireHitSimTrackerHitLink:
+    Description: "Link between a SenseWireHit and a SimTrackerHit"
     Author: "EDM4hep authors"
     Members:
       - float weight                      // weight of this link
     OneToOneRelations:
-     - edm4hep::SensitiveWireHit from     // reference to the SensitiveWireHit
+     - edm4hep::SenseWireHit from     // reference to the SenseWireHit
      - edm4hep::SimTrackerHit to          // reference to the SimTrackerHit
 
 
@@ -908,4 +908,4 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
-      - edm4hep::SensitiveWireHit
+      - edm4hep::SenseWireHit
