@@ -266,7 +266,6 @@ datatypes:
       - edm4hep::Vector3d momentum [GeV]            // particle 3-momentum at the production vertex
       - edm4hep::Vector3d momentumAtEndpoint [GeV]  // particle 3-momentum at the endpoint
       - edm4hep::Vector3f spin                 // spin (helicity) vector of the particle
-      - edm4hep::Vector2i colorFlow                // color flow as defined by the generator
     OneToManyRelations:
       - edm4hep::MCParticle parents // The parents of this particle
       - edm4hep::MCParticle daughters // The daughters this particle

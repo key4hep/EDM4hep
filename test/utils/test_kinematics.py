@@ -34,7 +34,6 @@ class TestKinematics(unittest.TestCase):
             edm4hep.Vector3d(1.0, 2.0, 3.0),  # momentum
             edm4hep.Vector3d(0, 0, 0),  # momentumAtEndpoint
             edm4hep.Vector3f(0, 0, 0),  # spin
-            edm4hep.Vector2i(0, 0),  # colorFlow
         )
 
         self.assertEqual(p4(p), LVM(1.0, 2.0, 3.0, 125.0))
