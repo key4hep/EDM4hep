@@ -27,6 +27,14 @@ endif()
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
 add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
 
+add_library(edm4hepOldSchemas SHARED schema_evolution/src/OldLinkEvolution.cc)
+target_include_directories(edm4hepOldSchemas PRIVATE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include>
+)
+target_link_libraries(edm4hepOldSchemas PUBLIC podio::podio EDM4HEP::edm4hep)
+
+PODIO_ADD_ROOT_IO_DICT(edm4hepOldSchemasDict edm4hepOldSchemas ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h schema_evolution/src/selection.xml)
+
 list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
 
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
