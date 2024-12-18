@@ -106,19 +106,19 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<edm4hep::RecDqdxCollection>(jsonDict, coll, collList[i]);
     }
     // Associations
-    else if (coll->getTypeName() == "edm4hep::RecoMCParticleLinkCollection") {
+    else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::ReconstructedParticle,edm4hep::MCParticle>") {
       insertIntoJson<edm4hep::RecoMCParticleLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::CaloHitSimCaloHitLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::CalorimeterHit,edm4hep::SimCalorimeterHit>") {
       insertIntoJson<edm4hep::CaloHitSimCaloHitLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::TrackerHitSimTrackerHitLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::TrackerHit,edm4hep::SimTrackerHit>") {
       insertIntoJson<edm4hep::TrackerHitSimTrackerHitLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::CaloHitMCParticleLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::CalorimeterHit,edm4hep::MCParticle>") {
       insertIntoJson<edm4hep::CaloHitMCParticleLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::ClusterMCParticleLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::Cluster,edm4hep::MCParticle>") {
       insertIntoJson<edm4hep::ClusterMCParticleLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::TrackMCParticleLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::Track,edm4hep::MCParticle>") {
       insertIntoJson<edm4hep::TrackMCParticleLinkCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::VertexRecoParticleLinkCollection") {
+    } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::Vertex,edm4hep::ReconstructedParticle>") {
       insertIntoJson<edm4hep::VertexRecoParticleLinkCollection>(jsonDict, coll, collList[i]);
     }
     // Podio user data
