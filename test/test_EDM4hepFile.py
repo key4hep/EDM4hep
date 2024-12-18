@@ -158,7 +158,7 @@ def test_MCParticleCollection(event, edm4hep_version):
         assert particle.getSpin() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
 
         if edm4hep_version < podio.version.parse("0.99.2"):
-            # The colorFlow as here so we have increase the counter here to
+            # The colorFlow was here so we have increase the counter here to
             # maintain the expected values for all elements of the collection
             next(counter)
             next(counter)
