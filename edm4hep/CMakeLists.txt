@@ -32,10 +32,12 @@ target_include_directories(edm4hepOldSchemas PRIVATE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include>
 )
 target_link_libraries(edm4hepOldSchemas PUBLIC podio::podio EDM4HEP::edm4hep)
+add_library(EDM4HEP::oldSchemas ALIAS edm4hepOldSchemas)
 
 PODIO_ADD_ROOT_IO_DICT(edm4hepOldSchemasDict edm4hepOldSchemas ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h schema_evolution/src/selection.xml)
+add_library(EDM4HEP::oldSchemasDict ALIAS edm4hepOldSchemasDict)
 
-list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
+list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict edm4hepOldSchemas edm4hepOldSchemasDict)
 
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
 IF(TARGET edm4hepSioBlocks)
