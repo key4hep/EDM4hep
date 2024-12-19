@@ -55,8 +55,9 @@ class PIDHandler {
 public:
   PIDHandler() = default;
   ~PIDHandler() = default;
-  PIDHandler(const PIDHandler&) = default;
-  PIDHandler& operator=(const PIDHandler&) = default;
+  // Copies are not allowed to avoid copying the internal maps
+  PIDHandler(const PIDHandler&) = delete;
+  PIDHandler& operator=(const PIDHandler&) = delete;
   PIDHandler(PIDHandler&&) = default;
   PIDHandler& operator=(PIDHandler&&) = default;
 
