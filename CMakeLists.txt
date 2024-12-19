@@ -9,7 +9,7 @@ SET( ${PROJECT_NAME}_VERSION_PATCH 1 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-find_package(podio 1.1 REQUIRED HINTS $ENV{PODIO})
+find_package(podio 1.2 REQUIRED HINTS $ENV{PODIO})
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 option(EDM4HEP_WITH_JSON "Whether or not to build EDM4HEP with JSON support (and edm4hep2json)" ON)
