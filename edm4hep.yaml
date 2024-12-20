@@ -402,6 +402,21 @@ datatypes:
       - edm4hep::Vector3f position [mm] // position of the hit in world coordinates
       - int32_t type                   // type of hit
 
+
+  edm4hep::SimDRCalorimeterHit:
+    Description: "Simulated dual-readout calorimeter hit"
+    Author: "Wonyong Chung"
+    Members:
+      - uint64_t cellID                             // detector cellID
+      - float energy [GeV]                          // energy of the hit
+      - edm4hep::Vector3f position [mm]             // position of the calorimeter cell in world coords
+      - int32_t nCerenkovProd                       // number of cerenkov photons produced
+      - int32_t nScintillationProd                  // number of scint photons produced
+      - float tAvgC [ns]                            // avg arrival time for cerenkov photons
+      - float tAvgS [ns]                            // avg arrival time for scint photons
+    OneToManyRelations:
+      - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
+
   edm4hep::ParticleID:
     Description:  "ParticleID"
     Author: "EDM4hep authors"
