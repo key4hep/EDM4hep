@@ -161,6 +161,28 @@ TEST_CASE("PIDHandler w/ addMetaInfo", "[pid_utils]") {
   REQUIRE(handler.getParamIndex(42, "p2").value_or(-1) == 1);
 }
 
+TEST_CASE("PIDHandler add multiple meta info objects", "[pid_utils]") {
+  using namespace edm4hep::utils;
+  auto handler = PIDHandler();
+
+  const auto pidInfo1 = ParticleIDMeta{"fancyAlgo", {"param1", "param2"}};
+  const auto pidInfo2 = ParticleIDMeta{"fancyAlgo2", {"p1", "p2"}};
+  const auto pidInfo3 = ParticleIDMeta{"fancyAlgo3", {"p1", "p2"}};
+
+  // Can add all of them at once or do it in steps
+  handler.addMetaInfos(pidInfo1);
+  handler.addMetaInfos(pidInfo2, pidInfo3);
+
+  REQUIRE(handler.getParamIndex(pidInfo1.algoType(), "param2").value() == 1);
+  REQUIRE(handler.getParamIndex(pidInfo2.algoType(), "p1").value() == 0);
+  REQUIRE(handler.getParamIndex(pidInfo3.algoType(), "p2").value() == 1);
+  REQUIRE(handler.getAlgoType("fancyAlgo").value() == pidInfo1.algoType());
+  REQUIRE(handler.getAlgoType("fancyAlgo3").value() == pidInfo3.algoType());
+
+  const auto duplicate = ParticleIDMeta{"fancyAlgo", {}};
+  REQUIRE_THROWS_AS(handler.addMetaInfos(duplicate), std::runtime_error);
+}
+
 TEST_CASE("PIDHandler from Frame w/ metadata", "[pid_utils]") {
   using namespace edm4hep;
   const auto& [event, metadata] = createEventAndMetadata();
