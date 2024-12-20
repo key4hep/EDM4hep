@@ -56,6 +56,8 @@ install(TARGETS ${EDM4HEP_INSTALL_LIBS}
 install(FILES
   "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
   "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
+  "${PROJECT_BINARY_DIR}/edm4hep/edm4hepOldSchemasDictDict.rootmap"
+  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepOldSchemasDict_rdict.pcm"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
 
 install(FILES
