@@ -85,6 +85,14 @@ public:
   /// Add meta information for a collection
   void addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo);
 
+  /// Add several meta informations simultaneously
+  template <typename... PIDMetas>
+  void addMetaInfos(const PIDMetas&... pidMetas) {
+    static_assert((std::is_same_v<PIDMetas, edm4hep::utils::ParticleIDMeta> && ...),
+                  "Only ParticleIDMeta can be used to add metadata to a PIDHandler");
+    (addMetaInfo(pidMetas), ...);
+  }
+
   /// Retrieve all ParticleIDs that are related to the passed
   /// ReconstructedParticle
   std::vector<edm4hep::ParticleID> getPIDs(const edm4hep::ReconstructedParticle& reco) const;
