@@ -52,7 +52,6 @@ def create_MCParticleCollection():
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
         particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-        particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
 
     p_list[0].addToDaughters(p_list[1])
     p_list[0].addToParents(p_list[2])

@@ -80,27 +80,6 @@ components:
           return *( &x + i ) ; }\n
         "
 
-
-    edm4hep::Vector2i:
-      Members:
-        - int32_t a
-        - int32_t b
-      ExtraCode:
-        includes: "#include <cstddef>"
-        declaration: "
-        constexpr Vector2i() : a(0),b(0) {}\n
-        constexpr Vector2i(int32_t aa, int32_t bb) : a(aa),b(bb) {}\n
-        constexpr Vector2i( const int32_t* v) : a(v[0]), b(v[1]) {}\n
-        constexpr bool operator==(const Vector2i& v) const { return (a==v.a&&b==v.b) ; }\n
-        constexpr bool operator!=(const Vector2i& v) const { return !(*this == v) ; }\n
-        constexpr int operator[](unsigned i) const {\n
-          static_assert(\n
-            offsetof(Vector2i,a)+sizeof(Vector2i::a) == offsetof(Vector2i,b),\n
-            \"operator[] requires no padding\");\n
-          return *( &a + i ) ; }\n
-        "
-
-
     edm4hep::Vector2f:
       Members:
         - float a
@@ -266,7 +245,6 @@ datatypes:
       - edm4hep::Vector3d momentum [GeV]            // particle 3-momentum at the production vertex
       - edm4hep::Vector3d momentumAtEndpoint [GeV]  // particle 3-momentum at the endpoint
       - edm4hep::Vector3f spin                 // spin (helicity) vector of the particle
-      - edm4hep::Vector2i colorFlow                // color flow as defined by the generator
     OneToManyRelations:
       - edm4hep::MCParticle parents // The parents of this particle
       - edm4hep::MCParticle daughters // The daughters this particle
