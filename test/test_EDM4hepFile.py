@@ -95,6 +95,11 @@ def track(event):
     return event.get("TrackCollection")[0]
 
 
+@pytest.fixture(scope="module")
+def edm4hep_version(reader):
+    return reader.current_file_version("edm4hep")
+
+
 def check_cov_matrix(cov_matrix, n_dim):
     """Check the contents of the passed covariance matrix"""
     counter = count(COUNT_START)
@@ -125,7 +130,7 @@ def test_EventHeaderCollection(event):
         assert weight == next(counter)
 
 
-def test_MCParticleCollection(event):
+def test_MCParticleCollection(event, edm4hep_version):
     """Check the MCParticleCollection"""
     counter = count(COUNT_START)
     particles = event.get("MCParticleCollection")
@@ -151,7 +156,12 @@ def test_MCParticleCollection(event):
             next(counter), next(counter), next(counter)
         )
         assert particle.getSpin() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        assert particle.getColorFlow() == edm4hep.Vector2i(next(counter), next(counter))
+
+        if edm4hep_version < podio.version.parse("0.99.2"):
+            # The colorFlow was here so we have increase the counter here to
+            # maintain the expected values for all elements of the collection
+            next(counter)
+            next(counter)
 
     assert particles[0].getDaughters()[0] == particles[1]
     assert particles[0].getParents()[0] == particles[2]
