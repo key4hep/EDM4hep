@@ -12,8 +12,8 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [Vector4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L9)      | [Vector3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L34)     | [Vector3d](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L56)     |                                                                               |
-| [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L83) | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L182) | [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L212) |
+| [Vector4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L9)      | [Vector3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L34)      | [Vector3d](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L56)     |
+| [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L83)     | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L182)   | [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L212)    |
 | [CovMatrix2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L103) | [CovMatrix3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L123)  | [CovMatrix4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L142) |
 | [CovMatrix6f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L162) |   |   |
 
