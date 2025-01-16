@@ -28,6 +28,9 @@ ParticleIDMeta::ParticleIDMeta(const std::string& algName, const std::vector<std
     algoName(algName), paramNames(parNames), m_algoType(getAlgoID(algName)) {
 }
 
+ParticleIDMeta::ParticleIDMeta(const std::string& algName) : ParticleIDMeta(algName, std::vector<std::string>{}) {
+}
+
 std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param) {
   const auto nameIt = std::ranges::find(pidMetaInfo.paramNames, param);
   if (nameIt != pidMetaInfo.paramNames.end()) {

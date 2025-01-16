@@ -40,13 +40,19 @@ struct ParticleIDMeta {
   ///                 There should be a parameter name for each parameter that
   ///                 is stored in the ParticleID parameters field
   ParticleIDMeta(const std::string& algName, int32_t algType, const std::vector<std::string>& parNames = {});
-  /// Main constructor for creating a ParticleIDMeta object
+
+  /// Main constructor for creating a ParticleIDMeta object without parameters
+  ///
+  /// @param algName  The name of the PID algorithm
+  ParticleIDMeta(const std::string& algName);
+
+  /// Main constructor for creating a ParticleIDMeta object with parameters
   ///
   /// @param algName  The name of the PID algorithm
   /// @param parNames The (optional) parameter names for this PID algorithms.
   ///                 There should be a parameter name for each parameter that
   ///                 is stored in the ParticleID parameters field
-  ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames = {});
+  ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames);
 
   ~ParticleIDMeta() = default;
   /// Default constructor

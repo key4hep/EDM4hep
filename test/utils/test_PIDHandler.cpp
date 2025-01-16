@@ -77,7 +77,7 @@ void checkHandlerValidReco(const edm4hep::utils::PIDHandler& handler, const edm4
 TEST_CASE("ParticleIDMeta constructor") {
   using namespace edm4hep::utils;
 
-  ParticleIDMeta pidMeta{"name", {}};
+  ParticleIDMeta pidMeta{"name"};
   REQUIRE(pidMeta.algoName == "name");
   REQUIRE(pidMeta.algoType() == -609270800); // 32 bit MurmurHash3 of "name"
 }
