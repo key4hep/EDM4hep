@@ -1,2 +1,4 @@
 # Whitespace removal in edm4hep.yaml
 66fae727497dec037816b53899736b443b4e462d
+# Formatting for c++20 switch in .clang-format
+56a8489bad3f89f1a51e5367da91a0399de6c955
