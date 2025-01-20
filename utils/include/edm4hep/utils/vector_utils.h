@@ -8,39 +8,25 @@
 namespace edm4hep {
 
 template <class V>
-concept VectorHasX = requires(V v) {
-  v.x;
-};
+concept VectorHasX = requires(V v) { v.x; };
 
 template <class V>
-concept VectorHasY = requires(V v) {
-  v.y;
-};
+concept VectorHasY = requires(V v) { v.y; };
 
 template <class V>
-concept VectorHasZ = requires(V v) {
-  v.z;
-};
+concept VectorHasZ = requires(V v) { v.z; };
 
 template <class V>
-concept VectorHasT = requires(V v) {
-  v.t;
-};
+concept VectorHasT = requires(V v) { v.t; };
 
 template <class V>
-concept VectorHasA = requires(V v) {
-  v.a;
-};
+concept VectorHasA = requires(V v) { v.a; };
 
 template <class V>
-concept VectorHasB = requires(V v) {
-  v.b;
-};
+concept VectorHasB = requires(V v) { v.b; };
 
 template <class V>
-concept ClassVector = requires(V v) {
-  v.x();
-};
+concept ClassVector = requires(V v) { v.x(); };
 
 template <class V>
 concept Vector2D_XY = VectorHasX<V> && VectorHasY<V> && !VectorHasZ<V> && !VectorHasT<V> && !ClassVector<V>;
