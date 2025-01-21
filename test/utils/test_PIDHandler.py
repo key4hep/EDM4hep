@@ -36,8 +36,8 @@ class TestPIDHandler(unittest.TestCase):
         reco = reco_coll[0]
         pids = handler.getPIDs(reco)
         self.assertEqual(len(pids), 2)
-        self.assertAlmostEqual(pids[0].getParticle(), reco, places=5)
-        self.assertAlmostEqual(pids[1].getParticle(), reco, places=5)
+        self.assertEqual(pids[0].getParticle(), reco)
+        self.assertEqual(pids[1].getParticle(), reco)
         self.assertAlmostEqual(pids[0].getParameters()[0], 1.23, places=5)
         self.assertAlmostEqual(pids[0].getParameters()[1], 3.14, places=5)
 
