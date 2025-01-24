@@ -39,6 +39,8 @@ from podio.pythonizations import load_pythonizations  # noqa: E402
 
 load_pythonizations("edm4hep")
 
+from ._pidhandler import pythonize_pidhandler  # noqa: E402 F401
+
 # Make TAB completion work for utils
 setattr(edm4hep, "utils", edm4hep.utils)
 
