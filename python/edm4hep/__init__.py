@@ -21,6 +21,10 @@ res = ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h")
 if res != 0:
     raise RuntimeError("Failed to load dataframe.h")
 
+res = ROOT.gInterpreter.LoadFile("edm4hep/utils/ParticleIDUtils.h")
+if res != 0:
+    raise RuntimeError("Failed to load ParticleIDUtils.h")
+
 res = ROOT.gInterpreter.LoadFile("edm4hep/Constants.h")
 if res != 0:
     raise RuntimeError("Failed to load Constants.h")
@@ -34,6 +38,8 @@ from ROOT import edm4hep  # noqa: E402
 from podio.pythonizations import load_pythonizations  # noqa: E402
 
 load_pythonizations("edm4hep")
+
+from ._pidhandler import pythonize_pidhandler  # noqa: E402 F401
 
 # Make TAB completion work for utils
 setattr(edm4hep, "utils", edm4hep.utils)
