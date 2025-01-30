@@ -32,7 +32,7 @@ jobs:
           cd $STARTDIR
           python3 -m venv /root/pre-commit-venv
           source /root/pre-commit-venv/bin/activate
-          pip install pre-commit ruff
+          pip install pre-commit
           cmake -DENABLE_SIO=ON \
             -DCMAKE_CXX_STANDARD=20 \
             -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
