@@ -475,41 +475,6 @@ datatypes:
         /// Set the position covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
-  edm4hep::TrackerHitLocal:
-    Description: "hi"
-    Author: "batman"
-    Members:
-    - uint64_t cellID      // ID of the sensor that created this hit
-    # encode local meas directions in? we need 3*6 = 18 bits, so would fit into 32
-    - int32_t type                       // type of raw data hit
-    # technically also unused could use
-    - int32_t quality                    // quality bit flag of the hit
-    - float time [ns]                    // time of the hit
-    - float eDep [GeV]                   // energy deposited on the hit
-    - float eDepError [GeV]              // error measured on EDep
-    - edm4hep::Vector3d position [mm]    // hit position
-    # does not necessarily need to be a member here, but needs to conform to interface
-    # is listed here for IO purposes primarily
-#
-
-    # extra info
-    - uint32_t dim // number of dimensions
-    # - std::array<uint8_t, 6> indices;
-    # - std::vector<float> measurement // meas
-    # - std::vector<float> covMatrix // cov
-    #- edm4hep::Vector6f measurement // local hit measurement
-    #- edm4hep::CovMatrix6f covMatrix // local hit covariance
-    VectorMembers:
-      - float measurement // meas
-      - float covariance // cov
-
-    # ExtraCode:
-    #   includes: |
-    #     #include <edm4hep/Vector3d.h>
-    #   declaration: |
-    #     edm4hep::Vector3d getPosition() const { return {}; }
-    #     edm4hep::Vector3d& getPosition() const { return {}; }
-
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
     Author: "EDM4hep authors"
