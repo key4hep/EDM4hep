@@ -49,7 +49,7 @@ components:
               (offsetof(Vector3f,x)+sizeof(Vector3f::x) == offsetof(Vector3f,y)) &&
               (offsetof(Vector3f,y)+sizeof(Vector3f::y) == offsetof(Vector3f,z)),
               "operator[] requires no padding");
-            return *( &x + i ) ; 
+            return *( &x + i ) ;
           }
 
 
@@ -248,14 +248,14 @@ datatypes:
     MutableExtraCode:
       includes: "#include <cmath>"
       declaration: |
-        void setCreatedInSimulation(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     
-        void setBackscatter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     
-        void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } 
-        void setDecayedInTracker(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     
-        void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     
-        void setHasLeftDetector(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     
-        void setStopped(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     
-        void setOverlay(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         
+        void setCreatedInSimulation(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }
+        void setBackscatter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }
+        void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; }
+        void setDecayedInTracker(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }
+        void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }
+        void setHasLeftDetector(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }
+        void setStopped(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }
+        void setOverlay(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }
 
 
     ExtraCode:
@@ -264,32 +264,32 @@ datatypes:
         // define the bit positions for the simulation flag
         static const int BITCreatedInSimulation = 30;
         static const int BITBackscatter = 29 ;
-        static const int BITVertexIsNotEndpointOfParent = 28 ;  
-        static const int BITDecayedInTracker = 27 ; 
-        static const int BITDecayedInCalorimeter = 26 ;   
-        static const int BITLeftDetector = 25 ;     
-        static const int BITStopped = 24 ;    
-        static const int BITOverlay = 23 ;    
-        /// return energy computed from momentum and mass 
+        static const int BITVertexIsNotEndpointOfParent = 28 ;
+        static const int BITDecayedInTracker = 27 ;
+        static const int BITDecayedInCalorimeter = 26 ;
+        static const int BITLeftDetector = 25 ;
+        static const int BITStopped = 24 ;
+        static const int BITOverlay = 23 ;
+        /// return energy computed from momentum and mass
         double getEnergy() const { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+
-                                          getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;} 
+                                          getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;}
 
-        /// True if the particle has been created by the simulation program (rather than the generator).     
-        bool isCreatedInSimulation() const { return utils::checkBit(getSimulatorStatus(), BITCreatedInSimulation); }    
-        /// True if the particle is the result of a backscatter from a calorimeter shower. 
-        bool isBackscatter() const { return utils::checkBit(getSimulatorStatus(), BITBackscatter); }   
-        /// True if the particle's vertex is not the endpoint of the  parent particle.     
-        bool vertexIsNotEndpointOfParent() const { return utils::checkBit(getSimulatorStatus(), BITVertexIsNotEndpointOfParent); } 
-        /// True if the particle has interacted in a tracking region.                
-        bool isDecayedInTracker() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInTracker); }     
-        /// True if the particle has interacted in a calorimeter region.             
-        bool isDecayedInCalorimeter() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInCalorimeter); }   
-        /// True if the particle has left the world volume undecayed.                
+        /// True if the particle has been created by the simulation program (rather than the generator).
+        bool isCreatedInSimulation() const { return utils::checkBit(getSimulatorStatus(), BITCreatedInSimulation); }
+        /// True if the particle is the result of a backscatter from a calorimeter shower.
+        bool isBackscatter() const { return utils::checkBit(getSimulatorStatus(), BITBackscatter); }
+        /// True if the particle's vertex is not the endpoint of the  parent particle.
+        bool vertexIsNotEndpointOfParent() const { return utils::checkBit(getSimulatorStatus(), BITVertexIsNotEndpointOfParent); }
+        /// True if the particle has interacted in a tracking region.
+        bool isDecayedInTracker() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInTracker); }
+        /// True if the particle has interacted in a calorimeter region.
+        bool isDecayedInCalorimeter() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInCalorimeter); }
+        /// True if the particle has left the world volume undecayed.
         bool hasLeftDetector() const { return utils::checkBit(getSimulatorStatus(), BITLeftDetector); }
-        /// True if the particle has been stopped by the simulation program.         
-        bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }     
+        /// True if the particle has been stopped by the simulation program.
+        bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }
         /// True if the particle has been overlayed by the simulation (or digitization)  program.
-        bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }     
+        bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }
 
 
 
@@ -317,7 +317,7 @@ datatypes:
         void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }
         [[deprecated("use setParticle instead")]]
         void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }
-      
+
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>\n"
       declaration: |
@@ -475,7 +475,40 @@ datatypes:
         /// Set the position covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
+  edm4hep::TrackerHitLocal:
+    Description: "hi"
+    Author: "batman"
+    Members:
+    - uint64_t cellID      // ID of the sensor that created this hit
+    # encode local meas directions in? we need 3*6 = 18 bits, so would fit into 32
+    - int32_t type                       // type of raw data hit
+    # technically also unused could use
+    - int32_t quality                    // quality bit flag of the hit
+    - float time [ns]                    // time of the hit
+    - float eDep [GeV]                   // energy deposited on the hit
+    - float eDepError [GeV]              // error measured on EDep
+    - edm4hep::Vector3d position [mm]    // hit position
+    # does not necessarily need to be a member here, but needs to conform to interface
+    # is listed here for IO purposes primarily
+#
 
+    # extra info
+    - uint32_t dim // number of dimensions
+    # - std::array<uint8_t, 6> indices;
+    # - std::vector<float> measurement // meas
+    # - std::vector<float> covMatrix // cov
+    #- edm4hep::Vector6f measurement // local hit measurement
+    #- edm4hep::CovMatrix6f covMatrix // local hit covariance
+    VectorMembers:
+      - float measurement // meas
+      - float covariance // cov
+
+    # ExtraCode:
+    #   includes: |
+    #     #include <edm4hep/Vector3d.h>
+    #   declaration: |
+    #     edm4hep::Vector3d getPosition() const { return {}; }
+    #     edm4hep::Vector3d& getPosition() const { return {}; }
 
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
