@@ -15,20 +15,20 @@ components:
         - float t
       ExtraCode:
         includes: "#include <cstddef>"
-        declaration: "
-        constexpr Vector4f() : x(0),y(0),z(0),t(0) {}\n
-        constexpr Vector4f(float xx, float yy, float zz, float tt) : x(xx),y(yy),z(zz),t(tt) {}\n
-        constexpr Vector4f(const float* v) : x(v[0]),y(v[1]),z(v[2]),t(v[3]) {}\n
-        constexpr bool operator==(const Vector4f& v) const { return (x==v.x&&y==v.y&&z==v.z&&t==v.t) ; }\n
-        constexpr bool operator!=(const Vector4f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const {\n
-          static_assert(\n
-            (offsetof(Vector4f,x)+sizeof(Vector4f::x) == offsetof(Vector4f,y)) &&\n
-            (offsetof(Vector4f,y)+sizeof(Vector4f::y) == offsetof(Vector4f,z)) &&\n
-            (offsetof(Vector4f,z)+sizeof(Vector4f::z) == offsetof(Vector4f,t)),\n
-            \"operator[] requires no padding\");\n
-          return *( &x + i ) ; }\n
-      "
+        declaration: |
+          constexpr Vector4f() : x(0),y(0),z(0),t(0) {}
+          constexpr Vector4f(float xx, float yy, float zz, float tt) : x(xx),y(yy),z(zz),t(tt) {}
+          constexpr Vector4f(const float* v) : x(v[0]),y(v[1]),z(v[2]),t(v[3]) {}
+          constexpr bool operator==(const Vector4f& v) const { return (x==v.x&&y==v.y&&z==v.z&&t==v.t) ; }
+          constexpr bool operator!=(const Vector4f& v) const { return !(*this == v) ; }
+          constexpr float operator[](unsigned i) const {
+            static_assert(
+              (offsetof(Vector4f,x)+sizeof(Vector4f::x) == offsetof(Vector4f,y)) &&
+              (offsetof(Vector4f,y)+sizeof(Vector4f::y) == offsetof(Vector4f,z)) &&
+              (offsetof(Vector4f,z)+sizeof(Vector4f::z) == offsetof(Vector4f,t)),
+              "operator[] requires no padding");
+            return *( &x + i ) ; }
+
 
 
     edm4hep::Vector3f:
@@ -38,19 +38,20 @@ components:
         - float z
       ExtraCode:
         includes: "#include <cstddef>"
-        declaration: "
-        constexpr Vector3f() : x(0),y(0),z(0) {}\n
-        constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}\n
-        constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
-        constexpr bool operator!=(const Vector3f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const {\n
-          static_assert(\n
-            (offsetof(Vector3f,x)+sizeof(Vector3f::x) == offsetof(Vector3f,y)) &&\n
-            (offsetof(Vector3f,y)+sizeof(Vector3f::y) == offsetof(Vector3f,z)),\n
-            \"operator[] requires no padding\");\n
-          return *( &x + i ) ; }\n
-        "
+        declaration: |
+          constexpr Vector3f() : x(0),y(0),z(0) {}
+          constexpr Vector3f(float xx, float yy, float zz) : x(xx),y(yy),z(zz) {}
+          constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}
+          constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }
+          constexpr bool operator!=(const Vector3f& v) const { return !(*this == v) ; }
+          constexpr float operator[](unsigned i) const {
+            static_assert(
+              (offsetof(Vector3f,x)+sizeof(Vector3f::x) == offsetof(Vector3f,y)) &&
+              (offsetof(Vector3f,y)+sizeof(Vector3f::y) == offsetof(Vector3f,z)),
+              "operator[] requires no padding");
+            return *( &x + i ) ; 
+          }
+
 
 
     edm4hep::Vector3d:
@@ -59,26 +60,24 @@ components:
         - double y
         - double z
       ExtraCode:
-        includes: "
-        #include <edm4hep/Vector3f.h>\n
-        #include <cstddef>\n
-        "
-        declaration: "
-        constexpr Vector3d() : x(0),y(0),z(0) {}\n
-        constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}\n
-        constexpr Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}\n
-        [[ deprecated(\"This constructor will be removed again it is mainly here for an easier transition\") ]]\n
-        constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}\n
-        constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }\n
-        constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }\n
-        constexpr double operator[](unsigned i) const {\n
-          static_assert(\n
-            (offsetof(Vector3d,x)+sizeof(Vector3d::x) == offsetof(Vector3d,y)) &&\n
-            (offsetof(Vector3d,y)+sizeof(Vector3d::y) == offsetof(Vector3d,z)),\n
-            \"operator[] requires no padding\");\n
-          return *( &x + i ) ; }\n
-        "
+        includes: |
+          #include <edm4hep/Vector3f.h>
+          #include <cstddef>
+        declaration: |
+          constexpr Vector3d() : x(0),y(0),z(0) {}
+          constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}
+          constexpr Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}
+          constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}
+          [[ deprecated("This constructor will be removed again it is mainly here for an easier transition") ]]
+          constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}
+          constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }
+          constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }
+          constexpr double operator[](unsigned i) const {
+            static_assert(
+              (offsetof(Vector3d,x)+sizeof(Vector3d::x) == offsetof(Vector3d,y)) &&
+              (offsetof(Vector3d,y)+sizeof(Vector3d::y) == offsetof(Vector3d,z)),
+              "operator[] requires no padding");
+            return *( &x + i ) ; }
 
     edm4hep::Vector2f:
       Members:
@@ -86,18 +85,17 @@ components:
         - float b
       ExtraCode:
         includes: "#include <cstddef>"
-        declaration: "
-        constexpr Vector2f() : a(0),b(0) {}\n
-        constexpr Vector2f(float aa,float bb) : a(aa),b(bb) {}\n
-        constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}\n
-        constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }\n
-        constexpr bool operator!=(const Vector2f& v) const { return !(*this == v) ; }\n
-        constexpr float operator[](unsigned i) const {\n
-          static_assert(\n
-            offsetof(Vector2f,a)+sizeof(Vector2f::a) == offsetof(Vector2f,b),\n
-            \"operator[] requires no padding\");\n
-          return *( &a + i ) ; }\n
-        "
+        declaration: |
+          constexpr Vector2f() : a(0),b(0) {}
+          constexpr Vector2f(float aa,float bb) : a(aa),b(bb) {}
+          constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}
+          constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }
+          constexpr bool operator!=(const Vector2f& v) const { return !(*this == v) ; }
+          constexpr float operator[](unsigned i) const {
+            static_assert(
+              offsetof(Vector2f,a)+sizeof(Vector2f::a) == offsetof(Vector2f,b),
+              "operator[] requires no padding");
+            return *( &a + i ) ; }
 
 
     edm4hep::CovMatrix2f:
@@ -106,17 +104,17 @@ components:
         - std::array<float, 3> values // the covariance matrix values
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
-        declaration: "
-          constexpr CovMatrix2f() = default;\n
-          template<typename... Vs>\n
+        declaration: |
+          constexpr CovMatrix2f() = default;
+          template<typename... Vs>
           constexpr CovMatrix2f(Vs... v) : values{static_cast<float>(v)...} {
-            static_assert(sizeof...(v) == 3, \"CovMatrix2f requires 3 values\");
-          }\n
-          constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}\n
-          constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }\n
-          bool operator==(const CovMatrix2f& v) const { return v.values == values; }\n
-          bool operator!=(const CovMatrix2f& v) const { return v.values != values; }\n
-        "
+            static_assert(sizeof...(v) == 3, "CovMatrix2f requires 3 values");
+          }
+          constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}
+          constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }
+          bool operator==(const CovMatrix2f& v) const { return v.values == values; }
+          bool operator!=(const CovMatrix2f& v) const { return v.values != values; }
+
         declarationFile: "edm4hep/extra_code/CovMatrixCommon.ipp"
 
 
@@ -126,17 +124,17 @@ components:
         - std::array<float, 6> values // the covariance matrix values
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
-        declaration: "
-          constexpr CovMatrix3f() = default;\n
-          constexpr CovMatrix3f(const std::array<float, 6>& v) : values(v) {}\n
-          template<typename... Vs>\n
+        declaration: |
+          constexpr CovMatrix3f() = default;
+          constexpr CovMatrix3f(const std::array<float, 6>& v) : values(v) {}
+          template<typename... Vs>
           constexpr CovMatrix3f(Vs... v) : values{static_cast<float>(v)...} {
-            static_assert(sizeof...(v) == 6, \"CovMatrix3f requires 6 values\");
-          }\n
-          constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }\n
-          bool operator==(const CovMatrix3f& v) const { return v.values == values; }\n
-          bool operator!=(const CovMatrix3f& v) const { return v.values != values; }\n
-        "
+            static_assert(sizeof...(v) == 6, "CovMatrix3f requires 6 values");
+          }
+          constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }
+          bool operator==(const CovMatrix3f& v) const { return v.values == values; }
+          bool operator!=(const CovMatrix3f& v) const { return v.values != values; }
+
         declarationFile: "edm4hep/extra_code/CovMatrixCommon.ipp"
 
     edm4hep::CovMatrix4f:
@@ -145,17 +143,17 @@ components:
         - std::array<float, 10> values // the covariance matrix values
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
-        declaration: "
-          constexpr CovMatrix4f() = default;\n
-          template<typename... Vs>\n
+        declaration: |
+          constexpr CovMatrix4f() = default;
+          template<typename... Vs>
           constexpr CovMatrix4f(Vs... v) : values{static_cast<float>(v)...} {
-            static_assert(sizeof...(v) == 10, \"CovMatrix4f requires 10 values\");
-          }\n
-          constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}\n
-          constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }\n
-          bool operator==(const CovMatrix4f& v) const { return v.values == values; }\n
-          bool operator!=(const CovMatrix4f& v) const { return v.values != values; }\n
-        "
+            static_assert(sizeof...(v) == 10, "CovMatrix4f requires 10 values");
+          }
+          constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}
+          constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }
+          bool operator==(const CovMatrix4f& v) const { return v.values == values; }
+          bool operator!=(const CovMatrix4f& v) const { return v.values != values; }
+
         declarationFile: "edm4hep/extra_code/CovMatrixCommon.ipp"
 
 
@@ -165,17 +163,17 @@ components:
         - std::array<float, 21> values // the covariance matrix values
       ExtraCode:
         includes: "#include <edm4hep/utils/cov_matrix_utils.h>"
-        declaration: "
-          constexpr CovMatrix6f() = default;\n
-          template<typename... Vs>\n
+        declaration: |
+          constexpr CovMatrix6f() = default;
+          template<typename... Vs>
           constexpr CovMatrix6f(Vs... v) : values{static_cast<float>(v)...} {
-            static_assert(sizeof...(v) == 21, \"CovMatrix6f requires 21 values\");
-          }\n
-          constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}\n
-          constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }\n
-          bool operator==(const CovMatrix6f& v) const { return v.values == values; }\n
-          bool operator!=(const CovMatrix6f& v) const { return v.values != values; }\n
-        "
+            static_assert(sizeof...(v) == 21, "CovMatrix6f requires 21 values");
+          }
+          constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}
+          constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }
+          bool operator==(const CovMatrix6f& v) const { return v.values == values; }
+          bool operator!=(const CovMatrix6f& v) const { return v.values != values; }
+
         declarationFile: "edm4hep/extra_code/CovMatrixCommon.ipp"
 
 
@@ -193,20 +191,19 @@ components:
         - edm4hep::CovMatrix6f covMatrix // covariance matrix of the track parameters.
       ExtraCode:
         includes: "#include <edm4hep/Constants.h>"
-        declaration: "
-        static const int AtOther = 0 ; // any location other than the ones defined below\n
-        static const int AtIP = 1 ;\n
-        static const int AtFirstHit = 2 ;\n
-        static const int AtLastHit = 3 ;\n
-        static const int AtCalorimeter = 4 ;\n
-        static const int AtVertex = 5 ;\n
-        static const int LastLocation = AtVertex  ;\n
+        declaration: |
+          static const int AtOther = 0 ; // any location other than the ones defined below
+          static const int AtIP = 1 ;
+          static const int AtFirstHit = 2 ;
+          static const int AtLastHit = 3 ;
+          static const int AtCalorimeter = 4 ;
+          static const int AtVertex = 5 ;
+          static const int LastLocation = AtVertex  ;
 
-        /// Get the covariance matrix value for the two passed parameters\n
-        constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }\n
-        /// Set the covariance matrix value for the two passed parameters\n
-        constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
-        "
+          /// Get the covariance matrix value for the two passed parameters
+          constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }
+          /// Set the covariance matrix value for the two passed parameters
+          constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
 
 
     edm4hep::Quantity:
@@ -250,50 +247,50 @@ datatypes:
       - edm4hep::MCParticle daughters // The daughters this particle
     MutableExtraCode:
       includes: "#include <cmath>"
-      declaration: "
-      void setCreatedInSimulation(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     \n
-      void setBackscatter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     \n
-      void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } \n
-      void setDecayedInTracker(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     \n
-      void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     \n
-      void setHasLeftDetector(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     \n
-      void setStopped(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     \n
-      void setOverlay(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         \n
-      "
+      declaration: |
+        void setCreatedInSimulation(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITCreatedInSimulation , bitval ) ) ;  }  		     
+        void setBackscatter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITBackscatter , bitval ) ) ;   }  			     
+        void setVertexIsNotEndpointOfParent(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITVertexIsNotEndpointOfParent , bitval ) ) ; } 
+        void setDecayedInTracker(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInTracker , bitval ) ) ;   }  		     
+        void setDecayedInCalorimeter(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITDecayedInCalorimeter , bitval ) ) ;   }  		     
+        void setHasLeftDetector(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITLeftDetector , bitval ) ) ;   }  			     
+        void setStopped(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITStopped , bitval ) ) ;   }  				     
+        void setOverlay(bool bitval) { setSimulatorStatus( utils::setBit( getSimulatorStatus() , BITOverlay , bitval ) ) ;   }         
+
 
     ExtraCode:
       includes: "#include <edm4hep/utils/bit_utils.h>\n"
-      declaration: "
-      // define the bit positions for the simulation flag\n
-      static const int BITCreatedInSimulation = 30;\n
-      static const int BITBackscatter = 29 ;\n
-      static const int BITVertexIsNotEndpointOfParent = 28 ;  \n
-      static const int BITDecayedInTracker = 27 ; \n
-      static const int BITDecayedInCalorimeter = 26 ;   \n
-      static const int BITLeftDetector = 25 ;     \n
-      static const int BITStopped = 24 ;    \n
-      static const int BITOverlay = 23 ;    \n
-      /// return energy computed from momentum and mass \n
-      double getEnergy() const { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+\n
-                                        getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;} \n
+      declaration: |
+        // define the bit positions for the simulation flag
+        static const int BITCreatedInSimulation = 30;
+        static const int BITBackscatter = 29 ;
+        static const int BITVertexIsNotEndpointOfParent = 28 ;  
+        static const int BITDecayedInTracker = 27 ; 
+        static const int BITDecayedInCalorimeter = 26 ;   
+        static const int BITLeftDetector = 25 ;     
+        static const int BITStopped = 24 ;    
+        static const int BITOverlay = 23 ;    
+        /// return energy computed from momentum and mass 
+        double getEnergy() const { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+
+                                          getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;} 
 
-      /// True if the particle has been created by the simulation program (rather than the generator).     \n
-      bool isCreatedInSimulation() const { return utils::checkBit(getSimulatorStatus(), BITCreatedInSimulation); }    \n
-      /// True if the particle is the result of a backscatter from a calorimeter shower. \n
-      bool isBackscatter() const { return utils::checkBit(getSimulatorStatus(), BITBackscatter); }   \n
-      /// True if the particle's vertex is not the endpoint of the  parent particle.     \n
-      bool vertexIsNotEndpointOfParent() const { return utils::checkBit(getSimulatorStatus(), BITVertexIsNotEndpointOfParent); } \n
-      /// True if the particle has interacted in a tracking region.                \n
-      bool isDecayedInTracker() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInTracker); }     \n
-      /// True if the particle has interacted in a calorimeter region.             \n
-      bool isDecayedInCalorimeter() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInCalorimeter); }   \n
-      /// True if the particle has left the world volume undecayed.                \n
-      bool hasLeftDetector() const { return utils::checkBit(getSimulatorStatus(), BITLeftDetector); }\n
-      /// True if the particle has been stopped by the simulation program.         \n
-      bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }     \n
-      /// True if the particle has been overlayed by the simulation (or digitization)  program.\n
-      bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }     \n
-      "
+        /// True if the particle has been created by the simulation program (rather than the generator).     
+        bool isCreatedInSimulation() const { return utils::checkBit(getSimulatorStatus(), BITCreatedInSimulation); }    
+        /// True if the particle is the result of a backscatter from a calorimeter shower. 
+        bool isBackscatter() const { return utils::checkBit(getSimulatorStatus(), BITBackscatter); }   
+        /// True if the particle's vertex is not the endpoint of the  parent particle.     
+        bool vertexIsNotEndpointOfParent() const { return utils::checkBit(getSimulatorStatus(), BITVertexIsNotEndpointOfParent); } 
+        /// True if the particle has interacted in a tracking region.                
+        bool isDecayedInTracker() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInTracker); }     
+        /// True if the particle has interacted in a calorimeter region.             
+        bool isDecayedInCalorimeter() const { return utils::checkBit(getSimulatorStatus(), BITDecayedInCalorimeter); }   
+        /// True if the particle has left the world volume undecayed.                
+        bool hasLeftDetector() const { return utils::checkBit(getSimulatorStatus(), BITLeftDetector); }
+        /// True if the particle has been stopped by the simulation program.         
+        bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }     
+        /// True if the particle has been overlayed by the simulation (or digitization)  program.
+        bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }     
+
 
 
   edm4hep::SimTrackerHit:
@@ -310,31 +307,30 @@ datatypes:
     OneToOneRelations:
       - edm4hep::MCParticle particle // MCParticle that caused the hit
     MutableExtraCode:
-      includes: "
-      #include <cmath>\n
-      #include <edm4hep/MCParticle.h>\n
-      "
-      declaration: "
-      int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }\n
-      void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }\n
-      void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }\n
-      [[deprecated(\"use setParticle instead\")]]
-      void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }\n
-      "
+      includes: |
+        #include <cmath>
+        #include <edm4hep/MCParticle.h>
+
+      declaration: |
+        int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }
+        void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }
+        void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }
+        [[deprecated("use setParticle instead")]]
+        void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }
+      
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>\n"
-      declaration: "
-      static const int  BITOverlay = 31;\n
-      static const int  BITProducedBySecondary = 30;\n
-      bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }\n
-      bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }\n
-      double x() const {return getPosition()[0];}\n
-      double y() const {return getPosition()[1];}\n
-      double z() const {return getPosition()[2];}\n
-      double rho() const {return sqrt(x()*x() + y()*y());}\n
-      [[deprecated(\"use getParticle instead\")]]
-      edm4hep::MCParticle getMCParticle() const { return getParticle(); }\n
-      "
+      declaration: |
+        static const int  BITOverlay = 31;
+        static const int  BITProducedBySecondary = 30;
+        bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }
+        bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }
+        double x() const {return getPosition()[0];}
+        double y() const {return getPosition()[1];}
+        double z() const {return getPosition()[2];}
+        double rho() const {return sqrt(x()*x() + y()*y());}
+        [[deprecated("use getParticle instead")]]
+        edm4hep::MCParticle getMCParticle() const { return getParticle(); }
 
 
   edm4hep::CaloHitContribution:
@@ -414,16 +410,16 @@ datatypes:
       - edm4hep::CalorimeterHit hits         // hits that have been combined to this cluster
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Get the position error value for the two passed dimensions\n
-      float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Get the position error value for the two passed dimensions
+        float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }
+
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Set the position error value for the two passed dimensions\n
-      void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Set the position error value for the two passed dimensions
+        void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }
+
 
 
   edm4hep::TrackerHit3D:
@@ -440,16 +436,15 @@ datatypes:
       - edm4hep::CovMatrix3f covMatrix // covariance matrix of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Get the position covariance matrix value for the two passed dimensions\n
-      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Get the position covariance matrix value for the two passed dimensions
+        float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }
+
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Set the position covariance matrix value for the two passed dimensions\n
-      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Set the position covariance matrix value for the two passed dimensions
+        void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
 
   edm4hep::TrackerHitPlane:
@@ -470,16 +465,16 @@ datatypes:
       - edm4hep::CovMatrix3f covMatrix // covariance of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Get the position covariance matrix value for the two passed dimensions\n
-      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Get the position covariance matrix value for the two passed dimensions
+        float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }
+
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      /// Set the position covariance matrix value for the two passed dimensions\n
-      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      "
+      declaration: |
+        /// Set the position covariance matrix value for the two passed dimensions
+        void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
+
 
 
   edm4hep::RawTimeSeries:
@@ -528,35 +523,35 @@ datatypes:
     OneToManyRelations:
       - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
     ExtraCode:
-      includes: "#include <edm4hep/Constants.h>\n
-                 #include <edm4hep/utils/bit_utils.h>\n"
-      declaration: "
-      /// Get the position covariance matrix value for the two passed dimensions\n
-      float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
-      // Reserved bits for the type flagword\n
-      static constexpr int BITPrimaryVertex = 1;\n
-      static constexpr int BITSecondaryVertex = 2;\n
-      static constexpr int BITTertiaryVertex = 3;\n
+      includes: |
+        #include <edm4hep/Constants.h>
+        #include <edm4hep/utils/bit_utils.h>
+      declaration: |
+        /// Get the position covariance matrix value for the two passed dimensions
+        float getCovMatrix(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }
+        // Reserved bits for the type flagword
+        static constexpr int BITPrimaryVertex = 1;
+        static constexpr int BITSecondaryVertex = 2;
+        static constexpr int BITTertiaryVertex = 3;
 
-      /// Check if this is a primary vertex\n
-      bool isPrimary() const { return utils::checkBit(getType(), BITPrimaryVertex); }\n
-      /// Check if this is a secondary vertex\n
-      bool isSecondary() const { return utils::checkBit(getType(), BITSecondaryVertex); }\n
-      /// Check if this is a tertiary vertex\n
-      bool isTertiary() const { return utils::checkBit(getType(), BITTertiaryVertex); }\n
-      "
+        /// Check if this is a primary vertex
+        bool isPrimary() const { return utils::checkBit(getType(), BITPrimaryVertex); }
+        /// Check if this is a secondary vertex
+        bool isSecondary() const { return utils::checkBit(getType(), BITSecondaryVertex); }
+        /// Check if this is a tertiary vertex
+        bool isTertiary() const { return utils::checkBit(getType(), BITTertiaryVertex); }
+
     MutableExtraCode:
-      declaration: "
-      /// Set the position covariance matrix value for the two passed dimensions\n
-      void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
+      declaration: |
+        /// Set the position covariance matrix value for the two passed dimensions
+        void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
-      /// Set the primary vertex flag for this vertex\n
-      void setPrimary(bool value=true) { setType(utils::setBit(getType(), BITPrimaryVertex, value)); }\n
-      /// Set the secondary vertex flag for this vertex\n
-      void setSecondary(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }\n
-      /// Set the tertiary vertex flag for this vertex\n
-      void setTertiary(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }\n
-      "
+        /// Set the primary vertex flag for this vertex
+        void setPrimary(bool value=true) { setType(utils::setBit(getType(), BITPrimaryVertex, value)); }
+        /// Set the secondary vertex flag for this vertex
+        void setSecondary(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }
+        /// Set the tertiary vertex flag for this vertex
+        void setTertiary(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }
 
 
   edm4hep::ReconstructedParticle:
@@ -579,23 +574,22 @@ datatypes:
       - edm4hep::ReconstructedParticle particles    // reconstructed particles that have been combined to this particle
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      bool isCompound() const { return particles_size() > 0 ;}\n
-      [[deprecated(\"use setPDG instead\")]]\n
-      int32_t getType() const { return getPDG(); }\n
-      /// Get the four momentum covariance matrix value for the two passed dimensions\n
-      float getCovMatrix(edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }\n
-      "
+      declaration: |
+        bool isCompound() const { return particles_size() > 0 ;}
+        [[deprecated("use setPDG instead")]]
+        int32_t getType() const { return getPDG(); }
+        /// Get the four momentum covariance matrix value for the two passed dimensions
+        float getCovMatrix(edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }
+
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
-      declaration: "
-      //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.\n
-      //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }\n
-      [[deprecated(\"use setPDG instead\")]]\n
-      void setType(int32_t pdg) { setPDG(pdg); }\n
-      /// Set the four momentum covariance matrix value for the two passed dimensions\n
-      void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }\n
-      "
+      declaration: |
+        //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.
+        //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }
+        [[deprecated("use setPDG instead")]]
+        void setType(int32_t pdg) { setPDG(pdg); }
+        /// Set the four momentum covariance matrix value for the two passed dimensions
+        void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
 
   edm4hep::TimeSeries:
