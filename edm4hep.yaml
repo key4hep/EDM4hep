@@ -259,7 +259,7 @@ datatypes:
 
 
     ExtraCode:
-      includes: "#include <edm4hep/utils/bit_utils.h>\n"
+      includes: "#include <edm4hep/utils/bit_utils.h>"
       declaration: |
         // define the bit positions for the simulation flag
         static const int BITCreatedInSimulation = 30;
@@ -319,7 +319,7 @@ datatypes:
         void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }
 
     ExtraCode:
-      includes: "#include <edm4hep/MCParticle.h>\n"
+      includes: "#include <edm4hep/MCParticle.h>"
       declaration: |
         static const int  BITOverlay = 31;
         static const int  BITProducedBySecondary = 30;
