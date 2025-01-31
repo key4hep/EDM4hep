@@ -222,8 +222,8 @@ datatypes:
     Description: "Event Header. Additional parameters are assumed to go into the metadata tree."
     Author: "EDM4hep authors"
     Members:
-      - int32_t eventNumber    // event number
-      - int32_t runNumber      // run number
+      - uint64_t eventNumber    // event number
+      - uint32_t runNumber      // run number
       - uint64_t timeStamp     // time stamp
       - double weight       // event weight
     VectorMembers:
