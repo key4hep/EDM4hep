@@ -6,6 +6,11 @@
     <tab type="user" visible="yes" title="Key4HEP Home Page" url="https://cern.ch/key4hep"/>
     <tab type="pages" visible="no" title="" intro=""/>
     <tab type="user" visible="yes" title="Contribution Guide" url="@ref md_doc_2contributing"/>
+    <tab type="usergroup" title="Selected topics">
+      <tab type="user" visible="yes" title="Generator data" url="@ref md_doc_2_generator_info"/>
+      <tab type="user" visible="yes" title="Vertex and ReconstructedParticle" url="@ref md_doc_2_vertex_reco_particle_recos"/>
+      <tab type="user" visible="yes" title="PIDHandler" url="@ref md_doc_2_p_i_d_handler"/>
+    </tab>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
@@ -22,6 +27,7 @@
       <tab type="globals" visible="yes" title="" intro=""/>
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>
+    <tab type="user" visible="yes" title="Release notes" url="@ref md_doc_2_release_notes"/>
   </navindex>
 
   <!-- Layout definition for a class page -->
