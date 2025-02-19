@@ -10,7 +10,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-        - cron: '16 5 * * *'
+        - cron: '16 4 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,7 +21,14 @@ jobs:
     strategy:
       matrix:
         build_type: ["release", "nightly"]
-        image: ["alma9", "ubuntu22"]
+        image: ["alma9", "ubuntu22", "ubuntu24"]
+        include:
+          - build_type: nightly
+            image: ubuntu24
+            stack: key4hep
+        include:
+            image: alma9
+            stack: devkey
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -30,3 +37,4 @@ jobs:
       with:
         build_type: ${{ matrix.build_type }}
         image: ${{ matrix.image }}
+        stack: ${{ matrix.stack }}
