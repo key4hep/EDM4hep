@@ -399,8 +399,8 @@ datatypes:
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
       - edm4hep::CovMatrix3f positionError   // covariance matrix of the position
-      - float                iTheta          // Theta angle of the cluster intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position which is seen from IP
-      - float                phi             // Phi angle of the cluster intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position which is seen from IP
+      - float                iTheta          // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+      - float                phi             // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
