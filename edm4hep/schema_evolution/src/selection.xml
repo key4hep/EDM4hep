@@ -7,5 +7,8 @@
       <class name="edm4hep::CaloHitSimCaloHitLinkData" ClassVersion="2"/>
       <class name="edm4hep::TrackerHitSimTrackerHitLinkData" ClassVersion="2"/>
       <class name="edm4hep::VertexRecoParticleLinkData" ClassVersion="2"/>
+
+      <class name="edm4hep::v2::Vector2i"/>
+      <class name="edm4hep::v2::MCParticleData" ClassVersion="2"/>
     </selection>
 </lcgdict>
