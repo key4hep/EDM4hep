@@ -7,24 +7,19 @@ repos:
         exclude: (doc/ReleaseNotes.md)
   - repo: local
     hooks:
-      - id: clang-format
-        name: clang-format
-        entry: .github/scripts/clang-format-hook
-        exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$|EDM4HEPVersion.h)
-        types: [c++]
-        language: system
       - id: readme-links-check
         name: README links check
-        entry: python ./scripts/updateReadmeLinks.py --check
+        entry: python3 ./scripts/updateReadmeLinks.py --check
         files: (^README.md$)
         language: system
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.3
+    hooks:
       - id: ruff
-        name: ruff
-        entry: ruff check --force-exclude
-        types: [python]
-        language: system
       - id: ruff-format
-        name: ruff-format
-        entry: ruff format --force-exclude
-        types: [python]
-        language: system
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: 'v17.0.6'
+    hooks:
+      - id: clang-format
+        types: [c++]
+        exclude: (edm4hep/(edm4hep|src)/.*(h|cc)$|EDM4HEPVersion.h)
