@@ -241,7 +241,7 @@ datatypes:
       - edm4hep::Vector3d endpoint [mm]           // endpoint of the particle
       - edm4hep::Vector3d momentum [GeV]            // particle 3-momentum at the production vertex
       - edm4hep::Vector3d momentumAtEndpoint [GeV]  // particle 3-momentum at the endpoint
-      - edm4hep::Vector3f spin                 // spin (helicity) vector of the particle
+      - int32_t helicity{9}                     // particle helicity (9 if unset)
     OneToManyRelations:
       - edm4hep::MCParticle parents // The parents of this particle
       - edm4hep::MCParticle daughters // The daughters this particle
@@ -290,8 +290,8 @@ datatypes:
         bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }
         /// True if the particle has been overlayed by the simulation (or digitization)  program.
         bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }
-
-
+        /// Check if this particle has a set helicty
+        bool hasHelicity() const noexcept { return getHelicity() != 9; }
 
   edm4hep::SimTrackerHit:
     Description: "Simulated tracker hit"
