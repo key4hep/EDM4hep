@@ -1,8 +1,9 @@
 
 [![key4hep](https://github.com/key4hep/EDM4hep/workflows/key4hep_linux/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/key4hep_linux.yml)
 [![linux](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml/badge.svg)](https://github.com/key4hep/EDM4hep/actions/workflows/lcg_linux_with_podio.yml)
-# EDM4hep
+[![DOI](https://zenodo.org/badge/209480664.svg)](https://zenodo.org/doi/10.5281/zenodo.4785062)
 
+# EDM4hep
 
 A generic event data model for future HEP collider experiments.
 
@@ -147,7 +148,23 @@ workflows. From the EDM4hep github page, go to Actions -> Key4hep build, click
 one of the runs (the latest scheduled is preferred) and they will appear at the
 bottom, under Artifacts.
 
-
 ## Contributing
 
 Contributions and bug reports are welcome! See our [contributing guidelines](doc/contributing.md) if you want to contribute code to EDM4hep.
+
+## Citing EDM4hep
+
+If you wish to cite EDM4hep please reference this paper:
+
+```bibtex
+@article{Gaede:2022leb,
+    author = "Gaede, Frank and Madlener, Thomas and Declara Fernandez, Placido and Ganis, Gerardo and Hegner, Benedikt and Helsens, Clement and Sailer, Andre and A. Stewart, Graeme and Völkl, Valentin",
+    title = "{EDM4hep - a common event data model for HEP experiments}",
+    doi = "10.22323/1.414.1237",
+    journal = "PoS",
+    volume = "ICHEP2022",
+    pages = "1237",
+    month = "11",
+    year = "2022"
+}
+```
