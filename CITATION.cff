@@ -13,8 +13,8 @@ authors:
     email: frank.gaede@desy.de
     affiliation: DESY
     orcid: 'https://orcid.org/0000-0002-7055-9200'
-  - given-names: Madlener
-    family-names: Thomas
+  - given-names: Thomas
+    family-names: Madlener
     email: thomas.madlener@desy.de
     affiliation: DESY
     orcid: 'https://orcid.org/0000-0002-0128-6536'
@@ -28,16 +28,16 @@ authors:
     email: valentin.volkl@cern.ch
     affiliation: CERN
     orcid: 'https://orcid.org/0000-0002-9172-6629'
-  - given-names: Carceller
-    family-names: Juan Miguel
+  - given-names: Juan Miguel
+    family-names: Carceller
     email: j.m.carcell@cern.ch
     affiliation: CERN
     orcid: 'https://orcid.org/0000-0002-2254-1495'
-  - given-names: Fila
-    family-names: Mateusz Jakub
+  - given-names: Mateusz Jakub
+    family-names: Fila
     email: mateusz.jakub.fila@cern.ch
     affiliation: CERN
-    orcid: 'https://orcid.org/0000-0003-3917-2371'  
+    orcid: 'https://orcid.org/0000-0003-3917-2371' 
 identifiers:
   - type: doi
     value: 10.5281/zenodo.4785062
@@ -52,21 +52,21 @@ preferred-citation:
       email: frank.gaede@desy.de
       affiliation: DESY
       orcid: 'https://orcid.org/0000-0002-7055-9200'
-    - given-names: Madlener
-      family-names: Thomas
+    - given-names: Thomas
+      family-names: Madlener
       email: thomas.madlener@desy.de
       affiliation: DESY
       orcid: 'https://orcid.org/0000-0002-0128-6536'
     - given-names: Placido
       family-names: Declara Fernandez
       orcid: 'https://orcid.org/0000-0002-8432-2183'
-    - given-names: Ganis
-      family-names: Gerardo
+    - given-names: Gerardo
+      family-names: Ganis
       affiliation: CERN
       email: Gerardo.Ganis@cern.ch
       orcid: 'https://orcid.org/0000-0002-1175-206X'
-    - given-names: Hegner
-      family-names: Benedikt
+    - given-names: Benedikt
+      family-names: Hegner
       affiliation: CERN
       orcid: 'https://orcid.org/0009-0009-2020-1620'
       email: Benedikt.Hegner@cern.ch
