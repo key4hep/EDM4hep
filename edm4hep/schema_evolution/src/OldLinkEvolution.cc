@@ -31,7 +31,7 @@ namespace {
   /// createCollection to actually create a templated LinkCollection
   template <typename FromT, typename ToT>
   auto evolveLinks(podio::CollectionReadBuffers buffers, podio::SchemaVersionT) {
-    buffers.type = podio::detail::linkCollTypeName<FromT, ToT>();
+    buffers.type = podio::LinkCollection<FromT, ToT>::typeName;
     buffers.schemaVersion = podio::LinkCollection<FromT, ToT>::schemaVersion;
 
     buffers.createCollection = [](const podio::CollectionReadBuffers& buffs, bool isSubsetColl) {
