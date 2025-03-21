@@ -182,7 +182,7 @@ components:
       Members:
         - int32_t location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
         - float D0 // transverse impact parameter
-        - float phi // azimuthal angle
+        - float phi [rad] // azimuthal angle of the track at this location (i.e. not phi0)
         - float omega [1/mm] // is the signed curvature of the track
         - float Z0 // longitudinal impact parameter
         - float tanLambda // lambda is the dip angle of the track in r-z
@@ -399,8 +399,8 @@ datatypes:
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
       - edm4hep::CovMatrix3f positionError   // covariance matrix of the position
-      - float                iTheta          // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-      - float                phi             // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+      - float                iTheta [rad]    // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+      - float                phi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
