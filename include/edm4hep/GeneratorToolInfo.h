@@ -28,8 +28,8 @@ struct GeneratorToolInfo {
   /// @param nameTool        The name of the tool
   /// @param versionTool     The version of the tool
   /// @param descrTool       The brief description of the tool
-  GeneratorToolInfo(const std::string& nameTool, const std::string& versionTool, const std::string& descrTool) :
-      name(nameTool), version(versionTool), description(descrTool){};
+  GeneratorToolInfo(const std::string& nameTool, const std::string& versionTool, const std::string& descrTool)
+      : name(nameTool), version(versionTool), description(descrTool) {};
 };
 
 namespace utils {

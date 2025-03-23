@@ -67,8 +67,7 @@ namespace utils {
     template <typename T, typename TagT>
     struct TaggedUserValue {
       TaggedUserValue() = default;
-      TaggedUserValue(T v) : value(v) {
-      }
+      TaggedUserValue(T v) : value(v) {}
       using type = typename TagT::type;
       static constexpr bool has_value = true;
       T value{};

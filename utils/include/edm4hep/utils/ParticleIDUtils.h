@@ -72,9 +72,7 @@ struct ParticleIDMeta {
   /// this meta object
   ///
   /// @returns the algorithm type (usually a 32 bit hash of the algorithm name)
-  int32_t algoType() const {
-    return m_algoType;
-  }
+  int32_t algoType() const { return m_algoType; }
 
 private:
   int32_t m_algoType{0}; ///< The (potentially user defined) algorithm type
