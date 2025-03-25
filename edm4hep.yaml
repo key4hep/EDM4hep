@@ -510,7 +510,7 @@ datatypes:
     Description: "Vertex"
     Author: "EDM4hep authors"
     Members:
-      - uint32_t            type          // Flagword that defines the type of the vertex, see reserved bits for more information
+      - uint32_t            type          // flagword that defines the type of the vertex, see reserved bits for more information
       - float               chi2          // chi-squared of the vertex fit
       - int32_t             ndf           // number of degrees of freedom of the vertex fit
       - edm4hep::Vector3f   position [mm]     //  position of the vertex
