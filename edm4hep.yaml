@@ -494,7 +494,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - int32_t type                         // flagword that defines the type of track
-      - float chi2                       // Chi^2 of the track fit
+      - float chi2                       // chi-squared of the track fit
       - int32_t ndf                          // number of degrees of freedom of the track fit
       - int32_t Nholes                   // number of holes on track
     VectorMembers:
