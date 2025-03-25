@@ -398,10 +398,10 @@ datatypes:
       - float                energy [GeV]        // energy of the cluster
       - float                energyError [GeV]   // error on the energy
       - edm4hep::Vector3f    position [mm]       // position of the cluster
-      - edm4hep::CovMatrix3f positionError [mm**2]  // covariance matrix of the position
+      - edm4hep::CovMatrix3f positionError [mm^2]  // covariance matrix of the position
       - float                iTheta [rad]    // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - float                phi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-      - edm4hep::Vector3f    directionError [mm**2]  // covariance matrix of the direction
+      - edm4hep::Vector3f    directionError [mm^2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
       - float   subdetectorEnergies  // energy observed in a particular subdetector
@@ -433,7 +433,7 @@ datatypes:
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
       - edm4hep::Vector3d position [mm]    // hit position
-      - edm4hep::CovMatrix3f covMatrix [mm**2] // covariance matrix of the position (x,y,z)
+      - edm4hep::CovMatrix3f covMatrix [mm^2] // covariance matrix of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
@@ -462,7 +462,7 @@ datatypes:
       - float du                       // measurement error along the direction
       - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
-      - edm4hep::CovMatrix3f covMatrix [mm**2] // covariance of the position (x,y,z)
+      - edm4hep::CovMatrix3f covMatrix [mm^2] // covariance of the position (x,y,z)
     ExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
@@ -514,7 +514,7 @@ datatypes:
       - float               chi2          // chi-squared of the vertex fit
       - int32_t             ndf           // number of degrees of freedom of the vertex fit
       - edm4hep::Vector3f   position [mm]     //  position of the vertex
-      - edm4hep::CovMatrix3f covMatrix [mm**2]  // covariance matrix of the position
+      - edm4hep::CovMatrix3f covMatrix [mm^2]  // covariance matrix of the position
       - int32_t                 algorithmType // type code for the algorithm that has been used to create the vertex
     VectorMembers:
       - float               parameters    // additional parameters related to this vertex
@@ -563,7 +563,7 @@ datatypes:
       - float                  charge [e]        // charge of the reconstructed particle
       - float                  mass  [GeV]    //  mass of the reconstructed particle, set independently from four vector. Four momentum state is not kept consistent internally
       - float                  goodnessOfPID  // overall goodness of the PID on a scale of [0;1]
-      - edm4hep::CovMatrix4f   covMatrix  [GeV**2]    // covariance matrix of the reconstructed particle 4vector
+      - edm4hep::CovMatrix4f   covMatrix  [GeV^2]    // covariance matrix of the reconstructed particle 4vector
     OneToOneRelations:
       - edm4hep::Vertex          decayVertex    // decay vertex for the particle (if it is a composite particle)
     OneToManyRelations:
