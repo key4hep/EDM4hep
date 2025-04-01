@@ -19,8 +19,9 @@ jobs:
         container: el9
         view-path: /cvmfs/sw-nightlies.hsf.org/key4hep
         run: |
+          STARTDIR=$(pwd)
           echo "::group::Build podio"
-          cd ${GITHUB_WORKSPACE}/podio
+          cd ${STARTDIR}/podio
           echo "Building podio @"$(git log -1 --format=%H)
           cmake -DCMAKE_CXX_STANDARD=20 \
             -DENABLE_SIO=ON \
@@ -31,10 +32,9 @@ jobs:
           source init.sh && source env.sh
           echo "::endgroup::"
           echo "::group::Run pre-commit"
-          cd ${GITHUB_WORKSPACE}/edm4hep
+          cd ${STARTDIR}/edm4hep
           python3 -m venv /root/pre-commit-venv
           source /root/pre-commit-venv/bin/activate
-          pip install pre-commit ruff
           pre-commit run --show-diff-on-failure \
             --color=always \
             --all-files
