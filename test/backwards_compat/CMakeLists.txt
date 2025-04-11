@@ -10,7 +10,7 @@ set_tests_properties(
 )
 
 
-if (${ROOT_VERSION} VERSION_GREATER_EQUAL 6.34)
+if (${ROOT_VERSION} VERSION_GREATER_EQUAL 6.34 AND ${podio_VERSION} VERSION_LESS_EQUAL 1.2)
   # This input file has been written with ROOT 6.34.
   # Trying to read this with an older version of ROOT doesn't work
   ExternalData_Add_Test(backward_compat_tests
