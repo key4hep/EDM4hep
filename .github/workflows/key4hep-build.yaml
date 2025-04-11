@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - uses: key4hep/key4hep-actions/cache-external-data@main
     - uses: key4hep/key4hep-actions/key4hep-build@main
       with:
         build_type: ${{ matrix.build_type }}
