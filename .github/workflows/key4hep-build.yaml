@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         build_type: ["release", "nightly"]
-        image: ["alma9", "ubuntu22"]
+        image: ["alma9"]
         stack: ["key4hep"]
         include:
           - build_type: nightly
