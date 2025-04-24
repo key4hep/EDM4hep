@@ -13,15 +13,14 @@ namespace utils {
 
   namespace detail {
     // From c++23 this is functionality offered by the STL
-#if __cpp_lib_to_underlying
-    using to_index = std::to_underlying;
-#else
-    // Otherwise it is simple enough to roll our own
     template <typename E>
     constexpr auto to_index(E e) {
+#if __cpp_lib_to_underlying
+      return std::to_underlying(e);
+#else
       return static_cast<std::underlying_type_t<E>>(e);
-    }
 #endif
+    }
 
     /// Cast an index to an enum value
     template <typename DimEnum>
