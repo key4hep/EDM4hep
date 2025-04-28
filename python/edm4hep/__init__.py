@@ -5,28 +5,22 @@ import sys
 from .__version__ import __version__
 import ROOT
 
-res = ROOT.gSystem.Load("libedm4hepDict")
-if res < 0:
+if ROOT.gSystem.Load("libedm4hepDict") != 0:
     raise RuntimeError("Failed to load libedm4hepDict")
 
-res = ROOT.gSystem.Load("libedm4hepRDF")
-if res < 0:
+if ROOT.gSystem.Load("libedm4hepRDF") != 0:
     raise RuntimeError("Failed to load libedm4hepRDF")
 
-res = ROOT.gInterpreter.LoadFile("edm4hep/utils/kinematics.h")
-if res != 0:
+if ROOT.gInterpreter.LoadFile("edm4hep/utils/kinematics.h") != 0:
     raise RuntimeError("Failed to load kinematics.h")
 
-res = ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h")
-if res != 0:
+if ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h") != 0:
     raise RuntimeError("Failed to load dataframe.h")
 
-res = ROOT.gInterpreter.LoadFile("edm4hep/Constants.h")
-if res != 0:
+if ROOT.gInterpreter.LoadFile("edm4hep/Constants.h") != 0:
     raise RuntimeError("Failed to load Constants.h")
 
-res = ROOT.gSystem.Load("libedm4hepOldSchemas")
-if res != 0:
+if ROOT.gSystem.Load("libedm4hepOldSchemas") != 0:
     raise RuntimeError("Failed to load edm4hep legacy schemas library")
 
 from ROOT import edm4hep  # noqa: E402
