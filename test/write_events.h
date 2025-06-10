@@ -195,7 +195,8 @@ void write(std::string outfilename) {
       sch1.setEnergy(j * 0.1f);
       sch1.setPosition({j * 100.f, j * 200.f, j * 50.f});
 
-      auto cont1 = edm4hep::MutableCaloHitContribution(11, j * 0.1f, j * 1e-9f, {j * 100.01f, j * 200.01f, j * 50.01f});
+      auto cont1 =
+          edm4hep::MutableCaloHitContribution(11, j * 0.1f, j * 1e-9f, {j * 100.01f, j * 200.01f, j * 50.01f}, 1e-5f);
       sccons.push_back(cont1);
       cont1.setParticle(mcp7);
       sch1.addToContributions(cont1);
