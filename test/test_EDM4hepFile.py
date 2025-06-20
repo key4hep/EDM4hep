@@ -184,7 +184,7 @@ def test_SimTrackerHitCollection(event, particle):
     assert hit.getParticle() == particle
 
 
-def test_CaloHitContributionCollection(event, particle):
+def test_CaloHitContributionCollection(event, particle, edm4hep_version):
     """Check the CaloHitContributionCollection"""
     counter = count(COUNT_START)
     hits = event.get("CaloHitContributionCollection")
@@ -196,6 +196,9 @@ def test_CaloHitContributionCollection(event, particle):
     assert hit.getStepPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
 
     assert hit.getParticle() == particle
+
+    if edm4hep_version >= podio.version.parse("0.99.3"):
+        assert hit.getStepLength() == next(counter)
 
 
 def test_SimCalorimeterHitCollection(event):

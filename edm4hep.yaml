@@ -338,9 +338,10 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - int32_t   PDG                        // PDG code of the shower particle that caused this contribution
-      - float energy [GeV]                    // energy of this contribution
-      - float time [ns]                     // time of this contribution
-      - edm4hep::Vector3f stepPosition [mm] // position of this energy deposition (step)
+      - float energy [GeV]                   // energy of this contribution
+      - float time [ns]                      // time of this contribution
+      - edm4hep::Vector3f stepPosition [mm]  // position of this energy deposition (step)
+      - float stepLength [mm]                // Geant4 step length for this contribution
     OneToOneRelations:
       - edm4hep::MCParticle particle     // primary MCParticle that caused the shower responsible for this contribution to the hit
 
