@@ -343,7 +343,7 @@ datatypes:
       - edm4hep::Vector3f stepPosition [mm]  // position of this energy deposition (step)
       - float stepLength [mm]                // Geant4 step length for this contribution
     OneToOneRelations:
-      - edm4hep::MCParticle particle     // primary MCParticle that caused the shower responsible for this contribution to the hit
+      - edm4hep::MCParticle particle     // MCParticle responsible for this contribution to the hit. Only particles that are kept in the MCParticle record will appear here. Hence, this will point to the first mother appearing in the record.
 
 
   edm4hep::SimCalorimeterHit:
