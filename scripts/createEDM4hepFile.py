@@ -83,6 +83,7 @@ def create_CaloHitContributionCollection(particle):
     hit.setEnergy(next(counter))
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    hit.setStepLength(next(counter))
     hit.setParticle(particle)
     return hits
 

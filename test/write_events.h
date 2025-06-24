@@ -158,10 +158,7 @@ void write(std::string outfilename) {
     //-------------------------------------------------------------
 
     //-------- print particles for debugging:
-    std::cout << "\n collection:  "
-              << "MCParticles"
-              << " of type " << mcps.getValueTypeName() << "\n\n"
-              << mcps << std::endl;
+    std::cout << "\n collection:  MCParticles of type " << mcps.getValueTypeName() << "\n\n" << mcps << std::endl;
 
     event.put(std::move(mcps), "MCParticles");
 
@@ -183,10 +180,7 @@ void write(std::string outfilename) {
       sth2.setParticle(mcp8);
     }
 
-    std::cout << "\n collection:  "
-              << "SimTrackerHits"
-              << " of type " << sths.getValueTypeName() << "\n\n"
-              << sths << std::endl;
+    std::cout << "\n collection: SimTrackerHits of type " << sths.getValueTypeName() << "\n\n" << sths << std::endl;
 
     event.put(std::move(sths), "SimTrackerHits");
 
@@ -201,7 +195,8 @@ void write(std::string outfilename) {
       sch1.setEnergy(j * 0.1f);
       sch1.setPosition({j * 100.f, j * 200.f, j * 50.f});
 
-      auto cont1 = edm4hep::MutableCaloHitContribution(11, j * 0.1f, j * 1e-9f, {j * 100.01f, j * 200.01f, j * 50.01f});
+      auto cont1 =
+          edm4hep::MutableCaloHitContribution(11, j * 0.1f, j * 1e-9f, {j * 100.01f, j * 200.01f, j * 50.01f}, 1e-5f);
       sccons.push_back(cont1);
       cont1.setParticle(mcp7);
       sch1.addToContributions(cont1);
@@ -211,22 +206,17 @@ void write(std::string outfilename) {
       sch2.setPosition({-j * 100.f, -j * 200.f, -j * 50.f});
       sch2.setEnergy(j * .2f);
 
-      auto cont2 =
-          edm4hep::MutableCaloHitContribution(-11, j * 0.2f, j * 1e-9f, {-j * 100.01f, -j * 200.01f, -j * 50.01f});
+      auto cont2 = edm4hep::MutableCaloHitContribution(-11, j * 0.2f, j * 1e-9f,
+                                                       {-j * 100.01f, -j * 200.01f, -j * 50.01f}, 1e-5f);
       sccons.push_back(cont2);
       cont2.setParticle(mcp8);
       sch2.addToContributions(cont2);
     }
 
-    std::cout << "\n collection:  "
-              << "SimCalorimeterHitContributionss"
-              << " of type " << sccons.getValueTypeName() << "\n\n"
+    std::cout << "\n collection: SimCalorimeterHitContributionss " << sccons.getValueTypeName() << "\n\n"
               << sccons << std::endl;
 
-    std::cout << "\n collection:  "
-              << "SimCalorimeterHits"
-              << " of type " << schs.getValueTypeName() << "\n\n"
-              << schs << std::endl;
+    std::cout << "\n collection: SimCalorimeterHits of type " << schs.getValueTypeName() << "\n\n" << schs << std::endl;
 
     event.put(std::move(schs), "SimCalorimeterHits");
     event.put(std::move(sccons), "SimCalorimeterHitContributions");
@@ -247,9 +237,7 @@ void write(std::string outfilename) {
       tpch2.setCharge(-j * 2.f);
     }
 
-    std::cout << "\n collection: "
-              << "Time Projection Chamber Hits"
-              << " of type " << tpchs.getValueTypeName() << "\n\n"
+    std::cout << "\n collection: Time Projection Chamber Hits of type " << tpchs.getValueTypeName() << "\n\n"
               << tpchs << std::endl;
     event.put(std::move(tpchs), "TPCHits");
 
@@ -271,10 +259,7 @@ void write(std::string outfilename) {
       thp2.setPosition({-j * 2., -j * 3., -j * 5.});
     }
 
-    std::cout << "\n collection: "
-              << "Tracker Hit Planes"
-              << " of type " << thps.getValueTypeName() << "\n\n"
-              << thps << std::endl;
+    std::cout << "\n collection: Tracker Hit Planes of type " << thps.getValueTypeName() << "\n\n" << thps << std::endl;
 
     event.put(std::move(thps), "TrackerHitPlanes");
 
