@@ -68,8 +68,6 @@ components:
           constexpr Vector3d(double xx, double yy, double zz) : x(xx),y(yy),z(zz) {}
           constexpr Vector3d(const double* v) : x(v[0]),y(v[1]),z(v[2]) {}
           constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}
-          [[ deprecated("This constructor will be removed again it is mainly here for an easier transition") ]]
-          constexpr Vector3d(const Vector3f& v) : x(v.x), y(v.y), z(v.z) {}
           constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }
           constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }
           constexpr double operator[](unsigned i) const {
@@ -315,8 +313,6 @@ datatypes:
         int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }
         void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }
         void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }
-        [[deprecated("use setParticle instead")]]
-        void setMCParticle(edm4hep::MCParticle particle) { setParticle(std::move(particle)); }
 
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>"
@@ -329,8 +325,6 @@ datatypes:
         double y() const {return getPosition()[1];}
         double z() const {return getPosition()[2];}
         double rho() const {return sqrt(x()*x() + y()*y());}
-        [[deprecated("use getParticle instead")]]
-        edm4hep::MCParticle getMCParticle() const { return getParticle(); }
 
 
   edm4hep::CaloHitContribution:
@@ -575,8 +569,6 @@ datatypes:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
         bool isCompound() const { return particles_size() > 0 ;}
-        [[deprecated("use setPDG instead")]]
-        int32_t getType() const { return getPDG(); }
         /// Get the four momentum covariance matrix value for the two passed dimensions
         float getCovMatrix(edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) const { return getCovMatrix().getValue(dimI, dimJ); }
 
@@ -585,8 +577,6 @@ datatypes:
       declaration: |
         //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.
         //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }
-        [[deprecated("use setPDG instead")]]
-        void setType(int32_t pdg) { setPDG(pdg); }
         /// Set the four momentum covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
