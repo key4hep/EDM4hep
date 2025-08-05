@@ -109,7 +109,7 @@ components:
             static_assert(sizeof...(v) == 3, "CovMatrix2f requires 3 values");
           }
           constexpr CovMatrix2f(const std::array<float, 3>& v) : values(v) {}
-          constexpr CovMatrix2f& operator=(std::array<float, 3>& v) { values = v; return *this; }
+          constexpr CovMatrix2f& operator=(const std::array<float, 3>& v) { values = v; return *this; }
           bool operator==(const CovMatrix2f& v) const { return v.values == values; }
           bool operator!=(const CovMatrix2f& v) const { return v.values != values; }
 
@@ -129,7 +129,7 @@ components:
           constexpr CovMatrix3f(Vs... v) : values{static_cast<float>(v)...} {
             static_assert(sizeof...(v) == 6, "CovMatrix3f requires 6 values");
           }
-          constexpr CovMatrix3f& operator=(std::array<float, 6>& v) { values = v; return *this; }
+          constexpr CovMatrix3f& operator=(const std::array<float, 6>& v) { values = v; return *this; }
           bool operator==(const CovMatrix3f& v) const { return v.values == values; }
           bool operator!=(const CovMatrix3f& v) const { return v.values != values; }
 
@@ -148,7 +148,7 @@ components:
             static_assert(sizeof...(v) == 10, "CovMatrix4f requires 10 values");
           }
           constexpr CovMatrix4f(const std::array<float, 10>& v) : values(v) {}
-          constexpr CovMatrix4f& operator=(std::array<float, 10>& v) { values = v; return *this; }
+          constexpr CovMatrix4f& operator=(const std::array<float, 10>& v) { values = v; return *this; }
           bool operator==(const CovMatrix4f& v) const { return v.values == values; }
           bool operator!=(const CovMatrix4f& v) const { return v.values != values; }
 
@@ -168,7 +168,7 @@ components:
             static_assert(sizeof...(v) == 21, "CovMatrix6f requires 21 values");
           }
           constexpr CovMatrix6f(const std::array<float, 21>& v) : values(v) {}
-          constexpr CovMatrix6f& operator=(std::array<float, 21>& v) { values = v; return *this; }
+          constexpr CovMatrix6f& operator=(const std::array<float, 21>& v) { values = v; return *this; }
           bool operator==(const CovMatrix6f& v) const { return v.values == values; }
           bool operator!=(const CovMatrix6f& v) const { return v.values != values; }
 
