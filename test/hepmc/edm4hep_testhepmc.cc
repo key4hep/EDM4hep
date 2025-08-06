@@ -21,9 +21,7 @@
 #include <memory>
 #include <unordered_map>
 
-using namespace HepMC3;
-
-edm4hep::MutableMCParticle convert(std::shared_ptr<GenParticle> hepmcParticle) {
+edm4hep::MutableMCParticle convert(std::shared_ptr<HepMC3::GenParticle> hepmcParticle) {
   auto edm_particle = edm4hep::MutableMCParticle();
   edm_particle.setPDG(hepmcParticle->pdg_id());
   edm_particle.setGeneratorStatus(hepmcParticle->status());
@@ -65,42 +63,43 @@ int main() {
   //                                                  #
 
   // First create the event container
-  auto evt = std::make_unique<GenEvent>();
+  auto evt = std::make_unique<HepMC3::GenEvent>();
   // define the units
   evt->set_units(HepMC3::Units::GEV, HepMC3::Units::MM);
   //
   // create vertex 1 and vertex 2, together with their inparticles
-  auto v1 = std::make_shared<GenVertex>();
+  auto v1 = std::make_shared<HepMC3::GenVertex>();
   evt->add_vertex(v1);
-  v1->add_particle_in(std::make_shared<GenParticle>(FourVector(0, 0, 7000, 7000), 2212, 3));
-  auto v2 = std::make_shared<GenVertex>();
+  v1->add_particle_in(std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(0, 0, 7000, 7000), 2212, 3));
+  auto v2 = std::make_shared<HepMC3::GenVertex>();
   evt->add_vertex(v2);
-  v2->add_particle_in(std::make_shared<GenParticle>(FourVector(0, 0, -7000, 7000), 2212, 3));
+  v2->add_particle_in(std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(0, 0, -7000, 7000), 2212, 3));
   //
   // create the outgoing particles of v1 and v2
-  auto p3 = std::make_shared<GenParticle>(FourVector(.750, -1.569, 32.191, 32.238), 1, 3);
+  auto p3 = std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(.750, -1.569, 32.191, 32.238), 1, 3);
   v1->add_particle_out(p3);
-  auto p4 = std::make_shared<GenParticle>(FourVector(-3.047, -19., -54.629, 57.920), -2, 3);
+  auto p4 = std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(-3.047, -19., -54.629, 57.920), -2, 3);
   v2->add_particle_out(p4);
   //
   // create v3
-  auto v3 = std::make_shared<GenVertex>();
+  auto v3 = std::make_shared<HepMC3::GenVertex>();
   evt->add_vertex(v3);
   v3->add_particle_in(p3);
   v3->add_particle_in(p4);
-  v3->add_particle_out(std::make_shared<GenParticle>(FourVector(-3.813, 0.113, -1.833, 4.233), 22, 1));
-  auto p5 = std::make_shared<GenParticle>(FourVector(1.517, -20.68, -20.605, 85.925), -24, 3);
+  v3->add_particle_out(std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(-3.813, 0.113, -1.833, 4.233), 22, 1));
+  auto p5 = std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(1.517, -20.68, -20.605, 85.925), -24, 3);
   v3->add_particle_out(p5);
   //
   // create v4
-  auto v4 = std::make_shared<GenVertex>(FourVector(0.12, -0.3, 0.05, 0.004));
+  auto v4 = std::make_shared<HepMC3::GenVertex>(HepMC3::FourVector(0.12, -0.3, 0.05, 0.004));
   evt->add_vertex(v4);
   v4->add_particle_in(p5);
-  v4->add_particle_out(std::make_shared<GenParticle>(FourVector(-2.445, 28.816, 6.082, 29.552), 1, 1));
-  v4->add_particle_out(std::make_shared<GenParticle>(FourVector(3.962, -49.498, -26.687, 56.373), -2, 1));
+  v4->add_particle_out(std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(-2.445, 28.816, 6.082, 29.552), 1, 1));
+  v4->add_particle_out(
+      std::make_shared<HepMC3::GenParticle>(HepMC3::FourVector(3.962, -49.498, -26.687, 56.373), -2, 1));
   //
   // the event is complete, we now print it out to the screen
-  Print::content(*evt);
+  HepMC3::Print::content(*evt);
 
   // now clean-up by deleteing all objects from memory
   //
