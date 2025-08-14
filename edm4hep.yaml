@@ -257,7 +257,10 @@ datatypes:
 
 
     ExtraCode:
-      includes: "#include <edm4hep/utils/bit_utils.h>"
+      includes: |
+        #include <edm4hep/utils/bit_utils.h>
+        #include <edm4hep/FeatureFlags.h>
+
       declaration: |
         // define the bit positions for the simulation flag
         static const int BITCreatedInSimulation = 30;
