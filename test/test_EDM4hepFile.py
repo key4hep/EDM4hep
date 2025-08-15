@@ -155,7 +155,15 @@ def test_MCParticleCollection(event, edm4hep_version):
         assert particle.getMomentumAtEndpoint() == edm4hep.Vector3d(
             next(counter), next(counter), next(counter)
         )
-        assert particle.getSpin() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+
+        if edm4hep_version < podio.version.parse("0.99.2"):
+            # The spin 3D vector has been replaced by helicity and schema
+            # evolution is yet to be completed
+            next(counter)
+            next(counter)
+            next(counter)
+        else:
+            assert particle.getHelicity() == next(counter)
 
         if edm4hep_version < podio.version.parse("0.99.2"):
             # The colorFlow was here so we have increase the counter here to
