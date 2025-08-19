@@ -50,12 +50,12 @@
 template <typename CollT>
 void insertIntoJson(nlohmann::json& jsonDict, const podio::CollectionBase* coll, const std::string& name) {
   const auto* typedColl = static_cast<const CollT*>(coll); // safe to cast, since we have queried the type before
-  nlohmann::json jsonColl{
-      {name, {{"collection", *typedColl},
-              {"collID", coll->getID()},
-              {"collType", coll->getTypeName()},
-              {"collSchemaVersion", coll->getSchemaVersion()},
-              {"isSubsetColl", coll->isSubsetCollection()}}}};
+  nlohmann::json jsonColl{{name,
+                           {{"collection", *typedColl},
+                            {"collID", coll->getID()},
+                            {"collType", coll->getTypeName()},
+                            {"collSchemaVersion", coll->getSchemaVersion()},
+                            {"isSubsetColl", coll->isSubsetCollection()}}}};
   jsonDict.insert(jsonColl.begin(), jsonColl.end());
 }
 
