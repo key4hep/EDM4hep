@@ -19,7 +19,7 @@ void printHelp() {
                "to be converted\n"
             << "  -e/--events             comma separated list of events to "
                "be processed\n"
-            << "  -n/--nevents            maximal number of events to be "
+            << "  -n/--nevents            total number of events to be "
                "processed\n"
             << "  -f/--frame-name         input frame name\n"
             << "                            default: \"events\"\n"
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
         nEventsMax = std::stoi(optarg);
       } catch (...) {
         if (verboser) {
-          std::cout << "ERROR: Provided maximal number of events is "
+          std::cout << "ERROR: Provided total number of events is "
                        "not a number:\n"
                     << "       " << optarg << "\n";
         }
