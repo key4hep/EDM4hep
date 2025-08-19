@@ -51,7 +51,11 @@ template <typename CollT>
 void insertIntoJson(nlohmann::json& jsonDict, const podio::CollectionBase* coll, const std::string& name) {
   const auto* typedColl = static_cast<const CollT*>(coll); // safe to cast, since we have queried the type before
   nlohmann::json jsonColl{
-      {name, {{"collection", *typedColl}, {"collID", coll->getID()}, {"collType", coll->getTypeName()}}}};
+      {name, {{"collection", *typedColl},
+              {"collID", coll->getID()},
+              {"collType", coll->getTypeName()},
+              {"collSchemaVersion", coll->getSchemaVersion()},
+              {"isSubsetColl", coll->isSubsetCollection()}}}};
   jsonDict.insert(jsonColl.begin(), jsonColl.end());
 }
 
@@ -105,7 +109,7 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "edm4hep::RecDqdxCollection") {
       insertIntoJson<edm4hep::RecDqdxCollection>(jsonDict, coll, collList[i]);
     }
-    // Associations
+    // Links
     else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::ReconstructedParticle,edm4hep::MCParticle>") {
       insertIntoJson<edm4hep::RecoMCParticleLinkCollection>(jsonDict, coll, collList[i]);
     } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::CalorimeterHit,edm4hep::SimCalorimeterHit>") {
