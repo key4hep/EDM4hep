@@ -148,9 +148,9 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
       insertIntoJson<podio::UserDataCollection<uint64_t>>(jsonDict, coll, collList[i]);
     }
     // Generator (meta-)data
-    else if (coll->getTypeName() == "podio::GeneratorParametersCollection") {
+    else if (coll->getTypeName() == "edm4hep::GeneratorEventParametersCollection") {
       insertIntoJson<edm4hep::GeneratorEventParametersCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "podio::GeneratorPdfInfoCollection") {
+    } else if (coll->getTypeName() == "edm4hep::GeneratorPdfInfoCollection") {
       insertIntoJson<edm4hep::GeneratorPdfInfoCollection>(jsonDict, coll, collList[i]);
     } else {
       std::cout << "WARNING: Collection type not recognized!\n"
