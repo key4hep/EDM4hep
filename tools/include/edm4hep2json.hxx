@@ -125,6 +125,12 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "podio::LinkCollection<edm4hep::Vertex,edm4hep::ReconstructedParticle>") {
       insertIntoJson<edm4hep::VertexRecoParticleLinkCollection>(jsonDict, coll, collList[i]);
     }
+    // Generator (meta-)data
+    else if (coll->getTypeName() == "edm4hep::GeneratorEventParametersCollection") {
+      insertIntoJson<edm4hep::GeneratorEventParametersCollection>(jsonDict, coll, collList[i]);
+    } else if (coll->getTypeName() == "edm4hep::GeneratorPdfInfoCollection") {
+      insertIntoJson<edm4hep::GeneratorPdfInfoCollection>(jsonDict, coll, collList[i]);
+    }
     // Podio user data
     else if (coll->getTypeName() == "podio::UserDataCollection<float>") {
       insertIntoJson<podio::UserDataCollection<float>>(jsonDict, coll, collList[i]);
@@ -147,12 +153,8 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     } else if (coll->getTypeName() == "podio::UserDataCollection<uint64_t>") {
       insertIntoJson<podio::UserDataCollection<uint64_t>>(jsonDict, coll, collList[i]);
     }
-    // Generator (meta-)data
-    else if (coll->getTypeName() == "edm4hep::GeneratorEventParametersCollection") {
-      insertIntoJson<edm4hep::GeneratorEventParametersCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::GeneratorPdfInfoCollection") {
-      insertIntoJson<edm4hep::GeneratorPdfInfoCollection>(jsonDict, coll, collList[i]);
-    } else {
+    // Unknown
+    else {
       std::cout << "WARNING: Collection type not recognized!\n"
                 << "         " << coll->getTypeName() << "\n";
     }
