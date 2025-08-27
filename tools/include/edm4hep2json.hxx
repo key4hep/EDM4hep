@@ -4,47 +4,17 @@
 #include "edm4hep/EDM4hepVersion.h"
 #include "edm4hep/edm4hep.h"
 
-// podio specific includes
 #include "podio/Frame.h"
 #include "podio/Reader.h"
 #include "podio/UserDataCollection.h"
 #include "podio/podioVersion.h"
 
-// JSON
 #include "nlohmann/json.hpp"
 
-#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-template <typename CollT>
-void insertIntoJson(nlohmann::json& jsonDict, const podio::CollectionBase* coll, const std::string& name);
-
-class MapHelper {
-
-  using FunType = void (*)(nlohmann::json&, const podio::CollectionBase*, const std::string&);
-  std::map<std::string_view, FunType> m_map;
-
-  template <typename T>
-  void addToMap() {
-    m_map[T::collection_type::typeName] = &insertIntoJson<typename T::collection_type>;
-  }
-
-public:
-  template <typename T>
-  void addToMapUserDataColl() {
-    m_map[T::typeName] = &insertIntoJson<T>;
-  }
-
-  template <typename... T>
-  void addToMapAll(podio::utils::TypeList<T...>&&) {
-    (addToMap<T>(), ...);
-  }
-
-  auto getMap() const { return m_map; }
-};
 
 template <typename CollT>
 void insertIntoJson(nlohmann::json& jsonDict, const podio::CollectionBase* coll, const std::string& name) {
@@ -57,6 +27,37 @@ void insertIntoJson(nlohmann::json& jsonDict, const podio::CollectionBase* coll,
                             {"isSubsetColl", coll->isSubsetCollection()}}}};
   jsonDict.insert(jsonColl.begin(), jsonColl.end());
 }
+
+class MapHelper {
+
+  using FunType = void (*)(nlohmann::json&, const podio::CollectionBase*, const std::string&);
+  std::map<std::string_view, FunType> m_map;
+
+  template <typename T>
+  void addToMap() {
+    m_map[T::collection_type::typeName] = &insertIntoJson<typename T::collection_type>;
+  }
+
+  template <typename T>
+  void addToMapUserDataColl() {
+    m_map[T::typeName] = &insertIntoJson<T>;
+  }
+
+public:
+
+  template <typename... T>
+  void addToMapAll(podio::utils::TypeList<T...>&&) {
+    (addToMap<T>(), ...);
+  }
+
+  template <typename... T>
+  void addToMapAllUserDataColl(podio::utils::TypeList<T...>&&) {
+    (addToMapUserDataColl<T>(), ...);
+  }
+
+  auto getMap() const { return m_map; }
+};
+
 
 nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList,
                             podio::version::Version podioVersion, const MapHelper& mapHelper) {
@@ -135,16 +136,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
 
   mapHelper.addToMapAll(edm4hep::edm4hepDataTypes{});
   mapHelper.addToMapAll(edm4hep::edm4hepLinkTypes{});
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<float>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<double>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<int8_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<int16_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<int32_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<int64_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<uint8_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<uint16_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<uint32_t>>();
-  mapHelper.addToMapUserDataColl<podio::UserDataCollection<uint64_t>>();
+  mapHelper.addToMapAllUserDataColl(podio::UserDataCollectionList{});
 
   std::vector<int> eventVec;
   if (!requestedEvents.empty()) {
