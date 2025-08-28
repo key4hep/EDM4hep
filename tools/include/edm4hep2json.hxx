@@ -136,7 +136,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
 
   mapHelper.addToMapAll(edm4hep::edm4hepDataTypes{});
   mapHelper.addToMapAll(edm4hep::edm4hepLinkTypes{});
-  mapHelper.addToMapAllUserDataColl(podio::UserDataCollectionList{});
+  mapHelper.addToMapAllUserDataColl(podio::UserDataCollectionTypes{});
 
   std::vector<int> eventVec;
   if (!requestedEvents.empty()) {
