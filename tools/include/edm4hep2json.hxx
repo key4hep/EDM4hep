@@ -44,7 +44,6 @@ class MapHelper {
   }
 
 public:
-
   template <typename... T>
   void addToMapAll(podio::utils::TypeList<T...>&&) {
     (addToMap<T>(), ...);
@@ -57,7 +56,6 @@ public:
 
   auto getMap() const { return m_map; }
 };
-
 
 nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList,
                             podio::version::Version podioVersion, const MapHelper& mapHelper) {
