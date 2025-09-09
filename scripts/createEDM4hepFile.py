@@ -338,9 +338,9 @@ def create_GeneratorEventParametersCollection(vectorsize, particle):
     gep_coll = edm4hep.GeneratorEventParametersCollection()
     gep = gep_coll.create()
     gep.setSqrts(next(counter))
-    gep.setBeamPz([next(counter), next(counter)])
-    gep.setPartonId([next(counter), next(counter)])
-    gep.setBeamPolarization([next(counter), next(counter)])
+    gep.setBeamsPz([next(counter), next(counter)])
+    gep.setPartonIds([next(counter), next(counter)])
+    gep.setBeamPolarizations([next(counter), next(counter)])
 
     for i in range(vectorsize):
         gep.addToCrossSections(next(counter))

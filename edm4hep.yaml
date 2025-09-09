@@ -609,10 +609,10 @@ datatypes:
     Description: "Generator Event Parameters and information"
     Author: "EDM4hep authors"
     Members:
-      - double sqrts [GeV]                     // sqrt(s) - The nominal beam center of mass energy
-      - std::array<double, 2> beamPz [GeV]     // nominal z-momentum of the two incoming particle (beams)
-      - std::array<int, 2> partonId            // PDG id of the partons undergoing the hard scatter
-      - std::array<float, 2> beamPolarization  // Polarization of the incoming beam particles
+      - double sqrts [GeV]                      // sqrt(s) - The nominal beam center of mass energy
+      - std::array<double, 2> beamsPz [GeV]     // nominal z-momentum of the two incoming particle (beams)
+      - std::array<int, 2> partonIds            // PDG id of the partons undergoing the hard scatter
+      - std::array<float, 2> beamPolarizations  // Polarization of the incoming beam particles
     VectorMembers:
       - double crossSections [pb]              // List of cross sections
       - double crossSectionErrors [pb]         // List of cross section errors

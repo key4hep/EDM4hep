@@ -144,7 +144,9 @@ def check_cov_matrix(cov_matrix, n_dim):
         assert cov_matrix[i] == next(counter)
 
 
-def test_basic_file_contents(reader, events, expected_edm4hep_version, expected_podio_version):
+def test_basic_file_contents(
+    reader, events, expected_edm4hep_version, expected_podio_version
+):
     """Make sure the basic file contents are OK"""
     assert len(events) == FRAMES
     assert reader.current_file_version("edm4hep") == expected_edm4hep_version
@@ -222,8 +224,12 @@ def test_SimTrackerHitCollection(event, particle):
     assert hit.getTime() == next(counter)
     assert hit.getPathLength() == next(counter)
     assert hit.getQuality() == next(counter)
-    assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
-    assert hit.getMomentum() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert hit.getPosition() == edm4hep.Vector3d(
+        next(counter), next(counter), next(counter)
+    )
+    assert hit.getMomentum() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
 
     assert hit.getParticle() == particle
 
@@ -237,7 +243,9 @@ def test_CaloHitContributionCollection(event, particle, edm4hep_version):
     assert hit.getPDG() == next(counter)
     assert hit.getEnergy() == next(counter)
     assert hit.getTime() == next(counter)
-    assert hit.getStepPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert hit.getStepPosition() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
 
     assert hit.getParticle() == particle
 
@@ -253,7 +261,9 @@ def test_SimCalorimeterHitCollection(event):
     hit = hits[0]
     assert hit.getCellID() == next(counter)
     assert hit.getEnergy() == next(counter)
-    assert hit.getPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert hit.getPosition() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
 
     calo_contrib = event.get("CaloHitContributionCollection")[0]
     assert len(hit.getContributions()) == 1
@@ -281,7 +291,9 @@ def test_CalorimeterHitCollection(event):
     assert hit.getEnergy() == next(counter)
     assert hit.getEnergyError() == next(counter)
     assert hit.getTime() == next(counter)
-    assert hit.getPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert hit.getPosition() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
     assert hit.getType() == next(counter)
 
 
@@ -311,7 +323,9 @@ def test_ClusterCollection(event):
     assert cluster.getType() == next(counter)
     assert cluster.getEnergy() == next(counter)
     assert cluster.getEnergyError() == next(counter)
-    assert cluster.getPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert cluster.getPosition() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
     check_cov_matrix(cluster.getPositionError(), 3)
     assert cluster.getITheta() == next(counter)
     assert cluster.getPhi() == next(counter)
@@ -345,7 +359,9 @@ def test_TrackerHit3DCollection(event):
     assert hit.getTime() == next(counter)
     assert hit.getEDep() == next(counter)
     assert hit.getEDepError() == next(counter)
-    assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    assert hit.getPosition() == edm4hep.Vector3d(
+        next(counter), next(counter), next(counter)
+    )
     check_cov_matrix(hit.getCovMatrix(), 3)
 
 
@@ -365,7 +381,9 @@ def test_TrackerHitPlaneCollection(event):
     assert hit.getV() == edm4hep.Vector2f(next(counter), next(counter))
     assert hit.getDu() == next(counter)
     assert hit.getDv() == next(counter)
-    assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    assert hit.getPosition() == edm4hep.Vector3d(
+        next(counter), next(counter), next(counter)
+    )
     check_cov_matrix(hit.getCovMatrix(), 3)
 
 
@@ -438,7 +456,9 @@ def test_VertexCollection(event, reco_particle):
     assert v.getType() == next(counter)
     assert v.getChi2() == next(counter)
     assert v.getNdf() == next(counter)
-    assert v.getPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert v.getPosition() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
     check_cov_matrix(v.getCovMatrix(), 3)
     assert v.getAlgorithmType() == next(counter)
     assert len(v.getParameters()) == VECTORSIZE
@@ -457,7 +477,9 @@ def test_ReconstructedParticleCollection(event, track):
     rparticle = rparticles[0]
     assert rparticle.getPDG() == next(counter)
     assert rparticle.getEnergy() == next(counter)
-    assert rparticle.getMomentum() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    assert rparticle.getMomentum() == edm4hep.Vector3f(
+        next(counter), next(counter), next(counter)
+    )
     assert rparticle.getReferencePoint() == edm4hep.Vector3f(
         next(counter), next(counter), next(counter)
     )
@@ -518,12 +540,12 @@ def test_GeneratorEventParametersCollection(event, particle, edm4hep_version):
     assert len(gep_coll) == 1
     gep = gep_coll[0]
     assert gep.getSqrts() == next(counter)
-    assert gep.getBeamPz()[0] == next(counter)
-    assert gep.getBeamPz()[1] == next(counter)
-    assert gep.getPartonId()[0] == next(counter)
-    assert gep.getPartonId()[1] == next(counter)
-    assert gep.getBeamPolarization()[0] == next(counter)
-    assert gep.getBeamPolarization()[1] == next(counter)
+    assert gep.getBeamsPz()[0] == next(counter)
+    assert gep.getBeamsPz()[1] == next(counter)
+    assert gep.getPartonIds()[0] == next(counter)
+    assert gep.getPartonIds()[1] == next(counter)
+    assert gep.getBeamPolarizations()[0] == next(counter)
+    assert gep.getBeamPolarizations()[1] == next(counter)
 
     xsecs = gep.getCrossSections()
     xsec_errors = gep.getCrossSectionErrors()
@@ -563,7 +585,9 @@ def test_LinkCollections(event, particle, reco_particle, track):
 
     check_LinkCollection(event, "RecoMCParticleLink", reco_particle, particle)
     check_LinkCollection(event, "CaloHitSimCaloHitLink", calo_hit, simcalo_hit)
-    check_LinkCollection(event, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit)
+    check_LinkCollection(
+        event, "TrackerHitSimTrackerHitLink", tracker_hit, simtracker_hit
+    )
     check_LinkCollection(event, "CaloHitMCParticleLink", calo_hit, particle)
     check_LinkCollection(event, "ClusterMCParticleLink", cluster, particle)
     check_LinkCollection(event, "TrackMCParticleLink", track, particle)
