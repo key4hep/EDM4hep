@@ -4,7 +4,6 @@
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
-#include "edm4hep/GeneratorPdfInfoCollection.h"
 #include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
@@ -260,17 +259,8 @@ void processEvent(const podio::Frame& event) {
   auto& genParametersCollection =
       event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::labels::GeneratorEventParameters);
   auto genParam = genParametersCollection[0];
-  if (genParam.getEventScale() != 23)
+  if (genParam.getSqrts() != 90)
     throw std::runtime_error("Event_scale != 23");
-
-  auto& generatorPdfInfoCollection = event.get<edm4hep::GeneratorPdfInfoCollection>(edm4hep::labels::GeneratorPdfInfo);
-  auto genPdfInfo = generatorPdfInfoCollection[0];
-
-  // //===============================================================================
-  //  if( sccons.isValid() ){
-  //  } else {
-  //    throw std::runtime_error("Collection 'SimCalorimeterHitContributions' should be present");
-  //  }
 
   const auto evtType = event.getParameter<std::string>("EventType").value();
   std::cout << "Event Type: " << evtType << std::endl;
