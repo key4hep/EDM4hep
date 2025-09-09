@@ -10,6 +10,7 @@
       <tab type="user" visible="yes" title="Generator data" url="@ref md_doc_2_generator_info"/>
       <tab type="user" visible="yes" title="Vertex and ReconstructedParticle" url="@ref md_doc_2_vertex_reco_particle_recos"/>
       <tab type="user" visible="yes" title="PIDHandler" url="@ref md_doc_2_p_i_d_handler"/>
+      <tab type="user" visible="yes" title="Subtle differences wrt LCIO" url="@ref md_doc_2differences__wrt__lcio"/>
     </tab>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
