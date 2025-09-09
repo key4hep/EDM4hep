@@ -605,34 +605,20 @@ datatypes:
       - edm4hep::Track track           // the corresponding track
 
 
-  #===== Generator related data =====
-
-
   edm4hep::GeneratorEventParameters:
-    Description: "Generator event parameters"
+    Description: "Generator Event Parameters and information"
     Author: "EDM4hep authors"
     Members:
-      - double eventScale              // event scale
-      - double alphaQED                 // alpha_QED
-      - double alphaQCD                 // alpha_QCD
-      - int signalProcessId           // id of signal process
-      - double sqrts  [GeV]            // sqrt(s)
+      - double sqrts [GeV]                     // sqrt(s) - The nominal beam center of mass energy
+      - std::array<double, 2> beamPz [GeV]     // nominal z-momentum of the two incoming particle (beams)
+      - std::array<int, 2> partonId            // PDG id of the partons undergoing the hard scatter
+      - std::array<float, 2> beamPolarization  // Polarization of the incoming beam particles
     VectorMembers:
-      - double crossSections [pb]       // list of cross sections
-      - double crossSectionErrors [pb]  // list of cross section errors
+      - double crossSections [pb]              // List of cross sections
+      - double crossSectionErrors [pb]         // List of cross section errors
+      - double weights                         // event weights. The corresponding names are stored using the edm4hep::label::GeneratorWeightNames in the file level metadata.
     OneToManyRelations:
-      - edm4hep::MCParticle signalVertex // List of initial state MCParticle that are the source of the hard interaction
-
-
-  edm4hep::GeneratorPdfInfo:
-    Description: "Generator pdf information"
-    Author: "EDM4hep authors"
-    Members:
-      - std::array<int, 2> partonId      // Parton PDG id
-      - std::array<int, 2> lhapdfId             // LHAPDF PDF id (see https://lhapdf.hepforge.org/pdfsets.html)
-      - std::array<double, 2> x           // Parton momentum fraction
-      - std::array<double, 2> xf          // PDF value
-      - double scale [GeV]                // Factorisation scale
+      - edm4hep::MCParticle signalVertexParticles  // List of initial state MCParticles that are the source of the hard interaction
 
 interfaces:
   edm4hep::TrackerHit:
