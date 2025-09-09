@@ -518,12 +518,12 @@ def test_GeneratorEventParametersCollection(event, particle, edm4hep_version):
     assert len(gep_coll) == 1
     gep = gep_coll[0]
     assert gep.getSqrts() == next(counter)
-    assert gep.getBeamPz()[0] == next(counter)
-    assert gep.getBeamPz()[1] == next(counter)
-    assert gep.getPartonId()[0] == next(counter)
-    assert gep.getPartonId()[1] == next(counter)
-    assert gep.getBeamPolarization()[0] == next(counter)
-    assert gep.getBeamPolarization()[1] == next(counter)
+    assert gep.getBeamsPz()[0] == next(counter)
+    assert gep.getBeamsPz()[1] == next(counter)
+    assert gep.getPartonIds()[0] == next(counter)
+    assert gep.getPartonIds()[1] == next(counter)
+    assert gep.getBeamPolarizations()[0] == next(counter)
+    assert gep.getBeamPolarizations()[1] == next(counter)
 
     xsecs = gep.getCrossSections()
     xsec_errors = gep.getCrossSectionErrors()
