@@ -44,6 +44,13 @@ LCIO uses `double` precision for the following members, where EDM4hep resorts to
 - mass
 - energy
 
+## Floating point storage differences in `MCParticle`
+
+Both in EDM4hep and LCIO the `MCParticle` uses `double` to represent quantities
+related to kinematics (e.g. momentum, energy, mass). However, in LCIO this is
+only true for the in-memory representation, while on disk these values are
+stored as `float`s.
+
 ## Signendess of time stamp
 
 `LCEvent::getTimeStamp` returns a `long64` in LCIO, but
