@@ -51,12 +51,12 @@ related to kinematics (e.g. momentum, energy, mass). However, in LCIO this is
 only true for the in-memory representation, while on disk these values are
 stored as `float`s.
 
-## Signendess of time stamp
+## Signendess of timestamp
 
-`LCEvent::getTimeStamp` returns a `long64` in LCIO, but
-`edm4hep::EventHeader::getTimeStamp` returns a `uint64_t`. We keep this
-difference deliberately since all timestamps are assumed to be absolute (after
-some specified time point) and, consequently, are strictly positive.
+`LCEvent::getTimeStamp` returns a `long long` (usually a 64 bit integer) in
+LCIO, but `edm4hep::EventHeader::getTimeStamp` returns a `uint64_t`. We keep
+this difference deliberately since all timestamps are assumed to be absolute
+(after some specified time point) and, consequently, are strictly positive.
 
 ## Type difference in number of contributions to `SimCalorimeterHit`
 
