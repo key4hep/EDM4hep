@@ -222,7 +222,7 @@ datatypes:
       - uint64_t timeStamp     // time stamp
       - double weight       // event weight
     VectorMembers:
-      - double weights       // event weights in case there are multiple. **NOTE that weights[0] might not be the same as weight!** Event weight names should be stored using the edm4hep::EventWeights name in the file level metadata
+      - double weights       // event weights in case there are multiple. **NOTE that weights[0] might not be the same as weight!** The corresponding names of the event weights should be stored in the collection named by edm4hep::labels::EventWeightsNames in the file-level metadata.
 
 
   edm4hep::MCParticle:
@@ -401,7 +401,7 @@ datatypes:
       - float                phi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - edm4hep::Vector3f    directionError [mm^2]  // covariance matrix of the direction
     VectorMembers:
-      - float   shapeParameters      // shape parameters. This should be accompanied by a descriptive list of names in the shapeParameterNames collection level metadata, as a vector of strings with the same ordering
+      - float   shapeParameters      // shape parameters. The corresponding names of the shape parameters should be stored in the collection-level metadata collection identified by edm4hep::labels::ShapeParameterNames, as a vector of strings in the same order as the parameters.
       - float   subdetectorEnergies  // energy observed in a particular subdetector
     OneToManyRelations:
       - edm4hep::Cluster        clusters     // clusters that have been combined to this cluster
