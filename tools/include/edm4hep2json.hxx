@@ -7,7 +7,6 @@
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/EventHeaderCollection.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
-#include "edm4hep/GeneratorPdfInfoCollection.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/ParticleIDCollection.h"
 #include "edm4hep/RawCalorimeterHitCollection.h"
@@ -128,8 +127,6 @@ nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>&
     // Generator (meta-)data
     else if (coll->getTypeName() == "edm4hep::GeneratorEventParametersCollection") {
       insertIntoJson<edm4hep::GeneratorEventParametersCollection>(jsonDict, coll, collList[i]);
-    } else if (coll->getTypeName() == "edm4hep::GeneratorPdfInfoCollection") {
-      insertIntoJson<edm4hep::GeneratorPdfInfoCollection>(jsonDict, coll, collList[i]);
     }
     // Podio user data
     else if (coll->getTypeName() == "podio::UserDataCollection<float>") {

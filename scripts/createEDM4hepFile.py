@@ -337,41 +337,18 @@ def create_GeneratorEventParametersCollection(vectorsize, particle):
     counter = count(COUNT_START)
     gep_coll = edm4hep.GeneratorEventParametersCollection()
     gep = gep_coll.create()
-    gep.setEventScale(next(counter))
-    gep.setAlphaQED(next(counter))
-    gep.setAlphaQCD(next(counter))
-    gep.setSignalProcessId(next(counter))
     gep.setSqrts(next(counter))
+    gep.setBeamsPz([next(counter), next(counter)])
+    gep.setPartonIds([next(counter), next(counter)])
+    gep.setBeamPolarizations([next(counter), next(counter)])
+
     for i in range(vectorsize):
         gep.addToCrossSections(next(counter))
         gep.addToCrossSectionErrors(next(counter))
-    gep.addToSignalVertex(particle)
+        gep.addToWeights(next(counter))
+
+    gep.addToSignalVertexParticles(particle)
     return gep_coll
-
-
-def create_GeneratorPdfInfoCollection():
-    """Create a GeneratorPdfInfoCollection"""
-    counter = count(COUNT_START)
-    gpi_coll = edm4hep.GeneratorPdfInfoCollection()
-    gpi = gpi_coll.create()
-    # Doesn't work with ROOT 6.30.06
-    # gpi.setPartonId([next(counter), next(counter)])
-    gpi.setPartonId(0, next(counter))
-    gpi.setPartonId(1, next(counter))
-    # Doesn't work with ROOT 6.30.06
-    # gpi.setLhapdfId([next(counter), next(counter)])
-    gpi.setLhapdfId(0, next(counter))
-    gpi.setLhapdfId(1, next(counter))
-    # Doesn't work with ROOT 6.30.06
-    # gpi.setX([next(counter), next(counter)])
-    gpi.setX(0, next(counter))
-    gpi.setX(1, next(counter))
-    # Doesn't work with ROOT 6.30.06
-    # gpi.setXf([next(counter), next(counter)])
-    gpi.setXf(0, next(counter))
-    gpi.setXf(1, next(counter))
-    gpi.setScale(next(counter))
-    return gpi_coll
 
 
 def create_UserDataCollection(element_type):
@@ -459,7 +436,6 @@ def create_frame():
         create_GeneratorEventParametersCollection(VECTORSIZE, particle),
         "GeneratorEventParametersCollection",
     )
-    frame.put(create_GeneratorPdfInfoCollection(), "GeneratorPdfInfoCollection")
 
     frame.put(create_UserDataCollection(int), "UserDataCollectionInt")
     frame.put(create_UserDataCollection(float), "UserDataCollectionFloat")
