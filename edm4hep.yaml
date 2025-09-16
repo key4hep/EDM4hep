@@ -616,7 +616,7 @@ datatypes:
     VectorMembers:
       - double crossSections [pb]              // List of cross sections
       - double crossSectionErrors [pb]         // List of cross section errors
-      - double weights                         // event weights. The corresponding names are stored using the edm4hep::label::GeneratorWeightNames in the file level metadata.
+      - double weights                         // event weights. The corresponding names are stored using the edm4hep::labels::GeneratorWeightNames in the file level metadata.
     OneToManyRelations:
       - edm4hep::MCParticle signalVertexParticles  // List of initial state MCParticles that are the source of the hard interaction
 
