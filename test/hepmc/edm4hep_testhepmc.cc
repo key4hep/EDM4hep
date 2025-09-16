@@ -101,7 +101,7 @@ int main() {
   // the event is complete, we now print it out to the screen
   HepMC3::Print::content(*evt);
 
-  // now clean-up by deleteing all objects from memory
+  // now clean-up by deleting all objects from memory
   //
   // deleting the event deletes all contained vertices, and all particles
   // contained in those vertices

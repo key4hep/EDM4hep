@@ -85,7 +85,7 @@ namespace utils {
         return typename LorentzVectorTypeTag::type{mom[0], mom[1], mom[2], tag->value};
       }
 
-      // Or we take the one from the underying particle
+      // Or we take the one from the underlying particle
       if constexpr (std::is_same_v<typename LorentzVectorTypeTag::type, LorentzVectorM>) {
         return LorentzVectorM{mom[0], mom[1], mom[2], part.getMass()};
       }

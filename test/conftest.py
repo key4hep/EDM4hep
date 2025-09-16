@@ -12,7 +12,7 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    """This is a slighty hacky solution to make the pytest configuration
+    """This is a slightly hacky solution to make the pytest configuration
     available in test modules outside of fixtures"""
     global options  # noqa: PLW0603
     options = config.option

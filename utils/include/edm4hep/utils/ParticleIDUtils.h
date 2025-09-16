@@ -31,7 +31,7 @@ struct ParticleIDMeta {
   /// Constructor for I/O purposes or with a pre-defined algorithm type
   ///
   /// @note We generally recommend not using pre-defined algorithm types, but
-  /// rather to use the automatially determined ones from the
+  /// rather to use the automatically determined ones from the
   ///
   /// @param algName  The name of the PID algorithm
   /// @param algType  The (encoded) algorithm type (stored in the ParticleID
@@ -164,11 +164,11 @@ public:
   /// @note This constructor does not guarantee that **all**
   /// ParticleIDCollections will have valid metadata loaded. Only if such
   /// metadata is actually present and found will it be ingested, otherwise only
-  /// the ParticleID objecs will be added to the internal map.
+  /// the ParticleID objects will be added to the internal map.
   ///
   /// @param event    The event Frame from which all ParticleIDCollections will be
   ///                 retrieved
-  /// @param metadata An (optional) metadata Frame from wich ParticleIDMeta will
+  /// @param metadata An (optional) metadata Frame from which ParticleIDMeta will
   ///                 be automatically retrieved for all ParticleIDCollections
   ///                 for which it is actually available.
   ///
@@ -219,7 +219,7 @@ public:
   /// @tparam PIDMetas A variadic template that we use to enable calling this
   ///                  with an arbitrary number of ParticleIDMeta objects
   ///
-  /// @param pidMetas An aribtrary number of metadata objects describing
+  /// @param pidMetas An arbitrary number of metadata objects describing
   ///                 algorithms that have been used to determine ParticleID
   ///                 objects
   template <typename... PIDMetas>
@@ -283,7 +283,7 @@ public:
   /// @param pidcoll  A ParticleIDCollection for which the corresponding
   ///                 algorithm type will be set (consistent with what is found
   ///                 in the @p pidMetaInfo)
-  /// @param pidMetaInfo The metadata oject that corresponds to the ParticleID
+  /// @param pidMetaInfo The metadata object that corresponds to the ParticleID
   ///                    algorithm that has been used for creating the @p
   ///                    pidcoll
   static void setAlgoInfo(podio::Frame& metadata, edm4hep::ParticleIDCollection& pidcoll, const std::string& collname,
@@ -299,7 +299,7 @@ public:
   ///                 stored
   /// @param collname The name of the (ParticleID) collection for which this
   ///                 meta information should be stored
-  /// @param pidMetaInfo The metadata oject that corresponds to the ParticleID
+  /// @param pidMetaInfo The metadata object that corresponds to the ParticleID
   ///                    algorithm that has been used for creating the
   ///                    ParticleID objects stored in the collection with the @p
   ///                    collname
