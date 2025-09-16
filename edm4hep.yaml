@@ -289,9 +289,9 @@ datatypes:
         bool hasLeftDetector() const { return utils::checkBit(getSimulatorStatus(), BITLeftDetector); }
         /// True if the particle has been stopped by the simulation program.
         bool isStopped() const { return utils::checkBit(getSimulatorStatus(), BITStopped); }
-        /// True if the particle has been overlayed by the simulation (or digitization)  program.
+        /// True if the particle has been overlaid by the simulation (or digitization)  program.
         bool isOverlay() const { return utils::checkBit(getSimulatorStatus(), BITOverlay); }
-        /// Check if this particle has a set helicty
+        /// Check if this particle has a set helicity
         bool hasHelicity() const noexcept { return getHelicity() != 9; }
 
   edm4hep::SimTrackerHit:

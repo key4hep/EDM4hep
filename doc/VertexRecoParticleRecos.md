@@ -79,7 +79,7 @@ following outputs
 - a `RecoParticleVertexAssociation` collection that links each of the input
   `ReconstructedParticle`s back to the `Vertex` from which they emerged.
 
-All of the steps will use function stubs whereever necessary and will mainly
+All of the steps will use function stubs wherever necessary and will mainly
 focus on setting the relations / associations.
 
 ### Creating vertices

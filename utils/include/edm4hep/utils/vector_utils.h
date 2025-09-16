@@ -53,7 +53,7 @@ template <class V>
 concept VectorND_XYZ = Vector2D_XY<V> || Vector3D<V> || Vector4D<V>;
 
 namespace utils {
-  // Utility getters to accomodate different vector types
+  // Utility getters to accommodate different vector types
   template <VectorND_XYZ V>
   constexpr auto vector_x(const V& v) {
     return v.x;
