@@ -39,12 +39,6 @@ library, otherwise build it locally" ON)
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
 
-#--- enable CPack --------------------------------------------------------------
-option(ENABLE_CPACK "Whether or not to use cpack config" OFF)
-if(ENABLE_CPACK)
-  include(cmake/EDM4HEPCPack.cmake)
-endif()
-
 #--- target for Doxygen documentation ------------------------------------------
 if(BUILD_DOCS)
   include(cmake/EDM4HEPDoxygen.cmake)
