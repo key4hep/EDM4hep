@@ -46,6 +46,12 @@ license: Apache-2.0
 preferred-citation:
   title: EDM4hep - a common event data model for HEP experiments
   type: article
+  doi: 10.22323/1.414.1237
+  journal: PoS
+  volume: ICHEP2022
+  start: 1237
+  month: 11
+  year: 2022
   authors:
     - given-names: Frank
       family-names: Gaede
@@ -89,6 +95,3 @@ preferred-citation:
       email: valentin.volkl@cern.ch
       affiliation: CERN
       orcid: 'https://orcid.org/0000-0002-9172-6629'
-  identifiers:
-    - type: doi
-      value: 10.22323/1.414.1237
