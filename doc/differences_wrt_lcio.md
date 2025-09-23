@@ -32,8 +32,8 @@ uint64_t to64BitCellID(LcioType* obj) {
 ### CellID in `TPCHit` and `RawTimeSeries`
 
 The `TPCHit` in LCIO corresponds to the `RawTimeSeries` in EDM4hep. The `TPCHit`
-only has a 32 bit CellID in LCIO, but uses the same `uint64_t` as all other
-times for the `RawTimeSeries` in EDM4hep.
+only has a 32 bit CellID in LCIO, but in EDM4hep, `RawTimeSeries` uses the same
+ `uint64_t` cell ID as other types.
 
 ## Floating point differences in `ReconstructedParticle`
 
@@ -51,7 +51,7 @@ related to kinematics (e.g. momentum, energy, mass). However, in LCIO this is
 only true for the in-memory representation, while on disk these values are
 stored as `float`s.
 
-## Signendess of timestamp
+## Signedness of timestamp
 
 `LCEvent::getTimeStamp` returns a `long long` (usually a 64 bit integer) in
 LCIO, but `edm4hep::EventHeader::getTimeStamp` returns a `uint64_t`. We keep
