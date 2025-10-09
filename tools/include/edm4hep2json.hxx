@@ -95,15 +95,13 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
 
   nlohmann::json allEventsDict;
 
-  unsigned nEvents = reader.getEntries(frameName);
+  size_t nEvents = reader.getEntries(frameName);
   if (nEvents < 1) {
     std::cout << "WARNING: Input file contains no events!" << std::endl;
     return EXIT_SUCCESS;
   }
-  if (nEventsMax > 0) {
-    if ((unsigned)nEventsMax < nEvents) {
-      nEvents = nEventsMax;
-    }
+  if (nEventsMax > 0 && static_cast<size_t>(nEventsMax) < nEvents) {
+    nEvents = nEventsMax;
   }
 
   auto collList = splitString(requestedCollections);
@@ -153,7 +151,7 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
         continue;
       }
 
-      if ((unsigned)evntNum > nEvents) {
+      if (static_cast<unsigned>(evntNum) > nEvents) {
         if (verboser) {
           std::cout << "WARNING: Event number larger than number of events in "
                        "the file or maximal event number to be processed:\n"
