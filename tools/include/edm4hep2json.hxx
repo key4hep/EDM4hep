@@ -35,11 +35,6 @@ class MapHelper {
 
   template <typename T>
   void addToMap() {
-    m_map[T::collection_type::typeName] = &insertIntoJson<typename T::collection_type>;
-  }
-
-  template <typename T>
-  void addToMapUserDataColl() {
     m_map[T::typeName] = &insertIntoJson<T>;
   }
 
@@ -49,12 +44,7 @@ public:
     (addToMap<T>(), ...);
   }
 
-  template <typename... T>
-  void addToMapAllUserDataColl(podio::utils::TypeList<T...>&&) {
-    (addToMapUserDataColl<T>(), ...);
-  }
-
-  auto getMap() const { return m_map; }
+  const auto& getMap() const { return m_map; }
 };
 
 nlohmann::json processEvent(const podio::Frame& frame, std::vector<std::string>& collList,
@@ -132,9 +122,9 @@ int read_frames(const std::string& filename, const std::string& jsonFile, const 
     }
   }
 
-  mapHelper.addToMapAll(edm4hep::edm4hepDataTypes{});
-  mapHelper.addToMapAll(edm4hep::edm4hepLinkTypes{});
-  mapHelper.addToMapAllUserDataColl(podio::UserDataCollectionTypes{});
+  mapHelper.addToMapAll(edm4hep::edm4hepDataCollectionTypes{});
+  mapHelper.addToMapAll(edm4hep::edm4hepLinkCollectionTypes{});
+  mapHelper.addToMapAll(podio::UserDataCollectionTypes{});
 
   std::vector<int> eventVec;
   if (!requestedEvents.empty()) {
