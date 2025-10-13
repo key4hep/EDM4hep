@@ -24,20 +24,37 @@ if (EDM4HEP_WITH_JSON)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
 endif()
 
-PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
-add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
-
-add_library(edm4hepOldSchemas SHARED schema_evolution/src/OldLinkEvolution.cc)
-target_include_directories(edm4hepOldSchemas PRIVATE
+# Add the old schema bits to the core library
+set(schema_evolution_sources
+  ${CMAKE_CURRENT_SOURCE_DIR}/schema_evolution/src/OldLinkEvolution.cc
+)
+target_sources(edm4hep PRIVATE ${schema_evolution_sources})
+target_include_directories(edm4hep PRIVATE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include>
 )
-target_link_libraries(edm4hepOldSchemas PUBLIC podio::podio EDM4HEP::edm4hep)
-add_library(EDM4HEP::oldSchemas ALIAS edm4hepOldSchemas)
 
-PODIO_ADD_ROOT_IO_DICT(edm4hepOldSchemasDict edm4hepOldSchemas ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h schema_evolution/src/selection.xml)
-add_library(EDM4HEP::oldSchemasDict ALIAS edm4hepOldSchemasDict)
+list(APPEND headers
+  ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h
+)
 
-list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict edm4hepOldSchemas edm4hepOldSchemasDict)
+# Merge the schema evolution selection xml and the podio generated one
+set(MERGED_SELECTION_XML ${CMAKE_CURRENT_BINARY_DIR}/merged_selection.xml)
+execute_process(
+  COMMAND ${Python_EXECUTABLE} ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/merge_selection_xml.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/selection.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/schema_evolution/src/selection.xml
+    ${MERGED_SELECTION_XML}
+  RESULT_VARIABLE MERGE_RESULT
+)
+
+if(NOT MERGE_RESULT EQUAL 0)
+  message(FATAL_ERROR "Failed to merge selection.xml files")
+endif()
+
+PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" ${MERGED_SELECTION_XML})
+add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
+
+list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
 
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
 IF(TARGET edm4hepSioBlocks)

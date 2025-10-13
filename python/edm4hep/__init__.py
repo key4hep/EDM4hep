@@ -20,9 +20,6 @@ if ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h") != 0:
 if ROOT.gInterpreter.LoadFile("edm4hep/Constants.h") != 0:
     raise RuntimeError("Failed to load Constants.h")
 
-if ROOT.gSystem.Load("libedm4hepOldSchemas") != 0:
-    raise RuntimeError("Failed to load edm4hep legacy schemas library")
-
 from ROOT import edm4hep  # noqa: E402
 
 from podio.pythonizations import load_pythonizations  # noqa: E402
