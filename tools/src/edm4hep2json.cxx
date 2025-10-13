@@ -126,7 +126,6 @@ int main(int argc, char** argv) {
     inFile->Close();
   }
 
-  MapHelper mapHelper;
-  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, mapHelper, nEventsMax,
+  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax,
                      verboser);
 }
