@@ -126,6 +126,5 @@ int main(int argc, char** argv) {
     inFile->Close();
   }
 
-  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax,
-                     verboser);
+  return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax, verboser);
 }
