@@ -5,11 +5,11 @@ project(EDM4HEP LANGUAGES CXX)
 # project version
 SET( ${PROJECT_NAME}_VERSION_MAJOR 0 )
 SET( ${PROJECT_NAME}_VERSION_MINOR 99 )
-SET( ${PROJECT_NAME}_VERSION_PATCH 1 )
+SET( ${PROJECT_NAME}_VERSION_PATCH 99 )
 
 SET( ${PROJECT_NAME}_VERSION  "${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH}" )
 
-find_package(podio 1.1 REQUIRED HINTS $ENV{PODIO})
+find_package(podio 1.5 REQUIRED HINTS $ENV{PODIO})
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Physics)
 
 option(EDM4HEP_WITH_JSON "Whether or not to build EDM4HEP with JSON support (and edm4hep2json)" ON)
@@ -38,12 +38,6 @@ library, otherwise build it locally" ON)
 
 #--- enable unit testing capabilities ------------------------------------------
 include(CTest)
-
-#--- enable CPack --------------------------------------------------------------
-option(ENABLE_CPACK "Whether or not to use cpack config" OFF)
-if(ENABLE_CPACK)
-  include(cmake/EDM4HEPCPack.cmake)
-endif()
 
 #--- target for Doxygen documentation ------------------------------------------
 if(BUILD_DOCS)

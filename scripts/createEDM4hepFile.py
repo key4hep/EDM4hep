@@ -51,8 +51,7 @@ def create_MCParticleCollection():
         particle.setMomentumAtEndpoint(
             edm4hep.Vector3d(next(counter), next(counter), next(counter))
         )
-        particle.setSpin(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
-        particle.setColorFlow(edm4hep.Vector2i(next(counter), next(counter)))
+        particle.setHelicity(next(counter))
 
     p_list[0].addToDaughters(p_list[1])
     p_list[0].addToParents(p_list[2])
@@ -84,6 +83,7 @@ def create_CaloHitContributionCollection(particle):
     hit.setEnergy(next(counter))
     hit.setTime(next(counter))
     hit.setStepPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
+    hit.setStepLength(next(counter))
     hit.setParticle(particle)
     return hits
 
@@ -374,6 +374,14 @@ def create_GeneratorPdfInfoCollection():
     return gpi_coll
 
 
+def create_UserDataCollection(element_type):
+    counter = count(COUNT_START)
+    collection = podio.podio.UserDataCollection[element_type]()
+    for _ in range(3):
+        collection.push_back(next(counter))
+    return collection
+
+
 def put_link_collection(frame, link_name, from_el, to_el):
     """Helper function to put a link collection into the frame"""
     coll_name = f"{link_name}Collection"
@@ -452,6 +460,9 @@ def create_frame():
         "GeneratorEventParametersCollection",
     )
     frame.put(create_GeneratorPdfInfoCollection(), "GeneratorPdfInfoCollection")
+
+    frame.put(create_UserDataCollection(int), "UserDataCollectionInt")
+    frame.put(create_UserDataCollection(float), "UserDataCollectionFloat")
 
     return frame
 

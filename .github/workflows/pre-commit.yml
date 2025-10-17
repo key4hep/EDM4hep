@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        path: edm4hep
     - uses: actions/checkout@v4
       with:
         repository: AIDASoft/podio
@@ -14,11 +16,16 @@ jobs:
     - uses: cvmfs-contrib/github-action-cvmfs@v4
     - uses: aidasoft/run-lcg-view@v4
       with:
-        release-platform: LCG_104/x86_64-el9-clang16-opt
+        container: el9
+        view-path: /cvmfs/sw-nightlies.hsf.org/key4hep
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
-          cd podio
+          cd ${STARTDIR}/podio
+          # Newer versions of git are more cautious around the github runner
+          # environment and without this git rev-parse --show-cdup in pre-commit
+          # fails
+          git config --global --add safe.directory $(pwd)
           echo "Building podio @"$(git log -1 --format=%H)
           cmake -DCMAKE_CXX_STANDARD=20 \
             -DENABLE_SIO=ON \
@@ -29,16 +36,10 @@ jobs:
           source init.sh && source env.sh
           echo "::endgroup::"
           echo "::group::Run pre-commit"
-          cd $STARTDIR
+          cd ${STARTDIR}/edm4hep
+          git config --global --add safe.directory $(pwd)
           python3 -m venv /root/pre-commit-venv
           source /root/pre-commit-venv/bin/activate
-          pip install pre-commit ruff
-          cmake -DENABLE_SIO=ON \
-            -DCMAKE_CXX_STANDARD=20 \
-            -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always -Werror "\
-            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-            -DUSE_EXTERNAL_CATCH2=OFF -B build
-          ln -s $(pwd)/build/compile_commands.json ./compile_commands.json
           pre-commit run --show-diff-on-failure \
             --color=always \
             --all-files

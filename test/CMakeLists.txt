@@ -4,7 +4,8 @@ ENDIF()
 
 function(set_test_env _testname)
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+      ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
       PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
   )
@@ -15,27 +16,33 @@ endfunction()
 
 add_test(NAME create_complete_file COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --output-file edm4hep_example.root)
 set_test_env(create_complete_file)
+set_tests_properties(create_complete_file PROPERTIES
+  FIXTURES_SETUP complete_file
+  TIMEOUT 600
+)
 
 add_test(NAME create_complete_file_rntuple COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
 set_test_env(create_complete_file_rntuple)
 set_tests_properties(create_complete_file_rntuple PROPERTIES
   SKIP_REGULAR_EXPRESSION "The RNTuple writer from podio is not available but was requested"
+  FIXTURES_SETUP complete_file_rntuple
+  TIMEOUT 600
 )
 
 add_test(NAME check_complete_file COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example.root -v)
 set_test_env(check_complete_file)
 set_tests_properties(
-  check_complete_file
-  PROPERTIES
-   DEPENDS create_complete_file
+  check_complete_file PROPERTIES
+  FIXTURES_REQUIRED complete_file
+  TIMEOUT 600
 )
 add_test(NAME check_complete_file_rntuple COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example_rntuple.root -v)
 set_test_env(check_complete_file_rntuple)
 set_tests_properties(
-  check_complete_file_rntuple
-  PROPERTIES
-   DEPENDS create_complete_file_rntuple
-   SKIP_REGULAR_EXPRESSION "collected 0 items / 1 skipped"
+  check_complete_file_rntuple PROPERTIES
+  FIXTURES_REQUIRED complete_file_rntuple
+  SKIP_REGULAR_EXPRESSION "collected 0 items / 1 skipped"
+  TIMEOUT 600
 )
 
 set_tests_properties(

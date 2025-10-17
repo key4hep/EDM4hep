@@ -8,39 +8,25 @@
 namespace edm4hep {
 
 template <class V>
-concept VectorHasX = requires(V v) {
-  v.x;
-};
+concept VectorHasX = requires(V v) { v.x; };
 
 template <class V>
-concept VectorHasY = requires(V v) {
-  v.y;
-};
+concept VectorHasY = requires(V v) { v.y; };
 
 template <class V>
-concept VectorHasZ = requires(V v) {
-  v.z;
-};
+concept VectorHasZ = requires(V v) { v.z; };
 
 template <class V>
-concept VectorHasT = requires(V v) {
-  v.t;
-};
+concept VectorHasT = requires(V v) { v.t; };
 
 template <class V>
-concept VectorHasA = requires(V v) {
-  v.a;
-};
+concept VectorHasA = requires(V v) { v.a; };
 
 template <class V>
-concept VectorHasB = requires(V v) {
-  v.b;
-};
+concept VectorHasB = requires(V v) { v.b; };
 
 template <class V>
-concept ClassVector = requires(V v) {
-  v.x();
-};
+concept ClassVector = requires(V v) { v.x(); };
 
 template <class V>
 concept Vector2D_XY = VectorHasX<V> && VectorHasY<V> && !VectorHasZ<V> && !VectorHasT<V> && !ClassVector<V>;
@@ -67,7 +53,7 @@ template <class V>
 concept VectorND_XYZ = Vector2D_XY<V> || Vector3D<V> || Vector4D<V>;
 
 namespace utils {
-  // Utility getters to accomodate different vector types
+  // Utility getters to accommodate different vector types
   template <VectorND_XYZ V>
   constexpr auto vector_x(const V& v) {
     return v.x;
@@ -137,13 +123,9 @@ template <typename V>
 concept FloatVectorND = std::floating_point<utils::ValueType<V>> && (Vector2D<V> || Vector3D<V>);
 
 namespace utils {
-  inline double etaToAngle(const double eta) {
-    return std::atan(std::exp(-eta)) * 2.;
-  }
+  inline double etaToAngle(const double eta) { return std::atan(std::exp(-eta)) * 2.; }
 
-  inline double angleToEta(const double theta) {
-    return -std::log(std::tan(0.5 * theta));
-  }
+  inline double angleToEta(const double theta) { return -std::log(std::tan(0.5 * theta)); }
 
   template <Vector3D V = edm4hep::Vector3f>
   V sphericalToVector(const double r, const double theta, const double phi) {
@@ -258,14 +240,14 @@ constexpr V operator+(const V& v1, const V& v2) {
 template <edm4hep::Vector2D V>
 constexpr auto operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
-      edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2);
+         edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2);
 }
 
 template <edm4hep::Vector3D V>
 constexpr auto operator*(const V& v1, const V& v2) {
   return edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
-      edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
-      edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2);
+         edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
+         edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2);
 }
 
 template <edm4hep::Vector4D V>
@@ -273,7 +255,7 @@ constexpr auto operator*(const V& v1, const V& v2) {
   return (edm4hep::utils::vector_x(v1) * edm4hep::utils::vector_x(v2) +
           edm4hep::utils::vector_y(v1) * edm4hep::utils::vector_y(v2) +
           edm4hep::utils::vector_z(v1) * edm4hep::utils::vector_z(v2)) -
-      edm4hep::utils::vector_t(v1) * edm4hep::utils::vector_t(v2);
+         edm4hep::utils::vector_t(v1) * edm4hep::utils::vector_t(v2);
 }
 
 template <edm4hep::Vector2D V>

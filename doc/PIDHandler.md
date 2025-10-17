@@ -27,7 +27,7 @@ over them in parallel.
 
 In case you just want look at one `ParticleID` collection, but need to look at
 some properties of the `ReconstructedParticle`, simply use the existing relation
-to do that.
+to do that and loop over the `ParticleID` collection instead.
 
 
 ## ParticleIDMeta basics

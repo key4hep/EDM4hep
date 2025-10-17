@@ -20,13 +20,13 @@ namespace {
   }
 } // namespace
 
-ParticleIDMeta::ParticleIDMeta(const std::string& algName, int32_t algType, const std::vector<std::string>& parNames) :
-    algoName(algName), paramNames(parNames), m_algoType(algType) {
-}
+ParticleIDMeta::ParticleIDMeta(const std::string& algName, int32_t algType, const std::vector<std::string>& parNames)
+    : algoName(algName), paramNames(parNames), m_algoType(algType) {}
 
-ParticleIDMeta::ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames) :
-    algoName(algName), paramNames(parNames), m_algoType(getAlgoID(algName)) {
-}
+ParticleIDMeta::ParticleIDMeta(const std::string& algName, const std::vector<std::string>& parNames)
+    : algoName(algName), paramNames(parNames), m_algoType(getAlgoID(algName)) {}
+
+ParticleIDMeta::ParticleIDMeta(const std::string& algName) : ParticleIDMeta(algName, std::vector<std::string>{}) {}
 
 std::optional<int> getParamIndex(const ParticleIDMeta& pidMetaInfo, const std::string& param) {
   const auto nameIt = std::ranges::find(pidMetaInfo.paramNames, param);

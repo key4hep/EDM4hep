@@ -1,3 +1,119 @@
+# v00-99-02
+
+* 2025-05-16 jmcarcell ([PR#430](https://github.com/key4hep/EDM4hep/pull/430))
+  - Bump the required version of podio to 1.3. This is needed since ::typeName in link collections are only present in 1.3 and onwards. See https://github.com/key4hep/EDM4hep/issues/415
+
+* 2025-05-14 Mateusz Jakub Fila ([PR#429](https://github.com/key4hep/EDM4hep/pull/429))
+  - Update CI build badge in readme
+
+* 2025-05-07 Thomas Madlener ([PR#428](https://github.com/key4hep/EDM4hep/pull/428))
+  - Switch to latest actions for CI and enable caching of build artifacts for speeding up workflows
+
+* 2025-05-07 Thomas Madlener ([PR#413](https://github.com/key4hep/EDM4hep/pull/413))
+  - Limit the RNTuple backwards compatibility checks to only run with ROOT 6.34.04 and podio 1.2
+
+* 2025-04-28 jmcarcell ([PR#426](https://github.com/key4hep/EDM4hep/pull/426))
+  - Remove intermediate variables and make loading libraries and files consistent in `__init__.py`
+
+* 2025-04-24 jmcarcell ([PR#427](https://github.com/key4hep/EDM4hep/pull/427))
+  - Fix building with C++23 by not aliasing std::to_underlying to a type.
+
+* 2025-04-01 Thomas Madlener ([PR#425](https://github.com/key4hep/EDM4hep/pull/425))
+  - Switch pre-commit workflow to run on Key4hep nightlies to have a recent enough version of `clang-format`.
+
+* 2025-04-01 Mateusz Jakub Fila ([PR#422](https://github.com/key4hep/EDM4hep/pull/422))
+  - Add missing units for covariances, particle charge and other members
+
+* 2025-04-01 Mateusz Jakub Fila ([PR#414](https://github.com/key4hep/EDM4hep/pull/414))
+  - Replace `podio::detail::linkCollTypeName` with  link collection `typeName` introduced in AIDASoft/podio#748
+
+* 2025-03-21 BrieucF ([PR#420](https://github.com/key4hep/EDM4hep/pull/420))
+  - Clarify the `phi` member of the `TrackState`
+  - Specify units (radians) for members describing angles
+
+* 2025-03-12 Mateusz Jakub Fila ([PR#417](https://github.com/key4hep/EDM4hep/pull/417))
+  - Fix capitalization of `eDep`in yaml comments
+
+* 2025-03-12 Graeme A Stewart ([PR#408](https://github.com/key4hep/EDM4hep/pull/408))
+  - Add citation information to README.md and corresponding CITATION.cff file
+
+* 2025-02-20 BrieucF ([PR#406](https://github.com/key4hep/EDM4hep/pull/406))
+  - Clarify the comment on the Cluster direction members
+
+* 2025-02-20 Mateusz Jakub Fila ([PR#403](https://github.com/key4hep/EDM4hep/pull/403))
+  - Added a tab with standalone documentation pages in doxygen docs
+
+* 2025-02-14 jmcarcell ([PR#405](https://github.com/key4hep/EDM4hep/pull/405))
+  - Use `std::swap` (available now that we compile with C++20) and add a default
+    case for the switch statement in the covariance matrix utils
+
+* 2025-01-31 Paul Gessinger ([PR#401](https://github.com/key4hep/EDM4hep/pull/401))
+  - Refactored YAML to use multiline strings
+
+* 2025-01-31 Thomas Madlener ([PR#398](https://github.com/key4hep/EDM4hep/pull/398))
+  - Make the `EventHeader::eventNumber` a 64 bit unsigned integer to avoid issues with the range of 32 bit integers.
+
+* 2025-01-20 Mateusz Jakub Fila ([PR#400](https://github.com/key4hep/EDM4hep/pull/400))
+  - Update C++ standard in clang_format to C++20
+
+* 2025-01-16 Thomas Madlener ([PR#395](https://github.com/key4hep/EDM4hep/pull/395))
+  - Add proper docstrings to all ParticleID related utilities (`edm4hep::utils::ParticleIDMeta` and `edm4hep::utils::PIDHandler`).
+  - Add a `addMetaInfos` convenience overload to the `PIDHandler` to allow passing in several meta objects at once.
+
+* 2025-01-14 Mateusz Jakub Fila ([PR#399](https://github.com/key4hep/EDM4hep/pull/399))
+  - Fix component table in readme so it renders correctly
+
+* 2025-01-10 Thomas Madlener ([PR#389](https://github.com/key4hep/EDM4hep/pull/389))
+  - Remove the `colorFlow` member variable from the `MCParticle` since it is effectively unused (and should remain that way as there is no really correct way to use it without baking in generator specific assumptions).
+    - This is a backwards compatible change w.r.t. readability of existing files (ROOT schema evolution handles this)
+    - **This is a breaking change for the API** as `{get,set}ColorFlow` are removed from the `MCParticle`.
+  - Remove the now unused `edm4hep::Vector2i` from the components
+
+* 2024-12-20 Thomas Madlener ([PR#394](https://github.com/key4hep/EDM4hep/pull/394))
+  - Make sure to also install the `rootmap` and `rdict` files for the old schemas library
+
+* 2024-12-19 Mateusz Jakub Fila ([PR#393](https://github.com/key4hep/EDM4hep/pull/393))
+  - Updated doxygen files to the version 1.11 so a dark mode renders properly
+
+* 2024-12-19 Thomas Madlener ([PR#392](https://github.com/key4hep/EDM4hep/pull/392))
+  - Bump the minimal podio version to 1.2, since the `links` category in the YAML file was only introduced there.
+
+* 2024-12-19 Mateusz Jakub Fila ([PR#391](https://github.com/key4hep/EDM4hep/pull/391))
+  - Install oldSchemas library and dictionary
+
+* 2024-12-19 jmcarcell ([PR#390](https://github.com/key4hep/EDM4hep/pull/390))
+  - Make the PIDHandler class non-copyable
+
+* 2024-12-18 tmadlener ([PR#373](https://github.com/key4hep/EDM4hep/pull/373))
+  - Switch to templated `podio::Link`s for the `Link` datatypes
+  - Bump the schema version to 3
+  - **Remove the legacy `Association` headers that were put in place for a smooth transition to `Link`s**
+
+* 2024-11-08 Thomas Madlener ([PR#381](https://github.com/key4hep/EDM4hep/pull/381))
+  - Make sure to only run backwards compatibility tests if we have a suitable version of ROOT to still read the RC2 RNTuples stored in the files.
+
+* 2024-10-23 Thomas Madlener ([PR#379](https://github.com/key4hep/EDM4hep/pull/379))
+  - Add an `EDM4HEP_WITH_JSON` cmake option (default `ON`) to be explicit about whether we want to build EDM4hep with JSON support or not.
+    - Properly propagate this to downstream packages.
+    - If set to `OFF` the `edm4hep2json` executable will not be built.
+
+* 2024-10-23 Thomas Madlener ([PR#378](https://github.com/key4hep/EDM4hep/pull/378))
+  - Make sure that the bits used for secondary and tertiary vertex bits are actually different
+
+* 2024-10-16 jmcarcell ([PR#377](https://github.com/key4hep/EDM4hep/pull/377))
+  - Remove redundant `inline` from templated utility functions.
+
+* 2024-09-30 tmadlener ([PR#376](https://github.com/key4hep/EDM4hep/pull/376))
+  - Use `re.search` instead of `re.match` in the version extraction of the backwards compatibility tests to make sure that versions can be extracted even if the file name doesn't start with the expected regex.
+
+* 2024-09-30 Mateusz Jakub Fila ([PR#370](https://github.com/key4hep/EDM4hep/pull/370))
+  - Added ruff pre-commit hook for formatting and linting python files
+  - Reformatted and fixed warnings in python files
+  - Added cmake targets `ruff` and `ruff-format` to lint and format python code
+
+* 2024-09-26 tmadlener ([PR#358](https://github.com/key4hep/EDM4hep/pull/358))
+  - Download files written with EDM4hep versions for which we promise backwards compatibility and check whether we can still read them correctly.
+
 # v00-99-01
 
 * 2024-09-20 tmadlener ([PR#374](https://github.com/key4hep/EDM4hep/pull/374))

@@ -24,7 +24,34 @@ if (EDM4HEP_WITH_JSON)
   target_link_libraries(edm4hep PUBLIC nlohmann_json::nlohmann_json)
 endif()
 
-PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" src/selection.xml)
+# Add the old schema bits to the core library
+set(schema_evolution_sources
+  ${CMAKE_CURRENT_SOURCE_DIR}/schema_evolution/src/OldLinkEvolution.cc
+)
+target_sources(edm4hep PRIVATE ${schema_evolution_sources})
+target_include_directories(edm4hep PRIVATE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include>
+)
+
+list(APPEND headers
+  ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/include/edm4hep/schema_evolution/OldLinkData.h
+)
+
+# Merge the schema evolution selection xml and the podio generated one
+set(MERGED_SELECTION_XML ${CMAKE_CURRENT_BINARY_DIR}/merged_selection.xml)
+execute_process(
+  COMMAND ${Python_EXECUTABLE} ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/merge_selection_xml.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/selection.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/schema_evolution/src/selection.xml
+    ${MERGED_SELECTION_XML}
+  RESULT_VARIABLE MERGE_RESULT
+)
+
+if(NOT MERGE_RESULT EQUAL 0)
+  message(FATAL_ERROR "Failed to merge selection.xml files")
+endif()
+
+PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" ${MERGED_SELECTION_XML})
 add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
 
 list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)

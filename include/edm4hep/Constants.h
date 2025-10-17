@@ -21,9 +21,6 @@
 
 #include <cstdint>
 
-#define DEPRECATED_LABEL(name, newname)                                                                                \
-  static constexpr const auto name [[deprecated("Use 'edm4hep::labels::" #newname "' instead")]] = labels::newname
-
 namespace edm4hep {
 namespace labels {
   static constexpr const char* CellIDEncoding = "CellIDEncoding";
@@ -48,16 +45,6 @@ namespace labels {
   static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
 } // namespace labels
 
-DEPRECATED_LABEL(CellIDEncoding, CellIDEncoding);
-DEPRECATED_LABEL(EventHeaderName, EventHeader);
-DEPRECATED_LABEL(EventWeights, EventWeightsNames);
-DEPRECATED_LABEL(shapeParameterNames, ShapeParameterNames);
-DEPRECATED_LABEL(EventFilterStats, EventFilterStats);
-
-DEPRECATED_LABEL(pidParameterNames, PIDParameterNames);
-DEPRECATED_LABEL(pidAlgoName, PIDAlgoName);
-DEPRECATED_LABEL(pidAlgoType, PIDAlgoType);
-
 // Use 16 bits to encode the dimension
 // Could go to 8 bits, but would need a fix in podio first
 using DimType = std::uint16_t;
@@ -76,7 +63,5 @@ enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
 enum class TrackerPulseDims : DimType { charge = 0, time };
 
 } // namespace edm4hep
-
-#undef DEPRECATED_LABEL
 
 #endif // EDM4HEP_CONSTANTS_H

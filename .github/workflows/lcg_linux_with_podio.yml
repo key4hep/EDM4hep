@@ -19,10 +19,12 @@ jobs:
       with:
         repository: AIDASoft/podio
         path: podio
+    - uses: key4hep/key4hep-actions/cache-external-data@main
     - uses: cvmfs-contrib/github-action-cvmfs@v4
-    - uses: aidasoft/run-lcg-view@v4
+    - uses: aidasoft/run-lcg-view@v5
       with:
         release-platform: ${{ matrix.LCG }}
+        ccache-key: ccache-${{ matrix.LCG }}
         run: |
           STARTDIR=$(pwd)
           echo "::group::Build podio"
@@ -34,6 +36,7 @@ jobs:
             -DENABLE_DATASOURCE=ON \
             -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -G Ninja -B build
           cmake --build build --target install -- -k0
           source init.sh && source env.sh
@@ -54,6 +57,7 @@ jobs:
           cd test/downstream-project-cmake-test
           cmake -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -G Ninja -B build
           cmake --build build -- -k0
           echo "::endgroup::"

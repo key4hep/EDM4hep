@@ -1,0 +1,97 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: EDM4hep
+message: >-
+  If you use this software, please cite both the article
+  from  preferred-citation and the software itself.
+type: software
+authors:
+  - given-names: Frank
+    family-names: Gaede
+    email: frank.gaede@desy.de
+    affiliation: DESY
+    orcid: 'https://orcid.org/0000-0002-7055-9200'
+  - given-names: Thomas
+    family-names: Madlener
+    email: thomas.madlener@desy.de
+    affiliation: DESY
+    orcid: 'https://orcid.org/0000-0002-0128-6536'
+  - given-names: André Philippe
+    family-names: Sailer
+    affiliation: CERN
+    email: andre.philippe.sailer@cern.ch
+    orcid: 'https://orcid.org/0000-0002-9897-5214'
+  - given-names: Valentin
+    family-names: Völkl
+    email: valentin.volkl@cern.ch
+    affiliation: CERN
+    orcid: 'https://orcid.org/0000-0002-9172-6629'
+  - given-names: Juan Miguel
+    family-names: Carceller
+    email: j.m.carcell@cern.ch
+    affiliation: CERN
+    orcid: 'https://orcid.org/0000-0002-2254-1495'
+  - given-names: Mateusz Jakub
+    family-names: Fila
+    email: mateusz.jakub.fila@cern.ch
+    affiliation: CERN
+    orcid: 'https://orcid.org/0000-0003-3917-2371'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.4785062
+repository-code: 'https://github.com/key4hep/EDM4hep'
+license: Apache-2.0
+preferred-citation:
+  title: EDM4hep - a common event data model for HEP experiments
+  type: article
+  doi: 10.22323/1.414.1237
+  journal: PoS
+  volume: ICHEP2022
+  start: 1237
+  month: 11
+  year: 2022
+  authors:
+    - given-names: Frank
+      family-names: Gaede
+      email: frank.gaede@desy.de
+      affiliation: DESY
+      orcid: 'https://orcid.org/0000-0002-7055-9200'
+    - given-names: Thomas
+      family-names: Madlener
+      email: thomas.madlener@desy.de
+      affiliation: DESY
+      orcid: 'https://orcid.org/0000-0002-0128-6536'
+    - given-names: Placido
+      family-names: Declara Fernandez
+      orcid: 'https://orcid.org/0000-0002-8432-2183'
+    - given-names: Gerardo
+      family-names: Ganis
+      affiliation: CERN
+      email: Gerardo.Ganis@cern.ch
+      orcid: 'https://orcid.org/0000-0002-1175-206X'
+    - given-names: Benedikt
+      family-names: Hegner
+      affiliation: CERN
+      orcid: 'https://orcid.org/0009-0009-2020-1620'
+      email: Benedikt.Hegner@cern.ch
+    - given-names: Clement
+      family-names: Helsens
+      affiliation: CERN
+      orcid: 'https://orcid.org/0000-0002-9243-7554'
+    - given-names: André Philippe
+      family-names: Sailer
+      affiliation: CERN
+      orcid: 'https://orcid.org/0000-0002-9897-5214'
+      email: andre.philippe.sailer@cern.ch
+    - given-names: Graeme Andrew
+      family-names: Stewart
+      email: graeme.andrew.stewart@cern.ch
+      affiliation: CERN
+      orcid: 'https://orcid.org/0000-0003-0182-7088'
+    - given-names: Valentin
+      family-names: Völkl
+      email: valentin.volkl@cern.ch
+      affiliation: CERN
+      orcid: 'https://orcid.org/0000-0002-9172-6629'

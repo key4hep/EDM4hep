@@ -32,12 +32,13 @@ endif()
 
 if (SKIP_CATCH_DISCOVERY)
   # Unfortunately Memory sanitizer seems to be really unhappy with Catch2 and
-  # it fails to succesfully launch the executable and execute any test. Here
+  # it fails to successfully launch the executable and execute any test. Here
   # we just include them in order to have them show up as failing
   add_test(NAME unittests COMMAND unittests_edm4hep)
   set_property(TEST unittests
     PROPERTY ENVIRONMENT
-    LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+    ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>
+    LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}
     PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
     ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )
@@ -51,7 +52,8 @@ endif()
 add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
 set_property(TEST pyunittests
   PROPERTY ENVIRONMENT
-  LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+  ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<$<TARGET_EXISTS:edm4hepRDF>:$<TARGET_FILE_DIR:edm4hepRDF>:>$<TARGET_FILE_DIR:ROOT::Core>
+  LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}
   PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
   ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
   )

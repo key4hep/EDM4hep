@@ -28,9 +28,7 @@
 
 #define FORCE_INLINE inline __attribute__((always_inline))
 
-inline uint32_t rotl32(uint32_t x, int8_t r) {
-  return (x << r) | (x >> (32 - r));
-}
+inline uint32_t rotl32(uint32_t x, int8_t r) { return (x << r) | (x >> (32 - r)); }
 
 #define ROTL32(x, y) rotl32(x, y)
 
@@ -40,9 +38,7 @@ inline uint32_t rotl32(uint32_t x, int8_t r) {
 // Block read - if your platform needs to do endian-swapping or can only
 // handle aligned reads, do the conversion here
 
-FORCE_INLINE uint32_t getblock32(const uint32_t* p, int i) {
-  return p[i];
-}
+FORCE_INLINE uint32_t getblock32(const uint32_t* p, int i) { return p[i]; }
 
 //-----------------------------------------------------------------------------
 // Finalization mix - force all bits of a hash block to avalanche

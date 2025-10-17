@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 namespace edm4hep {
 
@@ -12,27 +13,19 @@ namespace utils {
 
   namespace detail {
     // From c++23 this is functionality offered by the STL
-#if __cpp_lib_to_underlying
-    using to_index = std::to_underlying;
-#else
-    // Otherwise it is simple enough to roll our own
     template <typename E>
     constexpr auto to_index(E e) {
+#if __cpp_lib_to_underlying
+      return std::to_underlying(e);
+#else
       return static_cast<std::underlying_type_t<E>>(e);
-    }
 #endif
+    }
 
     /// Cast an index to an enum value
     template <typename DimEnum>
     constexpr DimEnum to_enum(DimEnum index) {
       return static_cast<DimEnum>(index);
-    }
-
-    /// Need a constexpr swap for integers before c++20
-    constexpr void swap(int& i, int& j) {
-      int tmp = j;
-      j = i;
-      i = tmp;
     }
 
     /**
@@ -63,12 +56,12 @@ namespace utils {
         return 2;
       case 1:
         return 1;
+      default:
+        // We simply use throwing an exception to make compilation fail in constexpr
+        // cases.
+        throw std::invalid_argument(
+            "Not a valid size for a covariance matrix stored in lower triangular form (N = " + std::to_string(N) + ")");
       }
-
-      // We simply use throwing an exception to make compilation fail in constexpr
-      // cases.
-      throw std::invalid_argument(
-          "Not a valid size for a covariance matrix stored in lower triangular form (N = " + std::to_string(N) + ")");
     }
 
     /**
@@ -81,7 +74,7 @@ namespace utils {
      */
     constexpr int to_lower_tri(int i, int j) {
       if (i < j) {
-        detail::swap(i, j);
+        std::swap(i, j);
       }
       return i * (i + 1) / 2 + j;
     }
