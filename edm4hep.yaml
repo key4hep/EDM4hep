@@ -607,15 +607,6 @@ datatypes:
         /// Set the four momentum covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
-  edm4hep::SenseWireHitSimTrackerHitLink:
-    Description: "Link between a SenseWireHit and a SimTrackerHit"
-    Author: "EDM4hep authors"
-    Members:
-      - float weight                      // weight of this link
-    OneToOneRelations:
-     - edm4hep::SenseWireHit from     // reference to the SenseWireHit
-     - edm4hep::SimTrackerHit to          // reference to the SimTrackerHit
-
 
   edm4hep::TimeSeries:
     Description: "Calibrated Detector Data"
@@ -682,6 +673,7 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
+      - edm4hep::SenseWireHit
 
 links:
   edm4hep::RecoMCParticleLink:
