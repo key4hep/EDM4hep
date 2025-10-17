@@ -272,7 +272,7 @@ datatypes:
         static const int BITStopped = 24 ;
         static const int BITOverlay = 23 ;
         /// return energy computed from momentum and mass
-        double getEnergy() const { return sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+
+        double getEnergy() const { return std::sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+
                                           getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;}
 
         /// True if the particle has been created by the simulation program (rather than the generator).
@@ -327,7 +327,7 @@ datatypes:
         double x() const {return getPosition()[0];}
         double y() const {return getPosition()[1];}
         double z() const {return getPosition()[2];}
-        double rho() const {return sqrt(x()*x() + y()*y());}
+        double rho() const {return std::hypot(x(), y());}
 
 
   edm4hep::CaloHitContribution:
