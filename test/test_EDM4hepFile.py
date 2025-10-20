@@ -349,8 +349,10 @@ def test_RawTimeSeriesCollection(event):
         assert val == next(counter)
 
 
-def test_SenseWireHitCollection(event):
+def test_SenseWireHitCollection(event, edm4hep_version):
     """Check the SenseWireHitCollection"""
+    if edm4hep_version < podio.version.parse("0.99.3"):
+        return
     counter = count(COUNT_START)
     hits = event.get("SenseWireHitCollection")
     assert len(hits) == 1
