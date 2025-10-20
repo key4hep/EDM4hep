@@ -229,6 +229,28 @@ def create_RawTimeSeriesCollection(vectorsize):
     return series
 
 
+def create_SenseWireHitCollection(vectorsize):
+    """Create a SenseWireHitCollection"""
+    counter = count(COUNT_START)
+    hits = edm4hep.SenseWireHitCollection()
+    hit = hits.create()
+    hit.setCellID(next(counter))
+    hit.setType(next(counter))
+    hit.setQuality(next(counter))
+    hit.setTime(next(counter))
+    hit.setEDep(next(counter))
+    hit.setEDepError(next(counter))
+    hit.setWireStereoAngle(next(counter))
+    hit.setWireAzimuthalAngle(next(counter))
+    hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
+    hit.setPositionAlongWireError(next(counter))
+    hit.setDistanceToWire(next(counter))
+    hit.setDistanceToWireError(next(counter))
+    for j in range(vectorsize):
+        hit.addToNElectrons(next(counter))
+    return hits
+
+
 def create_TrackCollection(vectorsize, tracker_hit):
     """Create a TrackCollection"""
     counter = count(COUNT_START)
@@ -424,6 +446,8 @@ def create_frame():
     frame.put(create_TrackerHitPlaneCollection(), "TrackerHitPlaneCollection")
 
     frame.put(create_RawTimeSeriesCollection(VECTORSIZE), "RawTimeSeriesCollection")
+
+    frame.put(create_SenseWireHitCollection(VECTORSIZE), "SenseWireHitCollection")
 
     tracks = frame.put(create_TrackCollection(VECTORSIZE, tracker_hit), "TrackCollection")
     track = tracks[0]
