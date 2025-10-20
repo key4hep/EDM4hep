@@ -717,9 +717,3 @@ links:
     Author: "EDM4hep authors"
     From: edm4hep::Vertex
     To: edm4hep::ReconstructedParticle
-
-  edm4hep::SenseWireHitSimTrackerHitLink:
-    Description: "Link between a SenseWireHit and a SimTrackerHit"
-    Author: "EDM4hep authors"
-    From: edm4hep::SenseWireHit
-    To: edm4hep::SimTrackerHit
