@@ -349,6 +349,29 @@ def test_RawTimeSeriesCollection(event):
         assert val == next(counter)
 
 
+def test_SenseWireHitCollection(event):
+    """Check the SenseWireHitCollection"""
+    counter = count(COUNT_START)
+    hits = event.get("SenseWireHitCollection")
+    assert len(hits) == 1
+    hit = hits[0]
+    assert hit.getCellID() == next(counter)
+    assert hit.getType() == next(counter)
+    assert hit.getQuality() == next(counter)
+    assert hit.getTime() == next(counter)
+    assert hit.getEDep() == next(counter)
+    assert hit.getEDepError() == next(counter)
+    assert hit.getWireStereoAngle() == next(counter)
+    assert hit.getWireAzimuthalAngle() == next(counter)
+    assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    assert hit.getPositionAlongWireError() == next(counter)
+    assert hit.getDistanceToWire() == next(counter)
+    assert hit.getDistanceToWireError() == next(counter)
+    assert len(hit.getNElectrons()) == VECTORSIZE
+    for val in hit.getNElectrons():
+        assert val == next(counter)
+
+
 def test_TrackCollection(event):
     """Check the TrackCollection"""
     counter = count(COUNT_START)
