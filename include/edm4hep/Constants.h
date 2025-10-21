@@ -41,7 +41,6 @@ namespace labels {
   static constexpr const char* GeneratorToolNames = "GeneratorToolNames";
   static constexpr const char* GeneratorToolDescriptions = "GeneratorToolDescriptions";
   static constexpr const char* GeneratorEventParameters = "GeneratorEventParameters";
-  static constexpr const char* GeneratorPdfInfo = "GeneratorPdfInfo";
   static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
 } // namespace labels
 
