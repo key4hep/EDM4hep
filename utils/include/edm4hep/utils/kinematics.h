@@ -23,7 +23,7 @@ namespace utils {
    */
   template <typename ParticleT>
   inline float pT(ParticleT const& p) {
-    return std::sqrt(p.getMomentum()[0] * p.getMomentum()[0] + p.getMomentum()[1] * p.getMomentum()[1]);
+    return std::hypot(p.getMomentum()[0], p.getMomentum()[1]);
   }
 
   /**
@@ -40,7 +40,7 @@ namespace utils {
   template <typename ParticleT>
   inline float p(ParticleT const& part) {
     const auto mom = part.getMomentum();
-    return std::sqrt(mom[0] * mom[0] + mom[1] * mom[1] + mom[2] * mom[2]);
+    return std::hypot(mom[0], mom[1], mom[2]);
   }
 
   namespace detail {
