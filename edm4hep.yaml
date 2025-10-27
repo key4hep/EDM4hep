@@ -473,6 +473,22 @@ datatypes:
         /// Set the position covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
+  edm4hep::TrackerHitLocal:
+    Description: "Sensor-local tracker hit"
+    Author: "EDM4hep authors"
+    Members:
+    - uint64_t cellID                    // ID of the sensor that created this hit
+    - int32_t type                       // type of raw data hit, use depends on writer
+    - int32_t quality                    // quality bit flag of the hit
+    - float time [ns]                    // time of the hit (depends on measurement type)
+    - float eDep [GeV]                   // energy deposited on the hit (optional)
+    - float eDepError [GeV]              // error measured on EDep (optional)
+    - edm4hep::Vector3d position [mm]    // global hit position (depends on measurement type)
+
+    VectorMembers:
+      - float measurement // Entries in the measurement value vector
+      - float covariance // Entries in the measurement covariance vector. Order is column major
+
   edm4hep::RawTimeSeries:
     Description: "Raw data of a detector readout"
     Author: "EDM4hep authors"
@@ -635,6 +651,7 @@ interfaces:
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
+      - edm4hep::TrackerHitLocal
 
 links:
   edm4hep::RecoMCParticleLink:
