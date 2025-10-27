@@ -113,7 +113,7 @@ namespace utils {
 
   // inline edm4hep::Vector2f VectorFromPolar(const double r, const double theta)
   // {
-  //  return {r * sin(theta), r * cos(theta)};
+  //  return {r * std::sin(theta), r * std::cos(theta)};
   //}
 
 } // namespace utils
@@ -130,10 +130,10 @@ namespace utils {
   template <Vector3D V = edm4hep::Vector3f>
   V sphericalToVector(const double r, const double theta, const double phi) {
     using FloatType = ValueType<V>;
-    const double sth = sin(theta);
-    const double cth = cos(theta);
-    const double sph = sin(phi);
-    const double cph = cos(phi);
+    const double sth = std::sin(theta);
+    const double cth = std::cos(theta);
+    const double sph = std::sin(phi);
+    const double cph = std::cos(phi);
     const FloatType x = r * sth * cph;
     const FloatType y = r * sth * sph;
     const FloatType z = r * cth;
@@ -201,7 +201,7 @@ namespace utils {
     if (dot == 0) {
       return 0.;
     }
-    return acos(dot / (magnitude(v1) * magnitude(v2)));
+    return std::acos(dot / (magnitude(v1) * magnitude(v2)));
   }
 
   // Project v onto v1

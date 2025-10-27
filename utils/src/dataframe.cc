@@ -19,7 +19,7 @@ ROOT::VecOps::RVec<float> pt(ROOT::VecOps::RVec<T> const& in) {
   ROOT::VecOps::RVec<float> result;
   result.reserve(in.size());
   for (size_t i = 0; i < in.size(); ++i) {
-    result.push_back(std::sqrt(in[i].momentum.x * in[i].momentum.x + in[i].momentum.y * in[i].momentum.y));
+    result.push_back(std::hypot(in[i].momentum.x, in[i].momentum.y));
   }
   return result;
 }
@@ -41,7 +41,7 @@ ROOT::VecOps::RVec<float> cos_theta(ROOT::VecOps::RVec<T> const& in) {
   result.reserve(in.size());
   for (size_t i = 0; i < in.size(); ++i) {
     ROOT::Math::XYZVector lv{in[i].momentum.x, in[i].momentum.y, in[i].momentum.z};
-    result.push_back(cos(lv.Theta()));
+    result.push_back(std::cos(lv.Theta()));
   }
   return result;
 }
@@ -51,7 +51,7 @@ ROOT::VecOps::RVec<float> r(ROOT::VecOps::RVec<T> const& in) {
   ROOT::VecOps::RVec<double> result;
   result.reserve(in.size());
   for (size_t i = 0; i < in.size(); ++i) {
-    result.push_back(std::sqrt(in[i].position.x * in[i].position.x + in[i].position.y * in[i].position.y));
+    result.push_back(std::hypot(in[i].position.x, in[i].position.y));
   }
   return result;
 }
