@@ -1,3 +1,86 @@
+# v00-99-03
+
+* 2025-10-24 Thomas Madlener ([PR#456](https://github.com/key4hep/EDM4hep/pull/456))
+  - Bump the minimum version of podio to v01-06
+
+* 2025-10-24 Juan Miguel Carceller ([PR#453](https://github.com/key4hep/EDM4hep/pull/453))
+  - Fix the warnings related to `isValid` being deprecated (https://github.com/AIDASoft/podio/pull/860) after the version of podio is bumped
+
+* 2025-10-23 Juan Miguel Carceller ([PR#457](https://github.com/key4hep/EDM4hep/pull/457))
+  - Remove unused variable in tools/CMakeLists.txt
+
+* 2025-10-23 Juan Miguel Carceller ([PR#454](https://github.com/key4hep/EDM4hep/pull/454))
+  - Use `std::hypot` when possible, prefer `std::sqrt` or `std::hypot` to sqrt
+
+* 2025-10-21 Thomas Madlener ([PR#446](https://github.com/key4hep/EDM4hep/pull/446))
+  - Remove the `GeneratorPdfInfo` datatype again, as the information it contains is only relevant for LO calculations and modern generators already take care of all of this using event weighting.
+  - Rework the `GeneratorEventParameters` slightly to contain relevant information only. Information that is not applicable beyond LO is removed as again this is handled by the generator via event weighting.
+  - **These are breaking changes!** Currently even files that have been written with an old version of the `GeneratorEventParameters` datatype will not be readable.
+
+* 2025-10-14 Thomas Madlener ([PR#452](https://github.com/key4hep/EDM4hep/pull/452))
+  - Do not build a separate `edm4hepOldSchemas` library (and dictionaries), but rather merge everything into the core EDM4hep library (and dictionaries).
+
+* 2025-10-13 Juan Miguel Carceller ([PR#443](https://github.com/key4hep/EDM4hep/pull/443))
+  - Use edm4hep.h in edm4hep2json to avoid hardcoding the types
+  - Remove the test `test_all_collections` that reads the .cxx file to check if  all the collections are there (but a comment could trigger a false positive, for example). There is still a test that runs `edm4hep2json`.
+  - **Bump the minimum required podio version to v01-05.**
+
+* 2025-09-23 Juan Miguel Carceller ([PR#451](https://github.com/key4hep/EDM4hep/pull/451))
+  - Set ROOT_LIBRARY_PATH for tests to prevent it from being picked up from the environment
+
+* 2025-09-23 Mateusz Jakub Fila ([PR#450](https://github.com/key4hep/EDM4hep/pull/450))
+  - Add missing article data in the citation file so the BibTeX entry generated from it references the article correctly
+
+* 2025-09-23 Mateusz Jakub Fila ([PR#448](https://github.com/key4hep/EDM4hep/pull/448))
+  - Update comments referring to removed un-namespaced labels
+
+* 2025-09-23 Thomas Madlener ([PR#447](https://github.com/key4hep/EDM4hep/pull/447))
+  - Add some documentation about the subtle differences between LCIO and EDM4hep that are going to stay
+
+* 2025-09-22 Juan Miguel Carceller ([PR#445](https://github.com/key4hep/EDM4hep/pull/445))
+  - Remove support for CPack and the unused `EDM4HEP.pc.in`
+
+* 2025-09-16 Mateusz Jakub Fila ([PR#449](https://github.com/key4hep/EDM4hep/pull/449))
+  - Fixed another bunch of minor  typos in docstrings and code comments
+
+* 2025-09-02 Thomas Madlener ([PR#404](https://github.com/key4hep/EDM4hep/pull/404))
+  - Replace the `spin` by `helicity` in `MCParticle` as the former is not usable without the full spin-density matrix whereas the latter is always well defined (or unset).
+    - Defaults to `9` which is used to signify an unset value. Use `hasHelicity` to check whether the `helicity` is set
+
+* 2025-08-26 Mateusz Jakub Fila ([PR#444](https://github.com/key4hep/EDM4hep/pull/444))
+  - Include `podio::UserDataCollection` in file created by `creatEDM4hepFile.py`
+
+* 2025-08-22 Mateusz Jakub Fila ([PR#442](https://github.com/key4hep/EDM4hep/pull/442))
+  - Fix `edm4hep2json` not recognizing generator metadata types
+
+* 2025-08-19 Juraj Smiesko ([PR#441](https://github.com/key4hep/EDM4hep/pull/441))
+  - edm4hep2json: Adding `isSubsetColl` and `collSchemaVersion` to the JSON
+
+* 2025-08-18 Thomas Madlener ([PR#440](https://github.com/key4hep/EDM4hep/pull/440))
+  - Remove the deprecated labels that were originally defined outside the `labels` namespace.
+
+* 2025-08-12 jmcarcell ([PR#439](https://github.com/key4hep/EDM4hep/pull/439))
+  - Update the schema version after the changes in 32af1cb8 to avoid a warning every time that a file with CaloHitCollections is read
+
+* 2025-08-12 jmcarcell ([PR#438](https://github.com/key4hep/EDM4hep/pull/438))
+  - Add timeouts and fixtures to the tests that create and read files to make jobs that fail due to timeouts fail faster
+
+* 2025-08-12 jmcarcell ([PR#437](https://github.com/key4hep/EDM4hep/pull/437))
+  - Do not use the namespace HepMC3, removes a warning in unity builds
+
+* 2025-08-12 jmcarcell ([PR#436](https://github.com/key4hep/EDM4hep/pull/436))
+  - Remove the deprecated constructor, getters and setters
+
+* 2025-08-12 jmcarcell ([PR#435](https://github.com/key4hep/EDM4hep/pull/435))
+  - Add const to the argument of operator= in covariance matrices
+
+* 2025-07-08 Mateusz Jakub Fila ([PR#434](https://github.com/key4hep/EDM4hep/pull/434))
+  - Fixed blank documentation page with new doxygen version
+
+* 2025-06-24 Thomas Madlener ([PR#433](https://github.com/key4hep/EDM4hep/pull/433))
+  - Add a `stepLength` member to the `CaloHitContribution`
+  - Clarify the docstring for the `particle` relation of the `CaloHitContribution`
+
 # v00-99-02
 
 * 2025-05-16 jmcarcell ([PR#430](https://github.com/key4hep/EDM4hep/pull/430))

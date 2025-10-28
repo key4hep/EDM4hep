@@ -5,7 +5,6 @@
 
 #include "edm4hep/CaloHitContributionCollection.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
-#include "edm4hep/GeneratorPdfInfoCollection.h"
 #include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
@@ -117,25 +116,13 @@ void write(std::string outfilename) {
     // write some generator event data
     auto genParametersCollection = edm4hep::GeneratorEventParametersCollection();
     auto genParam = genParametersCollection.create();
-    genParam.setEventScale(23);
-    genParam.setAlphaQED(1 / 127);
-    genParam.setAlphaQCD(0.1);
-    genParam.setSignalProcessId(42);
     genParam.setSqrts(90);
     genParam.addToCrossSections(10);
     genParam.addToCrossSectionErrors(3);
-    genParam.addToSignalVertex(mcp1);
-    genParam.addToSignalVertex(mcp2);
-    event.put(std::move(genParametersCollection), edm4hep::labels::GeneratorEventParameters);
+    genParam.addToSignalVertexParticles(mcp1);
+    genParam.addToSignalVertexParticles(mcp2);
 
-    auto genPdfInfoCollection = edm4hep::GeneratorPdfInfoCollection();
-    auto genPdfInfo = genPdfInfoCollection.create();
-    genPdfInfo.setPartonId(1, 2);
-    genPdfInfo.setLhapdfId({20, 20});
-    genPdfInfo.setX({0.5, 0.5});
-    genPdfInfo.setXf({0.5, 0.5});
-    genPdfInfo.setScale(23);
-    event.put(std::move(genPdfInfoCollection), edm4hep::labels::GeneratorPdfInfo);
+    event.put(std::move(genParametersCollection), edm4hep::labels::GeneratorEventParameters);
 
     //===============================================================================
     // write some generator tool info into the run

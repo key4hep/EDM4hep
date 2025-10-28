@@ -26,6 +26,36 @@ if "rntuple" in options.inputfile and not os.path.isfile(options.inputfile):
         allow_module_level=True,
     )
 
+COLLECTION_NAMES = [
+    "CaloHitContributionCollection",
+    "CaloHitMCParticleLinkCollection",
+    "CaloHitSimCaloHitLinkCollection",
+    "CalorimeterHitCollection",
+    "ClusterCollection",
+    "ClusterMCParticleLinkCollection",
+    "EventHeader",
+    "GeneratorEventParametersCollection",
+    "MCParticleCollection",
+    "ParticleIDCollection",
+    "RawCalorimeterHitCollection",
+    "RawTimeSeriesCollection",
+    "RecDqdxCollection",
+    "RecoMCParticleLinkCollection",
+    "ReconstructedParticleCollection",
+    "SimCalorimeterHitCollection",
+    "SimTrackerHitCollection",
+    "TimeSeriesCollection",
+    "TrackCollection",
+    "TrackerHit3DCollection",
+    "TrackerHitPlaneCollection",
+    "TrackerHitSimTrackerHitLinkCollection",
+    "TrackMCParticleLinkCollection",
+    "UserDataCollectionFloat",
+    "UserDataCollectionInt",
+    "VertexCollection",
+    "VertexRecoParticleLinkCollection",
+]
+
 
 @pytest.fixture(scope="module")
 def inputfile_name(pytestconfig):
@@ -63,9 +93,20 @@ def reader(inputfile_name):
 
 
 @pytest.fixture(scope="module")
-def events(reader):
+def edm4hep_version(reader):
+    return reader.current_file_version("edm4hep")
+
+
+@pytest.fixture(scope="module")
+def events(reader, edm4hep_version):
     """Get the events from the reader"""
-    return reader.get("events")
+    collections = COLLECTION_NAMES
+    if edm4hep_version < podio.version.parse("0.99.3"):
+        collections.remove("GeneratorEventParametersCollection")
+        collections.remove("UserDataCollectionFloat")
+        collections.remove("UserDataCollectionInt")
+
+    return reader.get("events", collections)
 
 
 @pytest.fixture(scope="module")
@@ -93,11 +134,6 @@ def reco_particle(event):
 def track(event):
     """Get the track that is used in some relations"""
     return event.get("TrackCollection")[0]
-
-
-@pytest.fixture(scope="module")
-def edm4hep_version(reader):
-    return reader.current_file_version("edm4hep")
 
 
 def check_cov_matrix(cov_matrix, n_dim):
@@ -496,45 +532,37 @@ def test_RecDqdxCollection(event, track):
     assert dqdx.getTrack() == track
 
 
-def test_GeneratorEventParametersCollection(event, particle):
+def test_GeneratorEventParametersCollection(event, particle, edm4hep_version):
     """Check the GeneratorEventParametersCollection"""
+    if edm4hep_version < podio.version.parse("0.99.2"):
+        # This was heavily reworked so we just ignore it for files older than this
+        return
+
     counter = count(COUNT_START)
     gep_coll = event.get("GeneratorEventParametersCollection")
     assert len(gep_coll) == 1
     gep = gep_coll[0]
-    assert gep.getEventScale() == next(counter)
-    assert gep.getAlphaQED() == next(counter)
-    assert gep.getAlphaQCD() == next(counter)
-    assert gep.getSignalProcessId() == next(counter)
     assert gep.getSqrts() == next(counter)
+    assert gep.getBeamsPz()[0] == next(counter)
+    assert gep.getBeamsPz()[1] == next(counter)
+    assert gep.getPartonIds()[0] == next(counter)
+    assert gep.getPartonIds()[1] == next(counter)
+    assert gep.getBeamPolarizations()[0] == next(counter)
+    assert gep.getBeamPolarizations()[1] == next(counter)
+
     xsecs = gep.getCrossSections()
     xsec_errors = gep.getCrossSectionErrors()
+    weights = gep.getWeights()
     assert len(xsecs) == VECTORSIZE
     assert len(xsec_errors) == VECTORSIZE
+    assert len(weights) == VECTORSIZE
     for i in range(VECTORSIZE):
         assert xsecs[i] == next(counter)
         assert xsec_errors[i] == next(counter)
+        assert weights[i] == next(counter)
 
-    assert len(gep.getSignalVertex()) == 1
-    assert gep.getSignalVertex()[0] == particle
-
-
-def test_GeneratorPdfInfoCollection(event):
-    """Check the GeneratorPdfInfoCollection"""
-    counter = count(COUNT_START)
-    gpi_coll = event.get("GeneratorPdfInfoCollection")
-    assert len(gpi_coll) == 1
-    gpi = gpi_coll[0]
-    assert gpi.getPartonId(0) == next(counter)
-    assert gpi.getPartonId(1) == next(counter)
-    assert gpi.getLhapdfId(0) == next(counter)
-    assert gpi.getLhapdfId(1) == next(counter)
-    assert gpi.getX(0) == next(counter)
-    assert gpi.getX(1) == next(counter)
-    assert gpi.getXf(0) == next(counter)
-    assert gpi.getXf(1) == next(counter)
-
-    assert gpi.getScale() == next(counter)
+    assert len(gep.getSignalVertexParticles()) == 1
+    assert gep.getSignalVertexParticles()[0] == particle
 
 
 def check_LinkCollection(event, coll_type, from_el, to_el):
