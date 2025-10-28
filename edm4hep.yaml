@@ -505,10 +505,9 @@ datatypes:
     VectorMembers:
       - uint16_t nElectrons // number of electrons for each cluster (number of clusters = vector size)
     ExtraCode:
-      declaration: "
-        /// Return the number of clusters associated to the hit\n
-        auto getNClusters() const { return getNElectrons().size(); }\n
-        "
+      declaration: |
+        /// Return the number of clusters associated to the hit
+        auto getNClusters() const { return getNElectrons().size(); }
 
 
   edm4hep::Track:
