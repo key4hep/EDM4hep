@@ -654,7 +654,7 @@ interfaces:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
-      - edm4hep::Vector3d position [mm] // hit position. For the SenseWireHit type, it corresponds to the point on the sense wire which is closest to the hit (i.e. the center of the circle)
+      - edm4hep::Vector3d position [mm] // hit position as recorded by the sensor. The exact interpretation will depend on the currently held type of the interface
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
