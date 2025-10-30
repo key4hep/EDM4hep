@@ -1,5 +1,5 @@
 ---
-schema_version: 4
+schema_version: 5
 options:
   getSyntax: True
   exposePODMembers: False
@@ -486,6 +486,29 @@ datatypes:
        - int32_t adcCounts          // raw data (32-bit) word at i
 
 
+  edm4hep::SenseWireHit:
+    Description: "Sense wire hit, knowing only the distance to the wire. The circle representing possible positions is parametrized with its center, radius and normal vector (given by the wire direction)."
+    Author: "EDM4hep authors"
+    Members:
+      - uint64_t cellID // ID of the sensor that created this hit
+      - int32_t type // type of the raw data hit
+      - int32_t quality // quality bit flag of the hit
+      - float time [ns] // time of the hit
+      - float eDep [GeV] // energy deposited by the hit
+      - float eDepError [GeV] // error on eDep
+      - float wireStereoAngle // angle between the sense wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
+      - float wireAzimuthalAngle // azimuthal angle at the middle of the sense wire - use it together with wireStereoAngle to get the wire direction
+      - edm4hep::Vector3d position [mm] // point on the sense wire which is closest to the hit (center of the circle)
+      - double positionAlongWireError [mm] // error on the hit position along the wire direction
+      - float distanceToWire [mm] // distance between the hit and the wire (radius of the circle)
+      - float distanceToWireError [mm] // error on distanceToWire
+    VectorMembers:
+      - uint16_t nElectrons // number of electrons for each cluster (number of clusters = vector size)
+    ExtraCode:
+      declaration: |
+        /// Return the number of clusters associated to the hit
+        auto getNClusters() const { return getNElectrons().size(); }
+
 
   edm4hep::Track:
     Description: "Reconstructed track"
@@ -631,10 +654,11 @@ interfaces:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
-      - edm4hep::Vector3d position [mm] // hit position
+      - edm4hep::Vector3d position [mm] // hit position as recorded by the sensor. The exact interpretation will depend on the currently held type of the interface
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
+      - edm4hep::SenseWireHit
 
 links:
   edm4hep::RecoMCParticleLink:

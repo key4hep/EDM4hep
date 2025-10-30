@@ -42,6 +42,7 @@ COLLECTION_NAMES = [
     "RecDqdxCollection",
     "RecoMCParticleLinkCollection",
     "ReconstructedParticleCollection",
+    "SenseWireHitCollection",
     "SimCalorimeterHitCollection",
     "SimTrackerHitCollection",
     "TimeSeriesCollection",
@@ -105,6 +106,7 @@ def events(reader, edm4hep_version):
         collections.remove("GeneratorEventParametersCollection")
         collections.remove("UserDataCollectionFloat")
         collections.remove("UserDataCollectionInt")
+        collections.remove("SenseWireHitCollection")
 
     return reader.get("events", collections)
 
@@ -382,6 +384,31 @@ def test_RawTimeSeriesCollection(event):
     assert serie.getInterval() == next(counter)
     assert len(serie.getAdcCounts()) == VECTORSIZE
     for val in serie.getAdcCounts():
+        assert val == next(counter)
+
+
+def test_SenseWireHitCollection(event, edm4hep_version):
+    """Check the SenseWireHitCollection"""
+    if edm4hep_version < podio.version.parse("0.99.3"):
+        return
+    counter = count(COUNT_START)
+    hits = event.get("SenseWireHitCollection")
+    assert len(hits) == 1
+    hit = hits[0]
+    assert hit.getCellID() == next(counter)
+    assert hit.getType() == next(counter)
+    assert hit.getQuality() == next(counter)
+    assert hit.getTime() == next(counter)
+    assert hit.getEDep() == next(counter)
+    assert hit.getEDepError() == next(counter)
+    assert hit.getWireStereoAngle() == next(counter)
+    assert hit.getWireAzimuthalAngle() == next(counter)
+    assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
+    assert hit.getPositionAlongWireError() == next(counter)
+    assert hit.getDistanceToWire() == next(counter)
+    assert hit.getDistanceToWireError() == next(counter)
+    assert len(hit.getNElectrons()) == VECTORSIZE
+    for val in hit.getNElectrons():
         assert val == next(counter)
 
 
