@@ -42,6 +42,7 @@ COLLECTION_NAMES = [
     "RecDqdxCollection",
     "RecoMCParticleLinkCollection",
     "ReconstructedParticleCollection",
+    "SenseWireHitCollection",
     "SimCalorimeterHitCollection",
     "SimTrackerHitCollection",
     "TimeSeriesCollection",
@@ -105,6 +106,7 @@ def events(reader, edm4hep_version):
         collections.remove("GeneratorEventParametersCollection")
         collections.remove("UserDataCollectionFloat")
         collections.remove("UserDataCollectionInt")
+        collections.remove("SenseWireHitCollection")
 
     return reader.get("events", collections)
 
