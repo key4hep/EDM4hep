@@ -57,15 +57,20 @@ target_include_directories(write_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
 target_link_libraries(write_events edm4hep podio::podioRootIO)
 add_test(NAME write_events COMMAND write_events)
 set_test_env(write_events)
+set_tests_properties(
+  write_events PROPERTIES
+  FIXTURES_SETUP write_events_fixture
+)
 
 add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
 target_link_libraries(read_events edm4hep podio::podioRootIO)
 add_test(NAME read_events COMMAND read_events)
-  set_property(TEST read_events PROPERTY
-    DEPENDS write_events
-    )
 set_test_env(read_events)
+set_tests_properties(
+  read_events PROPERTIES
+  FIXTURES_REQUIRED write_events_fixture
+)
 
 IF(TARGET edm4hepSioBlocks)
   add_executable(write_events_sio write_events_sio.cc)
@@ -73,6 +78,10 @@ IF(TARGET edm4hepSioBlocks)
   target_link_libraries(write_events_sio edm4hep podio::podioSioIO)
   add_test(NAME write_events_sio COMMAND write_events_sio)
   set_test_env(write_events_sio)
+  set_tests_properties(
+    write_events_sio PROPERTIES
+    FIXTURES_SETUP write_events_sio_fixture
+  )
 
   add_executable(read_events_sio read_events_sio.cc)
   target_include_directories(read_events_sio PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep)
@@ -80,8 +89,8 @@ IF(TARGET edm4hepSioBlocks)
   add_test(NAME read_events_sio COMMAND read_events_sio)
   set_test_env(read_events_sio)
   set_tests_properties(read_events_sio PROPERTIES
-    DEPENDS write_events_sio
-    )
+    FIXTURES_REQUIRED write_events_sio_fixture
+  )
 ENDIF()
 
 IF(TARGET ROOT::ROOTDataFrame)
@@ -91,8 +100,8 @@ IF(TARGET ROOT::ROOTDataFrame)
   add_test(NAME test_rdf COMMAND test_rdf)
   set_test_env(test_rdf)
   set_property(TEST test_rdf PROPERTY
-    DEPENDS write_events
-    )
+    FIXTURES_REQUIRED write_events_fixture
+  )
 
   add_test(NAME py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
   set_test_env(py_test_rdf)
@@ -105,7 +114,7 @@ IF(TARGET ROOT::ROOTDataFrame)
   # for RDataFrame
   string(REGEX REPLACE "[^:]*\\/fccanalyses\\/[^:]*(:?|$)" "" ENVIRONMENT "${ENVIRONMENT}")
   set_property(TEST py_test_rdf PROPERTY ENVIRONMENT ${ENVIRONMENT})
-  set_tests_properties(py_test_rdf PROPERTIES DEPENDS write_events)
+  set_tests_properties(py_test_rdf PROPERTIES FIXTURES_REQUIRED write_events_fixture)
 endif()
 
 
