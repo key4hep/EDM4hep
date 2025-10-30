@@ -107,10 +107,6 @@ IF(TARGET ROOT::ROOTDataFrame)
 
   add_test(NAME py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
   set_test_env(py_test_rdf)
-  set_property(TEST py_test_rdf APPEND PROPERTY ENVIRONMENT
-      ${ENVIRONMENT}
-      PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
-  )
   get_property(ENVIRONMENT TEST py_test_rdf PROPERTY ENVIRONMENT)
   # Remove fccanalyses to prevent ROOT from loading their dictionaries
   # for RDataFrame
@@ -136,10 +132,6 @@ endif()
 
 add_test(NAME py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
 set_test_env(py_test_module)
-set_property(TEST py_test_module APPEND PROPERTY ENVIRONMENT
-    ${ENVIRONMENT}
-    PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
-)
 
 add_subdirectory(utils)
 add_subdirectory(tools)
