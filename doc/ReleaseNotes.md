@@ -1,3 +1,14 @@
+# v00-99-04
+
+* 2025-11-03 BrieucF ([PR#455](https://github.com/key4hep/EDM4hep/pull/455))
+  - Explicitly mention units and intended usage of TrackerHitPlane u, v, du and dv
+
+* 2025-10-30 BrieucF ([PR#385](https://github.com/key4hep/EDM4hep/pull/385))
+  - Add a data type for sense wire detectors digitized hits (only the distance to the wire is known)
+
+* 2025-10-27 Mateusz Jakub Fila ([PR#458](https://github.com/key4hep/EDM4hep/pull/458))
+  - Fix missing `std::` for math functions, replace more `sqrt` with `hypot`
+
 # v00-99-03
 
 * 2025-10-24 Thomas Madlener ([PR#456](https://github.com/key4hep/EDM4hep/pull/456))
