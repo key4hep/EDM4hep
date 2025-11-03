@@ -35,7 +35,6 @@ if (SKIP_CATCH_DISCOVERY)
   # it fails to successfully launch the executable and execute any test. Here
   # we just include them in order to have them show up as failing
   add_test(NAME unittests COMMAND unittests_edm4hep)
-  set_test_env(unittests)
 else()
   catch_discover_tests(unittests_edm4hep
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -44,4 +43,3 @@ else()
 endif()
 
 add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
-set_test_env(pyunittests)

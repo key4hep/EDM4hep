@@ -2,28 +2,13 @@ IF(NOT BUILD_TESTING)
   RETURN()
 ENDIF()
 
-function(set_test_env _testname)
-  set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:edm4hepRDF>:$<TARGET_FILE_DIR:ROOT::Core>
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:edm4hepRDF>:$ENV{LD_LIBRARY_PATH}
-      ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
-      PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
-      PODIO_SIOBLOCK_PATH=$<TARGET_FILE_DIR:edm4hep>
-  )
-  set_tests_properties(${_testname} PROPERTIES
-    FAIL_REGULAR_EXPRESSION "[^a-z]Error;ERROR;error;Failed"
-    )
-endfunction()
-
 add_test(NAME create_complete_file COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --output-file edm4hep_example.root)
-set_test_env(create_complete_file)
 set_tests_properties(create_complete_file PROPERTIES
   FIXTURES_SETUP complete_file
   TIMEOUT 600
 )
 
 add_test(NAME create_complete_file_rntuple COMMAND python ${PROJECT_SOURCE_DIR}/scripts/createEDM4hepFile.py --rntuple --output-file edm4hep_example_rntuple.root)
-set_test_env(create_complete_file_rntuple)
 set_tests_properties(create_complete_file_rntuple PROPERTIES
   SKIP_REGULAR_EXPRESSION "The RNTuple writer from podio is not available but was requested"
   FIXTURES_SETUP complete_file_rntuple
@@ -31,14 +16,12 @@ set_tests_properties(create_complete_file_rntuple PROPERTIES
 )
 
 add_test(NAME check_complete_file COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example.root -v)
-set_test_env(check_complete_file)
 set_tests_properties(
   check_complete_file PROPERTIES
   FIXTURES_REQUIRED complete_file
   TIMEOUT 600
 )
 add_test(NAME check_complete_file_rntuple COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example_rntuple.root -v)
-set_test_env(check_complete_file_rntuple)
 set_tests_properties(
   check_complete_file_rntuple PROPERTIES
   FIXTURES_REQUIRED complete_file_rntuple
@@ -58,7 +41,6 @@ add_executable(write_events write_events.cc)
 target_include_directories(write_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
 target_link_libraries(write_events edm4hep podio::podioRootIO)
 add_test(NAME write_events COMMAND write_events)
-set_test_env(write_events)
 set_tests_properties(
   write_events PROPERTIES
   FIXTURES_SETUP write_events_fixture
@@ -68,7 +50,6 @@ add_executable(read_events read_events.cc)
 target_include_directories(read_events PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep )
 target_link_libraries(read_events edm4hep podio::podioRootIO)
 add_test(NAME read_events COMMAND read_events)
-set_test_env(read_events)
 set_tests_properties(
   read_events PROPERTIES
   FIXTURES_REQUIRED write_events_fixture
@@ -79,7 +60,6 @@ IF(TARGET edm4hepSioBlocks)
   target_include_directories(write_events_sio PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep)
   target_link_libraries(write_events_sio edm4hep podio::podioSioIO)
   add_test(NAME write_events_sio COMMAND write_events_sio)
-  set_test_env(write_events_sio)
   set_tests_properties(
     write_events_sio PROPERTIES
     FIXTURES_SETUP write_events_sio_fixture
@@ -89,7 +69,6 @@ IF(TARGET edm4hepSioBlocks)
   target_include_directories(read_events_sio PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep)
   target_link_libraries(read_events_sio edm4hep podio::podioSioIO)
   add_test(NAME read_events_sio COMMAND read_events_sio)
-  set_test_env(read_events_sio)
   set_tests_properties(read_events_sio PROPERTIES
     FIXTURES_REQUIRED write_events_sio_fixture
   )
@@ -100,13 +79,11 @@ IF(TARGET ROOT::ROOTDataFrame)
   target_include_directories(test_rdf PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep ${PROJECT_SOURCE_DIR}/dataframe )
   target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame podio::podioRootIO)
   add_test(NAME test_rdf COMMAND test_rdf)
-  set_test_env(test_rdf)
   set_property(TEST test_rdf PROPERTY
     FIXTURES_REQUIRED write_events_fixture
   )
 
   add_test(NAME py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
-  set_test_env(py_test_rdf)
   set_tests_properties(py_test_rdf PROPERTIES FIXTURES_REQUIRED write_events_fixture)
 endif()
 
@@ -119,14 +96,12 @@ if(HepMC3_FOUND AND HepPDT_FOUND )
   target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC3_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
   target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC3_LIBRARIES})
   add_test(NAME edm4hep_testhepmc COMMAND edm4hep_testhepmc)
-  set_test_env(edm4hep_testhepmc)
   set_property(TEST edm4hep_testhepmc APPEND PROPERTY ENVIRONMENT
       ROOT_INCLUDE_PATH=${HEPMC3_INCLUDE_DIR}:$ENV{ROOT_INCLUDE_PATH}
   )
 endif()
 
 add_test(NAME py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
-set_test_env(py_test_module)
 
 add_subdirectory(utils)
 add_subdirectory(tools)
@@ -140,3 +115,19 @@ list(APPEND ExternalData_URL_TEMPLATES
 add_subdirectory(backwards_compat)
 
 ExternalData_Add_Target(backward_compat_tests)
+
+# Make sure all tests run in the correct environment
+get_property(test_names DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY TESTS)
+foreach(_testname ${test_names})
+  set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
+      ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:edm4hepRDF>:$<TARGET_FILE_DIR:ROOT::Core>
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:edm4hepRDF>:$ENV{LD_LIBRARY_PATH}
+      ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
+      PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
+      PODIO_SIOBLOCK_PATH=$<TARGET_FILE_DIR:edm4hep>
+  )
+endforeach()
+
+set_tests_properties(${test_names} PROPERTIES
+    FAIL_REGULAR_EXPRESSION "[^a-z]Error;ERROR;error;Failed"
+)
