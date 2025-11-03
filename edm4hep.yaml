@@ -455,10 +455,10 @@ datatypes:
       - float time [ns]                    // time of the hit
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
-      - edm4hep::Vector2f u            // measurement direction vector, u lies in the x-y plane
-      - edm4hep::Vector2f v            // measurement direction vector, v is along z
-      - float du                       // measurement error along the direction
-      - float dv                       // measurement error along the direction
+      - edm4hep::Vector2f u [rad]          // direction of the first measurement given as (theta, phi) in spherical coordinates
+      - edm4hep::Vector2f v [rad]          // direction of the second measurement given as (theta, phi) in spherical coordinates
+      - float du [mm]                      // measurement error along the direction
+      - float dv [mm]                      // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
       - edm4hep::CovMatrix3f covMatrix [mm^2] // covariance of the position (x,y,z)
     ExtraCode:
