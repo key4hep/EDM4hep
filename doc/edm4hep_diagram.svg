@@ -29,8 +29,8 @@
      id="namedview332"
      showgrid="true"
      inkscape:zoom="4.0000001"
-     inkscape:cx="396.37499"
-     inkscape:cy="167.5"
+     inkscape:cx="982.12497"
+     inkscape:cy="298.74999"
      inkscape:window-x="1107"
      inkscape:window-y="253"
      inkscape:window-maximized="1"
@@ -2368,13 +2368,13 @@
   <path
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:0.217;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-9-6-8)"
-     d="m 268.57302,111.57551 c -0.85409,-1.56929 -18.2301,-33.025957 -18.2301,-33.025957"
+     d="m 266.98551,111.57551 c -0.85409,-1.56929 -18.2301,-33.025957 -18.2301,-33.025957"
      id="path61300"
      sodipodi:nodetypes="cc" />
   <path
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:0.217;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-9-6-8)"
-     d="m 247.01778,78.742306 18.02369,32.593604"
+     d="m 244.61199,78.816618 16.02353,32.345272"
      id="path61580"
      sodipodi:nodetypes="cc" />
   <text
@@ -2404,4 +2404,16 @@
        id="textPath29674"><tspan
          id="tspan29507"
          style="font-size:3.88056px;stroke-width:0.161093">CaloHitMCParticleLink</tspan></textPath></text>
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:0.217;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-9-6-8)"
+     d="M 266.98551,111.57551 C 266.13142,110.00622 251.63968,79.411891 251.63968,79.411891"
+     id="path30307"
+     sodipodi:nodetypes="cc" />
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:0.217;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-9-6-8)"
+     d="m 266.98551,111.57551 c -0.85409,-1.56929 -12.7,-30.840703 -12.7,-30.840703"
+     id="path30366"
+     sodipodi:nodetypes="cc" />
 </svg>
