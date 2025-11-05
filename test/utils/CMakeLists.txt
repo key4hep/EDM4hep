@@ -34,7 +34,7 @@ if (SKIP_CATCH_DISCOVERY)
   # Unfortunately Memory sanitizer seems to be really unhappy with Catch2 and
   # it fails to successfully launch the executable and execute any test. Here
   # we just include them in order to have them show up as failing
-  add_test(NAME unittests COMMAND unittests_edm4hep)
+  add_edm4hep_test(unittests COMMAND unittests_edm4hep)
 else()
   catch_discover_tests(unittests_edm4hep
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -42,4 +42,4 @@ else()
   )
 endif()
 
-add_test(NAME pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
+add_edm4hep_test(pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})
