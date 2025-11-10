@@ -84,7 +84,7 @@ INST_POSITION_FUNCS(edm4hep::CalorimeterHitData);
 INST_POSITION_FUNCS(edm4hep::ClusterData);
 INST_POSITION_FUNCS(edm4hep::VertexData);
 
-#undef INST_DATA_TO_FLOAT_VEC
+#undef INST_DATA_TO_FLOAT_VEC_FUNC
 #undef INST_POSITION_FUNCS
 #undef INST_MOMENTUM_FUNCS
 

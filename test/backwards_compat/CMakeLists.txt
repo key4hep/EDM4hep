@@ -9,7 +9,6 @@ set_tests_properties(
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test
 )
 
-
 if (${ROOT_VERSION} VERSION_GREATER_EQUAL 6.36 AND ${podio_VERSION} VERSION_GREATER_EQUAL 1.3)
   # This input file needs to be read with ROOT 6.36 as otherwise RNTuple does
   # not yet have the necessary support for reading old schemas
