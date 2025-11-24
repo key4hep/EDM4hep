@@ -278,7 +278,7 @@ def test_ClusterCollection(event):
     assert cluster.getPosition() == edm4hep.Vector3f(next(counter), next(counter), next(counter))
     check_cov_matrix(cluster.getPositionError(), 3)
     assert cluster.getITheta() == next(counter)
-    assert cluster.getPhi() == next(counter)
+    assert cluster.getIPhi() == next(counter)
     assert cluster.getDirectionError() == edm4hep.Vector3f(
         next(counter), next(counter), next(counter)
     )
