@@ -16,6 +16,7 @@
 #include <podio/DatamodelRegistry.h>
 #include <podio/LinkCollection.h>
 #include <podio/SchemaEvolution.h>
+#include <podio/podioVersion.h>
 
 #include <string_view>
 
@@ -39,11 +40,13 @@ namespace {
       return std::make_unique<podio::LinkCollection<FromT, ToT>>(std::move(data), isSubsetColl);
     };
 
+#if PODIO_BUILD_VERSION <= PODIO_VERSION(1, 6, 0)
     buffers.recast = [](podio::CollectionReadBuffers& buffs) {
       if (buffs.data) {
         buffs.data = podio::CollectionWriteBuffers::asVector<podio::LinkData>(buffs.data);
       }
     };
+#endif
 
     buffers.deleteBuffers = [](podio::CollectionReadBuffers& buffs) {
       if (buffs.data) {
@@ -83,11 +86,13 @@ namespace {
         return std::make_unique<podio::LinkCollection<FromT, ToT>>(std::move(data), isSubsetColl);
       };
 
+#if PODIO_BUILD_VERSION <= PODIO_VERSION(1, 6, 0)
       readBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
         if (buffers.data) {
           buffers.data = podio::CollectionWriteBuffers::asVector<float>(buffers.data);
         }
       };
+#endif
 
       readBuffers.deleteBuffers = [](podio::CollectionReadBuffers& buffers) {
         if (buffers.data) {
