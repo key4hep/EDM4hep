@@ -1,0 +1,5 @@
+migrations:
+  edm4hep::Cluster:
+    - from_version: 5
+      to_version: 6
+      rename_member: {from: phi, to: iPhi}

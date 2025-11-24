@@ -7,6 +7,8 @@ PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources
   IO_BACKEND_HANDLERS ${PODIO_IO_HANDLERS}
   DEPENDS ${extra_code}
   VERSION ${${PROJECT_NAME}_VERSION}
+  OLD_DESCRIPTIONS ../old_schemas/edm4hep_v5.yaml ../old_schemas/edm4hep_v4.yaml ../old_schemas/edm4hep_v3.yaml ../old_schemas/edm4hep_v2.yaml
+  SCHEMA_EVOLUTION ../edm4hep_evolution.yaml
 )
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
