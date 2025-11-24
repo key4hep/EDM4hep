@@ -16,6 +16,7 @@
 #include <podio/DatamodelRegistry.h>
 #include <podio/LinkCollection.h>
 #include <podio/SchemaEvolution.h>
+#include <podio/podioVersion.h>
 
 #include <string_view>
 
