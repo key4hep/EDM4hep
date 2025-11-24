@@ -39,11 +39,13 @@ namespace {
       return std::make_unique<podio::LinkCollection<FromT, ToT>>(std::move(data), isSubsetColl);
     };
 
+#if PODIO_BUILD_VERSION <= PODIO_VERSION(1, 6, 0)
     buffers.recast = [](podio::CollectionReadBuffers& buffs) {
       if (buffs.data) {
         buffs.data = podio::CollectionWriteBuffers::asVector<podio::LinkData>(buffs.data);
       }
     };
+#endif
 
     buffers.deleteBuffers = [](podio::CollectionReadBuffers& buffs) {
       if (buffs.data) {
