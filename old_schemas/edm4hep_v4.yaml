@@ -1,5 +1,5 @@
 ---
-schema_version: 6
+schema_version: 4
 options:
   getSyntax: True
   exposePODMembers: False
@@ -398,7 +398,7 @@ datatypes:
       - edm4hep::Vector3f    position [mm]       // position of the cluster
       - edm4hep::CovMatrix3f positionError [mm^2]  // covariance matrix of the position
       - float                iTheta [rad]    // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-      - float                iPhi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+      - float                phi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - edm4hep::Vector3f    directionError [mm^2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. The corresponding names of the shape parameters should be stored in the collection named by edm4hep::labels::ShapeParameterNames in the file-level metadata, as a vector of strings in the same order as the parameters.
@@ -411,18 +411,13 @@ datatypes:
       declaration: |
         /// Get the position error value for the two passed dimensions
         float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }
-        /// Get the Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-        [[deprecated("Use getIPhi instead")]]
-        float getPhi() const { return getIPhi(); }
 
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
         /// Set the position error value for the two passed dimensions
         void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }
-        /// Set the Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-        [[deprecated("Use setIPhi instead")]]
-        void setPhi(float value) { setIPhi(value); }
+
 
 
   edm4hep::TrackerHit3D:
@@ -460,10 +455,10 @@ datatypes:
       - float time [ns]                    // time of the hit
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
-      - edm4hep::Vector2f u [rad]          // direction of the first measurement given as (theta, phi) in spherical coordinates
-      - edm4hep::Vector2f v [rad]          // direction of the second measurement given as (theta, phi) in spherical coordinates
-      - float du [mm]                      // measurement error along the direction
-      - float dv [mm]                      // measurement error along the direction
+      - edm4hep::Vector2f u            // measurement direction vector, u lies in the x-y plane
+      - edm4hep::Vector2f v            // measurement direction vector, v is along z
+      - float du                       // measurement error along the direction
+      - float dv                       // measurement error along the direction
       - edm4hep::Vector3d position [mm]   // hit position
       - edm4hep::CovMatrix3f covMatrix [mm^2] // covariance of the position (x,y,z)
     ExtraCode:
@@ -490,29 +485,6 @@ datatypes:
     VectorMembers:
        - int32_t adcCounts          // raw data (32-bit) word at i
 
-
-  edm4hep::SenseWireHit:
-    Description: "Sense wire hit, knowing only the distance to the wire. The circle representing possible positions is parametrized with its center, radius and normal vector (given by the wire direction)."
-    Author: "EDM4hep authors"
-    Members:
-      - uint64_t cellID // ID of the sensor that created this hit
-      - int32_t type // type of the raw data hit
-      - int32_t quality // quality bit flag of the hit
-      - float time [ns] // time of the hit
-      - float eDep [GeV] // energy deposited by the hit
-      - float eDepError [GeV] // error on eDep
-      - float wireStereoAngle // angle between the sense wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
-      - float wireAzimuthalAngle // azimuthal angle at the middle of the sense wire - use it together with wireStereoAngle to get the wire direction
-      - edm4hep::Vector3d position [mm] // point on the sense wire which is closest to the hit (center of the circle)
-      - double positionAlongWireError [mm] // error on the hit position along the wire direction
-      - float distanceToWire [mm] // distance between the hit and the wire (radius of the circle)
-      - float distanceToWireError [mm] // error on distanceToWire
-    VectorMembers:
-      - uint16_t nElectrons // number of electrons for each cluster (number of clusters = vector size)
-    ExtraCode:
-      declaration: |
-        /// Return the number of clusters associated to the hit
-        auto getNClusters() const { return getNElectrons().size(); }
 
 
   edm4hep::Track:
@@ -659,11 +631,10 @@ interfaces:
       - float time [ns] // time of the hit
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
-      - edm4hep::Vector3d position [mm] // hit position as recorded by the sensor. The exact interpretation will depend on the currently held type of the interface
+      - edm4hep::Vector3d position [mm] // hit position
     Types:
       - edm4hep::TrackerHit3D
       - edm4hep::TrackerHitPlane
-      - edm4hep::SenseWireHit
 
 links:
   edm4hep::RecoMCParticleLink:
