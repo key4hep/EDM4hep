@@ -156,7 +156,7 @@ def test_MCParticleCollection(event, edm4hep_version):
             next(counter), next(counter), next(counter)
         )
 
-        if edm4hep_version < podio.version.parse("0.99.2"):
+        if edm4hep_version < podio.version.parse("0.99.3"):
             # The spin 3D vector has been replaced by helicity and schema
             # evolution is yet to be completed
             next(counter)
