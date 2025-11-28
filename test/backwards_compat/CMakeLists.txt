@@ -6,6 +6,7 @@ macro(add_backwards_compat_test input_base)
 endmacro()
 
 add_backwards_compat_test(v00-99-01_podio_v01-01)
+add_backwards_compat_test(v00-99-02_podio_v01-03)
 
 if (${ROOT_VERSION} VERSION_GREATER_EQUAL 6.36 AND ${podio_VERSION} VERSION_GREATER_EQUAL 1.3)
   # This input file needs to be read with ROOT 6.36 as otherwise RNTuple does
