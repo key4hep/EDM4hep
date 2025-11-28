@@ -351,7 +351,7 @@ def test_RawTimeSeriesCollection(event):
 
 def test_SenseWireHitCollection(event, edm4hep_version):
     """Check the SenseWireHitCollection"""
-    if edm4hep_version < podio.version.parse("0.99.3"):
+    if edm4hep_version < podio.version.parse("0.99.4"):
         return
     counter = count(COUNT_START)
     hits = event.get("SenseWireHitCollection")
