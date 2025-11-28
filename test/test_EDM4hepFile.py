@@ -26,37 +26,6 @@ if "rntuple" in options.inputfile and not os.path.isfile(options.inputfile):
         allow_module_level=True,
     )
 
-COLLECTION_NAMES = [
-    "CaloHitContributionCollection",
-    "CaloHitMCParticleLinkCollection",
-    "CaloHitSimCaloHitLinkCollection",
-    "CalorimeterHitCollection",
-    "ClusterCollection",
-    "ClusterMCParticleLinkCollection",
-    "EventHeader",
-    "GeneratorEventParametersCollection",
-    "MCParticleCollection",
-    "ParticleIDCollection",
-    "RawCalorimeterHitCollection",
-    "RawTimeSeriesCollection",
-    "RecDqdxCollection",
-    "RecoMCParticleLinkCollection",
-    "ReconstructedParticleCollection",
-    "SenseWireHitCollection",
-    "SimCalorimeterHitCollection",
-    "SimTrackerHitCollection",
-    "TimeSeriesCollection",
-    "TrackCollection",
-    "TrackerHit3DCollection",
-    "TrackerHitPlaneCollection",
-    "TrackerHitSimTrackerHitLinkCollection",
-    "TrackMCParticleLinkCollection",
-    "UserDataCollectionFloat",
-    "UserDataCollectionInt",
-    "VertexCollection",
-    "VertexRecoParticleLinkCollection",
-]
-
 
 @pytest.fixture(scope="module")
 def inputfile_name(pytestconfig):
@@ -101,14 +70,7 @@ def edm4hep_version(reader):
 @pytest.fixture(scope="module")
 def events(reader, edm4hep_version):
     """Get the events from the reader"""
-    collections = COLLECTION_NAMES
-    if edm4hep_version < podio.version.parse("0.99.3"):
-        collections.remove("GeneratorEventParametersCollection")
-        collections.remove("UserDataCollectionFloat")
-        collections.remove("UserDataCollectionInt")
-        collections.remove("SenseWireHitCollection")
-
-    return reader.get("events", collections)
+    return reader.get("events")
 
 
 @pytest.fixture(scope="module")
