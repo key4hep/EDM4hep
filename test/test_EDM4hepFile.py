@@ -156,7 +156,7 @@ def test_MCParticleCollection(event, edm4hep_version):
             next(counter), next(counter), next(counter)
         )
 
-        if edm4hep_version < podio.version.parse("0.99.2"):
+        if edm4hep_version < podio.version.parse("0.99.3"):
             # The spin 3D vector has been replaced by helicity and schema
             # evolution is yet to be completed
             next(counter)
@@ -351,7 +351,7 @@ def test_RawTimeSeriesCollection(event):
 
 def test_SenseWireHitCollection(event, edm4hep_version):
     """Check the SenseWireHitCollection"""
-    if edm4hep_version < podio.version.parse("0.99.3"):
+    if edm4hep_version < podio.version.parse("0.99.4"):
         return
     counter = count(COUNT_START)
     hits = event.get("SenseWireHitCollection")
@@ -498,7 +498,7 @@ def test_RecDqdxCollection(event, track):
 
 def test_GeneratorEventParametersCollection(event, particle, edm4hep_version):
     """Check the GeneratorEventParametersCollection"""
-    if edm4hep_version < podio.version.parse("0.99.2"):
+    if edm4hep_version < podio.version.parse("0.99.3"):
         # This was heavily reworked so we just ignore it for files older than this
         return
 
