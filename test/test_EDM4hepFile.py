@@ -498,7 +498,7 @@ def test_RecDqdxCollection(event, track):
 
 def test_GeneratorEventParametersCollection(event, particle, edm4hep_version):
     """Check the GeneratorEventParametersCollection"""
-    if edm4hep_version < podio.version.parse("0.99.2"):
+    if edm4hep_version < podio.version.parse("0.99.3"):
         # This was heavily reworked so we just ignore it for files older than this
         return
 
