@@ -206,7 +206,7 @@ components:
 
     edm4hep::Quantity:
       Members:
-        - int16_t type // flag identifying how to interpret the quantity
+        - int32_t type // flag identifying how to interpret the quantity
         - float value  // value of the quantity
         - float error  // error on the value of the quantity
 
