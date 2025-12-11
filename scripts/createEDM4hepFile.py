@@ -167,7 +167,7 @@ def create_ClusterCollection(vectorsize, calo_hit):
     cluster.setPosition(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     cluster.setPositionError(create_CovMatrixNf(3))
     cluster.setITheta(next(counter))
-    cluster.setPhi(next(counter))
+    cluster.setIPhi(next(counter))
     cluster.setDirectionError(edm4hep.Vector3f(next(counter), next(counter), next(counter)))
     for j in range(vectorsize):
         cluster.addToShapeParameters(next(counter))

@@ -1,5 +1,5 @@
 ---
-schema_version: 5
+schema_version: 6
 options:
   getSyntax: True
   exposePODMembers: False
@@ -398,7 +398,7 @@ datatypes:
       - edm4hep::Vector3f    position [mm]       // position of the cluster
       - edm4hep::CovMatrix3f positionError [mm^2]  // covariance matrix of the position
       - float                iTheta [rad]    // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-      - float                phi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+      - float                iPhi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - edm4hep::Vector3f    directionError [mm^2]  // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. The corresponding names of the shape parameters should be stored in the collection named by edm4hep::labels::ShapeParameterNames in the file-level metadata, as a vector of strings in the same order as the parameters.
@@ -411,13 +411,18 @@ datatypes:
       declaration: |
         /// Get the position error value for the two passed dimensions
         float getPositionError(edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) const { return getPositionError().getValue(dimI, dimJ); }
+        /// Get the Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+        [[deprecated("Use getIPhi instead")]]
+        float getPhi() const { return getIPhi(); }
 
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
         /// Set the position error value for the two passed dimensions
         void setPositionError(float value, edm4hep::Cartesian dimI, edm4hep::Cartesian dimJ) { return getPositionError().setValue(value, dimI, dimJ); }
-
+        /// Set the Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
+        [[deprecated("Use setIPhi instead")]]
+        void setPhi(float value) { setIPhi(value); }
 
 
   edm4hep::TrackerHit3D:
