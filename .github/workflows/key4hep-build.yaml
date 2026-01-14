@@ -22,11 +22,9 @@ jobs:
       matrix:
         build_type: ["release", "nightly"]
         image: ["alma9"]
-        stack: ["key4hep"]
         include:
           - build_type: nightly
             image: ubuntu24
-            stack: key4hep
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
