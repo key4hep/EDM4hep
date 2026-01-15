@@ -14,47 +14,31 @@
 ///
 /// \note The values are stored in a flat array assuming a lower
 /// triangular matrix representation
-constexpr float operator[](unsigned i) const {
-  return values[i];
-}
+constexpr float operator[](unsigned i) const { return values[i]; }
 
 /// Get the i-th element of the underlying storage
 ///
 /// \note The values are stored in a flat array assuming a lower
 /// triangular matrix representation
-constexpr float& operator[](unsigned i) {
-  return values[i];
-}
+constexpr float& operator[](unsigned i) { return values[i]; }
 
 /// Get the begin iterator to the underlying storage
-constexpr auto begin() const {
-  return values.begin();
-}
+constexpr auto begin() const { return values.begin(); }
 
 /// Get the begin iterator to the underlying storage
-constexpr auto begin() {
-  return values.begin();
-}
+constexpr auto begin() { return values.begin(); }
 
 /// Get the end iterator to the underlying storage
-constexpr auto end() const {
-  return values.end();
-}
+constexpr auto end() const { return values.end(); }
 
 /// Get the end iterator to the underlying storage
-constexpr auto end() {
-  return values.end();
-}
+constexpr auto end() { return values.end(); }
 
 /// Get a pointer to the underlying storage data
-auto* data() {
-  return values.data();
-}
+auto* data() { return values.data(); }
 
 /// Get a pointer to the underlying storage data
-const auto* data() const {
-  return values.data();
-}
+const auto* data() const { return values.data(); }
 
 /// Get the value of the covariance matrix for the passed dimensions
 ///
