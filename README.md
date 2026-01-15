@@ -62,7 +62,7 @@ This project is in a beta stage -- feedback and use of it in production is encou
 
 Required:
 
-* [PODIO](https://github.com/AIDASoft/podio) >= v01-00
+* [PODIO](https://github.com/AIDASoft/podio) >= v01-07
 * [ROOT](https://github.com/root-project/root) >= v6.22/06
 
 Optional:
