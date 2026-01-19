@@ -42,7 +42,7 @@ list(APPEND headers
 # Merge the schema evolution selection xml and the podio generated one
 set(MERGED_SELECTION_XML ${CMAKE_CURRENT_BINARY_DIR}/merged_selection.xml)
 execute_process(
-  COMMAND ${Python_EXECUTABLE} ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/merge_selection_xml.py
+  COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/edm4hep/schema_evolution/merge_selection_xml.py
     ${CMAKE_CURRENT_SOURCE_DIR}/src/selection.xml
     ${CMAKE_CURRENT_SOURCE_DIR}/schema_evolution/src/selection.xml
     ${MERGED_SELECTION_XML}
