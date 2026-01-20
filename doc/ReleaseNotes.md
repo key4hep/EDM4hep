@@ -1,3 +1,50 @@
+# v01-00
+
+* 2026-01-19 Thomas Madlener ([PR#476](https://github.com/key4hep/EDM4hep/pull/476))
+  - Make sure that the merging script for the selection xml files can run properly even if a different `FindPython` module has been used for cmake.
+
+* 2026-01-16 Thomas Madlener ([PR#470](https://github.com/key4hep/EDM4hep/pull/470))
+  - Bump the minimal version of podio to 1.7
+
+* 2026-01-15 Thomas Madlener ([PR#472](https://github.com/key4hep/EDM4hep/pull/472))
+  - Fix formatting of covariance matrix ExtraCode file
+
+* 2026-01-15 Thomas Madlener ([PR#471](https://github.com/key4hep/EDM4hep/pull/471))
+  - Bump the version of EDM4hep to 1.0 in the schema diagram
+
+* 2026-01-08 Wouter Deconinck ([PR#469](https://github.com/key4hep/EDM4hep/pull/469))
+  - fix: install into free-threaded python3.14t/site-packages prefixes
+
+* 2025-12-11 Thomas Madlener ([PR#465](https://github.com/key4hep/EDM4hep/pull/465))
+  - Make `Cluster` intrinsic phi consistent in naming with intrinsic theta, i.e. rename `phi` to `iPhi`
+
+* 2025-12-09 Thomas Madlener ([PR#464](https://github.com/key4hep/EDM4hep/pull/464))
+  - Store (selected) old YAML definitions of the schema inside the `old_schemas` folder to allow for future code generation with schema evolution
+
+* 2025-12-01 Thomas Madlener ([PR#468](https://github.com/key4hep/EDM4hep/pull/468))
+  - Make `Quantity::type` a 32 bit integer to not waste padding
+
+* 2025-11-28 Thomas Madlener ([PR#467](https://github.com/key4hep/EDM4hep/pull/467))
+  - Add more input files for backwards compatibility checks
+  - Fix a few version checks in the backwards compatibility checks to ensure they match the actual tags of EDM4hep
+
+* 2025-11-28 Thomas Madlener ([PR#466](https://github.com/key4hep/EDM4hep/pull/466))
+  - Read all collections by default (and ignore the unreadable ones) in the backwards compatibility tests since podio can now do this
+
+* 2025-11-24 Juan Miguel Carceller ([PR#463](https://github.com/key4hep/EDM4hep/pull/463))
+  - Conditionally remove recast in buffers following https://github.com/AIDASoft/podio/pull/882
+
+* 2025-11-10 Thomas Madlener ([PR#459](https://github.com/key4hep/EDM4hep/pull/459))
+  - Make the test environments for python based tests more focused on the current build
+  - Use fixtures to properly describe test dependencies
+  - Remove some of the duplication
+
+* 2025-11-05 Mateusz Jakub Fila ([PR#461](https://github.com/key4hep/EDM4hep/pull/461))
+  - Update schema diagram: remove `TrackerPulse`, add `SenseWireHit`, remove relations between `TrackerHit` and `RawTimeSeries`
+
+* 2025-11-03 Mateusz Jakub Fila ([PR#460](https://github.com/key4hep/EDM4hep/pull/460))
+  - Include `SenseWireHit` datatype in the datatypes table
+
 # v00-99-04
 
 * 2025-11-03 BrieucF ([PR#455](https://github.com/key4hep/EDM4hep/pull/455))
