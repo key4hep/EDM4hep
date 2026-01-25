@@ -118,5 +118,25 @@ TEMPLATE_LIST_TEST_CASE("Vector utility functionality", "[vector_utils]", Vector
 
     const auto otherVec = TestType(3, 4, 5);
     REQUIRE(utils::angleBetween(otherVec, vector) == Catch::Approx(0.1862387)); // acos(26 / (sqrt(14) * sqrt(50)))
+    auto xvec = TestType();
+    xvec.x = 1;
+    auto yvec = TestType();
+    yvec.y = 1;
+    REQUIRE(utils::angleBetween(xvec, yvec) == Catch::Approx(M_PI / 2));
+    const auto emptyVec = TestType();
+    REQUIRE(utils::angleBetween(emptyVec, vector) == Catch::Approx(0));
+    REQUIRE(utils::angleBetween(vector, emptyVec) == Catch::Approx(0));
   }
+}
+
+TEST_CASE("Vector utility functionality for 4D vectors", "[vector_utils]") {
+
+  using namespace edm4hep;
+
+  const auto spatial = Vector4f(4, 3, 2, 1);
+  REQUIRE(utils::magnitude(spatial) == Catch::Approx(std::sqrt(29 - 1)));
+  const auto temporal = Vector4f(1, 2, 3, 10);
+  REQUIRE(utils::magnitude(temporal) == Catch::Approx(std::sqrt(100 - 14)));
+  const auto light = Vector4f(2, 3, 6, 7);
+  REQUIRE(utils::magnitude(light) == Catch::Approx(0));
 }
