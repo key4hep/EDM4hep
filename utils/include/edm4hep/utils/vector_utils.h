@@ -163,7 +163,8 @@ namespace utils {
 
   template <Vector4D V>
   double magnitude(const V& v) {
-    return std::sqrt(std::abs(vector_t(v) * vector_t(v) - vector_x(v) * vector_x(v) - vector_y(v) * vector_y(v) - vector_z(v) * vector_z(v)));
+    return std::sqrt(std::abs(vector_t(v) * vector_t(v) - vector_x(v) * vector_x(v) - vector_y(v) * vector_y(v) -
+                              vector_z(v) * vector_z(v)));
   }
 
   template <Vector3D V>
