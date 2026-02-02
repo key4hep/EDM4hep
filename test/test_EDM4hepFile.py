@@ -286,8 +286,8 @@ def test_ClusterCollection(event):
     assert len(cluster.getShapeParameters()) == VECTORSIZE
     assert len(cluster.getSubdetectorEnergies()) == VECTORSIZE
     for j in range(VECTORSIZE):
-        cluster.getShapeParameters()[j] == next(counter)
-        cluster.getSubdetectorEnergies()[j] == next(counter)
+        assert cluster.getShapeParameters()[j] == next(counter)
+        assert cluster.getSubdetectorEnergies()[j] == next(counter)
 
     assert len(cluster.getClusters()) == 1
     assert cluster.getClusters()[0] == cluster
@@ -392,8 +392,8 @@ def test_TrackCollection(event):
     assert len(trackStates) == VECTORSIZE
 
     for j in range(VECTORSIZE):
-        subdetHitNumbers[j] == next(counter)
-        subdetHoleNumbers[j] == next(counter)
+        assert subdetHitNumbers[j] == next(counter)
+        assert subdetHoleNumbers[j] == next(counter)
 
         state = trackStates[j]
         assert state.location == next(counter)
