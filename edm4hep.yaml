@@ -21,11 +21,6 @@ components:
           constexpr Vector4f(const float* v) : x(v[0]),y(v[1]),z(v[2]),t(v[3]) {}
           constexpr bool operator==(const Vector4f& v) const { return (x==v.x&&y==v.y&&z==v.z&&t==v.t) ; }
           constexpr bool operator!=(const Vector4f& v) const { return !(*this == v) ; }
-          template <typename T>
-          requires requires { T{x, y, z, t}; }
-          constexpr T to() const {
-            return T{x, y, z, t};
-          }
           constexpr float operator[](unsigned i) const {
             static_assert(
               (offsetof(Vector4f,x)+sizeof(Vector4f::x) == offsetof(Vector4f,y)) &&
@@ -49,11 +44,6 @@ components:
           constexpr Vector3f(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}
           constexpr bool operator==(const Vector3f& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }
           constexpr bool operator!=(const Vector3f& v) const { return !(*this == v) ; }
-          template <typename T>
-          requires requires { T{x, y, z}; }
-          constexpr T to() const {
-            return T{x, y, z};
-          }
           constexpr float operator[](unsigned i) const {
             static_assert(
               (offsetof(Vector3f,x)+sizeof(Vector3f::x) == offsetof(Vector3f,y)) &&
@@ -80,11 +70,6 @@ components:
           constexpr Vector3d(const float* v) : x(v[0]),y(v[1]),z(v[2]) {}
           constexpr bool operator==(const Vector3d& v) const { return (x==v.x&&y==v.y&&z==v.z) ; }
           constexpr bool operator!=(const Vector3d& v) const { return !(*this == v) ; }
-          template <typename T>
-          requires requires { T{x, y, z}; }
-          constexpr T to() const {
-            return T{x, y, z};
-          }
           constexpr double operator[](unsigned i) const {
             static_assert(
               (offsetof(Vector3d,x)+sizeof(Vector3d::x) == offsetof(Vector3d,y)) &&
@@ -104,11 +89,6 @@ components:
           constexpr Vector2f(const float* v) : a(v[0]), b(v[1]) {}
           constexpr bool operator==(const Vector2f& v) const { return (a==v.a&&b==v.b) ; }
           constexpr bool operator!=(const Vector2f& v) const { return !(*this == v) ; }
-          template <typename T>
-          requires requires { T{a, b}; }
-          constexpr T to() const {
-            return T{a, b};
-          }
           constexpr float operator[](unsigned i) const {
             static_assert(
               offsetof(Vector2f,a)+sizeof(Vector2f::a) == offsetof(Vector2f,b),

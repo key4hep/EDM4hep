@@ -9,10 +9,6 @@
 #include "edm4hep/Vector3f.h"
 #include "edm4hep/Vector4f.h"
 
-#include "Math/Vector2D.h"
-#include "Math/Vector3D.h"
-#include "Math/Vector4D.h"
-
 #include <tuple>
 #include <type_traits>
 using Vector2And3Types = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2f>;
@@ -143,28 +139,4 @@ TEST_CASE("Vector utility functionality for 4D vectors", "[vector_utils]") {
   REQUIRE(utils::magnitude(temporal) == Catch::Approx(std::sqrt(100 - 14)));
   const auto light = Vector4f(2, 3, 6, 7);
   REQUIRE(utils::magnitude(light) == Catch::Approx(0));
-}
-
-TEST_CASE("Vector conversion to ROOT vectors", "[vector_utils]") {
-  using namespace edm4hep;
-
-  const auto v2 = Vector2f{3.0f, 4.0f};
-  const auto rv2 = v2.to<ROOT::Math::XYVectorF>();
-  REQUIRE(rv2.R() == Catch::Approx(5.0f));
-  REQUIRE(rv2.R() == Catch::Approx(utils::magnitude(v2)));
-
-  const auto v3 = Vector3f{1.0f, 2.0f, 3.0f};
-  const auto rv3 = v3.to<ROOT::Math::XYZVectorF>();
-  REQUIRE(rv3.R() == Catch::Approx(std::sqrt(14.0f)));
-  REQUIRE(rv3.R() == Catch::Approx(utils::magnitude(v3)));
-
-  const auto v3d = Vector3d{1.0, 2.0, 3.0};
-  const auto rv3d = v3d.to<ROOT::Math::XYZVector>();
-  REQUIRE(rv3d.R() == Catch::Approx(std::sqrt(14.0)));
-  REQUIRE(rv3d.R() == Catch::Approx(utils::magnitude(v3d)));
-
-  const auto v4 = Vector4f{1.0f, 2.0f, 3.0f, 10.0f};
-  const auto rv4 = v4.to<ROOT::Math::PxPyPzEVector>();
-  REQUIRE(rv4.P() == Catch::Approx(std::sqrt(14.0)));
-  REQUIRE(rv4.M() == Catch::Approx(std::sqrt(100.0 - 14.0)));
 }
