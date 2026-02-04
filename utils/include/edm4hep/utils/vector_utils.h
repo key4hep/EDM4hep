@@ -3,6 +3,7 @@
 
 #include <edm4hep/Vector3f.h>
 
+#include <algorithm>
 #include <cmath>
 
 namespace edm4hep {
@@ -162,7 +163,8 @@ namespace utils {
 
   template <Vector4D V>
   double magnitude(const V& v) {
-    return std::hypot(vector_x(v), vector_y(v), vector_z(v)) - vector_t(v) * vector_t(v);
+    return std::sqrt(std::abs(vector_t(v) * vector_t(v) - vector_x(v) * vector_x(v) - vector_y(v) * vector_y(v) -
+                              vector_z(v) * vector_z(v)));
   }
 
   template <Vector3D V>
@@ -197,11 +199,14 @@ namespace utils {
   // Two vector functions
   template <Vector2or3D V>
   double angleBetween(const V& v1, const V& v2) {
-    const double dot = v1 * v2;
-    if (dot == 0) {
+    const double mag1 = magnitude(v1);
+    const double mag2 = magnitude(v2);
+    if (mag1 == 0 || mag2 == 0) {
       return 0.;
     }
-    return std::acos(dot / (magnitude(v1) * magnitude(v2)));
+    const double cosAngle = (v1 * v2) / (mag1 * mag2);
+    // Clamp to [-1, 1] to handle numerical precision issues
+    return std::acos(std::clamp(cosAngle, -1.0, 1.0));
   }
 
   // Project v onto v1
