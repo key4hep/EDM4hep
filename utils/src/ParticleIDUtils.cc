@@ -53,11 +53,9 @@ void PIDHandler::addMetaInfo(const edm4hep::utils::ParticleIDMeta& pidInfo) {
     throw std::runtime_error("Cannot have duplicate algorithm names (" + pidInfo.algoName + " already exists)");
   }
 
-  const auto [__, metaInserted] = m_algoPidMeta.emplace(pidInfo.algoType(), pidInfo);
+  const auto [_, metaInserted] = m_algoPidMeta.emplace(pidInfo.algoType(), pidInfo);
   if (!metaInserted) {
-    if (inserted) {
-      m_algoTypes.erase(algoIt);
-    }
+    m_algoTypes.erase(algoIt);
     throw std::runtime_error("Cannot have duplicate algorithm types (" + std::to_string(pidInfo.algoType()) +
                              " already exists)");
   }

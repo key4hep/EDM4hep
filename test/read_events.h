@@ -250,7 +250,7 @@ void processEvent(const podio::Frame& event) {
       event.get<edm4hep::GeneratorEventParametersCollection>(edm4hep::labels::GeneratorEventParameters);
   auto genParam = genParametersCollection[0];
   if (genParam.getSqrts() != 90)
-    throw std::runtime_error("Event_scale != 23");
+    throw std::runtime_error("Event_scale != 90");
 
   const auto evtType = event.getParameter<std::string>("EventType").value();
   std::cout << "Event Type: " << evtType << std::endl;
