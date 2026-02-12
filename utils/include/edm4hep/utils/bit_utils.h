@@ -17,7 +17,7 @@ namespace edm4hep::utils {
 /// @returns The new value of the bitfield after setting bits
 template <typename T>
 constexpr T setBit(T bitfield, int bit, bool value) {
-  return (bitfield & ~(0x1 << bit)) | (value << bit);
+  return (bitfield & ~(T(1) << bit)) | (T(value) << bit);
 }
 
 /// Set multiple bits to one desired value in the passed bitfield
@@ -51,7 +51,7 @@ constexpr T setBits(T bitfield, bool value, Bits... bits) {
 /// @returns true if the passed bit is set in the bitfield and false otherwise
 template <typename T>
 constexpr bool checkBit(T bitfield, int bit) {
-  return bitfield & (0x1 << bit);
+  return bitfield & (T(1) << bit);
 }
 
 /// Check if all the passed bits are set in the bitfield

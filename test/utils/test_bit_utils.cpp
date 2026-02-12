@@ -27,6 +27,15 @@ TEMPLATE_LIST_TEST_CASE("Bitfield utils set and get", "[bit_utils]", BitFieldTyp
   bitField = utils::setBit(bitField, 3, false);
   REQUIRE_FALSE(utils::checkBit(bitField, 3));
   REQUIRE(utils::checkBit(bitField, 4));
+
+  if constexpr (sizeof(TestType) >= 8) {
+    bitField = utils::setBit(bitField, 35, true);
+    REQUIRE(utils::checkBit(bitField, 35));
+    REQUIRE(bitField == TestType(1ULL << 4 | 1ULL << 35));
+    bitField = utils::setBit(bitField, 35, false);
+    REQUIRE_FALSE(utils::checkBit(bitField, 35));
+    REQUIRE(bitField == TestType(1ULL << 4));
+  }
 }
 
 TEMPLATE_LIST_TEST_CASE("Bitfield utils set multiple", "[bit_utils]", BitFieldTypes) {
