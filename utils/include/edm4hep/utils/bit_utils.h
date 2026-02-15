@@ -36,7 +36,7 @@ constexpr T setBit(T bitfield, unsigned int bit, bool value) {
 /// @param bits     The bits that should be set
 template <typename T, typename... Bits>
 constexpr T setBits(T bitfield, bool value, Bits... bits) {
-  static_assert((std::is_integral_v<Bits> && ...), "All bit numbers to set must be integers");
+  static_assert((std::is_integral_v<Bits> && ...), "All bit numbers to set must be integers with the same type");
   static_assert(sizeof...(bits) > 0, "Need at least one bit to set");
 
   for (auto n : {bits...}) {
@@ -76,7 +76,7 @@ constexpr bool checkBit(T bitfield, unsigned int bit) {
 ///          otherwise
 template <typename T, typename... Bits>
 constexpr bool checkAllBits(T bitfield, Bits... bits) {
-  static_assert((std::is_integral_v<Bits> && ...), "All bit numbers to set must be integers");
+  static_assert((std::is_integral_v<Bits> && ...), "All bit numbers to set must be integers with the same type");
   static_assert(sizeof...(bits) > 0, "Need at least one bit to check");
   return (true && ... && checkBit(bitfield, bits));
 }
