@@ -310,12 +310,12 @@ datatypes:
     MutableExtraCode:
       includes: |
         #include <cmath>
+        #include <edm4hep/utils/bit_utils.h>
         #include <edm4hep/MCParticle.h>
 
       declaration: |
-        int32_t  set_bit(int32_t val, int num, bool bitval){ return (val & ~(1<<num)) | (bitval << num); }
-        void setOverlay(bool val) { setQuality( set_bit( getQuality() , BITOverlay , val ) ) ;   }
-        void setProducedBySecondary(bool val) { setQuality( set_bit( getQuality() , BITProducedBySecondary , val ) ) ;   }
+        void setOverlay(bool val) { setQuality( utils::setBit( getQuality() , BITOverlay , val ) ) ;   }
+        void setProducedBySecondary(bool val) { setQuality( utils::setBit( getQuality() , BITProducedBySecondary , val ) ) ;   }
 
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>"
