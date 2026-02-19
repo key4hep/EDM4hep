@@ -27,12 +27,21 @@ TEMPLATE_LIST_TEST_CASE("Bitfield utils set and get", "[bit_utils]", BitFieldTyp
   bitField = utils::setBit(bitField, 3, false);
   REQUIRE_FALSE(utils::checkBit(bitField, 3));
   REQUIRE(utils::checkBit(bitField, 4));
+
+  if constexpr (sizeof(TestType) >= 8) {
+    bitField = utils::setBit(bitField, 35, true);
+    REQUIRE(utils::checkBit(bitField, 35));
+    REQUIRE(bitField == TestType(1ULL << 4 | 1ULL << 35));
+    bitField = utils::setBit(bitField, 35, false);
+    REQUIRE_FALSE(utils::checkBit(bitField, 35));
+    REQUIRE(bitField == TestType(1ULL << 4));
+  }
 }
 
 TEMPLATE_LIST_TEST_CASE("Bitfield utils set multiple", "[bit_utils]", BitFieldTypes) {
   using namespace edm4hep;
   auto bitField = TestType{};
-  bitField = utils::setBits(bitField, true, 3, 4, 7);
+  bitField = utils::setBits(bitField, true, 3u, 4u, 7u);
 
   REQUIRE(utils::checkBit(bitField, 3));
   REQUIRE(utils::checkBit(bitField, 4));
@@ -47,21 +56,21 @@ TEMPLATE_LIST_TEST_CASE("Bitfield utils set multiple", "[bit_utils]", BitFieldTy
 TEMPLATE_LIST_TEST_CASE("Bitfield utils check all ", "[bit_utils]", BitFieldTypes) {
   using namespace edm4hep;
   auto bitField = TestType{};
-  bitField = utils::setBits(bitField, true, 3, 4, 7);
+  bitField = utils::setBits(bitField, true, 3u, 4u, 7u);
 
-  REQUIRE(utils::checkAllBits(bitField, 7, 3, 4));
-  REQUIRE(utils::checkAllBits(bitField, 3, 4));
-  REQUIRE_FALSE(utils::checkAllBits(bitField, 2, 3, 4, 7));
-  REQUIRE_FALSE(utils::checkAllBits(bitField, 2, 3, 4));
+  REQUIRE(utils::checkAllBits(bitField, 7u, 3u, 4u));
+  REQUIRE(utils::checkAllBits(bitField, 3u, 4u));
+  REQUIRE_FALSE(utils::checkAllBits(bitField, 2u, 3u, 4u, 7u));
+  REQUIRE_FALSE(utils::checkAllBits(bitField, 2u, 3u, 4u));
 }
 
 TEMPLATE_LIST_TEST_CASE("Bitfield utils check any ", "[bit_utils]", BitFieldTypes) {
   using namespace edm4hep;
   auto bitField = TestType{};
-  bitField = utils::setBits(bitField, true, 3, 4, 7);
+  bitField = utils::setBits(bitField, true, 3u, 4u, 7u);
 
-  REQUIRE(utils::checkAnyBits(bitField, 3, 4));
-  REQUIRE(utils::checkAnyBits(bitField, 3));
-  REQUIRE(utils::checkAnyBits(bitField, 1, 2, 3));
-  REQUIRE_FALSE(utils::checkAnyBits(bitField, 1, 2, 6, 8));
+  REQUIRE(utils::checkAnyBits(bitField, 3u, 4u));
+  REQUIRE(utils::checkAnyBits(bitField, 3u));
+  REQUIRE(utils::checkAnyBits(bitField, 1u, 2u, 3u));
+  REQUIRE_FALSE(utils::checkAnyBits(bitField, 1u, 2u, 6u, 8u));
 }
