@@ -50,7 +50,6 @@ void processEvent(const podio::Frame& event) {
 #define CHECK_COLL(COLL, NAME)                                                                                         \
   if (!COLL.hasID())                                                                                                   \
     throw std::runtime_error("Collection '" NAME "' should be present");
-#endif
 
   CHECK_COLL(mcps, "MCParticles")
   CHECK_COLL(sths, "SimTrackerHits")
