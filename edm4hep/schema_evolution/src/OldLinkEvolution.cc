@@ -35,17 +35,17 @@ namespace {
     buffers.type = podio::LinkCollection<FromT, ToT>::typeName;
     buffers.schemaVersion = podio::LinkCollection<FromT, ToT>::schemaVersion;
 
-    buffers.createCollection = [](podio::CollectionReadBuffers&& buffers, bool isSubsetColl) {
-      podio::LinkCollectionData<FromT, ToT> data(std::move(buffers), isSubsetColl);
+    buffers.createCollection = [](podio::CollectionReadBuffers&& buffs, bool isSubsetColl) {
+      podio::LinkCollectionData<FromT, ToT> data(std::move(buffs), isSubsetColl);
       return std::make_unique<podio::LinkCollection<FromT, ToT>>(std::move(data), isSubsetColl);
     };
 
-    buffers.deleteBuffers = [](podio::CollectionReadBuffers& buffers) {
-      if (buffers.data) {
-        delete static_cast<std::vector<podio::LinkData>*>(buffers.data);
+    buffers.deleteBuffers = [](podio::CollectionReadBuffers& buffs) {
+      if (buffs.data) {
+        delete static_cast<std::vector<podio::LinkData>*>(buffs.data);
       }
-      delete buffers.references;
-      delete buffers.vectorMembers;
+      delete buffs.references;
+      delete buffs.vectorMembers;
     };
 
     return buffers;
