@@ -47,13 +47,8 @@ void processEvent(const podio::Frame& event) {
   auto& tpchs = event.get<edm4hep::RawTimeSeriesCollection>("TPCHits");
   auto& thps = event.get<edm4hep::TrackerHitPlaneCollection>("TrackerHitPlanes");
 
-#if PODIO_BUILD_VERSION >= PODIO_VERSION(1, 6, 0)
 #define CHECK_COLL(COLL, NAME)                                                                                         \
   if (!COLL.hasID())                                                                                                   \
-    throw std::runtime_error("Collection '" NAME "' should be present");
-#else
-#define CHECK_COLL(COLL, NAME)                                                                                         \
-  if (!COLL.isValid())                                                                                                 \
     throw std::runtime_error("Collection '" NAME "' should be present");
 #endif
 
