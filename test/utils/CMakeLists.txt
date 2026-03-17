@@ -1,5 +1,8 @@
 if(USE_EXTERNAL_CATCH2)
   find_package(Catch2 REQUIRED)
+  # Mark Catch2 include directories as SYSTEM to suppress warnings from its headers
+  get_target_property(CATCH2_IF_INC_DIRS Catch2::Catch2 INTERFACE_INCLUDE_DIRECTORIES)
+  set_target_properties(Catch2::Catch2 PROPERTIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${CATCH2_IF_INC_DIRS}")
 else()
   message(STATUS "Fetching local copy of Catch2 library for unit-tests...")
 
@@ -11,6 +14,9 @@ else()
   )
   FetchContent_MakeAvailable(Catch2)
   set(CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras ${CMAKE_MODULE_PATH})
+  # Same hack as for the external case: mark include dirs as SYSTEM
+  get_target_property(CATCH2_IF_INC_DIRS Catch2 INTERFACE_INCLUDE_DIRECTORIES)
+  set_target_properties(Catch2 PROPERTIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${CATCH2_IF_INC_DIRS}")
 endif()
 
 include(Catch)
@@ -19,6 +25,10 @@ add_executable(unittests_edm4hep
   test_kinematics.cpp test_vector_utils.cpp test_covmatrix_utils.cpp test_PIDHandler.cpp test_bit_utils.cpp)
 
 target_link_libraries(unittests_edm4hep edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
+# Catch2 TEST_CASE/SECTION macros expand __COUNTER__ at the call site in user
+# code, so marking Catch2 headers as system includes is not sufficient to
+# suppress this warning, present with Clang 22
+target_compile_options(unittests_edm4hep PRIVATE -Wno-c2y-extensions)
 
 option(SKIP_CATCH_DISCOVERY "Skip the Catch2 test discovery" OFF)
 
