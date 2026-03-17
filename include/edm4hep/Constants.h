@@ -22,6 +22,35 @@
 #include <cstdint>
 
 namespace edm4hep {
+/// @namespace edm4hep::labels
+/// @brief Namespace that contains commonly used collection, parameter or
+/// configuration names
+///
+/// The constants defined in this namespace are agreed upon or conventional
+/// names for commonly used collection, parameter or configuration names.
+/// Whenever possible these should be used instead of the string constants they
+/// are defined as. For some of the parameters their proper usage is also
+/// detailed in the documentation of datatypes.
+///
+/// ## Example Usage
+///
+/// Labels can be used from both python and c++, e.g. via
+/// ~~~{.cpp}
+/// #include <edm4hep/Constants.h>
+///
+/// const auto& mcParticles = event.get<edm4hep::MCParticleCollection>(edm4hep::lables::MCParticles);
+/// ~~~
+/// or
+/// ~~~{.py}
+/// import edm4hep
+///
+/// algorithm.InputMCCollection = edm4hep.labels.MCParticles
+/// ~~~
+///
+/// ## Adding new labels
+///
+/// New labels can simply be added. They should codify an already existing
+/// convention or be used to introduce one in case it's necessary to do so.
 namespace labels {
   static constexpr const char* CellIDEncoding = "CellIDEncoding";
   static constexpr const char* EventHeader = "EventHeader";
