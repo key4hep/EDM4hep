@@ -543,9 +543,9 @@ datatypes:
         /// @note This will return the first TrackState for which the location matches
         /// even if there are multiple in the track
         std::optional<edm4hep::TrackState> getTrackState(int location) {
-    auto& trackStates = getTrackStates();
-    auto it = std::ranges::find(trackStates, location, &edm4hep::TrackState::location);
-    return it != trackStates.end() ? *it : std::nullopt;
+          const auto trackStates = getTrackStates();
+          const auto it = std::ranges::find(trackStates, location, &edm4hep::TrackState::location);
+          return it != trackStates.end() ? std::optional{*it} : std::nullopt;
         }
 
   edm4hep::Vertex:
