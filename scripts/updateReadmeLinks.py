@@ -33,7 +33,7 @@ def check_readme_links():
         )
         if edm4hep_objects:
             for edm4hep_object, original_line_number in edm4hep_objects:
-                regex = f".*edm4hep::{edm4hep_object} *: *"
+                regex = f" *edm4hep::{edm4hep_object}:"
                 # find in which line it appears in edm4hep.yaml
                 edm4hep_yaml_line_numbers_with_match = [
                     str(i + 1)

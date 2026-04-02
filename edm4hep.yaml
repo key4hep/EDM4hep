@@ -533,7 +533,20 @@ datatypes:
     OneToManyRelations:
       - edm4hep::TrackerHit trackerHits  // hits that have been used to create this track
       - edm4hep::Track tracks            // tracks (segments) that have been combined to create this track
-
+    ExtraCode:
+      includes: |
+        #include <optional>
+        #include <algorithm>
+      declaration: |
+        /// Get the TrackState at a dedicated location
+        ///
+        /// @note This will return the first TrackState for which the location matches
+        /// even if there are multiple in the track
+        std::optional<edm4hep::TrackState> getTrackState(int location) {
+          const auto trackStates = getTrackStates();
+          const auto it = std::ranges::find(trackStates, location, &edm4hep::TrackState::location);
+          return it != trackStates.end() ? std::optional{*it} : std::nullopt;
+        }
 
   edm4hep::Vertex:
     Description: "Vertex"

@@ -22,7 +22,13 @@ endif()
 include(Catch)
 
 add_executable(unittests_edm4hep
-  test_kinematics.cpp test_vector_utils.cpp test_covmatrix_utils.cpp test_PIDHandler.cpp test_bit_utils.cpp)
+  test_kinematics.cpp
+  test_vector_utils.cpp
+  test_covmatrix_utils.cpp
+  test_pid_handler.cpp
+  test_bit_utils.cpp
+  test_extra_code.cpp
+)
 
 target_link_libraries(unittests_edm4hep edm4hep EDM4HEP::utils Catch2::Catch2 Catch2::Catch2WithMain)
 # Catch2 TEST_CASE/SECTION macros expand __COUNTER__ at the call site in user
