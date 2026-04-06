@@ -664,6 +664,25 @@ datatypes:
     OneToManyRelations:
       - edm4hep::MCParticle signalVertexParticles  // List of initial state MCParticles that are the source of the hard interaction
 
+  edm4hep::DetectorElement:
+    Description: "Stable detector-element identity and rigid global transform for detector-local context binding"
+    Author: "Physics Foundry upstream proposal"
+    Members:
+      - uint64_t detectorElementKey // stable numeric detector-element identity
+      - uint64_t sourceVolumeKey // stable numeric source-volume identity
+      - uint64_t sensitiveDetectorKey // stable numeric sensitive-detector identity
+      - edm4hep::Vector3d translation [mm] // global detector-element translation
+      - edm4hep::Vector3f rotation [rad] // global detector-element rotation in ZYX convention
+
+  edm4hep::HitLocalContext:
+    Description: "Local detector context bound to a resolved detector element"
+    Author: "Physics Foundry upstream proposal"
+    Members:
+      - edm4hep::Vector3d localPosition [mm] // local hit position in detector-element coordinates
+      - float pathLength [mm] // path length through the sensitive detector element
+    OneToOneRelations:
+      - edm4hep::DetectorElement detectorElement // resolved detector element for this local hit context
+
 interfaces:
   edm4hep::TrackerHit:
     Description: "Tracker hit interface class"
@@ -723,3 +742,27 @@ links:
     Author: "EDM4hep authors"
     From: edm4hep::Vertex
     To: edm4hep::ReconstructedParticle
+
+  edm4hep::CaloHitLocalContextLink:
+    Description: "Link between a CalorimeterHit and its local detector context"
+    Author: "Physics Foundry upstream proposal"
+    From: edm4hep::CalorimeterHit
+    To: edm4hep::HitLocalContext
+
+  edm4hep::TrackerHitLocalContextLink:
+    Description: "Link between a TrackerHit interface object and its local detector context"
+    Author: "Physics Foundry upstream proposal"
+    From: edm4hep::TrackerHit
+    To: edm4hep::HitLocalContext
+
+  edm4hep::SimCaloHitLocalContextLink:
+    Description: "Link between a SimCalorimeterHit and its local detector context"
+    Author: "Physics Foundry upstream proposal"
+    From: edm4hep::SimCalorimeterHit
+    To: edm4hep::HitLocalContext
+
+  edm4hep::SimTrackerHitLocalContextLink:
+    Description: "Link between a SimTrackerHit and its local detector context"
+    Author: "Physics Foundry upstream proposal"
+    From: edm4hep::SimTrackerHit
+    To: edm4hep::HitLocalContext
