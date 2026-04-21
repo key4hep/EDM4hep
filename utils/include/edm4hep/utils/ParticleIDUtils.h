@@ -64,6 +64,7 @@ struct ParticleIDMeta {
   ParticleIDMeta& operator=(const ParticleIDMeta&) = default;
   ParticleIDMeta(ParticleIDMeta&&) = default;
   ParticleIDMeta& operator=(ParticleIDMeta&&) = default;
+  bool operator==(const ParticleIDMeta&) const = default;
 
   std::string algoName{};                ///< The name of the algorithm
   std::vector<std::string> paramNames{}; ///< The names of the parameters
