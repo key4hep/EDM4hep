@@ -244,6 +244,10 @@ edm4hep/src/
 ## k4FWCore
 test/k4FWCoreTest/**/*.root
 ## k4MarlinWrapper
-test/inputFiles/*.slcio
+test/inputFiles
 test/gaudi_opts/testConverterConstants.py
 
+# AI tools
+.claude/
+.codex/
+.aider.*
