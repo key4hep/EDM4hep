@@ -334,7 +334,7 @@ datatypes:
 
 
   edm4hep::CaloHitContribution:
-    Description: "Monte Carlo contribution to SimCalorimeterHit"
+    Description: "Monte Carlo contribution to SimCalorimeterHit (infinite granularity)"
     Author: "EDM4hep authors"
     Members:
       - int32_t   PDG                        // PDG code of the shower particle that caused this contribution
@@ -347,7 +347,7 @@ datatypes:
 
 
   edm4hep::SimCalorimeterHit:
-    Description: "Simulated calorimeter hit"
+    Description: "Simulated calorimeter hit (cell level granularity)"
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
