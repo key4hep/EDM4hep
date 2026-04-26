@@ -190,13 +190,13 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/Constants.h>"
         declaration: |
-          static const int AtOther = 0 ; // any location other than the ones defined below
-          static const int AtIP = 1 ;
-          static const int AtFirstHit = 2 ;
-          static const int AtLastHit = 3 ;
-          static const int AtCalorimeter = 4 ;
-          static const int AtVertex = 5 ;
-          static const int LastLocation = AtVertex  ;
+          static constexpr int AtOther = 0 ; // any location other than the ones defined below
+          static constexpr int AtIP = 1 ;
+          static constexpr int AtFirstHit = 2 ;
+          static constexpr int AtLastHit = 3 ;
+          static constexpr int AtCalorimeter = 4 ;
+          static constexpr int AtVertex = 5 ;
+          static constexpr int LastLocation = AtVertex  ;
 
           /// Get the covariance matrix value for the two passed parameters
           constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }
@@ -263,15 +263,15 @@ datatypes:
 
       declaration: |
         // define the bit positions for the simulation flag
-        static const int BITCreatedInSimulation = 30;
-        static const int BITBackscatter = 29 ;
-        static const int BITVertexIsNotEndpointOfParent = 28 ;
-        static const int BITDecayedInTracker = 27 ;
-        static const int BITDecayedInCalorimeter = 26 ;
-        static const int BITLeftDetector = 25 ;
-        static const int BITStopped = 24 ;
-        static const int BITOverlay = 23 ;
-        static const int BITHandledByFastSim = 22;
+        static constexpr int BITCreatedInSimulation = 30;
+        static constexpr int BITBackscatter = 29 ;
+        static constexpr int BITVertexIsNotEndpointOfParent = 28 ;
+        static constexpr int BITDecayedInTracker = 27 ;
+        static constexpr int BITDecayedInCalorimeter = 26 ;
+        static constexpr int BITLeftDetector = 25 ;
+        static constexpr int BITStopped = 24 ;
+        static constexpr int BITOverlay = 23 ;
+        static constexpr int BITHandledByFastSim = 22;
         /// return energy computed from momentum and mass
         double getEnergy() const { return std::sqrt( getMomentum()[0]*getMomentum()[0]+getMomentum()[1]*getMomentum()[1]+
                                           getMomentum()[2]*getMomentum()[2] + getMass()*getMass()  )  ;}
@@ -323,8 +323,8 @@ datatypes:
     ExtraCode:
       includes: "#include <edm4hep/MCParticle.h>"
       declaration: |
-        static const int  BITOverlay = 31;
-        static const int  BITProducedBySecondary = 30;
+        static constexpr int  BITOverlay = 31;
+        static constexpr int  BITProducedBySecondary = 30;
         bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }
         bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }
         double x() const {return getPosition()[0];}
