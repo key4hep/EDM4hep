@@ -9,7 +9,6 @@
 #include "edm4hep/TrackCollection.h"
 #include "edm4hep/TrackerHit.h"
 #include "edm4hep/VertexCollection.h"
-#include "edm4hep/schema_evolution/OldLinkData.h"
 
 #include <podio/CollectionBufferFactory.h>
 #include <podio/CollectionBuffers.h>
