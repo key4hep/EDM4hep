@@ -1,5 +1,5 @@
-#ifndef EDM4HEP_SCHEMA_EVOLUTION_OLDLINKDATA_H
-#define EDM4HEP_SCHEMA_EVOLUTION_OLDLINKDATA_H
+#ifndef EDM4HEP_SCHEMA_EVOLUTION_OLD_LINK_DATA_H
+#define EDM4HEP_SCHEMA_EVOLUTION_OLD_LINK_DATA_H
 
 #define MAKE_DATA_STRUCT(name)                                                                                         \
   struct name {                                                                                                        \
@@ -20,4 +20,4 @@ MAKE_DATA_STRUCT(VertexRecoParticleLinkData)
 
 #undef MAKE_DATA_STRUCT
 
-#endif // EDM4HEP_SCHEMA_EVOLUTION_OLDLINKDATA_H
+#endif // EDM4HEP_SCHEMA_EVOLUTION_OLD_LINK_DATA_H
