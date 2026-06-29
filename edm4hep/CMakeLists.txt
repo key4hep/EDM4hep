@@ -64,6 +64,13 @@ IF(TARGET edm4hepSioBlocks)
   list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
 ENDIF()
 
+PODIO_ADD_ARROW_MAPPER(edm4hep "${headers}" "${sources}")
+if(TARGET edm4hepArrowMapper)
+  message(STATUS "Building and installing the ArrowMapper since podio supports it")
+  add_library(EDM4HEP::edm4hepArrowMapper ALIAS edm4hepArrowMapper)
+  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrowMapper)
+endif()
+
 install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   EXPORT EDM4HEPTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
