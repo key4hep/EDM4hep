@@ -111,7 +111,8 @@ find_package(HepPDT)
 
 if(HepMC3_FOUND AND HepPDT_FOUND )
   add_executable(edm4hep_testhepmc hepmc/edm4hep_testhepmc.cc)
-  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC3_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
+  target_include_directories(edm4hep_testhepmc BEFORE PRIVATE ${podio_INCLUDE_DIR})
+  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC3_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR})
   target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC3_LIBRARIES})
   add_edm4hep_test(edm4hep_testhepmc COMMAND edm4hep_testhepmc)
   set_property(TEST edm4hep_testhepmc APPEND PROPERTY ENVIRONMENT
