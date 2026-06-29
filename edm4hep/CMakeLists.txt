@@ -64,11 +64,11 @@ IF(TARGET edm4hepSioBlocks)
   list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
 ENDIF()
 
-PODIO_ADD_ARROW_MAPPER(edm4hep "${headers}" "${sources}")
-if(TARGET edm4hepArrowMapper)
-  message(STATUS "Building and installing the ArrowMapper since podio supports it")
-  add_library(EDM4HEP::edm4hepArrowMapper ALIAS edm4hepArrowMapper)
-  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrowMapper)
+PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
+if(TARGET edm4hepArrow)
+  message(STATUS "Building and installing the Arrow since podio supports it")
+  add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
+  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
 endif()
 
 install(TARGETS ${EDM4HEP_INSTALL_LIBS}
