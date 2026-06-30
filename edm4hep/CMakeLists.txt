@@ -64,7 +64,7 @@ IF(TARGET edm4hepSioBlocks)
   list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
 ENDIF()
 
-IF(NOT podio_VERSION VERSION_LESS 1.8)
+IF(podio_VERSION VERSION_GREATER_EQUAL 1.8)
   PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
   IF(TARGET edm4hepArrow)
     message(STATUS "Building and installing the Arrow support library since podio supports it")
