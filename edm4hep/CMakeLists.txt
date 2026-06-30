@@ -64,11 +64,13 @@ IF(TARGET edm4hepSioBlocks)
   list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
 ENDIF()
 
-PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
-IF(TARGET edm4hepArrow)
-  message(STATUS "Building and installing the Arrow support library since podio supports it")
-  add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
-  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
+IF(NOT podio_VERSION VERSION_LESS 1.8)
+  PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
+  IF(TARGET edm4hepArrow)
+    message(STATUS "Building and installing the Arrow support library since podio supports it")
+    add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
+    list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
+  ENDIF()
 ENDIF()
 
 install(TARGETS ${EDM4HEP_INSTALL_LIBS}
