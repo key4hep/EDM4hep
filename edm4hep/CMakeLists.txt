@@ -59,19 +59,19 @@ add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
 list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
 
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
-IF(TARGET edm4hepSioBlocks)
+if(TARGET edm4hepSioBlocks)
   message(STATUS "Building and installing the SioBlocks since podio supports it")
   list(APPEND EDM4HEP_INSTALL_LIBS edm4hepSioBlocks)
-ENDIF()
+endif()
 
-IF(podio_VERSION VERSION_GREATER_EQUAL 1.8)
+if(podio_VERSION VERSION_GREATER_EQUAL 1.8)
   PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
-  IF(TARGET edm4hepArrow)
+  if(TARGET edm4hepArrow)
     message(STATUS "Building and installing the Arrow support library since podio supports it")
     add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
     list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
-  ENDIF()
-ENDIF()
+  endif()
+endif()
 
 install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   EXPORT EDM4HEPTargets
