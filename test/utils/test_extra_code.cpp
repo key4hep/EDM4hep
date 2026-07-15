@@ -9,7 +9,7 @@ TEST_CASE("Track::getTrackState") {
   mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
   auto inputState = edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
   mutableTrack.addToTrackStates(inputState);
-  mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter});
+  mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 99.f});
 
   SECTION("returns desired track state via MutableTrack") {
     auto state = mutableTrack.getTrackState(edm4hep::TrackState::AtCalorimeter);
