@@ -30,8 +30,7 @@ TEST_CASE("Track::getTrackState returns first found track state") {
 
 TEST_CASE("Track::getTrackState works with const Track") {
   auto mutableTrack = edm4hep::MutableTrack{};
-  auto inputState =
-      edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
+  auto inputState = edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
   mutableTrack.addToTrackStates(inputState);
 
   const edm4hep::Track track = mutableTrack;
