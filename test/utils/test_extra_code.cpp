@@ -28,6 +28,19 @@ TEST_CASE("Track::getTrackState returns first found track state") {
   REQUIRE(firstStateAtCalo.value().phi == inputState.phi);
 }
 
+TEST_CASE("Track::getTrackState works with const Track") {
+  auto mutableTrack = edm4hep::MutableTrack{};
+  auto inputState =
+      edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
+  mutableTrack.addToTrackStates(inputState);
+
+  const edm4hep::Track track = mutableTrack;
+  auto stateAtCalo = track.getTrackState(edm4hep::TrackState::AtCalorimeter);
+  REQUIRE(stateAtCalo.has_value());
+  REQUIRE(stateAtCalo.value().D0 == inputState.D0);
+  REQUIRE(stateAtCalo.value().phi == inputState.phi);
+}
+
 TEST_CASE("Track::getTrackState returns empty optional if no track state found") {
   auto track = edm4hep::MutableTrack{};
   track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
