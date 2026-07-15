@@ -7,8 +7,7 @@ TEST_CASE("Track::getTrackState") {
   // Populate a track with track states
   auto mutableTrack = edm4hep::MutableTrack{};
   mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
-  auto inputState =
-      edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
+  auto inputState = edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
   mutableTrack.addToTrackStates(inputState);
   mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter});
 
