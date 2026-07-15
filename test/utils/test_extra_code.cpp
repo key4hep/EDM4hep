@@ -3,35 +3,36 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("Track::getTrackState returns desired track state") {
-  auto track = edm4hep::MutableTrack{};
-  track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
+TEST_CASE("Track::getTrackState") {
+  // Populate a track with track states
+  auto mutableTrack = edm4hep::MutableTrack{};
+  mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
   auto inputState = edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
-  track.addToTrackStates(inputState);
+  mutableTrack.addToTrackStates(inputState);
+  mutableTrack.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 99.f});
 
-  auto stateAtCalo = track.getTrackState(edm4hep::TrackState::AtCalorimeter);
-  REQUIRE(stateAtCalo.has_value());
-  REQUIRE(stateAtCalo.value().D0 == inputState.D0);
-  REQUIRE(stateAtCalo.value().phi == inputState.phi);
-}
+  SECTION("returns desired track state via MutableTrack") {
+    auto state = mutableTrack.getTrackState(edm4hep::TrackState::AtCalorimeter);
+    REQUIRE(state.has_value());
+    REQUIRE(state.value().D0 == inputState.D0);
+    REQUIRE(state.value().phi == inputState.phi);
+  }
 
-TEST_CASE("Track::getTrackState returns first found track state") {
-  auto track = edm4hep::MutableTrack{};
-  track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
-  auto inputState = edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter, .D0 = 3.13f, .phi = 42.0f};
-  track.addToTrackStates(inputState);
-  track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter});
+  SECTION("returns desired track state via const Track") {
+    const edm4hep::Track track = mutableTrack;
+    auto state = track.getTrackState(edm4hep::TrackState::AtCalorimeter);
+    REQUIRE(state.has_value());
+    REQUIRE(state.value().D0 == inputState.D0);
+    REQUIRE(state.value().phi == inputState.phi);
+  }
 
-  auto firstStateAtCalo = track.getTrackState(edm4hep::TrackState::AtCalorimeter);
-  REQUIRE(firstStateAtCalo.has_value());
-  REQUIRE(firstStateAtCalo.value().D0 == inputState.D0);
-  REQUIRE(firstStateAtCalo.value().phi == inputState.phi);
-}
+  SECTION("returns first matching track state when multiple match") {
+    auto state = mutableTrack.getTrackState(edm4hep::TrackState::AtCalorimeter);
+    REQUIRE(state.has_value());
+    REQUIRE(state.value().D0 == inputState.D0); // first added, not the duplicate
+  }
 
-TEST_CASE("Track::getTrackState returns empty optional if no track state found") {
-  auto track = edm4hep::MutableTrack{};
-  track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtIP});
-  track.addToTrackStates(edm4hep::TrackState{.location = edm4hep::TrackState::AtCalorimeter});
-
-  REQUIRE_FALSE(track.getTrackState(edm4hep::TrackState::AtFirstHit).has_value());
+  SECTION("returns empty optional when no track state matches") {
+    REQUIRE_FALSE(mutableTrack.getTrackState(edm4hep::TrackState::AtFirstHit).has_value());
+  }
 }
