@@ -66,11 +66,9 @@ ENDIF()
 
 if(podio_ENABLE_ARROW)
   PODIO_ADD_ARROW(edm4hep "${headers}" "${sources}")
-  if(TARGET edm4hepArrow)
-    message(STATUS "Building and installing the Arrow component since podio supports it")
-    add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
-    list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
-  endif()
+  message(STATUS "Building and installing the Arrow component since podio supports it")
+  add_library(EDM4HEP::edm4hepArrow ALIAS edm4hepArrow)
+  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepArrow)
 endif()
 
 install(TARGETS ${EDM4HEP_INSTALL_LIBS}
