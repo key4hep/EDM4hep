@@ -106,17 +106,14 @@ IF(TARGET ROOT::ROOTDataFrame)
 endif()
 
 
-find_package(HepMC3)
+find_package(HepMC3 3.2.6)
 find_package(HepPDT)
 
-if(HepMC3_FOUND AND HepPDT_FOUND )
+if(HepMC3_FOUND AND HepPDT_FOUND)
   add_executable(edm4hep_testhepmc hepmc/edm4hep_testhepmc.cc)
-  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPMC3_INCLUDE_DIR} ${HEPPDT_INCLUDE_DIR} )
-  target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} ${HEPMC3_LIBRARIES})
+  target_include_directories(edm4hep_testhepmc PUBLIC ${HEPPDT_INCLUDE_DIR})
+  target_link_libraries(edm4hep_testhepmc edm4hep podio::podioRootIO ${HEPPDT_LIBRARIES} HepMC3::HepMC3)
   add_edm4hep_test(edm4hep_testhepmc COMMAND edm4hep_testhepmc)
-  set_property(TEST edm4hep_testhepmc APPEND PROPERTY ENVIRONMENT
-      ROOT_INCLUDE_PATH=${HEPMC3_INCLUDE_DIR}:$ENV{ROOT_INCLUDE_PATH}
-  )
 endif()
 
 add_edm4hep_test(py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
