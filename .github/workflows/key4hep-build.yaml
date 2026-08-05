@@ -29,8 +29,18 @@ jobs:
             image: ubuntu26
       fail-fast: false
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/key4hep/key4hep-images/${{ matrix.image }}-cvmfs
+      options: --privileged
+      volumes:
+        - /home/runner/.cache/ccache:/root/.cache/ccache
+    defaults:
+      run:
+        shell: bash
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
+    - name: Mount CVMFS
+      run: /mount.sh
     - uses: key4hep/key4hep-actions/cache-external-data@main
     - uses: key4hep/key4hep-actions/key4hep-build@main
       with:
