@@ -1,3 +1,71 @@
+# v01-01
+
+* 2026-07-27 arnavdham ([PR#502](https://github.com/key4hep/EDM4hep/pull/502))
+  - Adds support for building and installing the ArrowMapper library when the installed version of podio was built with Arrow support (ENABLE_ARROW=ON). This follows the same pattern already used for SioBlocks.
+
+* 2026-07-24 Juan Miguel Carceller ([PR#507](https://github.com/key4hep/EDM4hep/pull/507))
+  - Replace old-style `${HEPMC3_INCLUDE_DIR}` / `${HEPMC3_LIBRARIES}` variables with the modern `HepMC3::HepMC3` imported target, available since HepMC3 3.2.6
+
+* 2026-07-24 Juan Miguel Carceller ([PR#506](https://github.com/key4hep/EDM4hep/pull/506))
+  - Group small and related tests together
+
+* 2026-07-15 Juan Miguel Carceller ([PR#504](https://github.com/key4hep/EDM4hep/pull/504))
+  - Make `edm4hep::Track::getTrackState` `const`, allowing `const` `Track`s to call it.
+  - Add a test to make sure that we can call `getTrackState` from `const` and non `const`
+
+* 2026-06-20 Juan Miguel Carceller ([PR#501](https://github.com/key4hep/EDM4hep/pull/501))
+  - Remove an unecessary include in OldLinkEvolution.cc, fix include guards
+
+* 2026-06-20 Juan Miguel Carceller ([PR#500](https://github.com/key4hep/EDM4hep/pull/500))
+  - Skip the convert_events test if building with `EDM4HEP_WITH_JSON=OFF` since nlohmann_json can still be found through podio or other dependencies, but then the test will fail
+
+* 2026-04-26 Juan Miguel Carceller ([PR#498](https://github.com/key4hep/EDM4hep/pull/498))
+  - Use static constexpr instead of static const in edm4hep.yaml
+
+* 2026-04-21 Juan Miguel Carceller ([PR#497](https://github.com/key4hep/EDM4hep/pull/497))
+  - Add operator== to ParticleIDMeta
+
+* 2026-04-02 Thomas Madlener ([PR#493](https://github.com/key4hep/EDM4hep/pull/493))
+  - Add a `getTrackState` method to the `Track` to retrieve the first `TrackState` with a given `location`
+    - **Given that this returns a `std::optional` usage from python will not work**
+
+* 2026-03-30 Thomas Madlener ([PR#491](https://github.com/key4hep/EDM4hep/pull/491))
+  - Add documentation to the `edm4hep::labels` namespace to specify it's purpose and show an example usage
+
+* 2026-03-17 Juan Miguel Carceller ([PR#490](https://github.com/key4hep/EDM4hep/pull/490))
+  - Make Catch2 headers be part of the system include directories so that warnings from Catch2 are silenced when it is coming from the stack or the system
+
+* 2026-03-17 Thomas Madlener ([PR#474](https://github.com/key4hep/EDM4hep/pull/474))
+  - Add a *fast simulation* flag to the `MCParticle` in order to make it easier to check whether parts of the simulation for a given MCParticle have been handled by fast simulation.
+
+* 2026-03-11 Juan Miguel Carceller ([PR#489](https://github.com/key4hep/EDM4hep/pull/489))
+  - Clean up a version check since it's always true because we require podio 1.7.
+
+* 2026-03-11 Juan Miguel Carceller ([PR#488](https://github.com/key4hep/EDM4hep/pull/488))
+  - Move buffers instead of passing by reference in preparation for changes in podio (https://github.com/AIDASoft/podio/pull/944).
+  - Remove parts of the code that never run because they need a podio version <= 1.6 and we require 1.7.
+
+* 2026-02-19 Juan Miguel Carceller ([PR#482](https://github.com/key4hep/EDM4hep/pull/482))
+  - Fix undefined behaviour in `setBit` and `checkBit` by casting the values that are going to get shifted to the type of the bitfield. Currently `int` is used so shifting by 31 or more will trigger undefined behaviour.
+  - Add a test shifting 64-byte integers by more than 31 to make sure it works.
+  - Remove the `set_bit` function that is defined inside `edm4hep.yaml` and use the one from the utilities.
+
+* 2026-02-16 Juan Miguel Carceller ([PR#483](https://github.com/key4hep/EDM4hep/pull/483))
+  - Use Clang 19 instead of 16 in CI, since these builds are going to be removed
+
+* 2026-02-10 Juan Miguel Carceller ([PR#480](https://github.com/key4hep/EDM4hep/pull/480))
+  - Change `__` to `_` because identifiers starting with `__` are reserved
+  - Fix check in ParticleIDUtils.cc (`inserted` has to be true because there is a `throw` above if not)
+  - Fix error message in test, doesn't correspond to the actual check
+
+* 2026-02-04 Juan Miguel Carceller ([PR#477](https://github.com/key4hep/EDM4hep/pull/477))
+  - `magnitude` isn't correct for 4D vectors. I've chosen to return a non-negative value which may be unexpected.
+  - `angleBetween` wasn't correctly implemented and was returning a value different than PI / 2 for orthogonal vectors. Avoid also dividing by zero.
+  - Add tests for the failures above
+
+* 2026-02-03 Juan Miguel Carceller ([PR#478](https://github.com/key4hep/EDM4hep/pull/478))
+  - Add missing asserts in `test_EDM4hepFile.py`
+
 # v01-00
 
 * 2026-01-19 Thomas Madlener ([PR#476](https://github.com/key4hep/EDM4hep/pull/476))
