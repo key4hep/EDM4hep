@@ -6,15 +6,15 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: edm4hep
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: AIDASoft/podio
         path: podio
-    - uses: cvmfs-contrib/github-action-cvmfs@v4
-    - uses: aidasoft/run-lcg-view@v4
+    - uses: cvmfs-contrib/github-action-cvmfs@10197e000cc0add8e54ac4fb73d3ed44e2de72b4 # v5.5
+    - uses: aidasoft/run-lcg-view@b4da52e1c5ccb70a60ad4e7216de0a90664d5849 # v6.0.2
       with:
         container: el9
         view-path: /cvmfs/sw-nightlies.hsf.org/key4hep
