@@ -402,7 +402,7 @@ datatypes:
       - edm4hep::CovMatrix3f positionError [mm^2]  // covariance matrix of the position
       - float                iTheta [rad]    // Polar angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
       - float                iPhi [rad]       // Azimuthal angle of the cluster's intrinsic direction (used e.g. for vertexing). Not to be confused with the cluster position seen from IP
-      - edm4hep::Vector3f    directionError   // covariance matrix of the direction
+      - edm4hep::Vector3f    directionError  [rad^2] // covariance matrix of the direction
     VectorMembers:
       - float   shapeParameters      // shape parameters. The corresponding names of the shape parameters should be stored in the collection named by edm4hep::labels::ShapeParameterNames in the file-level metadata, as a vector of strings in the same order as the parameters.
       - float   subdetectorEnergies  // energy observed in a particular subdetector
