@@ -14,7 +14,7 @@ A generic event data model for future HEP collider experiments.
 | | | |
 |-|-|-|
 | [Vector4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L9)      | [Vector3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L34)      | [Vector3d](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L57)     |
-| [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L80)     | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L178)   | [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L207)    |
+| [Vector2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L80)     | [TrackState](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L178)   | [Quantity](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L220)    |
 | [CovMatrix2f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L99) | [CovMatrix3f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L119)  | [CovMatrix4f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L138) |
 | [CovMatrix6f](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L158) |   |   |
 
@@ -23,33 +23,33 @@ A generic event data model for future HEP collider experiments.
 
 | | | |
 |-|-|-|
-| [EventHeader](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L216)           | [MCParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L228)        | [SimTrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L300)         |
-| [CaloHitContribution](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L336)   | [SimCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L349) | [RawCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L360)     |
-| [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L369)        | [ParticleID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L380)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L394)               |
-| [TrackerHit3D](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L431)          | [TrackerHitPlane](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L456)   | [SenseWireHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L497)          |
-| [RawTimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L484)         | [Track](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L521)             | [Vertex](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L551)                |
-| [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L597) | [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L631)        | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L643)               |
+| [EventHeader](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L229)           | [MCParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L241)        | [SimTrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L313)         |
+| [CaloHitContribution](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L349)   | [SimCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L362) | [RawCalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L373)     |
+| [CalorimeterHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L382)        | [ParticleID](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L393)        | [Cluster](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L407)               |
+| [TrackerHit3D](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L444)          | [TrackerHitPlane](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L469)   | [SenseWireHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L510)          |
+| [RawTimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L497)         | [Track](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L534)             | [Vertex](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L577)                |
+| [ReconstructedParticle](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L623) | [TimeSeries](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L657)        | [RecDqdx](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L669)               |
 
 **Links**
 
 | | | |
 |-|-|-|
-| [RecoMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L685)        | [CaloHitSimCaloHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L709)         | [TrackerHitSimTrackerHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L715)         |
-| [CaloHitMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L691) | [ClusterMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L697) | [TrackMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L703)   |
-| [VertexRecoParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L721) | | |
+| [RecoMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L711)        | [CaloHitSimCaloHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L735)         | [TrackerHitSimTrackerHitLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L741)         |
+| [CaloHitMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L717) | [ClusterMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L723) | [TrackMCParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L729)   |
+| [VertexRecoParticleLink](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L747) | | |
 
 **Generator related (meta-)data**
 
 | | | |
 |-|-|-|
-| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L652) | | |
+| [GeneratorEventParameters](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L678) | | |
 | | | |
 
 **Interfaces**
 
 | | | |
 |-|-|-|
-| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L668) | | |
+| [TrackerHit](https://github.com/key4hep/EDM4hep/blob/main/edm4hep.yaml#L694) | | |
 
 The tests and examples in the `tests` directory show how to read, write, and use these types in your code.
 
