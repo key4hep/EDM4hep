@@ -4,7 +4,7 @@ The `Vertex` and the `ReconstructedParticle` have relations that can in
 principle form a loop:
 - The `Vertex` has a `OneToManyRelation` to `particles`
 - The `ReconstructedParticle` has a `OneToOneRelation` to a `startVertex`
-- The `RecoParticleVertexAssociation` is an association that links both
+- The `RecoParticleVertexLink` is an association that links both
 
 Since this has the potential for some confusion this document gives a brief
 overview of the main design principles for EDM4hep and also shows the intended
@@ -25,10 +25,10 @@ should follow these main guidelines
   this `Vertex` via the `decayVertex`. It is then always possible to get the
   decay produces via `getDecayVertex().getParticles()`.
 - in order to allow navigation from a decay particle to the vertex it originated
-  from a `RecoParticleVertexAssociation` should be created. If no such
+  from a `RecoParticleVertexLink` should be created. If no such
   navigation is necessary, creating these associations can also be omitted.
 - in order to allow for an easy navigation from the `Vertex` to the high level
-  `ReconstructedParticle` a `RecoParticleVertexAssociation` should be created if
+  `ReconstructedParticle` a `RecoParticleVertexLink` should be created if
   necessary.
 
 ## Using `Vertex` and (high level) `ReconstructeParticle` objects
@@ -36,7 +36,7 @@ should follow these main guidelines
 The following examples show a few use cases and how to achieve them. We assume
 that the following variables are defined externally somehow
 - `particle` is a `edm4hep::ReconstructeParticle`. This denotes a decaying particle
-- `startVtxAssocs` is a `edm4hep::RecoParticleVertexAssociationCollection`
+- `startVtxAssocs` is a `edm4hep::RecoParticleVertexLinkCollection`
 - `reco` is a `edm4hep::ReconstructedParticle`. This denotes a decay particle,
   i.e. it was used as an input to vertexing.
 
@@ -57,10 +57,10 @@ This is a small helper function that encapsulates the main functionality
 
 ```cpp
 std::optional<edm4hep::Vertex> getStartVertex(edm4hep::ReconstructedParticle p,
-                                              const edm4hep::RecoParticleVertexAssociationCollection& assocs) {
-  for (const auto assoc : assocs) {
-    if (assoc.getRec() == rec) {
-      return assoc.getVertex();
+                                              const edm4hep::RecoParticleVertexLinkCollection& links) {
+  for (const auto link : links) {
+    if (assoc.get<edm4hep::ReconstructedParticle>() == p) {
+      return link.get<edm4hep::Vertex>();
     }
   }
   return std::nullopt;
@@ -76,7 +76,7 @@ following outputs
 - a `ReconstructedParticle` collection, that represent the particles that
   decayed at these vertices. Each of them will have exactly one `decayVertex`
   attached to them.
-- a `RecoParticleVertexAssociation` collection that links each of the input
+- a `RecoParticleVertexLink` collection that links each of the input
   `ReconstructedParticle`s back to the `Vertex` from which they emerged.
 
 All of the steps will use function stubs wherever necessary and will mainly
@@ -134,22 +134,22 @@ edm4hep::ReconstructedParticleCollection createVertexRecos(const edm4hep::Vertex
 }
 ```
 
-#### Creating associations from `Vertex` to high level `ReconstructedParticle`
+#### Creating links from `Vertex` to high level `ReconstructedParticle`
 
 This is a potentially optional step that makes it possible to more easily access
 the `ReconstructedParticle` that decayed at a `Vertex`
 
 ```cpp
-edm4hep::RecoParticleVertexAssociationCollection
-createVtxParticleAssociations(const edm4hep::ReconstructedParticleCollection& particles) {
-  auto vtxPartAssocs = edm4hep::RecoParticleVertexAssociationCollection{};
+edm4hep::VertexRecoParticleLinkCollection
+createVtxParticleLinks(const edm4hep::ReconstructedParticleCollection& particles) {
+  auto vtxPartLinks = edm4hep::VertexRecoParticleLinkCollection{};
   for (const auto p : particles) {
-    auto assoc = vtxPartAssocs.create();
-    assoc.setRec(p);
-    assoc.setVertex(p.getDecayVertex());
+    auto assoc = vtxPartLinks.create();
+    assoc.set(p);
+    assoc.set(p.getDecayVertex());
   }
 
-  return vtxPartAssocs;
+  return vtxPartLinks;
 }
 ```
 
@@ -159,17 +159,17 @@ This is a potentially optional step, depending on whether it is necessary to
 allow for easier navigation from the particles back to their start vertices.
 
 ```cpp
-edm4hep::RecoParticleVertexAssociationCollection
-createStartVtxAssociations(const edm4hep::VertexCollection& vertices) {
-  auto startVtxAssocs = edm4hep::RecoParticleVertexAssociationCollection{};
+edm4hep::VertexRecoParticleLinkCollection
+createStartVtxLinks(const edm4hep::VertexCollection& vertices) {
+  auto startVtxLinks = edm4hep::VertexRecoParticleLinkCollection{};
   for (const auto vtx : vertices) {
     for (const auto particle : vtx.getParticles()) {
-      auto assoc = startVtxAssocs.create();
+      auto assoc = startVtxLinks.create();
       assoc.setVertex(vtx);
       assoc.setRec(particle);
     }
   }
-  return startVtxAssocs;
+  return startVtxLinks;
 }
 ```
 
@@ -241,7 +241,7 @@ In this case there is a conceptual difference that requires to switch approaches
 a bit. The example below assumes that you are looping over all vertices to
 figure out the associated `ReconstructedParticle`. The main difference in this
 case is that in EDM4hep the iteration does not go over a `Vertex` collection,
-but rather a `RecoParticleVertexAssociation` collection.
+but rather a `RecoParticleVertexLink` collection.
 
 <table>
 <tr>
@@ -264,12 +264,12 @@ for (size_t i = 0; i < vtxColl->getNumberOfElements(); ++i) {
 <td>
 
 ```cpp
-const auto& assocColl =
-  event.get<edm4hep::RecoParticleVertexAssociationCollection>("vtx_particle_associations");
+const auto& linkColl =
+  event.get<edm4hep::VertexRecoParticleLinkCollection>("vtx_particle_links");
 
-for (const auto assoc : assocColl) {
-  const auto vtx = assoc.getVertex();
-  const auto reco = assoc.getRec();
+for (const auto link : linkColl) {
+  const auto vtx = link.get<edm4hep::Vertex>();
+  const auto reco = link.get<edm4hep::ReconstructedParticle>();
   // .. do something with reco and vtx
 }
 ```
