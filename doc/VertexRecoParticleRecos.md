@@ -4,7 +4,7 @@ The `Vertex` and the `ReconstructedParticle` have relations that can in
 principle form a loop:
 - The `Vertex` has a `OneToManyRelation` to `particles`
 - The `ReconstructedParticle` has a `OneToOneRelation` to a `startVertex`
-- The `RecoParticleVertexLink` is an link that links both
+- The `RecoParticleVertexLink` is a link that links both
 
 Since this has the potential for some confusion this document gives a brief
 overview of the main design principles for EDM4hep and also shows the intended
