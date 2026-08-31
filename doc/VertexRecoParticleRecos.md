@@ -1,10 +1,10 @@
-# The relations and associations between `Vertex` and `ReconstructedParticle`
+# The relations and links between `Vertex` and `ReconstructedParticle`
 
 The `Vertex` and the `ReconstructedParticle` have relations that can in
 principle form a loop:
 - The `Vertex` has a `OneToManyRelation` to `particles`
 - The `ReconstructedParticle` has a `OneToOneRelation` to a `startVertex`
-- The `RecoParticleVertexLink` is an association that links both
+- The `RecoParticleVertexLink` is an link that links both
 
 Since this has the potential for some confusion this document gives a brief
 overview of the main design principles for EDM4hep and also shows the intended
@@ -26,7 +26,7 @@ should follow these main guidelines
   decay produces via `getDecayVertex().getParticles()`.
 - in order to allow navigation from a decay particle to the vertex it originated
   from a `RecoParticleVertexLink` should be created. If no such
-  navigation is necessary, creating these associations can also be omitted.
+  navigation is necessary, creating these links can also be omitted.
 - in order to allow for an easy navigation from the `Vertex` to the high level
   `ReconstructedParticle` a `RecoParticleVertexLink` should be created if
   necessary.
@@ -80,7 +80,7 @@ following outputs
   `ReconstructedParticle`s back to the `Vertex` from which they emerged.
 
 All of the steps will use function stubs wherever necessary and will mainly
-focus on setting the relations / associations.
+focus on setting the relations / links.
 
 ### Creating vertices
 
@@ -153,7 +153,7 @@ createVtxParticleLinks(const edm4hep::ReconstructedParticleCollection& particles
 }
 ```
 
-### Creating start vertex associations
+### Creating start vertex links
 
 This is a potentially optional step, depending on whether it is necessary to
 allow for easier navigation from the particles back to their start vertices.
@@ -181,7 +181,7 @@ In LCIO the `Vertex` and `ReconstructedParticle` have similar but slightly
 different relations (we will express them in podio/EDM4hep terminology here):
 - a `Vertex` has a `OneToOneRelation` to an `associatedParticle`
 - a `ReconstructeParticle` has a `OneToOneRelation` to a `startVertex`
-- there is a similar association (`LCRelation`) between `Vertex` and
+- there is a similar link (`LCRelation`) between `Vertex` and
   `ReconstructedParticle` as in EDM4hep
 
 The intended way to fill these in LCIO is
