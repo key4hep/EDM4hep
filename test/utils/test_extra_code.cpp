@@ -3,6 +3,18 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+namespace {
+// Two helper concepts that we can use to statically check whether indexing into
+// getTrackStates (plural!) compiles or not. We want this to work with integer
+// types but we want this to fail with the TrackState constants. We assert this
+// in the tests below
+template <typename T>
+concept IndexableWithLocation = requires(const T& t) { t.getTrackStates(edm4hep::TrackState::AtIP); };
+
+template <typename T>
+concept IndexableWithInteger = requires(const T& t) { t.getTrackStates(0); };
+} // namespace
+
 TEST_CASE("Track::getTrackState") {
   // Populate a track with track states
   auto mutableTrack = edm4hep::MutableTrack{};
@@ -34,5 +46,14 @@ TEST_CASE("Track::getTrackState") {
 
   SECTION("returns empty optional when no track state matches") {
     REQUIRE_FALSE(mutableTrack.getTrackState(edm4hep::TrackState::AtFirstHit).has_value());
+  }
+
+  SECTION("No confusing overloads") {
+    // indexing with ints should work
+    STATIC_REQUIRE(IndexableWithInteger<edm4hep::Track>);
+    STATIC_REQUIRE(IndexableWithInteger<edm4hep::MutableTrack>);
+    // but using the track states should not
+    STATIC_REQUIRE(!IndexableWithLocation<edm4hep::Track>);
+    STATIC_REQUIRE(!IndexableWithLocation<edm4hep::MutableTrack>);
   }
 }

@@ -118,6 +118,8 @@ endif()
 
 add_edm4hep_test(py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
 
+add_edm4hep_test(py_test_extra_code COMMAND pytest ${CMAKE_CURRENT_LIST_DIR}/test_ExtraCode.py -v)
+
 add_subdirectory(utils)
 add_subdirectory(tools)
 

@@ -178,7 +178,7 @@ components:
     edm4hep::TrackState:
       Description: "Parametrized description of a particle track"
       Members:
-        - int32_t location // for use with At{Other|IP|FirstHit|LastHit|Calorimeter|Vertex}|LastLocation
+        - int32_t location // location of this track state, see edm4hep::TrackState::Location for the predefined values
         - float D0 // transverse impact parameter
         - float phi [rad] // azimuthal angle of the track at this location (i.e. not phi0)
         - float omega [1/mm] // is the signed curvature of the track
@@ -190,13 +190,26 @@ components:
       ExtraCode:
         includes: "#include <edm4hep/Constants.h>"
         declaration: |
-          static constexpr int AtOther = 0 ; // any location other than the ones defined below
-          static constexpr int AtIP = 1 ;
-          static constexpr int AtFirstHit = 2 ;
-          static constexpr int AtLastHit = 3 ;
-          static constexpr int AtCalorimeter = 4 ;
-          static constexpr int AtVertex = 5 ;
-          static constexpr int LastLocation = AtVertex  ;
+          /// The predefined locations at which a TrackState can be defined
+          ///
+          /// NOTE: This is deliberately an *unscoped* enum with a fixed underlying type:
+          /// - The implicit conversion to std::int32_t keeps all existing uses of
+          ///   edm4hep::TrackState::AtIP (and friends) valid, e.g. assigning to the
+          ///   location member or aggregate initialization of a TrackState.
+          /// - cppyy picks up the enumerators of an unscoped enum directly, so
+          ///   edm4hep.TrackState.AtIP keeps working from python.
+          ///
+          /// It is nevertheless a distinct type, which is useful in certain cases to avoid
+          /// confusion with plain ints.
+          enum Location : std::int32_t {
+            AtOther = 0,             ///< any location other than the ones defined below
+            AtIP = 1,                ///< at the interaction point
+            AtFirstHit = 2,          ///< at the first hit of the track
+            AtLastHit = 3,           ///< at the last hit of the track
+            AtCalorimeter = 4,       ///< at the entry point into the calorimeter
+            AtVertex = 5,            ///< at the vertex
+            LastLocation = AtVertex, ///< the last of the predefined locations
+          };
 
           /// Get the covariance matrix value for the two passed parameters
           constexpr float getCovMatrix(edm4hep::TrackParams parI, edm4hep::TrackParams parJ) const { return covMatrix.getValue(parI, parJ); }
@@ -537,16 +550,29 @@ datatypes:
       includes: |
         #include <optional>
         #include <algorithm>
+        #include <ranges>
+        #include <cstdint>
       declaration: |
         /// Get the TrackState at a dedicated location
         ///
         /// @note This will return the first TrackState for which the location matches
         /// even if there are multiple in the track
-        std::optional<edm4hep::TrackState> getTrackState(int location) const {
+        std::optional<edm4hep::TrackState> getTrackState(edm4hep::TrackState::Location location) const {
           const auto trackStates = getTrackStates();
           const auto it = std::ranges::find(trackStates, location, &edm4hep::TrackState::location);
           return it != trackStates.end() ? std::optional{*it} : std::nullopt;
         }
+
+        /// Get the TrackState at a dedicated location
+        [[deprecated("Use getTrackState(edm4hep::TrackState::Location) instead")]]
+        std::optional<edm4hep::TrackState> getTrackState(std::int32_t location) const {
+          return getTrackState(static_cast<edm4hep::TrackState::Location>(location));
+        }
+
+        /// Deliberately deleted: getTrackStates(index) takes an *index* into the vector
+        /// of track states, not a location. Use getTrackState(location) to look up a
+        /// TrackState by its location.
+        edm4hep::TrackState getTrackStates(edm4hep::TrackState::Location) const = delete;
 
   edm4hep::Vertex:
     Description: "Vertex"
