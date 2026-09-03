@@ -33,13 +33,13 @@ set_tests_properties(create_complete_file_rntuple PROPERTIES
   TIMEOUT 600
 )
 
-add_edm4hep_test(check_complete_file COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example.root -v)
+add_edm4hep_test(check_complete_file COMMAND pytest ${CMAKE_CURRENT_LIST_DIR}/test_EDM4hepFile.py --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example.root -v)
 set_tests_properties(
   check_complete_file PROPERTIES
   FIXTURES_REQUIRED complete_file
   TIMEOUT 600
 )
-add_edm4hep_test(check_complete_file_rntuple COMMAND pytest --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example_rntuple.root -v)
+add_edm4hep_test(check_complete_file_rntuple COMMAND pytest ${CMAKE_CURRENT_LIST_DIR}/test_EDM4hepFile.py --inputfile=${PROJECT_BINARY_DIR}/test/edm4hep_example_rntuple.root -v)
 set_tests_properties(
   check_complete_file_rntuple PROPERTIES
   FIXTURES_REQUIRED complete_file_rntuple
@@ -101,8 +101,6 @@ IF(TARGET ROOT::ROOTDataFrame)
     FIXTURES_REQUIRED write_events_fixture
   )
 
-  add_edm4hep_test(py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
-  set_tests_properties(py_test_rdf PROPERTIES FIXTURES_REQUIRED write_events_fixture)
 endif()
 
 
@@ -116,9 +114,20 @@ if(HepMC3_FOUND AND HepPDT_FOUND)
   add_edm4hep_test(edm4hep_testhepmc COMMAND edm4hep_testhepmc)
 endif()
 
-add_edm4hep_test(py_test_module COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_module.py)
+set(PYTEST_TEST_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/test_module.py
+  ${CMAKE_CURRENT_LIST_DIR}/test_ExtraCode.py
+  ${CMAKE_CURRENT_LIST_DIR}/utils/test_kinematics.py
+)
 
-add_edm4hep_test(py_test_extra_code COMMAND pytest ${CMAKE_CURRENT_LIST_DIR}/test_ExtraCode.py -v)
+if(TARGET ROOT::ROOTDataFrame)
+  list(APPEND PYTEST_TEST_SOURCES ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
+endif()
+
+add_edm4hep_test(pytests COMMAND pytest -v ${PYTEST_TEST_SOURCES})
+if(TARGET ROOT::ROOTDataFrame)
+  set_property(TEST pytests PROPERTY FIXTURES_REQUIRED write_events_fixture)
+endif()
 
 add_subdirectory(utils)
 add_subdirectory(tools)
