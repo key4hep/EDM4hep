@@ -101,6 +101,8 @@ IF(TARGET ROOT::ROOTDataFrame)
     FIXTURES_REQUIRED write_events_fixture
   )
 
+  add_edm4hep_test(py_test_rdf COMMAND python ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
+  set_tests_properties(py_test_rdf PROPERTIES FIXTURES_REQUIRED write_events_fixture)
 endif()
 
 
@@ -114,20 +116,8 @@ if(HepMC3_FOUND AND HepPDT_FOUND)
   add_edm4hep_test(edm4hep_testhepmc COMMAND edm4hep_testhepmc)
 endif()
 
-set(PYTEST_TEST_SOURCES
-  ${CMAKE_CURRENT_LIST_DIR}/test_module.py
-  ${CMAKE_CURRENT_LIST_DIR}/test_ExtraCode.py
-  ${CMAKE_CURRENT_LIST_DIR}/utils/test_kinematics.py
-)
-
-if(TARGET ROOT::ROOTDataFrame)
-  list(APPEND PYTEST_TEST_SOURCES ${CMAKE_CURRENT_LIST_DIR}/test_rdf.py)
-endif()
-
-add_edm4hep_test(pytests COMMAND pytest -v ${PYTEST_TEST_SOURCES})
-if(TARGET ROOT::ROOTDataFrame)
-  set_property(TEST pytests PROPERTY FIXTURES_REQUIRED write_events_fixture)
-endif()
+add_edm4hep_test(pytests COMMAND pytest -v)
+set_tests_properties(pytests PROPERTIES WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(utils)
 add_subdirectory(tools)
