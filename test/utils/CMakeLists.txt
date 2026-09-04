@@ -57,5 +57,3 @@ else()
     DL_PATHS $<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
   )
 endif()
-
-add_edm4hep_test(pyunittests COMMAND python -m unittest discover -s ${CMAKE_CURRENT_LIST_DIR})

@@ -1,6 +1,6 @@
 macro(add_backwards_compat_test input_base)
   ExternalData_Add_Test(backward_compat_tests
-    NAME backwards_compat_${input_base} COMMAND pytest -v --inputfile=DATA{${CMAKE_CURRENT_SOURCE_DIR}/input_files/edm4hep_example_${input_base}.root}
+    NAME backwards_compat_${input_base} COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/../test_EDM4hepFile.py -v --inputfile=DATA{${CMAKE_CURRENT_SOURCE_DIR}/input_files/edm4hep_example_${input_base}.root}
   )
   set_test_env(backwards_compat_${input_base})
 endmacro()
