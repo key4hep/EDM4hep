@@ -23,6 +23,7 @@ target_include_directories(utils
 target_link_libraries(utils PUBLIC EDM4HEP::edm4hep kinematics)
 
 
+if(TARGET ROOT::ROOTVecOps)
 set(sources src/dataframe.cc)
 set(headers include/edm4hep/utils/dataframe.h)
 
@@ -32,13 +33,22 @@ target_include_directories(edm4hepRDF PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 target_link_libraries(edm4hepRDF PUBLIC edm4hep ROOT::Physics ROOT::ROOTVecOps)
+endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   PATTERN "CMakeLists.txt" EXCLUDE)
 
-install(TARGETS utils kinematics edm4hepRDF
+install(TARGETS utils kinematics
   EXPORT EDM4HEPTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
   RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
   COMPONENT dev
   )
+if(TARGET ROOT::ROOTVecOps)
+  install(TARGETS edm4hepRDF
+    EXPORT EDM4HEPTargets
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
+    RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
+    COMPONENT dev
+    )
+endif()
