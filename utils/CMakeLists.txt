@@ -14,7 +14,7 @@ set(utils_sources
   src/TrackUtils.cc
 )
 
-add_library(utils SHARED ${utils_sources})
+add_library(utils ${utils_sources})
 set_target_properties(utils PROPERTIES OUTPUT_NAME "edm4hepUtils")
 add_library(EDM4HEP::utils ALIAS utils)
 target_include_directories(utils
@@ -27,7 +27,7 @@ if(TARGET ROOT::ROOTVecOps)
 set(sources src/dataframe.cc)
 set(headers include/edm4hep/utils/dataframe.h)
 
-add_library(edm4hepRDF SHARED ${sources})
+add_library(edm4hepRDF ${sources})
 target_include_directories(edm4hepRDF PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
