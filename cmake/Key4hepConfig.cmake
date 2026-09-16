@@ -43,8 +43,8 @@ endmacro()
 macro(key4hep_set_cxx_standard_and_extensions)
   set(CMAKE_CXX_STANDARD 20 CACHE STRING "")
 
-  if(NOT CMAKE_CXX_STANDARD MATCHES "20|23|26")
-    message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}, supported values are 20 and 23")
+  if(NOT CMAKE_CXX_STANDARD VERSION_GREATER_EQUAL 20)
+    message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}, supported values are 20 or newer")
   endif()
 
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
