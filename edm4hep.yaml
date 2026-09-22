@@ -558,10 +558,12 @@ datatypes:
         }
 
         /// Get the TrackState at a dedicated location
+        #ifndef __CLING__
         [[deprecated("Use getTrackState(edm4hep::TrackState::Location) instead")]]
         std::optional<edm4hep::TrackState> getTrackState(std::int32_t location) const {
           return getTrackState(static_cast<edm4hep::TrackState::Location>(location));
         }
+        #endif
 
         /// Deliberately deleted: getTrackStates(index) takes an *index* into the vector
         /// of track states, not a location. Use getTrackState(location) to look up a
