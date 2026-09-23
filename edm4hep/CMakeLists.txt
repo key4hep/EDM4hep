@@ -54,9 +54,12 @@ if(NOT MERGE_RESULT EQUAL 0)
 endif()
 
 PODIO_ADD_ROOT_IO_DICT(edm4hepDict edm4hep "${headers}" ${MERGED_SELECTION_XML})
-add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict )
+list(APPEND EDM4HEP_INSTALL_LIBS edm4hep)
 
-list(APPEND EDM4HEP_INSTALL_LIBS edm4hep edm4hepDict)
+if(TARGET edm4hepDict)
+  add_library(EDM4HEP::edm4hepDict ALIAS edm4hepDict)
+  list(APPEND EDM4HEP_INSTALL_LIBS edm4hepDict)
+endif()
 
 PODIO_ADD_SIO_IO_BLOCKS(edm4hep "${headers}" "${sources}")
 IF(TARGET edm4hepSioBlocks)
@@ -79,10 +82,12 @@ install(TARGETS ${EDM4HEP_INSTALL_LIBS}
   FILE_SET headers DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   COMPONENT dev)
 
-install(FILES
-  "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
-  "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
+if(TARGET edm4hepDict)
+  install(FILES
+    "${PROJECT_BINARY_DIR}/edm4hep/edm4hepDictDict.rootmap"
+    "${PROJECT_BINARY_DIR}/edm4hep/libedm4hepDict_rdict.pcm"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT dev)
+endif()
 
 install(FILES
   ../edm4hep.yaml
