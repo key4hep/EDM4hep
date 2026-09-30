@@ -7,7 +7,10 @@
 
 #include "edm4hep/MutableMCParticle.h"
 #include "edm4hep/MutableReconstructedParticle.h"
+#include "edm4hep/Vector3d.h"
+#include "edm4hep/Vector3f.h"
 
+#include <cmath>
 #include <tuple>
 
 using ParticleTypes = std::tuple<edm4hep::MutableMCParticle, edm4hep::MutableReconstructedParticle>;

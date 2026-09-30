@@ -3,6 +3,7 @@
 
 // test data model
 #include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/Constants.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
 #include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
@@ -10,13 +11,19 @@
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
+#include "edm4hep/Vector3d.h"
+#include "edm4hep/Vector3f.h"
 
 // podio specific includes
 #include "podio/Frame.h"
-#include "podio/podioVersion.h"
 
 // STL
 #include <iostream>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <string_view>
+#include <vector>
 
 void processRun(const podio::Frame& run) {
   //===============================================================================

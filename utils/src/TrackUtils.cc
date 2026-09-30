@@ -1,7 +1,9 @@
 #include "edm4hep/utils/TrackUtils.h"
 #include "edm4hep/RecDqdxCollection.h"
+#include "edm4hep/Track.h"
 
 #include <iterator>
+#include <utility>
 
 namespace edm4hep::utils {
 

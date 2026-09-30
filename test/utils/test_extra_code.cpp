@@ -1,7 +1,10 @@
+#include "edm4hep/MutableTrack.h"
+#include "edm4hep/Track.h"
 #include "edm4hep/TrackState.h"
-#include <edm4hep/TrackCollection.h>
 
 #include <catch2/catch_test_macros.hpp>
+
+#include <optional>
 
 namespace {
 // Two helper concepts that we can use to statically check whether indexing into

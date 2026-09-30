@@ -4,6 +4,7 @@
 #include "Math/Vector4D.h"
 
 #include <cmath>
+#include <type_traits>
 
 namespace edm4hep {
 /**

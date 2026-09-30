@@ -2,7 +2,9 @@
 #define EDM4HEP_UTILS_BIT_UTILS_HH
 
 #include <stdexcept>
+#include <string>
 #include <type_traits>
+#include <typeinfo>
 
 namespace edm4hep::utils {
 
