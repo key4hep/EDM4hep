@@ -1,7 +1,4 @@
 #include <edm4hep/utils/ParticleIDUtils.h>
-
-#include <edm4hep/MutableParticleID.h>
-#include <edm4hep/MutableReconstructedParticle.h>
 #include <edm4hep/ParticleIDCollection.h>
 #include <edm4hep/ReconstructedParticleCollection.h>
 
