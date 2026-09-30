@@ -3,16 +3,16 @@
 // EDM4hep
 #include "edm4hep2json.hxx"
 
-// std
-#include <filesystem>
-#include <memory>
-
 // *nix
 #include <getopt.h>
 #include <unistd.h>
 
 #include "TFile.h"
 #include "TList.h"
+
+// std
+#include <filesystem>
+#include <memory>
 
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"

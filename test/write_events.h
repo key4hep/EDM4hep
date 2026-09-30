@@ -22,16 +22,16 @@
 #include "edm4hep/Vector3d.h"
 #include "edm4hep/Vector3f.h"
 
+// podio specific includes
+#include "podio/Frame.h"
+#include "podio/ObjectID.h"
+
 // STL
 #include <iostream>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
-
-// podio specific includes
-#include "podio/Frame.h"
-#include "podio/ObjectID.h"
 
 template <class WriterT>
 void write(std::string outfilename) {
