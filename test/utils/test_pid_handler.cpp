@@ -1,6 +1,6 @@
-#include <edm4hep/utils/ParticleIDUtils.h>
 #include <edm4hep/ParticleIDCollection.h>
 #include <edm4hep/ReconstructedParticleCollection.h>
+#include <edm4hep/utils/ParticleIDUtils.h>
 
 #include <podio/Frame.h>
 #include <podio/RelationRange.h>
