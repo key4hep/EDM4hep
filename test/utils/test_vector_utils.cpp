@@ -9,6 +9,7 @@
 #include "edm4hep/Vector3f.h"
 #include "edm4hep/Vector4f.h"
 
+#include <cmath>
 #include <tuple>
 #include <type_traits>
 using Vector2And3Types = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2f>;

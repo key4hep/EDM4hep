@@ -11,6 +11,10 @@
 #include "edm4hep/VertexData.h"
 
 #include "Math/Vector3D.h"
+#include "ROOT/RVec.hxx"
+
+#include <cmath>
+#include <cstddef>
 
 namespace edm4hep::utils {
 

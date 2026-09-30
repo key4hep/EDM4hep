@@ -2,6 +2,7 @@
 #define EDM4HEP_UTILS_COVMATRIXUTILS_H
 
 #include <array>
+#include <cstddef>
 #include <stdexcept>
 #include <string>
 #include <type_traits>

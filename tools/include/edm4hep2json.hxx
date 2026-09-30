@@ -4,16 +4,23 @@
 #include "edm4hep/EDM4hepVersion.h"
 #include "edm4hep/edm4hep.h"
 
+#include "podio/CollectionBase.h"
 #include "podio/Frame.h"
 #include "podio/Reader.h"
 #include "podio/UserDataCollection.h"
 #include "podio/podioVersion.h"
+#include "podio/utilities/TypeHelpers.h"
 
 #include "nlohmann/json.hpp"
 
+#include <cstdlib>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <map>
 #include <sstream>
+#include <string>
+#include <string_view>
 #include <vector>
 
 template <typename CollT>

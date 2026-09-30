@@ -1,7 +1,6 @@
 #include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/ClusterCollection.h"
 #include "edm4hep/DatamodelDefinition.h"
-#include "edm4hep/MCParticle.h"
 #include "edm4hep/MCParticleCollection.h"
 #include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
@@ -14,10 +13,14 @@
 #include <podio/CollectionBuffers.h>
 #include <podio/DatamodelRegistry.h>
 #include <podio/LinkCollection.h>
+#include <podio/ObjectID.h>
 #include <podio/SchemaEvolution.h>
-#include <podio/podioVersion.h>
 
+#include <memory>
+#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 namespace edm4hep {
 namespace {

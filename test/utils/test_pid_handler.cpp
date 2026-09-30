@@ -1,13 +1,22 @@
 #include <edm4hep/utils/ParticleIDUtils.h>
 
+#include <edm4hep/MutableParticleID.h>
+#include <edm4hep/MutableReconstructedParticle.h>
 #include <edm4hep/ParticleIDCollection.h>
 #include <edm4hep/ReconstructedParticleCollection.h>
 
 #include <podio/Frame.h>
+#include <podio/RelationRange.h>
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <cstddef>
+#include <optional>
+#include <stdexcept>
+#include <string>
 #include <tuple>
+#include <utility>
+#include <vector>
 
 edm4hep::ReconstructedParticleCollection createRecos() {
   edm4hep::ReconstructedParticleCollection coll;

@@ -4,20 +4,34 @@
 // Data model
 
 #include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/Constants.h"
 #include "edm4hep/GeneratorEventParametersCollection.h"
 #include "edm4hep/GeneratorToolInfo.h"
 #include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/MutableCaloHitContribution.h"
+#include "edm4hep/MutableGeneratorEventParameters.h"
+#include "edm4hep/MutableMCParticle.h"
+#include "edm4hep/MutableRawTimeSeries.h"
+#include "edm4hep/MutableSimCalorimeterHit.h"
+#include "edm4hep/MutableSimTrackerHit.h"
+#include "edm4hep/MutableTrackerHitPlane.h"
 #include "edm4hep/RawTimeSeriesCollection.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/TrackerHitPlaneCollection.h"
+#include "edm4hep/Vector3d.h"
+#include "edm4hep/Vector3f.h"
 
 // STL
 #include <iostream>
+#include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 // podio specific includes
 #include "podio/Frame.h"
+#include "podio/ObjectID.h"
 
 template <class WriterT>
 void write(std::string outfilename) {

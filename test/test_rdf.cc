@@ -5,8 +5,11 @@
 #include "edm4hep/TrackerHitPlaneData.h"
 
 #include <ROOT/RDataFrame.hxx>
+#include <ROOT/RVec.hxx>
+#include <TROOT.h>
 
 #include <iostream>
+#include <string>
 
 int main(int, char*[]) {
 

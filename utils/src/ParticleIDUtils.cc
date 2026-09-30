@@ -3,12 +3,16 @@
 #include "MurmurHash3.h"
 
 #include "edm4hep/Constants.h"
+#include "edm4hep/ParticleIDCollection.h"
+#include "edm4hep/ReconstructedParticle.h"
 
 #include <podio/FrameCategories.h>
 
+#include <algorithm>
 #include <iterator>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 namespace edm4hep::utils {
 

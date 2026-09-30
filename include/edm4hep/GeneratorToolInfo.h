@@ -3,7 +3,9 @@
 
 #include "edm4hep/Constants.h"
 #include "podio/Frame.h"
+#include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace edm4hep {

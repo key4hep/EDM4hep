@@ -1,5 +1,6 @@
 #include "edm4hep/Constants.h"
 #include "edm4hep/CovMatrix3f.h"
+#include "edm4hep/CovMatrix6f.h"
 #include "edm4hep/MutableTrackerHit3D.h"
 #include "edm4hep/TrackState.h"
 #include "edm4hep/TrackerHit3D.h"
@@ -7,6 +8,8 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <array>
+#include <cstdint>
 #include <stdexcept>
 
 TEST_CASE("CovMatrix utils", "[cov_matrix_utils]") {

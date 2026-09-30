@@ -5,11 +5,14 @@
 
 // std
 #include <filesystem>
+#include <memory>
 
 // *nix
 #include <getopt.h>
+#include <unistd.h>
 
 #include "TFile.h"
+#include "TList.h"
 
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"

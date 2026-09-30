@@ -5,6 +5,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <concepts>
+#include <cstdlib>
+#include <utility>
 
 namespace edm4hep {
 
