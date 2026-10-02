@@ -191,6 +191,7 @@ def create_TrackerHit3DCollection():
     hit.setEDepError(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setCovMatrix(create_CovMatrixNf(3))
+    hit.setTimeError(next(counter))
     return hits
 
 
@@ -211,6 +212,7 @@ def create_TrackerHitPlaneCollection():
     hit.setDv(next(counter))
     hit.setPosition(edm4hep.Vector3d(next(counter), next(counter), next(counter)))
     hit.setCovMatrix(create_CovMatrixNf(3))
+    hit.setTimeError(next(counter))
     return hits
 
 

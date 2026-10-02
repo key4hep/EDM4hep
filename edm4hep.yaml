@@ -443,6 +443,7 @@ datatypes:
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
       - float time [ns]                    // time of the hit
+      - float timeError [ns]               // error measured on time
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
       - edm4hep::Vector3d position [mm]    // hit position
@@ -468,6 +469,7 @@ datatypes:
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
       - float time [ns]                    // time of the hit
+      - float timeError [ns]               // error measured on time
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
       - edm4hep::Vector2f u [rad]          // direction of the first measurement given as (theta, phi) in spherical coordinates
