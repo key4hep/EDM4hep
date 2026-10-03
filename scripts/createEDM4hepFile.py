@@ -250,6 +250,7 @@ def create_SenseWireHitCollection(vectorsize):
     hit.setDistanceToWireError(next(counter))
     for j in range(vectorsize):
         hit.addToNElectrons(next(counter))
+    hit.setTimeError(next(counter))
     return hits
 
 
