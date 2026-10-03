@@ -376,6 +376,8 @@ def test_SenseWireHitCollection(event, edm4hep_version):
     assert len(hit.getNElectrons()) == VECTORSIZE
     for val in hit.getNElectrons():
         assert val == next(counter)
+    if edm4hep_version >= podio.version.parse("1.1.2"):
+        assert hit.getTimeError() == next(counter)
 
 
 def test_TrackCollection(event):
