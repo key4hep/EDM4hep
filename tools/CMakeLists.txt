@@ -1,6 +1,6 @@
 list( APPEND CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
 
-if (EDM4HEP_WITH_JSON)
+if (EDM4HEP_WITH_JSON AND TARGET podio::podioRootIO)
   add_executable(edm4hep2json src/edm4hep2json.cxx)
 
   target_compile_definitions(edm4hep2json PUBLIC PODIO_JSON_OUTPUT)
