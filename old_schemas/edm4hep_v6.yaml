@@ -1,5 +1,5 @@
 ---
-schema_version: 7
+schema_version: 6
 options:
   getSyntax: True
   exposePODMembers: False
@@ -584,8 +584,6 @@ datatypes:
       - float               parameters    // additional parameters related to this vertex
     OneToManyRelations:
       - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
-      - edm4hep::Track tracks // tracks that have been used to form this vertex
-
     ExtraCode:
       includes: |
         #include <edm4hep/Constants.h>
