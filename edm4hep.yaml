@@ -201,7 +201,7 @@ components:
           ///
           /// It is nevertheless a distinct type, which is useful in certain cases to avoid
           /// confusion with plain ints.
-          enum Location : std::int32_t {
+          enum Location : int32_t {
             AtOther = 0,             ///< any location other than the ones defined below
             AtIP = 1,                ///< at the interaction point
             AtFirstHit = 2,          ///< at the first hit of the track
