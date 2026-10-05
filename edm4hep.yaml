@@ -1,5 +1,5 @@
 ---
-schema_version: 6
+schema_version: 7
 options:
   getSyntax: True
   exposePODMembers: False
@@ -511,7 +511,7 @@ datatypes:
       - int32_t type // type of the raw data hit
       - int32_t quality // quality bit flag of the hit
       - float time [ns] // time of the hit
-      - float timeError [ns] // error on time
+      - float timeError [ns] // error measured on time
       - float eDep [GeV] // energy deposited by the hit
       - float eDepError [GeV] // error on eDep
       - float wireStereoAngle // angle between the sense wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
