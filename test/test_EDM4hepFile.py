@@ -297,7 +297,7 @@ def test_ClusterCollection(event):
     assert cluster.getHits()[0] == calo_hit
 
 
-def test_TrackerHit3DCollection(event):
+def test_TrackerHit3DCollection(event, edm4hep_version):
     """Check the TrackerHit3DCollection"""
     counter = count(COUNT_START)
     hits = event.get("TrackerHit3DCollection")
@@ -311,9 +311,11 @@ def test_TrackerHit3DCollection(event):
     assert hit.getEDepError() == next(counter)
     assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
     check_cov_matrix(hit.getCovMatrix(), 3)
+    if edm4hep_version >= podio.version.parse("1.1.2"):
+        assert hit.getTimeError() == next(counter)
 
 
-def test_TrackerHitPlaneCollection(event):
+def test_TrackerHitPlaneCollection(event, edm4hep_version):
     """Check the TrackerHitPlaneCollection"""
     counter = count(COUNT_START)
     hits = event.get("TrackerHitPlaneCollection")
@@ -331,6 +333,8 @@ def test_TrackerHitPlaneCollection(event):
     assert hit.getDv() == next(counter)
     assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
     check_cov_matrix(hit.getCovMatrix(), 3)
+    if edm4hep_version >= podio.version.parse("1.1.2"):
+        assert hit.getTimeError() == next(counter)
 
 
 def test_RawTimeSeriesCollection(event):
@@ -372,6 +376,8 @@ def test_SenseWireHitCollection(event, edm4hep_version):
     assert len(hit.getNElectrons()) == VECTORSIZE
     for val in hit.getNElectrons():
         assert val == next(counter)
+    if edm4hep_version >= podio.version.parse("1.1.2"):
+        assert hit.getTimeError() == next(counter)
 
 
 def test_TrackCollection(event):
