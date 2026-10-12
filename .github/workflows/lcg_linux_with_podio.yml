@@ -9,6 +9,17 @@ on:
 jobs:
   build-and-test-with-podio:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/key4hep/key4hep-images/alma9-cvmfs
+      options: --privileged
+      volumes:
+        - /home/runner/.cache/ccache:/root/.cache/ccache
+    defaults:
+      run:
+        shell: bash
+    env:
+      CCACHE_DIR: /root/.cache/ccache
+      CCACHE_SLOPPINESS: include_file_ctime,include_file_mtime
     strategy:
       fail-fast: false
       matrix:
@@ -25,12 +36,27 @@ jobs:
         repository: AIDASoft/podio
         path: podio
     - uses: key4hep/key4hep-actions/cache-external-data@main
-    - uses: cvmfs-contrib/github-action-cvmfs@10197e000cc0add8e54ac4fb73d3ed44e2de72b4 # v5.5
-    - uses: aidasoft/run-lcg-view@b4da52e1c5ccb70a60ad4e7216de0a90664d5849 # v6.0.2
+    - name: Mount CVMFS
+      run: /mount.sh
+    - name: Set cache date
+      run: echo "NOW=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
       with:
-        release-platform: ${{ matrix.LCG }}
-        ccache-key: ccache-${{ matrix.LCG }}
-        run: |
+        path: /root/.cache/ccache
+        key: ccache-${{ matrix.LCG }}-${{ env.NOW }}
+        restore-keys: |
+          ccache-${{ matrix.LCG }}
+    - name: Build and test with podio
+      env:
+        LCG: ${{ matrix.LCG }}
+      run: |
+          if [[ "${LCG%%/*}" == dev* ]]; then
+            source /cvmfs/sft-nightlies.cern.ch/lcg/views/${LCG%%/*}/latest/${LCG#*/}/setup.sh
+          else
+            source /cvmfs/sft.cern.ch/lcg/views/${LCG}/setup.sh
+          fi
+          ccache --set-config=max_size=500M
+          ccache -z
           STARTDIR=$(pwd)
           echo "::group::Build podio"
           cd podio
@@ -65,4 +91,7 @@ jobs:
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -G Ninja -B build
           cmake --build build -- -k0
+          echo "::endgroup::"
+          echo "::group::ccache statistics"
+          ccache -s
           echo "::endgroup::"
