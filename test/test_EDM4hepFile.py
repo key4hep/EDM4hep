@@ -313,6 +313,8 @@ def test_TrackerHit3DCollection(event, edm4hep_version):
     check_cov_matrix(hit.getCovMatrix(), 3)
     if edm4hep_version >= podio.version.parse("1.1.2"):
         assert hit.getTimeError() == next(counter)
+    else:
+        assert hit.getTimeError() == 0
 
 
 def test_TrackerHitPlaneCollection(event, edm4hep_version):
@@ -335,6 +337,8 @@ def test_TrackerHitPlaneCollection(event, edm4hep_version):
     check_cov_matrix(hit.getCovMatrix(), 3)
     if edm4hep_version >= podio.version.parse("1.1.2"):
         assert hit.getTimeError() == next(counter)
+    else:
+        assert hit.getTimeError() == 0
 
 
 def test_RawTimeSeriesCollection(event):
@@ -378,6 +382,8 @@ def test_SenseWireHitCollection(event, edm4hep_version):
         assert val == next(counter)
     if edm4hep_version >= podio.version.parse("1.1.2"):
         assert hit.getTimeError() == next(counter)
+    else:
+        assert hit.getTimeError() == 0
 
 
 def test_TrackCollection(event):
