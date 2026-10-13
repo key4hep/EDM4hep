@@ -334,12 +334,14 @@ datatypes:
         void setProducedBySecondary(bool val) { setQuality( utils::setBit( getQuality() , BITProducedBySecondary , val ) ) ;   }
 
     ExtraCode:
-      includes: "#include <edm4hep/MCParticle.h>"
+      includes: |
+        #include <edm4hep/MCParticle.h>
+        #include <edm4hep/utils/bit_utils.h>
       declaration: |
         static constexpr int  BITOverlay = 31;
         static constexpr int  BITProducedBySecondary = 30;
-        bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }
-        bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }
+        bool isOverlay() const { return utils::checkBit(getQuality(), BITOverlay); }
+        bool isProducedBySecondary() const { return utils::checkBit(getQuality(), BITProducedBySecondary); }
         double x() const {return getPosition()[0];}
         double y() const {return getPosition()[1];}
         double z() const {return getPosition()[2];}
