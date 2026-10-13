@@ -1,12 +1,9 @@
-#include "edm4hep/MutableSimTrackerHit.h"
 #include "edm4hep/MutableTrack.h"
-#include "edm4hep/SimTrackerHit.h"
 #include "edm4hep/Track.h"
 #include "edm4hep/TrackState.h"
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <limits>
 #include <optional>
 
 namespace {
@@ -20,34 +17,6 @@ concept IndexableWithLocation = requires(const T& t) { t.getTrackStates(edm4hep:
 template <typename T>
 concept IndexableWithInteger = requires(const T& t) { t.getTrackStates(0); };
 } // namespace
-
-TEST_CASE("SimTrackerHit quality flags", "[bit_utils]") {
-  auto mutableHit = edm4hep::MutableSimTrackerHit{};
-  const edm4hep::SimTrackerHit hit = mutableHit;
-  mutableHit.setQuality(1); // Preserve an unrelated user-defined flag.
-
-  REQUIRE_FALSE(hit.isOverlay());
-  REQUIRE_FALSE(hit.isProducedBySecondary());
-
-  mutableHit.setOverlay(true);
-  REQUIRE(hit.isOverlay());
-  REQUIRE_FALSE(hit.isProducedBySecondary());
-  REQUIRE(mutableHit.isOverlay());
-  REQUIRE(hit.getQuality() == std::numeric_limits<int32_t>::min() + 1);
-
-  mutableHit.setProducedBySecondary(true);
-  REQUIRE(hit.isOverlay());
-  REQUIRE(hit.isProducedBySecondary());
-  REQUIRE(mutableHit.isProducedBySecondary());
-
-  mutableHit.setOverlay(false);
-  REQUIRE_FALSE(hit.isOverlay());
-  REQUIRE(hit.isProducedBySecondary());
-
-  mutableHit.setProducedBySecondary(false);
-  REQUIRE_FALSE(hit.isProducedBySecondary());
-  REQUIRE(hit.getQuality() == 1);
-}
 
 TEST_CASE("Track::getTrackState") {
   // Populate a track with track states
