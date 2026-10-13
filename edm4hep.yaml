@@ -362,14 +362,22 @@ datatypes:
 
 
   edm4hep::SimCalorimeterHit:
-    Description: "Simulated calorimeter hit"
+    Description: "Simulated calorimeter hit. No time selection is applied to the contributions, time windows have to be handled by the digitization"
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
-      - float energy [GeV]                   // energy of the hit
+      - float energy [GeV]                   // energy of the hit, the sum of the energies of all contributions
       - edm4hep::Vector3f position [mm]      // position of the hit in world coordinates
     OneToManyRelations:
       - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
+    MutableExtraCode:
+      includes: "#include <edm4hep/CaloHitContribution.h>"
+      declaration: |
+        /// Add a contribution to the hit and add its energy to the energy of the hit
+        void addMCParticleContribution(const edm4hep::CaloHitContribution& contrib) {
+          addToContributions(contrib);
+          setEnergy(getEnergy() + contrib.getEnergy());
+        }
 
 
   edm4hep::RawCalorimeterHit:
