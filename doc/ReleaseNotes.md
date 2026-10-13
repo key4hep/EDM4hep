@@ -1,3 +1,23 @@
+# v01-02
+
+* 2026-10-12 Juan Miguel Carceller ([PR#533](https://github.com/Key4hep/EDM4hep/pull/533))
+  - Use the alma9-cvmfs image for the LCG and pre-commit workflows.
+
+* 2026-10-12 Jackson Carl Burzynski ([PR#528](https://github.com/Key4hep/EDM4hep/pull/528))
+  - Add a `timeError` member to `TrackerHit3D`, `TrackerHitPlane`, `SenseWireHit` and the `TrackerHit` interface
+
+* 2026-10-05 Thomas Madlener ([PR#531](https://github.com/Key4hep/EDM4hep/pull/531))
+  - Make it possible to trigger the LCG based workflows from the github web UI
+
+* 2026-09-30 Juan Miguel Carceller ([PR#525](https://github.com/Key4hep/EDM4hep/pull/525))
+  - Apply the changes proposed by include-what-you-use, plus some manual clean up.
+
+* 2026-09-22 Juan Miguel Carceller ([PR#524](https://github.com/Key4hep/EDM4hep/pull/524))
+  - Hide deprecated Track::getTrackState(int32_t) overload from Cling/cppyy
+
+* 2026-09-09 Juan Miguel Carceller ([PR#520](https://github.com/Key4hep/EDM4hep/pull/520))
+  - Remove the deprecated Cluster phi aliases (`getPhi` and `setPhi`). Use the proper `getIPhi` and `setIPhi` instead.
+
 # v01-01-01
 
 * 2026-09-04 Juan Miguel Carceller ([PR#518](https://github.com/key4hep/EDM4hep/pull/518))
