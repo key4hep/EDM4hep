@@ -366,7 +366,7 @@ datatypes:
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
-      - float energy [GeV]                   // energy of the hit, the sum of the energies of all contributions
+      - float energy [GeV]                   // energy of the hit
       - edm4hep::Vector3f position [mm]      // position of the hit in world coordinates
     OneToManyRelations:
       - edm4hep::CaloHitContribution contributions  // Monte Carlo step contributions
