@@ -362,7 +362,7 @@ datatypes:
 
 
   edm4hep::SimCalorimeterHit:
-    Description: "Simulated calorimeter hit. No time selection is applied to the contributions, time windows have to be handled by the digitization"
+    Description: "Simulated calorimeter hit. Hit time-related effects have to be handled by the digitization"
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
