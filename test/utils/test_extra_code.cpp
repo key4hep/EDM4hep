@@ -1,4 +1,7 @@
+#include "edm4hep/CaloHitContributionCollection.h"
+#include "edm4hep/MutableSimCalorimeterHit.h"
 #include "edm4hep/MutableTrack.h"
+#include "edm4hep/SimCalorimeterHit.h"
 #include "edm4hep/Track.h"
 #include "edm4hep/TrackState.h"
 
@@ -58,5 +61,44 @@ TEST_CASE("Track::getTrackState") {
     // but using the track states should not
     STATIC_REQUIRE(!IndexableWithLocation<edm4hep::Track>);
     STATIC_REQUIRE(!IndexableWithLocation<edm4hep::MutableTrack>);
+  }
+}
+
+TEST_CASE("SimCalorimeterHit::addMCParticleContribution") {
+  // The energies are powers of two to have exact sums
+  auto contributions = edm4hep::CaloHitContributionCollection{};
+  for (const auto energy : {1.f, 2.f, 4.f}) {
+    contributions.create().setEnergy(energy);
+  }
+
+  SECTION("sums up the energies of the contributions") {
+    auto mutableHit = edm4hep::MutableSimCalorimeterHit{};
+    for (const auto contrib : contributions) {
+      mutableHit.addMCParticleContribution(contrib);
+    }
+
+    const edm4hep::SimCalorimeterHit hit = mutableHit;
+    REQUIRE(hit.getEnergy() == 7.f);
+    REQUIRE(hit.getContributions().size() == 3);
+    for (size_t i = 0; i < contributions.size(); ++i) {
+      REQUIRE(hit.getContributions()[i] == contributions[i]);
+    }
+  }
+
+  SECTION("adds to the energy that is already present") {
+    auto mutableHit = edm4hep::MutableSimCalorimeterHit{};
+    mutableHit.setEnergy(8.f);
+    mutableHit.addMCParticleContribution(contributions[0]);
+
+    REQUIRE(mutableHit.getEnergy() == 9.f);
+    REQUIRE(mutableHit.getContributions().size() == 1);
+  }
+
+  SECTION("addToContributions leaves the energy untouched") {
+    auto mutableHit = edm4hep::MutableSimCalorimeterHit{};
+    mutableHit.addToContributions(contributions[0]);
+
+    REQUIRE(mutableHit.getEnergy() == 0.f);
+    REQUIRE(mutableHit.getContributions().size() == 1);
   }
 }
