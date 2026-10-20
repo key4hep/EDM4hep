@@ -362,7 +362,7 @@ datatypes:
 
 
   edm4hep::SimCalorimeterHit:
-    Description: "Simulated calorimeter hit. Hit time-related effects have to be handled by the digitization"
+    Description: "Simulated calorimeter hit. The container for CaloHitContributions with some summary information computed from these contributions. See @ref md_doc_2_sim_calorimeter_hit for more details"
     Author: "EDM4hep authors"
     Members:
       - uint64_t cellID       // ID of the sensor that created this hit
