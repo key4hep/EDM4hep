@@ -254,6 +254,21 @@ def create_SenseWireHitCollection(vectorsize):
     return hits
 
 
+def create_TrackState(counter):
+    """Create a TrackState"""
+    state = edm4hep.TrackState()
+    state.location = next(counter)
+    state.D0 = next(counter)
+    state.phi = next(counter)
+    state.omega = next(counter)
+    state.Z0 = next(counter)
+    state.tanLambda = next(counter)
+    state.time = next(counter)
+    state.referencePoint = edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    state.covMatrix = create_CovMatrixNf(6)
+    return state
+
+
 def create_TrackCollection(vectorsize, tracker_hit):
     """Create a TrackCollection"""
     counter = count(COUNT_START)
@@ -265,17 +280,7 @@ def create_TrackCollection(vectorsize, tracker_hit):
     for j in range(vectorsize):
         track.addToSubdetectorHitNumbers(next(counter))
         track.addToSubdetectorHoleNumbers(next(counter))
-        state = edm4hep.TrackState()
-        state.location = next(counter)
-        state.D0 = next(counter)
-        state.phi = next(counter)
-        state.omega = next(counter)
-        state.Z0 = next(counter)
-        state.tanLambda = next(counter)
-        state.time = next(counter)
-        state.referencePoint = edm4hep.Vector3f(next(counter), next(counter), next(counter))
-        state.covMatrix = create_CovMatrixNf(6)
-        track.addToTrackStates(state)
+        track.addToTrackStates(create_TrackState(counter))
 
     track.addToTrackerHits(tracker_hit)
     track.addToTracks(track)
@@ -297,6 +302,17 @@ def create_VertexCollection(vectorsize):
     for j in range(vectorsize):
         v.addToParameters(next(counter))
     return vertex, v
+
+
+def create_TrackAtVertexCollection(track):
+    """Create a TrackAtVertexCollection"""
+    counter = count(COUNT_START)
+    tracks_at_vertex = edm4hep.TrackAtVertexCollection()
+    track_at_vertex = tracks_at_vertex.create()
+    track_at_vertex.setTrackState(create_TrackState(counter))
+    track_at_vertex.setWeight(next(counter))
+    track_at_vertex.setTrack(track)
+    return tracks_at_vertex
 
 
 def create_ReconstructedParticleCollection(vertex, cluster, track):
@@ -442,7 +458,10 @@ def create_frame():
     )
     reco_particle = reco_particles[0]
 
+    tracks_at_vertex = frame.put(create_TrackAtVertexCollection(track), "TrackAtVertexCollection")
+
     vertex.addToParticles(reco_particle)
+    vertex.addToTracksAtVertex(tracks_at_vertex[0])
     frame.put(vertices, "VertexCollection")
 
     pid.setParticle(reco_particle)

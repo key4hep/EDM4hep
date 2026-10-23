@@ -1,5 +1,5 @@
 ---
-schema_version: 7
+schema_version: 8
 options:
   getSyntax: True
   exposePODMembers: False
@@ -589,6 +589,7 @@ datatypes:
       - float               parameters    // additional parameters related to this vertex
     OneToManyRelations:
       - edm4hep::ReconstructedParticle particles // particles that have been used to form this vertex, aka the decay particles emerging from this vertex
+      - edm4hep::TrackAtVertex tracksAtVertex    // tracks that have been used to form this vertex, with their states fitted at it; used instead of particles for vertices formed from tracks only
     ExtraCode:
       includes: |
         #include <edm4hep/Constants.h>
@@ -619,6 +620,16 @@ datatypes:
         void setSecondary(bool value=true) { setType(utils::setBit(getType(), BITSecondaryVertex, value)); }
         /// Set the tertiary vertex flag for this vertex
         void setTertiary(bool value=true) { setType(utils::setBit(getType(), BITTertiaryVertex, value)); }
+
+
+  edm4hep::TrackAtVertex:
+    Description: "Track that has been used to form a vertex, with its state fitted at that vertex"
+    Author: "EDM4hep authors"
+    Members:
+      - edm4hep::TrackState trackState // track state fitted at the vertex, at location AtVertex with the vertex position as reference point
+      - float weight                   // weight of the track in the vertex fit, 1 for a track fully assigned to the vertex
+    OneToOneRelations:
+      - edm4hep::Track track           // the track that has been used in the vertex fit
 
 
   edm4hep::ReconstructedParticle:
