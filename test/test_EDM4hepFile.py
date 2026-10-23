@@ -108,6 +108,19 @@ def check_cov_matrix(cov_matrix, n_dim):
         assert cov_matrix[i] == next(counter)
 
 
+def check_track_state(state, counter):
+    """Check the contents of the passed track state"""
+    assert state.location == next(counter)
+    assert state.D0 == next(counter)
+    assert state.phi == next(counter)
+    assert state.omega == next(counter)
+    assert state.Z0 == next(counter)
+    assert state.tanLambda == next(counter)
+    assert state.time == next(counter)
+    assert state.referencePoint == edm4hep.Vector3f(next(counter), next(counter), next(counter))
+    check_cov_matrix(state.covMatrix, 6)
+
+
 def test_basic_file_contents(reader, events, expected_edm4hep_version, expected_podio_version):
     """Make sure the basic file contents are OK"""
     assert len(events) == FRAMES
@@ -406,19 +419,7 @@ def test_TrackCollection(event):
     for j in range(VECTORSIZE):
         assert subdetHitNumbers[j] == next(counter)
         assert subdetHoleNumbers[j] == next(counter)
-
-        state = trackStates[j]
-        assert state.location == next(counter)
-        assert state.D0 == next(counter)
-        assert state.phi == next(counter)
-        assert state.omega == next(counter)
-        assert state.Z0 == next(counter)
-        assert state.tanLambda == next(counter)
-        assert state.time == next(counter)
-        assert state.referencePoint == edm4hep.Vector3f(
-            next(counter), next(counter), next(counter)
-        )
-        check_cov_matrix(state.covMatrix, 6)
+        check_track_state(trackStates[j], counter)
 
     assert track.getNholes() == next(counter)
 
@@ -430,7 +431,7 @@ def test_TrackCollection(event):
     assert track.getTracks()[0] == track
 
 
-def test_VertexCollection(event, reco_particle):
+def test_VertexCollection(event, reco_particle, edm4hep_version):
     """Check the VertexCollection"""
     counter = count(COUNT_START)
     vertex = event.get("VertexCollection")
@@ -448,6 +449,26 @@ def test_VertexCollection(event, reco_particle):
 
     assert len(v.getParticles()) == 1
     assert v.getParticles()[0] == reco_particle
+
+    if edm4hep_version >= podio.version.parse("1.2.1"):
+        assert len(v.getTracksAtVertex()) == 1
+        assert v.getTracksAtVertex()[0] == event.get("TrackAtVertexCollection")[0]
+    else:
+        assert len(v.getTracksAtVertex()) == 0
+
+
+def test_TrackAtVertexCollection(event, track, edm4hep_version):
+    """Check the TrackAtVertexCollection"""
+    if edm4hep_version < podio.version.parse("1.2.1"):
+        # This datatype did not exist before
+        return
+    counter = count(COUNT_START)
+    tracks_at_vertex = event.get("TrackAtVertexCollection")
+    assert len(tracks_at_vertex) == 1
+    track_at_vertex = tracks_at_vertex[0]
+    check_track_state(track_at_vertex.getTrackState(), counter)
+    assert track_at_vertex.getWeight() == next(counter)
+    assert track_at_vertex.getTrack() == track
 
 
 def test_ReconstructedParticleCollection(event, track):
