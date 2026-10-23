@@ -334,12 +334,14 @@ datatypes:
         void setProducedBySecondary(bool val) { setQuality( utils::setBit( getQuality() , BITProducedBySecondary , val ) ) ;   }
 
     ExtraCode:
-      includes: "#include <edm4hep/MCParticle.h>"
+      includes: |
+        #include <edm4hep/MCParticle.h>
+        #include <edm4hep/utils/bit_utils.h>
       declaration: |
         static constexpr int  BITOverlay = 31;
         static constexpr int  BITProducedBySecondary = 30;
-        bool isOverlay() const { return getQuality() & (1 << BITOverlay) ; }
-        bool isProducedBySecondary() const { return getQuality() & (1 << BITProducedBySecondary) ; }
+        bool isOverlay() const { return utils::checkBit(getQuality(), BITOverlay); }
+        bool isProducedBySecondary() const { return utils::checkBit(getQuality(), BITProducedBySecondary); }
         double x() const {return getPosition()[0];}
         double y() const {return getPosition()[1];}
         double z() const {return getPosition()[2];}
@@ -443,6 +445,7 @@ datatypes:
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
       - float time [ns]                    // time of the hit
+      - float timeError [ns]               // error measured on time
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
       - edm4hep::Vector3d position [mm]    // hit position
@@ -468,6 +471,7 @@ datatypes:
       - int32_t type                       // type of raw data hit
       - int32_t quality                    // quality bit flag of the hit
       - float time [ns]                    // time of the hit
+      - float timeError [ns]               // error measured on time
       - float eDep [GeV]                   // energy deposited on the hit
       - float eDepError [GeV]              // error measured on eDep
       - edm4hep::Vector2f u [rad]          // direction of the first measurement given as (theta, phi) in spherical coordinates
@@ -509,6 +513,7 @@ datatypes:
       - int32_t type // type of the raw data hit
       - int32_t quality // quality bit flag of the hit
       - float time [ns] // time of the hit
+      - float timeError [ns] // error measured on time
       - float eDep [GeV] // energy deposited by the hit
       - float eDepError [GeV] // error on eDep
       - float wireStereoAngle // angle between the sense wire axis and the drift chamber axis (usually the z-axis) - use it together with wireAzimuthalAngle to get the wire direction
@@ -697,6 +702,7 @@ interfaces:
       - int32_t type // type of the raw data hit
       - int32_t quality // quality bit flag of the hit
       - float time [ns] // time of the hit
+      - float timeError [ns] // error measured on time
       - float eDep [GeV] // energy deposited on the hit
       - float eDepError [GeV] // error measured on eDep
       - edm4hep::Vector3d position [mm] // hit position as recorded by the sensor. The exact interpretation will depend on the currently held type of the interface

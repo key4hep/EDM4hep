@@ -7,9 +7,6 @@
 #include <getopt.h>
 #include <unistd.h>
 
-#include "TFile.h"
-#include "TList.h"
-
 // std
 #include <filesystem>
 #include <memory>
@@ -118,15 +115,6 @@ int main(int argc, char** argv) {
       outFileStr = outFileStr.erase(outFileStr.find("_edm4hep"), 8);
     }
     outFilePath = std::filesystem::path(outFileStr + ".edm4hep.json");
-  }
-
-  {
-    std::unique_ptr<TFile> inFile(TFile::Open(inFilePath.c_str(), "READ"));
-    if (!inFile->GetListOfKeys()->FindObject("podio_metadata")) {
-      std::cout << "ERROR: Reading file produced with an incompatible version of EDM4hep. Aborting..." << std::endl;
-      return 1;
-    }
-    inFile->Close();
   }
 
   return read_frames(inFilePath, outFilePath, requestedCollections, requestedEvents, frameName, nEventsMax, verboser);
