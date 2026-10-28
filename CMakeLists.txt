@@ -37,6 +37,7 @@ option(USE_EXTERNAL_CATCH2 "Link against an external Catch2 v3 static
 library, otherwise build it locally" ON)
 
 #--- enable unit testing capabilities ------------------------------------------
+set(DART_TESTING_TIMEOUT 600 CACHE STRING "Default timeout for each test in seconds")
 include(CTest)
 
 #--- target for Doxygen documentation ------------------------------------------
