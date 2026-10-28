@@ -37,3 +37,19 @@ def test_track_get_track_state():
     assert trackStateAtVertex.has_value()
     assert trackStateAtVertex.value().location == edm4hep.TrackState.AtVertex
     assert not track.getTrackState(edm4hep.TrackState.AtIP).has_value()
+
+
+def test_sim_calorimeter_hit_add_mc_particle_contribution():
+    """MutableSimCalorimeterHit::addMCParticleContribution attaches the
+    contribution and adds its energy to the energy of the hit"""
+    contributions = edm4hep.CaloHitContributionCollection()
+    for energy in (1.0, 2.0, 4.0):
+        contributions.create().setEnergy(energy)
+
+    hit = edm4hep.MutableSimCalorimeterHit()
+    for contrib in contributions:
+        hit.addMCParticleContribution(contrib)
+
+    assert hit.getEnergy() == 7.0
+    assert hit.getContributions().size() == 3
+    assert [c.getEnergy() for c in hit.getContributions()] == [1.0, 2.0, 4.0]
