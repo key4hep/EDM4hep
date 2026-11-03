@@ -18,11 +18,11 @@ if (EDM4HEP_WITH_JSON)
  find_package(nlohmann_json ${EDM4HEP_NLOHMANN_JSON_VERSION} REQUIRED)
 endif()
 
-include(cmake/Key4hepConfig.cmake)
-
 #--- Define basic build settings -----------------------------------------------
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
+
+include(cmake/Key4hepConfig.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
