@@ -188,7 +188,9 @@ components:
         - edm4hep::Vector3f referencePoint [mm] // Reference point of the track parameters, e.g. the origin at the IP, or the position  of the first/last hits or the entry point into the calorimeter
         - edm4hep::CovMatrix6f covMatrix // covariance matrix of the track parameters.
       ExtraCode:
-        includes: "#include <edm4hep/Constants.h>"
+        includes: |
+          #include <edm4hep/Constants.h>
+          #include <cmath>
         declaration: |
           /// The predefined locations at which a TrackState can be defined
           ///
@@ -216,6 +218,15 @@ components:
           /// Set the covariance matrix value for the two passed parameters
           constexpr void setCovMatrix(float value, edm4hep::TrackParams parI, edm4hep::TrackParams parJ) { covMatrix.setValue(value, parI, parJ); }
 
+          /// Get the momentum at this track state provided a magnetic field value in T (along z)
+          ///
+          /// @note This assumes a solenoidal field
+          edm4hep::Vector3f getMomentum(double Bz) const {
+            // pT [GeV] = gevPerTeslaMm * Bz [T] * R [mm] = gevPerTeslaMm * Bz [T] / |omega| [1/mm]
+            constexpr double gevPerTeslaMm = 2.998e-4;
+            const float pt = gevPerTeslaMm * Bz / std::abs(omega);
+            return {pt * std::cos(phi), pt * std::sin(phi), pt * tanLambda};
+          }
 
     edm4hep::Quantity:
       Members:
