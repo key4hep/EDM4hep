@@ -1,15 +1,5 @@
 #include "edm4hep/utils/dataframe.h"
 
-#include "edm4hep/CalorimeterHitData.h"
-#include "edm4hep/ClusterData.h"
-#include "edm4hep/MCParticleData.h"
-#include "edm4hep/ReconstructedParticleData.h"
-#include "edm4hep/SimCalorimeterHitData.h"
-#include "edm4hep/SimTrackerHitData.h"
-#include "edm4hep/TrackerHit3DData.h"
-#include "edm4hep/TrackerHitPlaneData.h"
-#include "edm4hep/VertexData.h"
-
 #include "Math/Vector3D.h"
 #include "ROOT/RVec.hxx"
 
