@@ -71,10 +71,10 @@ namespace labels {
   static constexpr const char* GeneratorToolDescriptions = "GeneratorToolDescriptions";
   static constexpr const char* GeneratorEventParameters = "GeneratorEventParameters";
   static constexpr const char* GeneratorWeightNames = "GeneratorWeightNames";
-  /// Random seed used by the event generator (e.g. Pythia8) for this run
+  /// Random seed used by the event generator (e.g. Pythia8)
   static constexpr const char* GeneratorRandomSeed = "GeneratorRandomSeed";
 
-  /// Random seed used by the simulation (e.g. Delphes, ddsim) for this run
+  /// Random seed used by the simulation (e.g. Delphes, ddsim)
   static constexpr const char* SimulationRandomSeed = "SimulationRandomSeed";
 } // namespace labels
 
