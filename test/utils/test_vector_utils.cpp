@@ -10,6 +10,7 @@
 #include "edm4hep/Vector4f.h"
 
 #include <cmath>
+#include <limits>
 #include <tuple>
 #include <type_traits>
 using Vector2And3Types = std::tuple<edm4hep::Vector3f, edm4hep::Vector3d, edm4hep::Vector2f>;
@@ -86,6 +87,46 @@ TEST_CASE("Vector ValueType", "[vector_utils]") {
   STATIC_REQUIRE(std::is_same_v<float, utils::ValueType<Vector3f>>);
   STATIC_REQUIRE(std::is_same_v<double, utils::ValueType<Vector3d>>);
   STATIC_REQUIRE(std::is_same_v<float, utils::ValueType<Vector4f>>);
+}
+
+TEMPLATE_LIST_TEST_CASE("Vector components must all be finite", "[vector_utils]", AllVectorTypes) {
+  using ValueType = edm4hep::utils::ValueType<TestType>;
+  REQUIRE(edm4hep::utils::finite(TestType{}));
+  REQUIRE(edm4hep::utils::finite(create<TestType>()));
+
+  const auto checkComponent = [](auto member) {
+    auto vector = create<TestType>();
+    vector.*member = std::numeric_limits<ValueType>::max();
+    REQUIRE(edm4hep::utils::finite(vector));
+    for (const auto value : {std::numeric_limits<ValueType>::quiet_NaN(), std::numeric_limits<ValueType>::infinity(),
+                             -std::numeric_limits<ValueType>::infinity()}) {
+      vector.*member = value;
+      REQUIRE_FALSE(edm4hep::utils::finite(vector));
+    }
+  };
+
+  if constexpr (edm4hep::Vector2D_AB<TestType>) {
+    checkComponent(&TestType::a);
+    checkComponent(&TestType::b);
+  } else {
+    checkComponent(&TestType::x);
+    checkComponent(&TestType::y);
+    if constexpr (edm4hep::VectorHasZ<TestType>) {
+      checkComponent(&TestType::z);
+    }
+    if constexpr (edm4hep::VectorHasT<TestType>) {
+      checkComponent(&TestType::t);
+    }
+  }
+}
+
+TEST_CASE("Integer vector components are finite", "[vector_utils]") {
+  struct Vector2i {
+    int x;
+    int y;
+  };
+  REQUIRE(edm4hep::utils::finite(Vector2i{}));
+  REQUIRE(edm4hep::utils::finite(Vector2i{1, -2}));
 }
 
 TEMPLATE_LIST_TEST_CASE("Vector utility functionality", "[vector_utils]", Vector2And3Types) {

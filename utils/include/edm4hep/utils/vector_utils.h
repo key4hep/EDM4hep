@@ -103,6 +103,13 @@ namespace utils {
     return v.b;
   }
 
+  /// Whether all components of a vector are finite.
+  template <VectorND V>
+  bool finite(const V& v) {
+    return std::isfinite(vector_x(v)) && std::isfinite(vector_y(v)) && std::isfinite(vector_z(v)) &&
+           std::isfinite(vector_t(v));
+  }
+
   namespace detail {
     /// Helper struct to determine the underlying type of edm4hep vector types
     template <typename V>
