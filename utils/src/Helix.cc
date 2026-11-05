@@ -1,4 +1,5 @@
 #include "edm4hep/utils/Helix.h"
+#include "edm4hep/utils/vector_utils.h"
 
 #include <cmath>
 #include <limits>
@@ -9,10 +10,8 @@ namespace {
 constexpr double twoPi = 2. * std::numbers::pi;
 constexpr double roundingTolerance = 8. * std::numeric_limits<double>::epsilon();
 
-bool finite(const edm4hep::Vector3d& v) { return std::isfinite(v.x) && std::isfinite(v.y) && std::isfinite(v.z); }
-
 void checkPoint(const edm4hep::Vector3d& point) {
-  if (!finite(point)) {
+  if (!edm4hep::utils::finite(point)) {
     throw std::invalid_argument("Helix: point must be finite");
   }
 }
