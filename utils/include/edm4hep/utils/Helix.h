@@ -31,6 +31,12 @@ public:
   Helix(const edm4hep::Vector3d& position, const edm4hep::Vector3d& momentum, double charge, double bField,
         const edm4hep::Vector3d& parameterReferencePoint = {});
 
+  /// Construct from a TrackState whose phi is the direction at the transverse
+  /// closest approach to its referencePoint, with D0/Z0 relative to that point.
+  /// For a referencePoint on the track this is the direction at that point.
+  /// Same requirements as fromCanonical.
+  static Helix fromTrackState(const edm4hep::TrackState& trackState, double bField);
+
   /// Construct from canonical parameters at transverse closest approach.
   /// Assumes unit absolute charge; its sign follows omega / Bz. Both omega and
   /// Bz must be nonzero, and omega * d0 <= 1 (otherwise the point described is
@@ -39,12 +45,6 @@ public:
   /// tracks. Throws std::invalid_argument for invalid or non-finite inputs.
   static Helix fromCanonical(double phi0, double d0, double z0, double omega, double tanLambda, double bField,
                              const edm4hep::Vector3d& parameterReferencePoint = {});
-
-  /// Construct from a TrackState whose phi is the direction at the transverse
-  /// closest approach to its referencePoint, with D0/Z0 relative to that point.
-  /// For a referencePoint on the track this is the direction at that point.
-  /// Same requirements as fromCanonical.
-  static Helix fromTrackState(const edm4hep::TrackState& trackState, double bField);
 
   /// TrackState with D0, phi, Z0 at the transverse closest approach to
   /// referencePoint, e.g. a hit position (D0 = Z0 = 0 if it lies on the track)
