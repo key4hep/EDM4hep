@@ -37,14 +37,24 @@ public:
   /// Same requirements as fromCanonical.
   static Helix fromTrackState(const edm4hep::TrackState& trackState, double bField);
 
+  /// Inputs for fromCanonical, supporting designated initializers.
+  struct CanonicalParameters {
+    double phi0{};                               ///< Momentum azimuth at transverse closest approach [rad].
+    double d0{};                                 ///< Signed transverse impact parameter [mm].
+    double z0{};                                 ///< Longitudinal impact parameter [mm].
+    double omega{};                              ///< Signed curvature [1/mm].
+    double tanLambda{};                          ///< Ratio of longitudinal to transverse momentum.
+    double bField{};                             ///< Signed magnetic field along z [T].
+    edm4hep::Vector3d parameterReferencePoint{}; ///< Reference for the impact parameters (default: origin).
+  };
+
   /// Construct from canonical parameters at transverse closest approach.
   /// Assumes unit absolute charge; its sign follows omega / Bz. Both omega and
   /// Bz must be nonzero, and omega * d0 <= 1 (otherwise the point described is
   /// the farthest from the reference). An excess within float rounding is
   /// moved onto omega * d0 = 1. Use the Cartesian constructor for straight
   /// tracks. Throws std::invalid_argument for invalid or non-finite inputs.
-  static Helix fromCanonical(double phi0, double d0, double z0, double omega, double tanLambda, double bField,
-                             const edm4hep::Vector3d& parameterReferencePoint = {});
+  static Helix fromCanonical(const CanonicalParameters& parameters);
 
   /// TrackState with D0, phi, Z0 at the transverse closest approach to
   /// referencePoint, e.g. a hit position (D0 = Z0 = 0 if it lies on the track)

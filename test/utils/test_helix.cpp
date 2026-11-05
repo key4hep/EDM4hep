@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <limits>
+#include <numbers>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
@@ -12,10 +13,10 @@
 
 using Catch::Approx;
 using edm4hep::utils::Helix;
+using std::numbers::pi;
 
 namespace {
 constexpr double conversion = Helix::fieldToCurvature;
-constexpr double pi = 3.14159265358979323846;
 
 void checkVector(const edm4hep::Vector3d& actual, const edm4hep::Vector3d& expected, double tolerance = 1.e-9) {
   REQUIRE(actual.x == Approx(expected.x).margin(tolerance));
@@ -52,7 +53,13 @@ TEST_CASE("Helix canonical parameters round trip after propagation", "[helix]") 
   for (double omega : {-0.001, 0.001}) {
     for (double phi : {-3.1, -0.4, 0., 3.1}) {
       CAPTURE(omega, phi);
-      const auto canonical = Helix::fromCanonical(phi, 3., -5., omega, -0.7, 2., reference);
+      const auto canonical = Helix::fromCanonical({.phi0 = phi,
+                                                   .d0 = 3.,
+                                                   .z0 = -5.,
+                                                   .omega = omega,
+                                                   .tanLambda = -0.7,
+                                                   .bField = 2.,
+                                                   .parameterReferencePoint = reference});
       REQUIRE(canonical.getD0() == Approx(3.));
       REQUIRE(canonical.getZ0() == Approx(-5.));
       REQUIRE(canonical.getPhi0() == Approx(phi).margin(1.e-12));
@@ -131,25 +138,30 @@ TEST_CASE("Helix canonical parameters must describe the closest approach", "[hel
     CAPTURE(omega);
     const double sign = std::copysign(1., omega);
     // omega * d0 > 1 is the farthest point of the circle from the reference.
-    REQUIRE_THROWS_AS(Helix::fromCanonical(0., sign * 150., 0., omega, 0.3, 2.), std::invalid_argument);
-    REQUIRE_THROWS_AS(Helix::fromCanonical(0., sign * 100.001, 0., omega, 0.3, 2.), std::invalid_argument);
+    REQUIRE_THROWS_AS(Helix::fromCanonical({.d0 = sign * 150., .omega = omega, .tanLambda = 0.3, .bField = 2.}),
+                      std::invalid_argument);
+    REQUIRE_THROWS_AS(Helix::fromCanonical({.d0 = sign * 100.001, .omega = omega, .tanLambda = 0.3, .bField = 2.}),
+                      std::invalid_argument);
     for (double d0 : {-150., 0., 99.}) {
       CAPTURE(d0);
-      const auto helix = Helix::fromCanonical(0.3, sign * d0, 0., omega, 0.3, 2.);
+      const auto helix =
+          Helix::fromCanonical({.phi0 = 0.3, .d0 = sign * d0, .omega = omega, .tanLambda = 0.3, .bField = 2.});
       const Helix reconstructed(helix.getPosition(), helix.getMomentum(), helix.getCharge(), 2.);
       REQUIRE(reconstructed.getD0() == Approx(sign * d0).margin(1.e-9));
       REQUIRE(reconstructed.getPhi0() == Approx(0.3));
       REQUIRE(reconstructed.getZ0() == Approx(0.).margin(1.e-9));
     }
     // omega * d0 = 1 puts the reference at the circle centre.
-    const auto centred = Helix::fromCanonical(0.3, sign * 100., 0., omega, 0.3, 2.);
+    const auto centred =
+        Helix::fromCanonical({.phi0 = 0.3, .d0 = sign * 100., .omega = omega, .tanLambda = 0.3, .bField = 2.});
     REQUIRE(centred.getDistanceToPoint({0., 0., 0.}).transverse == Approx(100.));
   }
   // Float rounding in a TrackState can push omega * d0 just above 1.
   for (double omega : {-0.001, 0.001}) {
     for (double d0 : {1000., 999.99999}) {
       CAPTURE(omega, d0);
-      const auto helix = Helix::fromCanonical(0.3, std::copysign(d0, omega), 4., omega, 0.3, 2.);
+      const auto helix = Helix::fromCanonical(
+          {.phi0 = 0.3, .d0 = std::copysign(d0, omega), .z0 = 4., .omega = omega, .tanLambda = 0.3, .bField = 2.});
       const auto state = helix.toTrackState(edm4hep::TrackState::AtOther, {});
       const auto back = Helix::fromTrackState(state, 2.);
       REQUIRE(back.getOmega() * back.getD0() <= 1.);
@@ -165,7 +177,7 @@ TEST_CASE("Helix residuals select the closest turn in z", "[helix]") {
   for (double omega : {-0.01, 0.01}) {
     for (double slope : {-0.4, 0., 0.4}) {
       CAPTURE(omega, slope);
-      const auto helix = Helix::fromCanonical(0., 0., 2., omega, slope, 2.);
+      const auto helix = Helix::fromCanonical({.z0 = 2., .omega = omega, .tanLambda = slope, .bField = 2.});
       const double radius = 1. / std::abs(omega);
       const double sign = std::copysign(1., omega);
       const double path = 6. * pi * radius + 0.5 * pi * radius;
@@ -309,7 +321,7 @@ TEST_CASE("Helix cylinder crossings for degenerate geometries", "[helix]") {
     // about it, so starting 0.1 rad past the PCA the cylinder through the point at
     // pi + 0.15 rad is first crossed at pi - 0.15 rad, almost half a turn later.
     const double omega = std::copysign(0.01, field);
-    const auto pca = Helix::fromCanonical(0., 5., 0., omega, 0., field);
+    const auto pca = Helix::fromCanonical({.d0 = 5., .omega = omega, .bField = field});
     const Helix start(pca.positionAt(0.1 / std::abs(omega)), pca.momentumAt(0.1 / std::abs(omega)), pca.getCharge(),
                       field);
     const auto target = pca.positionAt((pi + 0.15) / std::abs(omega));
@@ -324,7 +336,8 @@ TEST_CASE("Helix retains tangent cylinder intersections under rotation", "[helix
   for (double omega : {-0.01, 0.01}) {
     for (double phi : {0., 0.006, 0.2, 0.7, 1.5, -2.5}) {
       CAPTURE(omega, phi);
-      const auto pca = Helix::fromCanonical(phi, std::copysign(5., omega), 0., omega, 0., 2.);
+      const auto pca =
+          Helix::fromCanonical({.phi0 = phi, .d0 = std::copysign(5., omega), .omega = omega, .bField = 2.});
       const double radius = 1. / std::abs(omega);
       const auto tangent = pca.pathToRadius(195.);
       REQUIRE(tangent.has_value());
@@ -373,7 +386,8 @@ TEST_CASE("Helix already in a z plane has a zero path to that plane", "[helix]")
 }
 
 TEST_CASE("Helix chooses a local PCA for a curling track", "[helix]") {
-  const auto helix = Helix::fromCanonical(0.2, -2., 500., 0.01, 0.3, 2.);
+  const auto helix =
+      Helix::fromCanonical({.phi0 = 0.2, .d0 = -2., .z0 = 500., .omega = 0.01, .tanLambda = 0.3, .bField = 2.});
   const double period = 2. * pi / helix.getOmega();
   const Helix nextTurn(helix.positionAt(period + 40.), helix.momentumAt(period + 40.), 1., 2.);
   REQUIRE(nextTurn.getD0() == Approx(-2.));
@@ -388,9 +402,10 @@ TEST_CASE("Helix rejects singular or non-finite inputs", "[helix]") {
   REQUIRE_THROWS_AS(Helix({}, {1., nan, 0.}, 1., 2.), std::invalid_argument);
   REQUIRE_THROWS_AS(Helix({}, {1., 0., 0.}, nan, 2.), std::invalid_argument);
   REQUIRE_THROWS_AS(Helix({}, {1., 0., 0.}, 1., nan), std::invalid_argument);
-  REQUIRE_THROWS_AS(Helix::fromCanonical(0., 0., 0., 0., 1., 2.), std::invalid_argument);
-  REQUIRE_THROWS_AS(Helix::fromCanonical(0., 0., 0., 0.01, 1., 0.), std::invalid_argument);
-  REQUIRE_THROWS_AS(Helix::fromCanonical(nan, 0., 0., 0.01, 1., 2.), std::invalid_argument);
+  REQUIRE_THROWS_AS(Helix::fromCanonical({.tanLambda = 1., .bField = 2.}), std::invalid_argument);
+  REQUIRE_THROWS_AS(Helix::fromCanonical({.omega = 0.01, .tanLambda = 1.}), std::invalid_argument);
+  REQUIRE_THROWS_AS(Helix::fromCanonical({.phi0 = nan, .omega = 0.01, .tanLambda = 1., .bField = 2.}),
+                    std::invalid_argument);
   const Helix helix({}, {1., 0., 0.}, 1., 2.);
   REQUIRE_THROWS_AS(helix.positionAt(nan), std::invalid_argument);
   REQUIRE_THROWS_AS(helix.momentumAt(nan), std::invalid_argument);

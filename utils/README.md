@@ -30,9 +30,24 @@ calorimeter faces. Path
 lengths of different crossings can be compared directly to find the first one.
 
 The Cartesian constructor replaces MarlinUtil's `Initialize_VP`.
-`Helix::fromCanonical(phi0, d0, z0, omega, tanLambda, Bz)` replaces
-`Initialize_Canonical` for unit absolute charge. Both accept an optional reference
-point for the impact parameters, defaulting to the origin. `getD0`, `getZ0`,
+`Helix::fromCanonical(parameters)` replaces `Initialize_Canonical` for unit
+absolute charge. It takes a `Helix::CanonicalParameters` aggregate so that inputs
+can be named with C++20 designated initializers:
+
+```cpp
+const auto canonical = edm4hep::utils::Helix::fromCanonical({
+    .phi0 = 0.7,
+    .d0 = 3.,
+    .z0 = -5.,
+    .omega = 0.001,
+    .tanLambda = 0.4,
+    .bField = 2.,
+    .parameterReferencePoint = {12., -34., 56.},
+});
+```
+
+The Cartesian constructor and canonical parameters accept a reference point for
+the impact parameters, defaulting to the origin. `getD0`, `getZ0`,
 `getOmega`, `getTanLambda`, and `getCharge` provide the corresponding parameters.
 Canonical `phi0` is the momentum azimuth at the transverse closest approach to
 the reference point, and `fromCanonical` requires `omega * d0 <= 1` so that the

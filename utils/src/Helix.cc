@@ -2,10 +2,11 @@
 
 #include <cmath>
 #include <limits>
+#include <numbers>
 #include <stdexcept>
 
 namespace {
-constexpr double twoPi = 6.28318530717958647693;
+constexpr double twoPi = 2. * std::numbers::pi;
 constexpr double roundingTolerance = 8. * std::numeric_limits<double>::epsilon();
 
 bool finite(const edm4hep::Vector3d& v) { return std::isfinite(v.x) && std::isfinite(v.y) && std::isfinite(v.z); }
@@ -53,8 +54,8 @@ Helix::Helix(const edm4hep::Vector3d& position, const edm4hep::Vector3d& momentu
   m_z0 = canonical.z0;
 }
 
-Helix Helix::fromCanonical(double phi0, double d0, double z0, double omega, double tanLambda, double bField,
-                           const edm4hep::Vector3d& reference) {
+Helix Helix::fromCanonical(const CanonicalParameters& parameters) {
+  auto [phi0, d0, z0, omega, tanLambda, bField, reference] = parameters;
   if (!std::isfinite(phi0) || !std::isfinite(d0) || !std::isfinite(z0) || !std::isfinite(omega) ||
       !std::isfinite(tanLambda) || !std::isfinite(bField) || !finite(reference) || omega == 0. || bField == 0.) {
     throw std::invalid_argument("Helix: finite canonical parameters and nonzero omega and Bz required");
@@ -85,11 +86,17 @@ Helix Helix::fromCanonical(double phi0, double d0, double z0, double omega, doub
 
 Helix Helix::fromTrackState(const edm4hep::TrackState& trackState, double bField) {
   const auto& reference = trackState.referencePoint;
-  return fromCanonical(trackState.phi, trackState.D0, trackState.Z0, trackState.omega, trackState.tanLambda, bField,
-                       {reference.x, reference.y, reference.z});
+  return fromCanonical({.phi0 = trackState.phi,
+                        .d0 = trackState.D0,
+                        .z0 = trackState.Z0,
+                        .omega = trackState.omega,
+                        .tanLambda = trackState.tanLambda,
+                        .bField = bField,
+                        .parameterReferencePoint = {reference.x, reference.y, reference.z}});
 }
 
-edm4hep::TrackState Helix::toTrackState(int32_t location, const edm4hep::Vector3d& referencePoint) const {
+edm4hep::TrackState Helix::toTrackState(edm4hep::TrackState::Location location,
+                                        const edm4hep::Vector3d& referencePoint) const {
   checkPoint(referencePoint);
   const auto canonical = canonicalAt(referencePoint);
   edm4hep::TrackState trackState{};
