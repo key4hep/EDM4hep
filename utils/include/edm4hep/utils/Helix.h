@@ -50,7 +50,7 @@ public:
   /// referencePoint, e.g. a hit position (D0 = Z0 = 0 if it lies on the track)
   /// or the origin for AtIP. Z0 uses the turn within half a turn of getPosition().
   /// Time and covariance are left at zero.
-  edm4hep::TrackState toTrackState(int32_t location, const edm4hep::Vector3d& referencePoint) const;
+  edm4hep::TrackState toTrackState(edm4hep::TrackState::Location location, const edm4hep::Vector3d& referencePoint) const;
 
   double getD0() const { return m_d0; }
   double getPhi0() const { return m_phi0; }
