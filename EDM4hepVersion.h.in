@@ -9,11 +9,11 @@
 /// Define a version to be used in edm4hep.
 #define EDM4HEP_VERSION(major, minor, patch) ((UINT64_C(major) << 32) | (UINT64_C(minor) << 16) | (UINT64_C(patch)))
 /// Get the major version from a preprocessor defined version
-#define EDM4HEP_MAJOR_VERSION(v) (((v) & (-1UL >> 16)) >> 32)
+#define EDM4HEP_MAJOR_VERSION(v) (((v) >> 32) & UINT64_C(0xFFFF))
 /// Get the minor version from a preprocessor defined version
-#define EDM4HEP_MINOR_VERSION(v) (((v) & (-1UL >> 32)) >> 16)
+#define EDM4HEP_MINOR_VERSION(v) (((v) >> 16) & UINT64_C(0xFFFF))
 /// Get the patch version from a preprocessor defined version
-#define EDM4HEP_PATCH_VERSION(v) ((v) & (-1UL >> 48))
+#define EDM4HEP_PATCH_VERSION(v) ((v) & UINT64_C(0xFFFF))
 
 // Some helper constants that are populated by the cmake configure step
 #define EDM4HEP_VERSION_MAJOR @EDM4HEP_VERSION_MAJOR@
