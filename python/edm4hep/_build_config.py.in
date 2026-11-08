@@ -1,0 +1,3 @@
+"""Build-time availability of optional Python utilities."""
+
+HAS_RDF = @EDM4HEP_HAS_RDF@

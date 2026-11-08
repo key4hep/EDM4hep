@@ -3,11 +3,15 @@ IF(NOT BUILD_TESTING)
 ENDIF()
 
 function(set_test_env _testname)
+  set(_rdf_library_path "")
+  if(TARGET edm4hepRDF)
+    set(_rdf_library_path "$<TARGET_FILE_DIR:edm4hepRDF>:")
+  endif()
   set_property(TEST ${_testname} APPEND PROPERTY ENVIRONMENT
-      ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:edm4hepRDF>:$<TARGET_FILE_DIR:ROOT::Core>
-      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:edm4hepRDF>:$ENV{LD_LIBRARY_PATH}
+      ROOT_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:${_rdf_library_path}$<TARGET_FILE_DIR:ROOT::Core>
+      LD_LIBRARY_PATH=$<TARGET_FILE_DIR:edm4hep>:${_rdf_library_path}$ENV{LD_LIBRARY_PATH}
       ROOT_INCLUDE_PATH=${PROJECT_SOURCE_DIR}/edm4hep:${PROJECT_SOURCE_DIR}/utils/include:$ENV{ROOT_INCLUDE_PATH}
-      PYTHONPATH=${PROJECT_SOURCE_DIR}/python:$ENV{PYTHONPATH}
+      PYTHONPATH=${PROJECT_BINARY_DIR}/python:$ENV{PYTHONPATH}
       PODIO_SIOBLOCK_PATH=$<TARGET_FILE_DIR:edm4hep>
   )
   set_tests_properties(${_testname} PROPERTIES
@@ -92,7 +96,7 @@ IF(TARGET edm4hepSioBlocks)
   )
 ENDIF()
 
-IF(TARGET ROOT::ROOTDataFrame AND TARGET podio::podioRootIO)
+IF(TARGET ROOT::ROOTDataFrame AND TARGET edm4hepRDF AND TARGET podio::podioRootIO)
   add_executable(test_rdf test_rdf.cc)
   target_include_directories(test_rdf PUBLIC ${PROJECT_SOURCE_DIR}/edm4hep ${PROJECT_SOURCE_DIR}/dataframe )
   target_link_libraries(test_rdf edm4hepRDF ROOT::ROOTDataFrame podio::podioRootIO)
