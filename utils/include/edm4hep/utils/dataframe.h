@@ -1,6 +1,16 @@
 #ifndef EDM4HEP_UTILS_DATAFRAME_H
 #define EDM4HEP_UTILS_DATAFRAME_H
 
+#include "edm4hep/CalorimeterHitData.h"
+#include "edm4hep/ClusterData.h"
+#include "edm4hep/MCParticleData.h"
+#include "edm4hep/ReconstructedParticleData.h"
+#include "edm4hep/SimCalorimeterHitData.h"
+#include "edm4hep/SimTrackerHitData.h"
+#include "edm4hep/TrackerHit3DData.h"
+#include "edm4hep/TrackerHitPlaneData.h"
+#include "edm4hep/VertexData.h"
+
 #include "ROOT/RVec.hxx"
 
 namespace edm4hep::utils {

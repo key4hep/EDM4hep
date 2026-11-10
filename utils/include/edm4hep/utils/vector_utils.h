@@ -124,7 +124,7 @@ namespace utils {
 
 /// A vector that uses floating point numbers to represent its members
 template <typename V>
-concept FloatVectorND = std::floating_point<utils::ValueType<V>> && (Vector2D<V> || Vector3D<V>);
+concept FloatVectorND = (Vector2D<V> || Vector3D<V>) && std::floating_point<utils::ValueType<V>>;
 
 namespace utils {
   inline double etaToAngle(const double eta) { return std::atan(std::exp(-eta)) * 2.; }
