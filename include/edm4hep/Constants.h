@@ -76,6 +76,9 @@ namespace labels {
 
   /// Random seed used by the simulation (e.g. Delphes, ddsim)
   static constexpr const char* SimulationRandomSeed = "SimulationRandomSeed";
+
+  /// Random seed used by the reconstruction
+  static constexpr const char* ReconstructionRandomSeed = "ReconstructionRandomSeed";
 } // namespace labels
 
 // Use 16 bits to encode the dimension
