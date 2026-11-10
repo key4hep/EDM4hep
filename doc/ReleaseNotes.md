@@ -1,3 +1,31 @@
+# v01-03
+
+* 2026-11-10 Juraj Smiesko ([PR#548](https://github.com/key4hep/EDM4hep/pull/548))
+  - Add ReconstructionRandomSeed metadata label.
+
+* 2026-11-10 Thomas Madlener ([PR#542](https://github.com/key4hep/EDM4hep/pull/542))
+  - Make sure the *vector utils* are available also in python after `import edm4hep`
+  - Include the supported data type definitions in dataframe.h so RDF utilities work with the vector utilities loaded.
+
+* 2026-11-05 Juraj Smiesko ([PR#543](https://github.com/key4hep/EDM4hep/pull/543))
+  - Add GeneratorRandomSeed and SimulationRandomSeed metadata labels.
+
+* 2026-11-03 Juan Miguel Carceller ([PR#541](https://github.com/key4hep/EDM4hep/pull/541))
+  - Initialize install directories before setting the install RPATH.
+
+* 2026-10-29 Juan Miguel Carceller ([PR#537](https://github.com/key4hep/EDM4hep/pull/537))
+  - Set a default timeout of 600 s for all tests via `DART_TESTING_TIMEOUT` instead of the default 1500 s, and remove the per-test timeouts that are now redundant.
+
+* 2026-10-28 Federico Meloni ([PR#534](https://github.com/key4hep/EDM4hep/pull/534))
+  - Add `MutableSimCalorimeterHit::addMCParticleContribution`, which attaches a `CaloHitContribution` to the hit and adds its energy to the energy of the hit.
+  - Document that the energy of a `SimCalorimeterHit` is the sum of the energies of all its contributions, and that no time selection is applied to them. Time windows have to be handled by the digitization.
+
+* 2026-10-19 Wouter Deconinck ([PR#521](https://github.com/key4hep/EDM4hep/pull/521))
+  - When podio is built with ENABLE_ROOT=OFF, ROOT dictionaries are not built. This PR fixes the hardcoded assumptions in EDM4hep. See https://github.com/AIDASoft/podio/pull/1023.
+
+* 2026-10-13 Juan Miguel Carceller ([PR#535](https://github.com/key4hep/EDM4hep/pull/535))
+  - Use `utils::checkBit` for `SimTrackerHit::isOverlay()` and `isProducedBySecondary()`, matching the other flag accessors.
+
 # v01-02
 
 * 2026-10-12 Juan Miguel Carceller ([PR#533](https://github.com/Key4hep/EDM4hep/pull/533))
