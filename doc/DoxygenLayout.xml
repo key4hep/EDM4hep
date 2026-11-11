@@ -13,7 +13,7 @@
       <tab type="user" visible="yes" title="SimCalorimeterHit and CaloHitContribution" url="@ref md_doc_2_sim_calorimeter_hit"/>
       <tab type="user" visible="yes" title="Subtle differences wrt LCIO" url="@ref md_doc_2differences__wrt__lcio"/>
     </tab>
-    <tab type="modules" visible="yes" title="" intro=""/>
+    <tab type="topics" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
       <tab type="namespacemembers" visible="yes" title="" intro=""/>
