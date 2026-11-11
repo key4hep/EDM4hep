@@ -8,6 +8,38 @@
 # to https://edm4hep.web.cern.ch (shorter alias: cern.ch/edm4hep)
 
 
+# -- Check EOS access before building the documentation --------------
+check-eos-access:
+  stage: .pre
+  # Match deployment: credentials are only needed when publishing from main.
+  only:
+    refs:
+      - main
+  # This runner exposes the EOS FUSE mount.
+  tags:
+    - k8s-cvmfs
+  image: registry.cern.ch/ghcr.io/key4hep/key4hep-images/alma9:latest
+  timeout: 2 minutes
+  script:
+    - |
+      set -eu
+      : "${EOS_ACCOUNT_USERNAME:?EOS_ACCOUNT_USERNAME not provided}"
+      : "${EOS_ACCOUNT_PASSWORD:?EOS_ACCOUNT_PASSWORD not provided}"
+      : "${EOS_PATH:?EOS_PATH not provided}"
+      trap 'kdestroy || true' EXIT
+      printf '%s\n' "$EOS_ACCOUNT_PASSWORD" | kinit "${EOS_ACCOUNT_USERNAME}@CERN.CH"
+      echo "Checking read/write access to EOS_PATH: $EOS_PATH"
+      if [ ! -d "$EOS_PATH" ] || [ ! -r "$EOS_PATH" ] || [ ! -x "$EOS_PATH" ]; then
+        echo "ERROR: EOS_PATH is not an accessible directory: $EOS_PATH" >&2
+        exit 1
+      fi
+      probe=$(mktemp "${EOS_PATH%/}/.edm4hep-ci-check.XXXXXX")
+      trap 'rm -f -- "$probe"; kdestroy || true' EXIT
+      printf 'EOS write check\n' > "$probe"
+      rm -- "$probe"
+      trap 'kdestroy || true' EXIT
+
+
 # -- Run Doxygen ------------------------------
 # Doxygen is set up in CMake, so need to load all
 # dependencies to run it. This step requires a runner
