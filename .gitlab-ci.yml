@@ -15,7 +15,10 @@ check-eos-access:
   only:
     refs:
       - main
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  # This runner exposes the EOS FUSE mount.
+  tags:
+    - k8s-cvmfs
+  image: registry.cern.ch/ghcr.io/key4hep/key4hep-images/alma9:latest
   timeout: 2 minutes
   script:
     - |
@@ -26,22 +29,15 @@ check-eos-access:
       trap 'kdestroy || true' EXIT
       printf '%s\n' "$EOS_ACCOUNT_PASSWORD" | kinit "${EOS_ACCOUNT_USERNAME}@CERN.CH"
       echo "Checking read/write access to EOS_PATH: $EOS_PATH"
-      ssh -o BatchMode=yes -o ConnectTimeout=10 \
-          -o StrictHostKeyChecking=no -o GSSAPIAuthentication=yes \
-          -o GSSAPITrustDNS=yes -o GSSAPIDelegateCredentials=yes \
-          "${EOS_ACCOUNT_USERNAME}@lxplus.cern.ch" \
-          "bash -s -- $(printf '%q' "$EOS_PATH")" <<'EOF'
-      set -eu
-      if [ ! -d "$1" ] || [ ! -r "$1" ] || [ ! -x "$1" ]; then
-        echo "ERROR: EOS_PATH is not an accessible directory: $1" >&2
+      if [ ! -d "$EOS_PATH" ] || [ ! -r "$EOS_PATH" ] || [ ! -x "$EOS_PATH" ]; then
+        echo "ERROR: EOS_PATH is not an accessible directory: $EOS_PATH" >&2
         exit 1
       fi
-      probe=$(mktemp "${1%/}/.edm4hep-ci-check.XXXXXX")
-      trap 'rm -f -- "$probe"' EXIT
+      probe=$(mktemp "${EOS_PATH%/}/.edm4hep-ci-check.XXXXXX")
+      trap 'rm -f -- "$probe"; kdestroy || true' EXIT
       printf 'EOS write check\n' > "$probe"
       rm -- "$probe"
-      trap - EXIT
-      EOF
+      trap 'kdestroy || true' EXIT
 
 
 # -- Run Doxygen ------------------------------
