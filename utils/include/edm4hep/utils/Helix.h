@@ -23,9 +23,6 @@ namespace edm4hep::utils {
  */
 class Helix {
 public:
-  /// pT [GeV] = fieldToCurvature * |q * Bz [T]| * R [mm], i.e. c * 1e-9 (eV -> GeV) * 1e-3 (m -> mm)
-  static constexpr double fieldToCurvature = 2.99792458e-4;
-
   /// Construct from position and momentum. Zero charge or field gives a line.
   /// Throws std::invalid_argument for non-finite inputs or zero transverse momentum.
   Helix(const edm4hep::Vector3d& position, const edm4hep::Vector3d& momentum, double charge, double bField,

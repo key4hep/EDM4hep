@@ -1,3 +1,4 @@
+#include "edm4hep/Constants.h"
 #include "edm4hep/utils/Helix.h"
 
 #include <catch2/catch_approx.hpp>
@@ -16,7 +17,7 @@ using edm4hep::utils::Helix;
 using std::numbers::pi;
 
 namespace {
-constexpr double conversion = Helix::fieldToCurvature;
+constexpr double conversion = edm4hep::constants::fieldToCurvature;
 
 void checkVector(const edm4hep::Vector3d& actual, const edm4hep::Vector3d& expected, double tolerance = 1.e-9) {
   REQUIRE(actual.x == Approx(expected.x).margin(tolerance));

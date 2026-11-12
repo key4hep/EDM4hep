@@ -1,3 +1,4 @@
+#include "edm4hep/Constants.h"
 #include "edm4hep/utils/Helix.h"
 #include "edm4hep/utils/vector_utils.h"
 
@@ -41,7 +42,7 @@ Helix::Helix(const edm4hep::Vector3d& position, const edm4hep::Vector3d& momentu
       !std::isfinite(bField) || !(m_pt > 0.) || !std::isfinite(m_pt)) {
     throw std::invalid_argument("Helix: finite inputs and nonzero transverse momentum required");
   }
-  m_omega = charge * fieldToCurvature * bField / m_pt;
+  m_omega = charge * edm4hep::constants::fieldToCurvature * bField / m_pt;
   m_tanLambda = momentum.z / m_pt;
   if (!std::isfinite(m_omega) || !std::isfinite(m_tanLambda)) {
     throw std::invalid_argument("Helix: unrepresentable curvature or dip angle");
@@ -70,7 +71,7 @@ Helix Helix::fromCanonical(const CanonicalParameters& parameters) {
     d0 = 1. / omega;
   }
   phi0 = std::remainder(phi0, twoPi);
-  const double pt = std::abs(fieldToCurvature * bField / omega);
+  const double pt = std::abs(edm4hep::constants::fieldToCurvature * bField / omega);
   Helix helix({reference.x - d0 * std::sin(phi0), reference.y + d0 * std::cos(phi0), reference.z + z0},
               {pt * std::cos(phi0), pt * std::sin(phi0), pt * tanLambda},
               std::copysign(1., omega) * std::copysign(1., bField), bField, reference);
