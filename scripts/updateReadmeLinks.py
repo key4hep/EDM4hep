@@ -4,7 +4,6 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("inputfile", help="The README file to run on", default="README.md")
 parser.add_argument(
     "--check",
     action="store_true",
