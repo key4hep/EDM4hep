@@ -17,6 +17,7 @@ repos:
         name: README links check
         entry: python ./scripts/updateReadmeLinks.py --check
         files: (^README.md$)
+        pass_filenames: false
         language: system
       - id: ruff
         name: ruff
