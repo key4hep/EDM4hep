@@ -311,7 +311,7 @@ def test_TrackerHit3DCollection(event, edm4hep_version):
     assert hit.getEDepError() == next(counter)
     assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
     check_cov_matrix(hit.getCovMatrix(), 3)
-    if edm4hep_version >= podio.version.parse("1.1.2"):
+    if edm4hep_version >= podio.version.parse("1.2.0"):
         assert hit.getTimeError() == next(counter)
     else:
         assert hit.getTimeError() == 0
@@ -335,7 +335,7 @@ def test_TrackerHitPlaneCollection(event, edm4hep_version):
     assert hit.getDv() == next(counter)
     assert hit.getPosition() == edm4hep.Vector3d(next(counter), next(counter), next(counter))
     check_cov_matrix(hit.getCovMatrix(), 3)
-    if edm4hep_version >= podio.version.parse("1.1.2"):
+    if edm4hep_version >= podio.version.parse("1.2.0"):
         assert hit.getTimeError() == next(counter)
     else:
         assert hit.getTimeError() == 0
@@ -380,7 +380,7 @@ def test_SenseWireHitCollection(event, edm4hep_version):
     assert len(hit.getNElectrons()) == VECTORSIZE
     for val in hit.getNElectrons():
         assert val == next(counter)
-    if edm4hep_version >= podio.version.parse("1.1.2"):
+    if edm4hep_version >= podio.version.parse("1.2.0"):
         assert hit.getTimeError() == next(counter)
     else:
         assert hit.getTimeError() == 0

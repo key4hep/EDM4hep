@@ -128,7 +128,7 @@ def create_CalorimeterHitCollection():
 def create_CovMatrixNf(n_dim):
     """Create a covariance matrix of dimension n_dim"""
     if n_dim not in (2, 3, 4, 6):
-        return ValueError(
+        raise ValueError(
             f"{n_dim} is not a valid dimension for a CovMatrix in EDM4hep. Valid: (2, 3, 4, 6)"
         )
     counter = count(COUNT_START)
