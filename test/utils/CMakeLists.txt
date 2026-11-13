@@ -22,6 +22,7 @@ endif()
 include(Catch)
 
 add_executable(unittests_edm4hep
+  test_helix.cpp
   test_kinematics.cpp
   test_vector_utils.cpp
   test_covmatrix_utils.cpp
@@ -54,6 +55,6 @@ if (SKIP_CATCH_DISCOVERY)
 else()
   catch_discover_tests(unittests_edm4hep
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    DL_PATHS $<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
+    DL_PATHS $<TARGET_FILE_DIR:edm4hep>:$<TARGET_FILE_DIR:utils>:$<TARGET_FILE_DIR:podio::podio>:$<TARGET_FILE_DIR:ROOT::Core>:$ENV{LD_LIBRARY_PATH}
   )
 endif()

@@ -22,6 +22,12 @@
 #include <cstdint>
 
 namespace edm4hep {
+
+namespace constants {
+  /// pT [GeV] = fieldToCurvature * |q * Bz [T]| * R [mm], i.e. c * 1e-9 (eV -> GeV) * 1e-3 (m -> mm)
+  inline constexpr double fieldToCurvature = 2.99792458e-4;
+} // namespace constants
+
 /// @namespace edm4hep::labels
 /// @brief Namespace that contains commonly used collection, parameter or
 /// configuration names
