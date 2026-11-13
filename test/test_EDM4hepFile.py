@@ -19,12 +19,6 @@ FRAMES = 3
 VECTORSIZE = 5
 COUNT_START = 42  # Starting point for the counters
 
-if not options.inputfile:
-    pytest.skip(
-        "Skipping file content tests, because --inputfile was not provided",
-        allow_module_level=True,
-    )
-
 # Skip the test if an rntuple file has not been produced
 if "rntuple" in options.inputfile and not os.path.isfile(options.inputfile):
     pytest.skip(
