@@ -21,7 +21,7 @@ def import_package(monkeypatch):
         version = ModuleType(f"{package_name}.__version__")
         version.__version__ = "1.2.3"
         config = ModuleType(f"{package_name}._build_config")
-        config.HAS_RDF = has_rdf
+        config.EDM4HEP_HAS_RDF = has_rdf
         root = ModuleType("ROOT")
         root.edm4hep = SimpleNamespace(utils=SimpleNamespace())
         root.gSystem = SimpleNamespace(

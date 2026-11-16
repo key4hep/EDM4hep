@@ -3,13 +3,13 @@
 import sys
 
 from .__version__ import __version__
-from ._build_config import HAS_RDF
+from ._build_config import EDM4HEP_HAS_RDF
 import ROOT
 
 if ROOT.gSystem.Load("libedm4hepDict") < 0:
     raise RuntimeError("Failed to load libedm4hepDict")
 
-if HAS_RDF:
+if EDM4HEP_HAS_RDF:
     if ROOT.gSystem.Load("libedm4hepRDF") < 0:
         raise RuntimeError("Failed to load libedm4hepRDF")
 
