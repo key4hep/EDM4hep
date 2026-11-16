@@ -3,19 +3,21 @@
 import sys
 
 from .__version__ import __version__
+from ._build_config import EDM4HEP_HAS_RDF
 import ROOT
 
-if ROOT.gSystem.Load("libedm4hepDict") != 0:
+if ROOT.gSystem.Load("libedm4hepDict") < 0:
     raise RuntimeError("Failed to load libedm4hepDict")
 
-if ROOT.gSystem.Load("libedm4hepRDF") != 0:
-    raise RuntimeError("Failed to load libedm4hepRDF")
+if EDM4HEP_HAS_RDF:
+    if ROOT.gSystem.Load("libedm4hepRDF") < 0:
+        raise RuntimeError("Failed to load libedm4hepRDF")
+
+    if ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h") != 0:
+        raise RuntimeError("Failed to load dataframe.h")
 
 if ROOT.gInterpreter.LoadFile("edm4hep/utils/kinematics.h") != 0:
     raise RuntimeError("Failed to load kinematics.h")
-
-if ROOT.gInterpreter.LoadFile("edm4hep/utils/dataframe.h") != 0:
-    raise RuntimeError("Failed to load dataframe.h")
 
 if ROOT.gInterpreter.LoadFile("edm4hep/Constants.h") != 0:
     raise RuntimeError("Failed to load Constants.h")

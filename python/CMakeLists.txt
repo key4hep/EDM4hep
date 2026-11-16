@@ -1,5 +1,14 @@
 find_package(Python3 REQUIRED)
 
+set(EDM4HEP_HAS_RDF False)
+if(TARGET edm4hepRDF)
+  set(EDM4HEP_HAS_RDF True)
+endif()
+# Keep the package and its configuration specific to this build directory.
+configure_file(edm4hep/__init__.py edm4hep/__init__.py COPYONLY)
+configure_file(edm4hep/__version__.py.in edm4hep/__version__.py @ONLY)
+configure_file(edm4hep/_build_config.py.in edm4hep/_build_config.py @ONLY)
+
 # Setup the python install dir. See the discussion in
 # https://github.com/AIDASoft/podio/pull/599 for more details on why this is
 # done the way it is
@@ -28,7 +37,7 @@ set(EDM4HEP_PYTHON_INSTALLDIR
   "The install prefix for the python bindings"
 )
 
-install(DIRECTORY edm4hep DESTINATION ${EDM4HEP_PYTHON_INSTALLDIR}
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/edm4hep DESTINATION ${EDM4HEP_PYTHON_INSTALLDIR}
   REGEX .*\\.in EXCLUDE
   PATTERN __pycache__ EXCLUDE
 )
