@@ -74,14 +74,10 @@ jobs:
           echo "::group::Build podio"
           cd podio
           echo "Building podio @"$(git log -1 --format=%H)
-          cmake -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
-            -DENABLE_SIO=ON \
-            -DENABLE_RNTUPLE=ON \
-            -DENABLE_DATASOURCE=ON \
-            -DBUILD_TESTING=OFF \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -G Ninja -B build
+          cmake --preset base-build \
+            -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
+            -DENABLE_RNTUPLE=${{ matrix.RNTUPLE }} \
+            -DENABLE_SIO=ON
           cmake --build build --target install -- -k0
           source init.sh && source env.sh
           echo "::endgroup::"
