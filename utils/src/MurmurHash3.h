@@ -26,7 +26,9 @@ typedef unsigned __int64 uint64_t;
 
 //-----------------------------------------------------------------------------
 
+namespace edm4hep::utils::detail {
 void MurmurHash3_x86_32(const void* key, int len, uint32_t seed, void* out);
+} // namespace edm4hep::utils::detail
 
 //-----------------------------------------------------------------------------
 
