@@ -23,12 +23,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        LCG: ["dev4/x86_64-el9-gcc13-opt",
-              "LCG_106/x86_64-el9-gcc13-opt"]
-        CXX_STANDARD: [20]
+        LCG:
+          [
+            "dev3/x86_64-el9-clang22-opt",
+            "dev4/x86_64-el9-clang22-opt",
+            "dev4/x86_64-el9-gcc13-opt",
+          ]
+        CXX_STANDARD: [23]
+        RNTUPLE: [ON]
         include:
-          - {LCG: "dev3/x86_64-el9-clang22-opt", CXX_STANDARD: 23}
-          - {LCG: "dev4/x86_64-el9-clang22-opt", CXX_STANDARD: 23}
+          - {
+              LCG: "LCG_107/x86_64-el9-gcc13-opt",
+              CXX_STANDARD: 20,
+              RNTUPLE: ON,
+            }
+          - {
+              LCG: "LCG_106/x86_64-el9-gcc13-opt",
+              CXX_STANDARD: 20,
+              RNTUPLE: OFF, # Need at least ROOT 6.34 for that
+            }
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
