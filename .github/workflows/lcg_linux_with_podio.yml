@@ -29,17 +29,14 @@ jobs:
             "dev4/x86_64-el9-clang22-opt",
             "dev4/x86_64-el9-gcc13-opt",
           ]
-        CXX_STANDARD: [23]
         RNTUPLE: [ON]
         include:
           - {
               LCG: "LCG_107/x86_64-el9-gcc13-opt",
-              CXX_STANDARD: 20,
               RNTUPLE: ON,
             }
           - {
               LCG: "LCG_106/x86_64-el9-gcc13-opt",
-              CXX_STANDARD: 20,
               RNTUPLE: OFF, # Need at least ROOT 6.34 for that
             }
     steps:
@@ -68,6 +65,8 @@ jobs:
           else
             source /cvmfs/sft.cern.ch/lcg/views/${LCG}/setup.sh
           fi
+          CXX_STANDARD=$(root-config --cxxstandard)
+          echo "Building with ROOT's C++ standard: ${CXX_STANDARD}"
           ccache --set-config=max_size=500M
           ccache -z
           STARTDIR=$(pwd)
@@ -75,7 +74,7 @@ jobs:
           cd podio
           echo "Building podio @"$(git log -1 --format=%H)
           cmake --preset base-build \
-            -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
+            -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
             -DENABLE_RNTUPLE=${{ matrix.RNTUPLE }} \
             -DENABLE_SIO=ON
           cmake --build build --target install -- -k0
@@ -84,7 +83,7 @@ jobs:
           echo "::group::Build edm4hep"
           cd $STARTDIR
           echo "Building edm4hep"
-          cmake -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
+          cmake -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -DUSE_EXTERNAL_CATCH2=OFF \
             -G Ninja -B build
@@ -95,7 +94,7 @@ jobs:
           echo "::group::Test downstream usage"
           export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
           cd test/downstream-project-cmake-test
-          cmake -DCMAKE_CXX_STANDARD=${{ matrix.CXX_STANDARD }} \
+          cmake -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -G Ninja -B build
