@@ -21,6 +21,8 @@
 #include <memory>
 #include <unordered_map>
 
+namespace {
+
 edm4hep::MutableMCParticle convert(std::shared_ptr<HepMC3::GenParticle> hepmcParticle) {
   auto edm_particle = edm4hep::MutableMCParticle();
   edm_particle.setPDG(hepmcParticle->pdg_id());
@@ -34,6 +36,8 @@ edm4hep::MutableMCParticle convert(std::shared_ptr<HepMC3::GenParticle> hepmcPar
 
   return edm_particle;
 }
+
+} // namespace
 
 int main() {
   // Part 1: Using the HepMC example code to "generate" an event
