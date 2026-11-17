@@ -24,7 +24,7 @@ jobs:
         image: ["alma9"]
         include:
           - build_type: nightly
-            image: ubuntu24
+            image: alma10
           - build_type: nightly
             image: ubuntu26
       fail-fast: false
@@ -46,4 +46,3 @@ jobs:
       with:
         build_type: ${{ matrix.build_type }}
         image: ${{ matrix.image }}
-        stack: ${{ matrix.stack }}
