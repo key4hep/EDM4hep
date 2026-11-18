@@ -59,7 +59,7 @@ public:
   /// every location. Z0 uses the turn within half a turn of getPosition().
   /// Time and covariance are left at zero.
   edm4hep::TrackState toTrackState(edm4hep::TrackState::Location location,
-                                  const edm4hep::Vector3d& referencePoint = {}) const;
+                                   const edm4hep::Vector3d& referencePoint = {}) const;
 
   double getD0() const { return m_d0; }
   double getPhi0() const { return m_phi0; }

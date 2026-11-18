@@ -1,5 +1,5 @@
-#include "edm4hep/Constants.h"
 #include "edm4hep/utils/Helix.h"
+#include "edm4hep/Constants.h"
 #include "edm4hep/utils/vector_utils.h"
 
 #include <cmath>
