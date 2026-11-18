@@ -126,7 +126,7 @@ edm4hep::Vector3d Helix::momentumAt(double path) const {
   return {m_pt * std::cos(phi), m_pt * std::sin(phi), m_momentum.z};
 }
 
-std::optional<double> Helix::pathToZ(double z) const {
+std::optional<double> Helix::lengthToZ(double z) const {
   if (!std::isfinite(z)) {
     throw std::invalid_argument("Helix: z must be finite");
   }
@@ -143,7 +143,7 @@ std::optional<double> Helix::pathToZ(double z) const {
   return path;
 }
 
-std::optional<double> Helix::pathToRadius(double radius) const {
+std::optional<double> Helix::lengthToRadius(double radius) const {
   if (!std::isfinite(radius) || radius < 0.) {
     throw std::invalid_argument("Helix: radius must be finite and non-negative");
   }
@@ -161,7 +161,7 @@ std::optional<double> Helix::pathToRadius(double radius) const {
                        1. + std::abs(curvatureNormal) + std::abs(curvatureExcess), along, excess);
 }
 
-std::optional<double> Helix::pathToPlane(const edm4hep::Vector3d& point, const edm4hep::Vector3d& normal) const {
+std::optional<double> Helix::lengthToPlane(const edm4hep::Vector3d& point, const edm4hep::Vector3d& normal) const {
   const double normalLength = std::hypot(normal.x, normal.y);
   if (!finite(point) || !finite(normal) || normal.z != 0. || !(normalLength > 0.) || !std::isfinite(normalLength)) {
     throw std::invalid_argument("Helix: plane needs a finite point and a finite nonzero normal with zero z component");

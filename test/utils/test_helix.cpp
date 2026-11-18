@@ -131,6 +131,15 @@ TEST_CASE("Helix converts to and from TrackState", "[helix]") {
     REQUIRE(atReference.Z0 == Approx(z0));
     REQUIRE(atReference.omega == Approx(omega));
     REQUIRE(atReference.tanLambda == Approx(tanLambda));
+
+    const auto atIP = atHit.toTrackState(edm4hep::TrackState::AtIP);
+    const auto atOrigin = atHit.toTrackState(edm4hep::TrackState::AtIP, {});
+    REQUIRE(atIP.referencePoint.x == 0.f);
+    REQUIRE(atIP.referencePoint.y == 0.f);
+    REQUIRE(atIP.referencePoint.z == 0.f);
+    REQUIRE(atIP.D0 == atOrigin.D0);
+    REQUIRE(atIP.phi == atOrigin.phi);
+    REQUIRE(atIP.Z0 == atOrigin.Z0);
   }
 }
 
@@ -216,17 +225,17 @@ TEST_CASE("Helix supports straight tracks and the small curvature limit", "[heli
     REQUIRE(distance.longitudinal == Approx(4.));
     REQUIRE(distance.threeDimensional == Approx(5.));
     // |P + s u| = 5 with P.u = 2.2 and |P|^2 = 5.
-    const auto barrel = helix.pathToRadius(5.);
+    const auto barrel = helix.lengthToRadius(5.);
     REQUIRE(barrel.has_value());
     REQUIRE(*barrel == Approx(-2.2 + std::sqrt(2.2 * 2.2 + 20.)));
-    const auto endcap = helix.pathToZ(23.);
+    const auto endcap = helix.lengthToZ(23.);
     REQUIRE(endcap.has_value());
     REQUIRE(*endcap == Approx(10.));
-    REQUIRE_FALSE(helix.pathToZ(0.).has_value());
+    REQUIRE_FALSE(helix.lengthToZ(0.).has_value());
   }
   // A line moving away from the cylinder never reaches it.
-  REQUIRE_FALSE(Helix({10., 0., 0.}, {1., 0., 0.}, 0., 2.).pathToRadius(5.).has_value());
-  REQUIRE(Helix({10., 0., 0.}, {1., 0., 0.}, 0., 2.).pathToRadius(20.).value() == Approx(10.));
+  REQUIRE_FALSE(Helix({10., 0., 0.}, {1., 0., 0.}, 0., 2.).lengthToRadius(5.).has_value());
+  REQUIRE(Helix({10., 0., 0.}, {1., 0., 0.}, 0., 2.).lengthToRadius(20.).value() == Approx(10.));
 }
 
 TEST_CASE("Helix reaches cylinders and planes in the direction of motion", "[helix]") {
@@ -240,7 +249,7 @@ TEST_CASE("Helix reaches cylinders and planes in the direction of motion", "[hel
         for (double r : {10., 1000., 3000.}) {
           CAPTURE(r);
           const double first = 2. * radius * std::asin(r / (2. * radius));
-          const auto path = helix.pathToRadius(r);
+          const auto path = helix.lengthToRadius(r);
           REQUIRE(path.has_value());
           REQUIRE(*path == Approx(first));
           const auto position = helix.positionAt(*path);
@@ -249,14 +258,14 @@ TEST_CASE("Helix reaches cylinders and planes in the direction of motion", "[hel
           // From the far side of the circle the next crossing is on the way back.
           const double start = pi * radius;
           const Helix farSide(helix.positionAt(start), helix.momentumAt(start), charge, field);
-          const auto back = farSide.pathToRadius(r);
+          const auto back = farSide.lengthToRadius(r);
           REQUIRE(back.has_value());
           REQUIRE(*back == Approx(2. * pi * radius - first - start));
         }
-        REQUIRE_FALSE(helix.pathToRadius(2.1 * radius).has_value());
-        REQUIRE(helix.pathToRadius(0.).value() == Approx(0.).margin(1.e-12));
-        REQUIRE(helix.pathToZ(100.).value() == Approx(400.));
-        REQUIRE_FALSE(helix.pathToZ(-100.).has_value());
+        REQUIRE_FALSE(helix.lengthToRadius(2.1 * radius).has_value());
+        REQUIRE(helix.lengthToRadius(0.).value() == Approx(0.).margin(1.e-12));
+        REQUIRE(helix.lengthToZ(100.).value() == Approx(400.));
+        REQUIRE_FALSE(helix.lengthToZ(-100.).has_value());
       }
     }
   }
@@ -285,27 +294,27 @@ TEST_CASE("Helix reaches planes parallel to z", "[helix]") {
         };
         for (const auto& [point, normal, expected] : crossings) {
           CAPTURE(expected / radius);
-          const auto path = helix.pathToPlane(point, normal);
+          const auto path = helix.lengthToPlane(point, normal);
           REQUIRE(path.has_value());
           REQUIRE(*path == Approx(expected));
           const auto position = helix.positionAt(*path);
           REQUIRE((position.x - point.x) * normal.x + (position.y - point.y) * normal.y == Approx(0.).margin(1.e-6));
         }
-        REQUIRE_FALSE(helix.pathToPlane(local(0., turn), left).has_value());
-        REQUIRE_FALSE(helix.pathToPlane(local(1.5 * radius, 0.), along).has_value());
-        REQUIRE(helix.pathToPlane(local(0., 0.), along).value() == Approx(0.).margin(1.e-12));
+        REQUIRE_FALSE(helix.lengthToPlane(local(0., turn), left).has_value());
+        REQUIRE_FALSE(helix.lengthToPlane(local(1.5 * radius, 0.), along).has_value());
+        REQUIRE(helix.lengthToPlane(local(0., 0.), along).value() == Approx(0.).margin(1.e-12));
       }
     }
   }
   const Helix line({1., 2., 3.}, {1., 0., 1.}, 0., 2.);
-  REQUIRE(line.pathToPlane({10., 0., 0.}, {-2., 0., 0.}).value() == Approx(9.));
-  REQUIRE_FALSE(line.pathToPlane({-10., 0., 0.}, {1., 0., 0.}).has_value());
-  REQUIRE_FALSE(line.pathToPlane({0., 5., 0.}, {0., 1., 0.}).has_value());
+  REQUIRE(line.lengthToPlane({10., 0., 0.}, {-2., 0., 0.}).value() == Approx(9.));
+  REQUIRE_FALSE(line.lengthToPlane({-10., 0., 0.}, {1., 0., 0.}).has_value());
+  REQUIRE_FALSE(line.lengthToPlane({0., 5., 0.}, {0., 1., 0.}).has_value());
   const Helix almostLine({1., 2., 3.}, {1., 0., 1.}, 1.e-12, 2.);
-  REQUIRE(almostLine.pathToPlane({10., 0., 0.}, {1., 0., 0.}).value() == Approx(9.));
-  REQUIRE_THROWS_AS(line.pathToPlane({0., 0., 0.}, {1., 0., 1.}), std::invalid_argument);
-  REQUIRE_THROWS_AS(line.pathToPlane({0., 0., 0.}, {0., 0., 0.}), std::invalid_argument);
-  REQUIRE_THROWS_AS(line.pathToPlane({std::nan(""), 0., 0.}, {1., 0., 0.}), std::invalid_argument);
+  REQUIRE(almostLine.lengthToPlane({10., 0., 0.}, {1., 0., 0.}).value() == Approx(9.));
+  REQUIRE_THROWS_AS(line.lengthToPlane({0., 0., 0.}, {1., 0., 1.}), std::invalid_argument);
+  REQUIRE_THROWS_AS(line.lengthToPlane({0., 0., 0.}, {0., 0., 0.}), std::invalid_argument);
+  REQUIRE_THROWS_AS(line.lengthToPlane({std::nan(""), 0., 0.}, {1., 0., 0.}), std::invalid_argument);
 }
 
 TEST_CASE("Helix cylinder crossings for degenerate geometries", "[helix]") {
@@ -315,9 +324,9 @@ TEST_CASE("Helix cylinder crossings for degenerate geometries", "[helix]") {
     const double radius = 1. / (conversion * std::abs(field));
     const Helix helix({radius, 0., 0.}, {0., std::copysign(1., field), 1.}, -1., field);
     REQUIRE(std::hypot(helix.positionAt(1234.).x, helix.positionAt(1234.).y) == Approx(radius));
-    REQUIRE(helix.pathToRadius(radius).value() == 0.);
-    REQUIRE_FALSE(helix.pathToRadius(0.5 * radius).has_value());
-    REQUIRE_FALSE(helix.pathToRadius(2. * radius).has_value());
+    REQUIRE(helix.lengthToRadius(radius).value() == 0.);
+    REQUIRE_FALSE(helix.lengthToRadius(0.5 * radius).has_value());
+    REQUIRE_FALSE(helix.lengthToRadius(2. * radius).has_value());
     // The distance to the axis grows for half a turn after the PCA and is symmetric
     // about it, so starting 0.1 rad past the PCA the cylinder through the point at
     // pi + 0.15 rad is first crossed at pi - 0.15 rad, almost half a turn later.
@@ -326,10 +335,10 @@ TEST_CASE("Helix cylinder crossings for degenerate geometries", "[helix]") {
     const Helix start(pca.positionAt(0.1 / std::abs(omega)), pca.momentumAt(0.1 / std::abs(omega)), pca.getCharge(),
                       field);
     const auto target = pca.positionAt((pi + 0.15) / std::abs(omega));
-    const auto nearlyHalf = start.pathToRadius(std::hypot(target.x, target.y));
+    const auto nearlyHalf = start.lengthToRadius(std::hypot(target.x, target.y));
     REQUIRE(nearlyHalf.has_value());
     REQUIRE(*nearlyHalf == Approx((pi - 0.25) / std::abs(omega)));
-    REQUIRE_FALSE(pca.pathToZ(10.).has_value());
+    REQUIRE_FALSE(pca.lengthToZ(10.).has_value());
   }
 }
 
@@ -340,15 +349,15 @@ TEST_CASE("Helix retains tangent cylinder intersections under rotation", "[helix
       const auto pca =
           Helix::fromCanonical({.phi0 = phi, .d0 = std::copysign(5., omega), .omega = omega, .bField = 2.});
       const double radius = 1. / std::abs(omega);
-      const auto tangent = pca.pathToRadius(195.);
+      const auto tangent = pca.lengthToRadius(195.);
       REQUIRE(tangent.has_value());
       REQUIRE(*tangent == Approx(pi * radius).margin(1.e-9));
       const auto position = pca.positionAt(*tangent);
       REQUIRE(std::hypot(position.x, position.y) == Approx(195.).margin(1.e-9));
-      REQUIRE(pca.pathToRadius(5.).value() == 0.);
-      REQUIRE_FALSE(pca.pathToRadius(195. + 1.e-6).has_value());
-      REQUIRE_FALSE(pca.pathToRadius(5. - 1.e-6).has_value());
-      const auto justInside = pca.pathToRadius(195. - 1.e-6);
+      REQUIRE(pca.lengthToRadius(5.).value() == 0.);
+      REQUIRE_FALSE(pca.lengthToRadius(195. + 1.e-6).has_value());
+      REQUIRE_FALSE(pca.lengthToRadius(5. - 1.e-6).has_value());
+      const auto justInside = pca.lengthToRadius(195. - 1.e-6);
       REQUIRE(justInside.has_value());
       REQUIRE(*justInside < *tangent);
       const auto justInsidePosition = pca.positionAt(*justInside);
@@ -358,7 +367,7 @@ TEST_CASE("Helix retains tangent cylinder intersections under rotation", "[helix
       // including the inner cylinder reached after most of a complete turn.
       const Helix start(pca.positionAt(0.7 * radius), pca.momentumAt(0.7 * radius), pca.getCharge(), 2.);
       for (const auto& target : {std::pair{195., (pi - 0.7) * radius}, std::pair{5., (2. * pi - 0.7) * radius}}) {
-        const auto path = start.pathToRadius(target.first);
+        const auto path = start.lengthToRadius(target.first);
         REQUIRE(path.has_value());
         REQUIRE(*path == Approx(target.second).margin(1.e-9));
         const auto hit = start.positionAt(*path);
@@ -367,9 +376,9 @@ TEST_CASE("Helix retains tangent cylinder intersections under rotation", "[helix
     }
   }
   const Helix line({-10., 5., 0.}, {1., 0., 0.}, 0., 2.);
-  REQUIRE(line.pathToRadius(5.).value() == Approx(10.));
-  REQUIRE_FALSE(line.pathToRadius(5. - 1.e-6).has_value());
-  REQUIRE_FALSE(Helix({10., 5., 0.}, {1., 0., 0.}, 0., 2.).pathToRadius(5.).has_value());
+  REQUIRE(line.lengthToRadius(5.).value() == Approx(10.));
+  REQUIRE_FALSE(line.lengthToRadius(5. - 1.e-6).has_value());
+  REQUIRE_FALSE(Helix({10., 5., 0.}, {1., 0., 0.}, 0., 2.).lengthToRadius(5.).has_value());
 }
 
 TEST_CASE("Helix already in a z plane has a zero path to that plane", "[helix]") {
@@ -377,10 +386,10 @@ TEST_CASE("Helix already in a z plane has a zero path to that plane", "[helix]")
     for (double pz : {-1., 0., 1.}) {
       CAPTURE(charge, pz);
       const Helix helix({1., 2., 3.}, {1., 0., pz}, charge, 2.);
-      REQUIRE(helix.pathToZ(3.).value() == 0.);
+      REQUIRE(helix.lengthToZ(3.).value() == 0.);
       if (pz == 0.) {
-        REQUIRE_FALSE(helix.pathToZ(4.).has_value());
-        REQUIRE_FALSE(helix.pathToZ(2.).has_value());
+        REQUIRE_FALSE(helix.lengthToZ(4.).has_value());
+        REQUIRE_FALSE(helix.lengthToZ(2.).has_value());
       }
     }
   }
@@ -412,7 +421,7 @@ TEST_CASE("Helix rejects singular or non-finite inputs", "[helix]") {
   REQUIRE_THROWS_AS(helix.momentumAt(nan), std::invalid_argument);
   REQUIRE_THROWS_AS(helix.getExtrapolatedMomentum({0., nan, 0.}), std::invalid_argument);
   REQUIRE_THROWS_AS(helix.getDistanceToPoint({0., 0., nan}), std::invalid_argument);
-  REQUIRE_THROWS_AS(helix.pathToZ(nan), std::invalid_argument);
-  REQUIRE_THROWS_AS(helix.pathToRadius(nan), std::invalid_argument);
-  REQUIRE_THROWS_AS(helix.pathToRadius(-1.), std::invalid_argument);
+  REQUIRE_THROWS_AS(helix.lengthToZ(nan), std::invalid_argument);
+  REQUIRE_THROWS_AS(helix.lengthToRadius(nan), std::invalid_argument);
+  REQUIRE_THROWS_AS(helix.lengthToRadius(-1.), std::invalid_argument);
 }

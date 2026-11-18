@@ -55,10 +55,11 @@ public:
 
   /// TrackState with D0, phi, Z0 at the transverse closest approach to
   /// referencePoint, e.g. a hit position (D0 = Z0 = 0 if it lies on the track)
-  /// or the origin for AtIP. Z0 uses the turn within half a turn of getPosition().
+  /// or the origin (the default) for AtIP. The reference point is honored for
+  /// every location. Z0 uses the turn within half a turn of getPosition().
   /// Time and covariance are left at zero.
   edm4hep::TrackState toTrackState(edm4hep::TrackState::Location location,
-                                   const edm4hep::Vector3d& referencePoint) const;
+                                  const edm4hep::Vector3d& referencePoint = {}) const;
 
   double getD0() const { return m_d0; }
   double getPhi0() const { return m_phi0; }
@@ -76,20 +77,20 @@ public:
 
   /// Smallest non-negative transverse path length from getPosition() at which
   /// the trajectory reaches the plane at z. Empty if it never does.
-  std::optional<double> pathToZ(double z) const;
+  std::optional<double> lengthToZ(double z) const;
 
   /// Smallest non-negative transverse path length from getPosition() at which
   /// the trajectory reaches the cylinder of the given radius around the z axis,
   /// following later turns if needed. Empty if it never does.
   /// Throws std::invalid_argument for a negative or non-finite radius.
-  std::optional<double> pathToRadius(double radius) const;
+  std::optional<double> lengthToRadius(double radius) const;
 
   /// Smallest non-negative transverse path length from getPosition() at which
   /// the trajectory reaches the plane parallel to z through point with the given
   /// normal, e.g. a face of a polygonal barrel. Empty if it never does.
   /// Throws std::invalid_argument for non-finite inputs or a normal that is zero
   /// in xy or has a nonzero z component.
-  std::optional<double> pathToPlane(const edm4hep::Vector3d& point, const edm4hep::Vector3d& normal) const;
+  std::optional<double> lengthToPlane(const edm4hep::Vector3d& point, const edm4hep::Vector3d& normal) const;
 
   /// Momentum at the transverse projection of a point onto the trajectory.
   /// At the circle centre (where the azimuth is undefined), use the initial direction.

@@ -15,12 +15,12 @@ const edm4hep::utils::Helix helix({0., 0., 0.}, {1., 0., 0.5}, -1., 2.);
 const auto position = helix.positionAt(100.); // signed transverse path length, mm
 const auto momentum = helix.getExtrapolatedMomentum(position);
 const auto residual = helix.getDistanceToPoint({10., 20., 30.});
-if (const auto path = helix.pathToRadius(2150.)) { // first crossing of a barrel at r = 2150 mm
+if (const auto path = helix.lengthToRadius(2150.)) { // first crossing of a barrel at r = 2150 mm
   const auto atBarrel = helix.positionAt(*path);
 }
 ```
 
-`pathToZ(z)`, `pathToRadius(r)` and `pathToPlane(point, normal)` return the
+`lengthToZ(z)`, `lengthToRadius(r)` and `lengthToPlane(point, normal)` return the
 smallest non-negative transverse path length at which the trajectory reaches the
 plane at `z`, the cylinder of radius `r` around the z axis, or a plane parallel
 to z (e.g. a face of a polygonal barrel), or an empty `std::optional` if it never
@@ -59,7 +59,7 @@ transverse closest approach to `referencePoint`, with `D0`/`Z0` relative to that
 point. This is the direction at the reference point when it lies on the track.
 `toTrackState(location, referencePoint)` writes a state in the same way, e.g.
 with a hit position as reference (giving `D0 = Z0 = 0` for a hit on the track) or
-the origin for `AtIP`.
+the origin (the default) for `AtIP`.
 
 The class supports negative fields, non-unit charges, and straight tracks
 (zero charge or field). Zero transverse momentum and non-finite inputs throw
