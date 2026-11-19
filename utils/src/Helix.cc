@@ -98,7 +98,9 @@ Helix Helix::fromTrackState(const edm4hep::TrackState& trackState, double bField
 edm4hep::TrackState Helix::toTrackState(edm4hep::TrackState::Location location,
                                         const edm4hep::Vector3d& referencePoint) const {
   checkPoint(referencePoint);
-  const auto canonical = canonicalAt(referencePoint);
+  // Compute the parameters relative to the reference point as it is stored.
+  const edm4hep::Vector3f storedReference(referencePoint.x, referencePoint.y, referencePoint.z);
+  const auto canonical = canonicalAt({storedReference.x, storedReference.y, storedReference.z});
   edm4hep::TrackState trackState{};
   trackState.location = location;
   trackState.D0 = canonical.d0;
@@ -106,7 +108,7 @@ edm4hep::TrackState Helix::toTrackState(edm4hep::TrackState::Location location,
   trackState.omega = m_omega;
   trackState.Z0 = canonical.z0;
   trackState.tanLambda = m_tanLambda;
-  trackState.referencePoint = edm4hep::Vector3f(referencePoint.x, referencePoint.y, referencePoint.z);
+  trackState.referencePoint = storedReference;
   return trackState;
 }
 
@@ -175,8 +177,12 @@ std::optional<double> Helix::lengthToPlane(const edm4hep::Vector3d& point, const
     return 0.;
   }
   // Components of the unit normal along the direction of motion and to its left.
-  const double along = nx * std::cos(m_phi) + ny * std::sin(m_phi);
-  const double left = ny * std::cos(m_phi) - nx * std::sin(m_phi);
+  // Use the momentum components so that a plane parallel to the motion gives
+  // exactly zero, which cos and sin of the azimuth do not guarantee.
+  const double ux = m_momentum.x / m_pt;
+  const double uy = m_momentum.y / m_pt;
+  const double along = nx * ux + ny * uy;
+  const double left = ny * ux - nx * uy;
   const double curvatureDistance = 0.25 * m_omega * m_omega * distance;
   const double curvatureLeft = 0.5 * m_omega * left;
   return firstCrossing(curvatureDistance - curvatureLeft, std::abs(curvatureDistance) + std::abs(curvatureLeft),
@@ -271,7 +277,10 @@ edm4hep::Vector3d Helix::getExtrapolatedMomentum(const edm4hep::Vector3d& point)
 
 Helix::PointDistance Helix::getDistanceToPoint(const edm4hep::Vector3d& point) const {
   checkPoint(point);
-  double path = projectedPath(point);
+  // The transverse residual comes from the local projection; whole turns only
+  // change the path and the longitudinal residual.
+  const double localPath = projectedPath(point);
+  double path = localPath;
   if (m_omega != 0. && m_tanLambda != 0.) {
     const double dx = point.x - m_position.x;
     const double dy = point.y - m_position.y;
@@ -288,9 +297,9 @@ Helix::PointDistance Helix::getDistanceToPoint(const edm4hep::Vector3d& point) c
       }
     }
   }
-  const auto projection = positionAt(path);
+  const auto projection = positionAt(localPath);
   const double transverse = std::hypot(point.x - projection.x, point.y - projection.y);
-  const double longitudinal = std::abs(point.z - projection.z);
+  const double longitudinal = std::abs(point.z - m_position.z - path * m_tanLambda);
   return {transverse, longitudinal, std::hypot(transverse, longitudinal), path};
 }
 

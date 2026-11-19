@@ -114,9 +114,10 @@ TEST_CASE("Helix converts to and from TrackState", "[helix]") {
     const Helix atHit(hit, hitMomentum, charge, field);
     const auto onTrack = atHit.toTrackState(edm4hep::TrackState::AtLastHit, hit);
     REQUIRE(onTrack.location == edm4hep::TrackState::AtLastHit);
-    REQUIRE(onTrack.D0 == Approx(0.).margin(1.e-6));
+    // The parameters refer to the hit rounded to float, which is slightly off the track.
+    REQUIRE(onTrack.D0 == Approx(0.).margin(1.e-4));
     REQUIRE(onTrack.phi == Approx(hitPhi));
-    REQUIRE(onTrack.Z0 == Approx(0.).margin(1.e-6));
+    REQUIRE(onTrack.Z0 == Approx(0.).margin(1.e-4));
     REQUIRE(onTrack.referencePoint.x == Approx(hit.x));
 
     const edm4hep::Vector3d offset{hit.x - 3. * left(hitPhi).x, hit.y - 3. * left(hitPhi).y, hit.z - 7.};
@@ -140,6 +141,28 @@ TEST_CASE("Helix converts to and from TrackState", "[helix]") {
     REQUIRE(atIP.D0 == atOrigin.D0);
     REQUIRE(atIP.phi == atOrigin.phi);
     REQUIRE(atIP.Z0 == atOrigin.Z0);
+  }
+}
+
+TEST_CASE("Helix TrackState round trip with a reference not representable as float", "[helix]") {
+  const Helix helix({10.1, -3.3, 7.7}, {1.3, 0.7, 0.4}, 1., 2.);
+  const edm4hep::Vector3d reference{1234.5678901234, -987.6543210987, 321.123456789};
+  const edm4hep::Vector3f stored(reference.x, reference.y, reference.z);
+  REQUIRE(static_cast<double>(stored.x) != reference.x);
+  const auto state = helix.toTrackState(edm4hep::TrackState::AtOther, reference);
+  // The parameters refer to the stored reference point.
+  const auto atStored = helix.toTrackState(edm4hep::TrackState::AtOther, {stored.x, stored.y, stored.z});
+  REQUIRE(state.referencePoint.x == stored.x);
+  REQUIRE(state.referencePoint.y == stored.y);
+  REQUIRE(state.referencePoint.z == stored.z);
+  REQUIRE(state.D0 == atStored.D0);
+  REQUIRE(state.phi == atStored.phi);
+  REQUIRE(state.Z0 == atStored.Z0);
+  const auto back = Helix::fromTrackState(state, 2.);
+  for (double path : {0., 100., 1000., 3000.}) {
+    CAPTURE(path);
+    // Only the float precision of the stored parameters remains.
+    REQUIRE(back.getDistanceToPoint(helix.positionAt(path)).threeDimensional == Approx(0.).margin(1.e-4));
   }
 }
 
@@ -208,6 +231,17 @@ TEST_CASE("Helix residuals select the closest turn in z", "[helix]") {
       REQUIRE(centre.transverse == Approx(radius));
       REQUIRE(centre.longitudinal == Approx(slope == 0. ? 98. : 0.).margin(1.e-9));
     }
+  }
+}
+
+TEST_CASE("Helix transverse residual does not depend on the turn chosen in z", "[helix]") {
+  // A nearly flat helix needs a huge number of turns to reach the point in z.
+  const auto helix = Helix::fromCanonical({.omega = 1.e-3, .tanLambda = 1.e-12, .bField = 2.});
+  for (double z : {0., 100., -100.}) {
+    CAPTURE(z);
+    const auto distance = helix.getDistanceToPoint({0., 0., z});
+    REQUIRE(distance.transverse == Approx(0.).margin(1.e-12));
+    REQUIRE(distance.longitudinal == Approx(0.).margin(1.e-6));
   }
 }
 
@@ -310,6 +344,12 @@ TEST_CASE("Helix reaches planes parallel to z", "[helix]") {
   REQUIRE(line.lengthToPlane({10., 0., 0.}, {-2., 0., 0.}).value() == Approx(9.));
   REQUIRE_FALSE(line.lengthToPlane({-10., 0., 0.}, {1., 0., 0.}).has_value());
   REQUIRE_FALSE(line.lengthToPlane({0., 5., 0.}, {0., 1., 0.}).has_value());
+  // cos(pi / 2) is not exactly zero, which must not create a far crossing.
+  const Helix alongY({0., 0., 0.}, {0., 1., 0.}, 0., 2.);
+  REQUIRE_FALSE(alongY.lengthToPlane({1., 0., 0.}, {1., 0., 0.}).has_value());
+  REQUIRE_FALSE(alongY.lengthToPlane({-1., 0., 0.}, {-1., 0., 0.}).has_value());
+  const Helix alongMinusY({0., 0., 0.}, {0., -1., 0.}, 0., 2.);
+  REQUIRE_FALSE(alongMinusY.lengthToPlane({1., 0., 0.}, {1., 0., 0.}).has_value());
   const Helix almostLine({1., 2., 3.}, {1., 0., 1.}, 1.e-12, 2.);
   REQUIRE(almostLine.lengthToPlane({10., 0., 0.}, {1., 0., 0.}).value() == Approx(9.));
   REQUIRE_THROWS_AS(line.lengthToPlane({0., 0., 0.}, {1., 0., 1.}), std::invalid_argument);

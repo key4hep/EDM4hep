@@ -57,7 +57,8 @@ public:
   /// referencePoint, e.g. a hit position (D0 = Z0 = 0 if it lies on the track)
   /// or the origin (the default) for AtIP. The reference point is honored for
   /// every location. Z0 uses the turn within half a turn of getPosition().
-  /// Time and covariance are left at zero.
+  /// The parameters are computed relative to referencePoint rounded to float,
+  /// as it is stored. Time and covariance are left at zero.
   edm4hep::TrackState toTrackState(edm4hep::TrackState::Location location,
                                    const edm4hep::Vector3d& referencePoint = {}) const;
 
