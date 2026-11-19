@@ -19,7 +19,7 @@ namespace edm4hep::utils {
 namespace {
   int32_t getAlgoID(const std::string& name) {
     int32_t ID = 0;
-    MurmurHash3_x86_32(name.c_str(), name.size(), 0, &ID);
+    detail::MurmurHash3_x86_32(name.c_str(), name.size(), 0, &ID);
     return ID;
   }
 } // namespace

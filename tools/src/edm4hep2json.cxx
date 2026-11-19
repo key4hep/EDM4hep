@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 
+namespace {
 void printHelp() {
   std::cout << "Usage: edm4hep2json [olenfvh] FILEPATH\n"
             << "  -o/--out-file           output file path\n"
@@ -26,6 +27,7 @@ void printHelp() {
             << "  -v/--verbose            be more verbose\n"
             << "  -h/--help               show this help message" << std::endl;
 }
+} // namespace
 
 int main(int argc, char** argv) {
   std::filesystem::path inFilePath;

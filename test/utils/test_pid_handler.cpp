@@ -15,6 +15,8 @@
 #include <utility>
 #include <vector>
 
+namespace {
+
 edm4hep::ReconstructedParticleCollection createRecos() {
   edm4hep::ReconstructedParticleCollection coll;
 
@@ -79,6 +81,8 @@ void checkHandlerValidReco(const edm4hep::utils::PIDHandler& handler, const edm4
     REQUIRE(llh2 == 1.0f);
   }
 }
+
+} // namespace
 
 TEST_CASE("PIDHandler basic usage", "[pid_utils]") {
   using namespace edm4hep;
