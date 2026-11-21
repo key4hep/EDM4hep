@@ -9,6 +9,7 @@ target_link_libraries(kinematics PUBLIC INTERFACE ROOT::Core)
 target_compile_features(kinematics INTERFACE cxx_std_17)
 
 set(utils_sources
+  src/Helix.cc
   src/ParticleIDUtils.cc
   src/MurmurHash3.cpp
   src/TrackUtils.cc
