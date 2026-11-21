@@ -32,7 +32,7 @@ jobs:
           # fails
           git config --global --add safe.directory $(pwd)
           echo "Building podio @"$(git log -1 --format=%H)
-          cmake -DCMAKE_CXX_STANDARD=20 \
+          cmake -DCMAKE_CXX_STANDARD=23 \
             -DENABLE_SIO=ON \
             -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/install \

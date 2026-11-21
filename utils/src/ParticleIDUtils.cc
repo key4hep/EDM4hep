@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -83,15 +84,8 @@ PIDHandler PIDHandler::from(const podio::Frame& event, const podio::Frame& metad
 }
 
 std::vector<edm4hep::ParticleID> PIDHandler::getPIDs(const edm4hep::ReconstructedParticle& reco) const {
-  std::vector<edm4hep::ParticleID> pids;
-  const auto& [begin, end] = m_recoPidMap.equal_range(reco);
-  pids.reserve(std::distance(begin, end));
-
-  for (auto it = begin; it != end; ++it) {
-    pids.emplace_back(it->second);
-  }
-
-  return pids;
+  const auto [begin, end] = m_recoPidMap.equal_range(reco);
+  return std::ranges::subrange(begin, end) | std::views::values | std::ranges::to<std::vector>();
 }
 
 std::optional<edm4hep::ParticleID> PIDHandler::getPID(const edm4hep::ReconstructedParticle& reco,

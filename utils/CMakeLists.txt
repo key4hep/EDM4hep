@@ -6,7 +6,7 @@ target_include_directories(kinematics
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_link_libraries(kinematics PUBLIC INTERFACE ROOT::Core)
-target_compile_features(kinematics INTERFACE cxx_std_17)
+target_compile_features(kinematics INTERFACE cxx_std_23)
 
 set(utils_sources
   src/ParticleIDUtils.cc

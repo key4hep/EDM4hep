@@ -5,7 +5,6 @@
 #include <cstddef>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
 #include <utility>
 
 namespace edm4hep {
@@ -13,22 +12,6 @@ namespace edm4hep {
 namespace utils {
 
   namespace detail {
-    // From c++23 this is functionality offered by the STL
-    template <typename E>
-    constexpr auto to_index(E e) {
-#if __cpp_lib_to_underlying
-      return std::to_underlying(e);
-#else
-      return static_cast<std::underlying_type_t<E>>(e);
-#endif
-    }
-
-    /// Cast an index to an enum value
-    template <typename DimEnum>
-    constexpr DimEnum to_enum(DimEnum index) {
-      return static_cast<DimEnum>(index);
-    }
-
     /**
      * Get the dimension of the covariance matrix from the size of the 1D array in
      * which it is stored
@@ -83,8 +66,8 @@ namespace utils {
 
   template <typename DimEnum, typename Scalar, std::size_t N>
   constexpr Scalar get_cov_value(const std::array<Scalar, N>& cov, DimEnum dimI, DimEnum dimJ) {
-    const auto i = detail::to_index(dimI);
-    const auto j = detail::to_index(dimJ);
+    const auto i = std::to_underlying(dimI);
+    const auto j = std::to_underlying(dimJ);
 
     constexpr auto dim = detail::get_cov_dim(N);
     if (i < 0 || j < 0 || i >= dim || j >= dim) {
@@ -98,8 +81,8 @@ namespace utils {
 
   template <typename DimEnum, typename Scalar, std::size_t N>
   constexpr void set_cov_value(Scalar value, std::array<Scalar, N>& cov, DimEnum dimI, DimEnum dimJ) {
-    auto i = detail::to_index(dimI);
-    auto j = detail::to_index(dimJ);
+    const auto i = std::to_underlying(dimI);
+    const auto j = std::to_underlying(dimJ);
 
     constexpr auto dim = detail::get_cov_dim(N);
     if (i < 0 || j < 0 || i >= dim || j >= dim) {

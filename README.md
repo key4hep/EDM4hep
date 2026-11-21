@@ -62,8 +62,9 @@ This project is in a beta stage -- feedback and use of it in production is encou
 
 Required:
 
+* A C++23 compiler and standard library with `std::ranges::to` (e.g. GCC 15 or newer)
 * [PODIO](https://github.com/AIDASoft/podio) >= v01-07
-* [ROOT](https://github.com/root-project/root) >= v6.22/06
+* [ROOT](https://github.com/root-project/root) built with C++23
 
 Optional:
 
