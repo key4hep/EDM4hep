@@ -19,6 +19,8 @@
 #ifndef EDM4HEP_CONSTANTS_H
 #define EDM4HEP_CONSTANTS_H
 
+#include "edm4hep/Units.h"
+
 #include <cstdint>
 
 namespace edm4hep {
@@ -97,6 +99,13 @@ enum class TrackParams : DimType { d0 = 0, phi, omega, z0, tanLambda, time };
 
 /// Enum for accessing the covariance matrix in the TrackerPulse
 enum class TrackerPulseDims : DimType { charge = 0, time };
+
+/// @namespace edm4hep::constants
+/// @brief Useful physical constants (in natural EDM4hep units)
+namespace constants {
+  /// Speed of light (in mm / ns)
+  static constexpr double c_light = 299792458 * units::m / units::s;
+} // namespace constants
 
 } // namespace edm4hep
 
