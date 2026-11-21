@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Tests for the extra code that is injected via the ExtraCode YAML directives"""
 
+import pytest
+
 import edm4hep
 
 
@@ -53,3 +55,26 @@ def test_sim_calorimeter_hit_add_mc_particle_contribution():
     assert hit.getEnergy() == 7.0
     assert hit.getContributions().size() == 3
     assert [c.getEnergy() for c in hit.getContributions()] == [1.0, 2.0, 4.0]
+
+
+def test_track_state_get_momentum():
+    """TrackState::getMomentum computes the momentum from the track parameters
+    and the (solenoidal) magnetic field along z"""
+    bz = 2.0  # T
+    omega = 1e-3  # 1 / mm, i.e. a radius of 1 m
+    expected_pt = 2.998e-4 * bz / omega
+
+    trackState = edm4hep.TrackState()
+    trackState.omega = omega
+    trackState.phi = 0.7
+    trackState.tanLambda = 2.0
+
+    mom = trackState.getMomentum(bz)
+    utils = edm4hep.utils
+    assert utils.magnitudeTransverse(mom) == pytest.approx(expected_pt, rel=1e-6)
+    assert utils.magnitudeLongitudinal(mom) == pytest.approx(2 * expected_pt, rel=1e-6)
+    assert utils.angleAzimuthal(mom) == pytest.approx(trackState.phi, rel=1e-6)
+
+    # The sign of omega (i.e. the charge) does not affect the momentum
+    trackState.omega = -omega
+    assert trackState.getMomentum(bz) == mom

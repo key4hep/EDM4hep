@@ -5,8 +5,11 @@
 #include "edm4hep/Track.h"
 #include "edm4hep/TrackState.h"
 
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <cmath>
+#include <numbers>
 #include <optional>
 
 namespace {
@@ -100,5 +103,52 @@ TEST_CASE("SimCalorimeterHit::addMCParticleContribution") {
 
     REQUIRE(mutableHit.getEnergy() == 0.f);
     REQUIRE(mutableHit.getContributions().size() == 1);
+  }
+}
+
+TEST_CASE("TrackState::getMomentum") {
+  // A track with a radius of 1 m in a 2 T field has a pT of ~0.6 GeV
+  constexpr double Bz = 2.0;
+  constexpr float omega = 1e-3f; // 1 / mm
+  constexpr double expectedPt = 2.998e-4 * Bz / omega;
+
+  SECTION("momentum points along x for phi = 0 and tanLambda = 0") {
+    const auto state = edm4hep::TrackState{.phi = 0.f, .omega = omega, .tanLambda = 0.f};
+    const auto mom = state.getMomentum(Bz);
+    REQUIRE(mom.x == Catch::Approx(expectedPt));
+    REQUIRE(mom.y == Catch::Approx(0.0).margin(1e-6));
+    REQUIRE(mom.z == Catch::Approx(0.0).margin(1e-6));
+  }
+
+  SECTION("phi and tanLambda determine the direction") {
+    const auto state = edm4hep::TrackState{.phi = std::numbers::pi_v<float> / 2.f, .omega = omega, .tanLambda = 2.f};
+    const auto mom = state.getMomentum(Bz);
+    REQUIRE(mom.x == Catch::Approx(0.0).margin(1e-6));
+    REQUIRE(mom.y == Catch::Approx(expectedPt));
+    REQUIRE(mom.z == Catch::Approx(2 * expectedPt));
+  }
+
+  SECTION("transverse momentum is independent of phi") {
+    const auto state = edm4hep::TrackState{.phi = 0.7f, .omega = omega, .tanLambda = 0.5f};
+    const auto mom = state.getMomentum(Bz);
+    REQUIRE(std::hypot(mom.x, mom.y) == Catch::Approx(expectedPt));
+    REQUIRE(mom.z == Catch::Approx(0.5 * expectedPt));
+  }
+
+  SECTION("sign of omega (charge) does not affect the momentum") {
+    const auto posState = edm4hep::TrackState{.phi = 0.3f, .omega = omega, .tanLambda = 1.f};
+    const auto negState = edm4hep::TrackState{.phi = 0.3f, .omega = -omega, .tanLambda = 1.f};
+    const auto posMom = posState.getMomentum(Bz);
+    const auto negMom = negState.getMomentum(Bz);
+    REQUIRE(posMom.x == Catch::Approx(negMom.x));
+    REQUIRE(posMom.y == Catch::Approx(negMom.y));
+    REQUIRE(posMom.z == Catch::Approx(negMom.z));
+  }
+
+  SECTION("momentum scales linearly with the field and inversely with omega") {
+    const auto state = edm4hep::TrackState{.phi = 0.f, .omega = omega, .tanLambda = 0.f};
+    const auto halfCurvState = edm4hep::TrackState{.phi = 0.f, .omega = omega / 2.f, .tanLambda = 0.f};
+    REQUIRE(state.getMomentum(2 * Bz).x == Catch::Approx(2 * expectedPt));
+    REQUIRE(halfCurvState.getMomentum(Bz).x == Catch::Approx(2 * expectedPt));
   }
 }
