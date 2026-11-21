@@ -32,6 +32,8 @@ edm4hep_set_linker_flags()
 #--- Declare options -----------------------------------------------------------
 
 option(BUILD_DOCS "Whether or not to create doxygen doc target.")
+option(DOCS_SHOW_PODIO_INTERNALS "Whether or not to include the podio internal
+classes (e.g. *Obj, *Data, *CollectionData) in the doxygen documentation" OFF)
 
 option(USE_EXTERNAL_CATCH2 "Link against an external Catch2 v3 static
 library, otherwise build it locally" ON)
