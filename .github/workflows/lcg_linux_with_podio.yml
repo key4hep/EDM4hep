@@ -27,6 +27,7 @@ jobs:
         LCG:
           - dev3/x86_64-el9-gcc16-opt
           - dev4/x86_64-el9-gcc16-opt
+          - dev4/x86_64-el9-clang22-opt
           - LCG_108/x86_64-el9-gcc15-opt
           - LCG_110/x86_64-el9-gcc16-opt
           - LCG_110/x86_64-el9-clang22-opt

@@ -22,9 +22,6 @@ endif()
 # - Use GNU-style hierarchy for installing build products
 include(GNUInstallDirs)
 
-# Require C++23 in this directory even when built as part of a larger project.
-# Set this before the shared Key4hep defaults, which still default to C++20.
-set(CMAKE_CXX_STANDARD 23)
 include(cmake/Key4hepConfig.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
