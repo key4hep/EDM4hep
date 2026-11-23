@@ -329,9 +329,7 @@ datatypes:
         #include <edm4hep/utils/bit_utils.h>
         #include <edm4hep/MCParticle.h>
 
-      declaration:  //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.
-        //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }
-        /// Set the four momentum covariance matrix value for the two passed dimensions|
+      declaration: |
         void setOverlay(bool val) { setQuality( utils::setBit( getQuality() , BITOverlay , val ) ) ;   }
         void setProducedBySecondary(bool val) { setQuality( utils::setBit( getQuality() , BITProducedBySecondary , val ) ) ;   }
 
