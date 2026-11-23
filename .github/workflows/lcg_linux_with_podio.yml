@@ -25,6 +25,8 @@ jobs:
       matrix:
         # Use views with ROOT built in C++23 mode.
         LCG:
+          - dev3/x86_64-el9-gcc16-opt
+          - dev4/x86_64-el9-gcc16-opt
           - LCG_108/x86_64-el9-gcc15-opt
           - LCG_110/x86_64-el9-gcc16-opt
           - LCG_110/x86_64-el9-clang22-opt
@@ -49,7 +51,11 @@ jobs:
       env:
         LCG: ${{ matrix.LCG }}
       run: |
-          source /cvmfs/sft.cern.ch/lcg/views/${LCG}/setup.sh
+          if [[ "${LCG%%/*}" == dev* ]]; then
+            source /cvmfs/sft-nightlies.cern.ch/lcg/views/${LCG%%/*}/latest/${LCG#*/}/setup.sh
+          else
+            source /cvmfs/sft.cern.ch/lcg/views/${LCG}/setup.sh
+          fi
           ccache --set-config=max_size=500M
           ccache -z
           STARTDIR=$(pwd)
