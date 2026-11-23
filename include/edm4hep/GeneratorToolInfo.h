@@ -4,8 +4,8 @@
 #include "edm4hep/Constants.h"
 #include "podio/Frame.h"
 #include <optional>
+#include <ranges>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace edm4hep {
@@ -56,8 +56,8 @@ namespace utils {
         frame.getParameter<std::vector<std::string>>(GeneratorToolVersions).value_or(std::vector<std::string>{});
     const auto descriptions =
         frame.getParameter<std::vector<std::string>>(GeneratorToolDescriptions).value_or(std::vector<std::string>{});
-    for (unsigned int i = 0; i < names.size(); ++i) {
-      toolInfos.emplace_back(names[i], versions[i], descriptions[i]);
+    for (const auto& [name, version, description] : std::views::zip(names, versions, descriptions)) {
+      toolInfos.emplace_back(name, version, description);
     }
     return toolInfos;
   };
@@ -70,19 +70,14 @@ namespace utils {
   /// @param frame     The (metadata) Frame into which the generator tool info should go
   /// @param toolInfos The generator tool infos that should be stored
   void inline putGenToolInfos(podio::Frame& frame, const std::vector<GeneratorToolInfo>& toolInfos) {
-    auto names = std::vector<std::string>();
-    auto versions = std::vector<std::string>();
-    auto descriptions = std::vector<std::string>();
-    for (auto& toolInfo : toolInfos) {
-      names.push_back(toolInfo.name);
-      versions.push_back(toolInfo.version);
-      descriptions.push_back(toolInfo.description);
-    }
+    const auto collect = [&toolInfos](auto member) {
+      return toolInfos | std::views::transform(member) | std::ranges::to<std::vector>();
+    };
 
     using namespace edm4hep::labels;
-    frame.putParameter(GeneratorToolNames, std::move(names));
-    frame.putParameter(GeneratorToolVersions, std::move(versions));
-    frame.putParameter(GeneratorToolDescriptions, std::move(descriptions));
+    frame.putParameter(GeneratorToolNames, collect(&GeneratorToolInfo::name));
+    frame.putParameter(GeneratorToolVersions, collect(&GeneratorToolInfo::version));
+    frame.putParameter(GeneratorToolDescriptions, collect(&GeneratorToolInfo::description));
   };
 } // namespace utils
 } // namespace edm4hep

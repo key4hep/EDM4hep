@@ -90,11 +90,11 @@ std::vector<edm4hep::ParticleID> PIDHandler::getPIDs(const edm4hep::Reconstructe
 
 std::optional<edm4hep::ParticleID> PIDHandler::getPID(const edm4hep::ReconstructedParticle& reco,
                                                       int32_t algoType) const {
-  const auto& [begin, end] = m_recoPidMap.equal_range(reco);
-  for (auto it = begin; it != end; ++it) {
-    if (it->second.getAlgorithmType() == algoType) {
-      return it->second;
-    }
+  const auto [begin, end] = m_recoPidMap.equal_range(reco);
+  const auto it =
+      std::ranges::find(begin, end, algoType, [](const auto& recoPid) { return recoPid.second.getAlgorithmType(); });
+  if (it != end) {
+    return it->second;
   }
 
   return std::nullopt;
@@ -136,21 +136,16 @@ void PIDHandler::setAlgoInfo(podio::Frame& metadata, const std::string& collName
 std::optional<edm4hep::utils::ParticleIDMeta> PIDHandler::getAlgoInfo(const podio::Frame& metadata,
                                                                       const std::string& collName) {
 
-  auto maybeAlgoName =
-      metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::labels::PIDAlgoName));
-  if (!maybeAlgoName.has_value()) {
-    return std::nullopt;
-  }
-
-  ParticleIDMeta pidInfo{
-      std::move(maybeAlgoName.value()),
-      metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::labels::PIDAlgoType)).value(),
-      metadata
-          .getParameter<std::vector<std::string>>(
-              podio::collMetadataParamName(collName, edm4hep::labels::PIDParameterNames))
-          .value()};
-
-  return pidInfo;
+  return metadata.getParameter<std::string>(podio::collMetadataParamName(collName, edm4hep::labels::PIDAlgoName))
+      .transform([&](const std::string& algoName) {
+        return ParticleIDMeta{
+            algoName,
+            metadata.getParameter<int>(podio::collMetadataParamName(collName, edm4hep::labels::PIDAlgoType)).value(),
+            metadata
+                .getParameter<std::vector<std::string>>(
+                    podio::collMetadataParamName(collName, edm4hep::labels::PIDParameterNames))
+                .value()};
+      });
 }
 
 } // namespace edm4hep::utils
