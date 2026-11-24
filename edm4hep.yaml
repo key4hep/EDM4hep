@@ -657,8 +657,6 @@ datatypes:
     MutableExtraCode:
       includes: "#include <edm4hep/Constants.h>"
       declaration: |
-        //vertex where the particle decays. This method actually returns the start vertex from the first daughter particle found.
-        //TODO: edm4hep::Vertex  getEndVertex() { return  edm4hep::Vertex(  (getParticles(0).isAvailable() ? getParticles(0).getStartVertex() :  edm4hep::Vertex(0,0) ) ) ; }
         /// Set the four momentum covariance matrix value for the two passed dimensions
         void setCovMatrix(float value, edm4hep::FourMomCoords dimI, edm4hep::FourMomCoords dimJ) { getCovMatrix().setValue(value, dimI, dimJ); }
 
