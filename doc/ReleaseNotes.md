@@ -1,3 +1,40 @@
+# v01-03-01
+
+* 2026-11-24 Thomas Madlener ([PR#563](https://github.com/key4hep/EDM4hep/pull/563))
+  - Remove some leftover commented `ExtraCode` that is no longer relevant
+
+* 2026-11-21 Thomas Madlener ([PR#553](https://github.com/key4hep/EDM4hep/pull/553))
+  - Turn off the documentation of the podio internals for the version that gets deployed
+
+* 2026-11-17 Juan Miguel Carceller ([PR#561](https://github.com/key4hep/EDM4hep/pull/561))
+  - Use `root-config --cxxstandard` for podio, EDM4hep and the downstream CI build instead of hard-coded standards.
+
+* 2026-11-17 Thomas Madlener ([PR#560](https://github.com/key4hep/EDM4hep/pull/560))
+  - Switch to newer LCG stacks to build podio with RNTuple support in CI
+  - Use the `base-build` preset of podio in CI
+
+* 2026-11-17 Juan Miguel Carceller ([PR#559](https://github.com/key4hep/EDM4hep/pull/559))
+  - Move `MurmurHash3_x86_32` into `edm4hep::utils::detail` and its helpers (`rotl32`, ...) into an unnamed namespace. They were exported as global symbols from `libedm4hepUtils.so`, which could clash with other libraries bundling MurmurHash3.
+   - Put `printHelp` in `edm4hep2json` and the file-local test helpers in unnamed namespaces.
+
+* 2026-11-16 Juan Miguel Carceller ([PR#558](https://github.com/key4hep/EDM4hep/pull/558))
+  - Allow importing edm4hep without optional RDF utilities and accept already-loaded ROOT libraries.
+
+* 2026-11-13 Juan Miguel Carceller ([PR#555](https://github.com/key4hep/EDM4hep/pull/555))
+  - Raise ValueError for unsupported covariance matrix dimensions in createEDM4hepFile.py, use the 1.2.0 boundary for timeError checks.
+
+* 2026-11-12 Juan Miguel Carceller ([PR#552](https://github.com/key4hep/EDM4hep/pull/552))
+  - Remove the unused mandatory positional argument from updateReadmeLinks.py so the documented no-argument invocation and `--check` work.
+
+* 2026-11-11 Juan Miguel Carceller ([PR#551](https://github.com/key4hep/EDM4hep/pull/551))
+  - Check EOS_PATH access and writing in a preliminary GitLab CI job so documentation builds fail early if deployment is unavailable.
+
+* 2026-11-11 Juan Miguel Carceller ([PR#550](https://github.com/key4hep/EDM4hep/pull/550))
+  - Fix utility library install rules and assign shared libraries to the shlib component.
+
+* 2026-11-10 Juan Miguel Carceller ([PR#549](https://github.com/key4hep/EDM4hep/pull/549))
+  - Decode version components with explicit 64-bit masks, without assuming unsigned long is 64 bits.
+
 # v01-03
 
 * 2026-11-10 Juraj Smiesko ([PR#548](https://github.com/key4hep/EDM4hep/pull/548))
