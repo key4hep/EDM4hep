@@ -311,6 +311,7 @@ def create_TrackAtVertexCollection(track):
     track_at_vertex = tracks_at_vertex.create()
     track_at_vertex.setTrackState(create_TrackState(counter))
     track_at_vertex.setWeight(next(counter))
+    track_at_vertex.setChi2(next(counter))
     track_at_vertex.setTrack(track)
     return tracks_at_vertex
 

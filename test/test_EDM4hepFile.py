@@ -468,6 +468,7 @@ def test_TrackAtVertexCollection(event, track, edm4hep_version):
     track_at_vertex = tracks_at_vertex[0]
     check_track_state(track_at_vertex.getTrackState(), counter)
     assert track_at_vertex.getWeight() == next(counter)
+    assert track_at_vertex.getChi2() == next(counter)
     assert track_at_vertex.getTrack() == track
 
 

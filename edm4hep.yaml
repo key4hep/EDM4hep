@@ -636,6 +636,7 @@ datatypes:
     Members:
       - edm4hep::TrackState trackState // track state fitted at the vertex, at location AtVertex with the vertex position as reference point
       - float weight                   // weight of the track in the vertex fit, 1 for a track fully assigned to the vertex
+      - float chi2                     // chi-squared of the track with respect to the fitted vertex (2 degrees of freedom); its contribution to the vertex chi2 is weight * chi2
     OneToOneRelations:
       - edm4hep::Track track           // the track that has been used in the vertex fit
 
