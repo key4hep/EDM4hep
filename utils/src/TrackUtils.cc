@@ -2,8 +2,7 @@
 #include "edm4hep/RecDqdxCollection.h"
 #include "edm4hep/Track.h"
 
-#include <iterator>
-#include <utility>
+#include <ranges>
 
 namespace edm4hep::utils {
 
@@ -14,15 +13,8 @@ void TrackPIDHandler::addColl(const edm4hep::RecDqdxCollection& coll) {
 }
 
 std::vector<edm4hep::RecDqdx> TrackPIDHandler::getDqdxValues(const edm4hep::Track& track) const {
-  const auto& [begin, end] = m_trackDqMap.equal_range(track);
-  std::vector<edm4hep::RecDqdx> dqdxs{};
-  dqdxs.reserve(std::distance(begin, end));
-
-  for (auto it = begin; it != end; ++it) {
-    dqdxs.emplace_back(it->second);
-  }
-
-  return dqdxs;
+  const auto [begin, end] = m_trackDqMap.equal_range(track);
+  return std::ranges::subrange(begin, end) | std::views::values | std::ranges::to<std::vector>();
 }
 
 } // namespace edm4hep::utils

@@ -12,6 +12,7 @@ PODIO_GENERATE_DATAMODEL(edm4hep ../edm4hep.yaml headers sources
 )
 
 PODIO_ADD_DATAMODEL_CORE_LIB(edm4hep "${headers}" "${sources}")
+target_compile_features(edm4hep PUBLIC cxx_std_23)
 target_include_directories(edm4hep PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/utils/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>

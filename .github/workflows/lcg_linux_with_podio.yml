@@ -23,22 +23,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Use views with ROOT built in C++23 mode.
         LCG:
-          [
-            "dev3/x86_64-el9-clang22-opt",
-            "dev4/x86_64-el9-clang22-opt",
-            "dev4/x86_64-el9-gcc13-opt",
-          ]
-        RNTUPLE: [ON]
-        include:
-          - {
-              LCG: "LCG_107/x86_64-el9-gcc13-opt",
-              RNTUPLE: ON,
-            }
-          - {
-              LCG: "LCG_106/x86_64-el9-gcc13-opt",
-              RNTUPLE: OFF, # Need at least ROOT 6.34 for that
-            }
+          - dev3/x86_64-el9-gcc16-opt
+          - dev4/x86_64-el9-gcc16-opt
+          - dev4/x86_64-el9-clang22-opt
+          - LCG_108/x86_64-el9-gcc15-opt
+          - LCG_110/x86_64-el9-gcc16-opt
+          - LCG_110/x86_64-el9-clang22-opt
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -65,8 +57,6 @@ jobs:
           else
             source /cvmfs/sft.cern.ch/lcg/views/${LCG}/setup.sh
           fi
-          CXX_STANDARD=$(root-config --cxxstandard)
-          echo "Building with ROOT's C++ standard: ${CXX_STANDARD}"
           ccache --set-config=max_size=500M
           ccache -z
           STARTDIR=$(pwd)
@@ -74,8 +64,8 @@ jobs:
           cd podio
           echo "Building podio @"$(git log -1 --format=%H)
           cmake --preset base-build \
-            -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
-            -DENABLE_RNTUPLE=${{ matrix.RNTUPLE }} \
+            -DCMAKE_CXX_STANDARD=23 \
+            -DENABLE_RNTUPLE=ON \
             -DENABLE_SIO=ON
           cmake --build build --target install -- -k0
           source init.sh && source env.sh
@@ -83,8 +73,7 @@ jobs:
           echo "::group::Build edm4hep"
           cd $STARTDIR
           echo "Building edm4hep"
-          cmake -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+          cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -DUSE_EXTERNAL_CATCH2=OFF \
             -G Ninja -B build
           cmake --build build -- -k0
@@ -94,8 +83,7 @@ jobs:
           echo "::group::Test downstream usage"
           export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
           cd test/downstream-project-cmake-test
-          cmake -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
+          cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/install \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -G Ninja -B build
           cmake --build build -- -k0
